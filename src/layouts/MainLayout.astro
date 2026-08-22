@@ -19,124 +19,128 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <!-- DataTables CSS Local -->
   <link rel="stylesheet" href={`${baseUrl}/vendor/jquery.dataTables.min.css`} />
 
-  <!-- Librerías de Terceros Locales (Zero CORS, 100% Offline) -->
-  
-  
-  
-  
-
   <!-- Estilos del Proyecto -->
   <link rel="stylesheet" href={`${baseUrl}/css/styles.css`} />
   <style>
-    .tab-pill {
+    /* Estilos Minimalistas de Pestañas (Vercel / Linear Style) */
+    .tab-link {
       position: relative;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.15s ease-in-out;
       cursor: pointer;
+      color: #94A3B8;
+      border-bottom: 2px solid transparent;
+      padding: 0.75rem 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      white-space: nowrap;
     }
-    .tab-pill:hover {
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-1px);
+    .tab-link:hover {
+      color: #F8FAFC;
     }
-    .tab-pill.active {
-      background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+    .tab-link.active {
       color: #FFFFFF !important;
-      font-weight: 700;
-      box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
-      border-color: rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+      border-bottom-color: #3B82F6;
+      background: rgba(255, 255, 255, 0.04);
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
     }
-    .tab-pill.active .tab-num {
-      background: rgba(255, 255, 255, 0.25);
-      color: #FFFFFF;
+    .tab-link.active i {
+      color: #60A5FA;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
     .tab-content {
       display: none;
-      animation: fadeIn 0.25s ease-in-out;
+      animation: fadeIn 0.2s ease-in-out;
     }
     .tab-content.active {
       display: block;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
+      from { opacity: 0; transform: translateY(3px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
 
-  <!-- Header Institucional SAT -->
-  <header class="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white shadow-xl sticky top-0 z-50 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-6 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-3.5">
-        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-2.5 rounded-2xl shadow-lg shadow-blue-600/30 border border-blue-400/30 flex items-center justify-center">
-          <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+  <!-- Header Institucional SAT Integrado y Elegante -->
+  <header class="bg-slate-950 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800/80">
+    
+    <!-- Fila Superior: Marca y Controles -->
+    <div class="max-w-7xl mx-auto px-6 pt-3.5 pb-2 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20">
+          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-lg font-black tracking-tight text-white">SAT GUATEMALA</h1>
-            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold tracking-wide">
-              Métrica 360°
+            <h1 class="text-base font-bold tracking-tight text-white">SAT GUATEMALA</h1>
+            <span class="bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium">
+              Agencia Virtual & RTU
             </span>
           </div>
-          <p class="text-[11px] text-slate-300">Inteligencia de Negocio con Jornada Hábil de 8 Horas • 1,686,257 Trámites</p>
+          <p class="text-[11px] text-slate-400">Auditoría Cuantitativa • 1,686,257 Trámites • Jornada Hábil de 8 Horas</p>
         </div>
       </div>
       
       <div class="flex items-center gap-3">
-        <button onclick="resetFilters()" class="bg-slate-800/80 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition text-slate-300 font-medium hover:text-white shadow-sm">
+        <button onclick="resetFilters()" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 transition">
           <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restablecer Filtros
         </button>
-        <div class="flex items-center gap-2 text-[11px] text-slate-400 font-mono bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
+        <div class="flex items-center gap-2 text-[11px] text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>OLAP Activo</span>
+          <span>Motor OLAP Activo</span>
         </div>
       </div>
     </div>
 
-    <!-- BARRA DE NAVEGACIÓN SEGMENTADA DE 7 PESTAÑAS -->
-    <div class="max-w-7xl mx-auto px-6 pb-3 pt-1">
-      <nav class="bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-inner flex overflow-x-auto gap-1 text-xs font-semibold">
+    <!-- Fila Inferior: Barra de Pestañas Minimalista Integrada -->
+    <div class="max-w-7xl mx-auto px-6">
+      <nav class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60">
         
-        <button onclick="switchTab('tab-macro')" id="btn-macro" class="tab-pill active flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap">
-          <span class="tab-num text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded-md font-mono">01</span>
-          <i data-lucide="layout-dashboard" class="w-4 h-4 text-blue-400"></i>
+        <button onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
           <span>Visión & Balance</span>
         </button>
 
-        <button onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap">
-          <span class="tab-num text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded-md font-mono">02</span>
-          <i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i>
+        <button onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-link">
+          <i data-lucide="trending-up" class="w-4 h-4"></i>
           <span>Rendimiento & Regionales</span>
         </button>
 
-        <button onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap">
-          <span class="tab-num text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded-md font-mono">03</span>
-          <i data-lucide="clock" class="w-4 h-4 text-indigo-400"></i>
+        <button onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-link">
+          <i data-lucide="clock" class="w-4 h-4"></i>
           <span>Jornada 8h & SLAs</span>
         </button>
 
-        <button onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap">
-          <span class="tab-num text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded-md font-mono">04</span>
-          <i data-lucide="alert-octagon" class="w-4 h-4 text-amber-400"></i>
+        <button onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-link">
+          <i data-lucide="alert-octagon" class="w-4 h-4"></i>
           <span>Calidad & Fricción</span>
         </button>
 
-        <button onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap">
-          <span class="tab-num text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded-md font-mono">05</span>
-          <i data-lucide="users" class="w-4 h-4 text-emerald-400"></i>
+        <button onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
+          <i data-lucide="users" class="w-4 h-4"></i>
           <span>Operadores & Dispersión</span>
         </button>
 
-        <button onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap bg-slate-800/60 border border-slate-700/60">
-          <span class="tab-num text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.5 rounded-md font-mono font-bold">06</span>
-          <i data-lucide="table" class="w-4 h-4 text-emerald-400"></i>
+        <button onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
+          <i data-lucide="table" class="w-4 h-4"></i>
           <span>Auditoría en Horas</span>
         </button>
 
-        <button onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap ml-auto bg-blue-900/30 border border-blue-700/50">
-          <span class="tab-num text-[10px] bg-blue-950 text-blue-300 px-1.5 py-0.5 rounded-md font-mono font-bold">07</span>
+        <button onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link ml-auto text-amber-300 hover:text-amber-200">
           <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
-          <span class="text-blue-200 font-bold">Hallazgos & Conclusiones</span>
+          <span>Hallazgos & Conclusiones</span>
         </button>
 
       </nav>
@@ -146,7 +150,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <!-- Contenido Inyectado -->
   <slot />
 
-    <!-- Scripts Asíncronos con Defer (Zero Blocking en Head) -->
+  <!-- Scripts Asíncronos con Defer (Zero Blocking en Head) -->
   <script is:inline src={`${baseUrl}/vendor/jquery.min.js`} defer></script>
   <script is:inline src={`${baseUrl}/vendor/jquery.dataTables.min.js`} defer></script>
   <script is:inline src={`${baseUrl}/vendor/chart.umd.js`} defer></script>
@@ -156,11 +160,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <script is:inline src={`${baseUrl}/js/olap_engine.js`} defer></script>
   <script is:inline src={`${baseUrl}/js/charts.js`} defer></script>
   <script is:inline src={`${baseUrl}/js/app.js`} defer></script>
+
   <script is:inline>
-    // Enrutador Global de 7 Pestañas
+    // Enrutador Global Minimalista
     window.switchTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-link, .tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
 
       const targetContent = document.getElementById(tabId);
       if (targetContent) {
