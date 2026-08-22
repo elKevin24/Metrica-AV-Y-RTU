@@ -154,7 +154,20 @@ function resetFilters() {
     applyFilters();
 }
 
+
 function applyFilters() {
+    if (!window.DATA || !window.DATA.loaded) {
+        if (typeof updateSystemStatus === 'function') {
+            updateSystemStatus("Sincronizando selección con motor...", "loading");
+        }
+        return;
+    }
+
+    const tStart = performance.now();
+    if (typeof updateSystemStatus === 'function') {
+        updateSystemStatus("⚡ Recalculando filtros...", "computing");
+    }
+
     const fGes = document.getElementById('selGestion').value;
     const fAnio = document.getElementById('selAnio').value;
     const fMes = document.getElementById('selMes').value;
