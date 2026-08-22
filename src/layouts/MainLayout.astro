@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  activeTab?: string;
+}
+
+const { title = "SAT Guatemala - Tablero Ejecutivo BI 360°", activeTab = "tab-macro" } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+  <script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script is:inline src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <!-- Header Institucional SAT -->
+  <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <div class="bg-white/10 p-2.5 rounded-xl border border-white/20">
+          <svg class="w-8 h-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-bold tracking-tight">SAT GUATEMALA</h1>
+            <span class="bg-emerald-500/30 text-emerald-200 text-xs px-2.5 py-0.5 rounded-full border border-emerald-400/30 font-medium">Astro Modern Stack</span>
+          </div>
+          <p class="text-xs text-slate-300">Inteligencia de Negocio con Apache ECharts & TanStack (Jornadas Laborales de 8 Horas)</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-right">
+          <span class="text-xs text-slate-400 block">Universo Auditado</span>
+          <span class="text-lg font-black text-emerald-400">1,686,257 Trámites</span>
+        </div>
+        <a href={`${baseUrl}/auditoria`} class="bg-white/10 hover:bg-white/20 text-xs px-3.5 py-2 rounded-lg border border-white/20 flex items-center gap-1.5 transition text-slate-200">
+          Auditoría Granular →
+        </a>
+      </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="max-w-7xl mx-auto px-6 flex overflow-x-auto gap-6 border-t border-white/10 text-sm">
+      <a href={`${baseUrl}/`} class={`py-3 flex items-center gap-2 whitespace-nowrap transition ${activeTab === 'tab-macro' ? 'border-b-2 border-blue-400 text-white font-bold' : 'text-slate-300 hover:text-white'}`}>
+        1. Tablero Ejecutivo 360°
+      </a>
+      <a href={`${baseUrl}/auditoria`} class={`py-3 flex items-center gap-2 whitespace-nowrap transition ${activeTab === 'tab-auditoria' ? 'border-b-2 border-blue-400 text-white font-bold' : 'text-slate-300 hover:text-white'}`}>
+        2. Auditoría DataTables en Horas
+      </a>
+    </nav>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <slot />
+  </main>
+</body>
+</html>
