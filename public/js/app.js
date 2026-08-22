@@ -473,3 +473,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.onDataReady();
     }
 });
+
+// Soporte para Astro View Transitions (re-hidratación instantánea)
+document.addEventListener('astro:page-load', () => {
+    if (window.DATA && window.DATA.loaded && typeof window.onDataReady === 'function') {
+        window.onDataReady();
+    }
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+});
