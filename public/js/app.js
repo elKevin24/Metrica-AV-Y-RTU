@@ -1,18 +1,102 @@
 // Controlador Principal y Renderizador de la Aplicación
 let dtAuditMainInstance = null;
 
-function initSelectors() {
+// Nombres de Meses en Español para Selectores
+const MES_NOMBRES = {
+    '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril',
+    '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto',
+    '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre'
+};
+
+function updateMonthDropdown(selectedAnio = 'TODOS') {
     const selMes = document.getElementById('selMes');
-    DATA.opciones.meses.forEach(m => { selMes.innerHTML += `<option value="${m}">${m}</option>`; });
+    if (!selMes || !DATA.opciones || !DATA.opciones.meses) return;
+    
+    const prevSelected = selMes.value;
+    selMes.innerHTML = '';
+    
+    if (selectedAnio === 'TODOS') {
+        selMes.innerHTML += '<option value="TODOS">Todos los Meses (2025 - 2026)</option>';
+        DATA.opciones.meses.forEach(m => {
+            const parts = m.split('-');
+            const anio = parts[0];
+            const mesNum = parts[1];
+            const nombre = MES_NOMBRES[mesNum] || mesNum;
+            selMes.innerHTML += `<option value="${m}">${nombre} ${anio} (${m})</option>`;
+        });
+    } else {
+        selMes.innerHTML += `<option value="TODOS">Todos los Meses de ${selectedAnio}</option>`;
+        DATA.opciones.meses
+            .filter(m => m.startsWith(selectedAnio))
+            .forEach(m => {
+                const mesNum = m.split('-')[1];
+                const nombre = MES_NOMBRES[mesNum] || mesNum;
+                selMes.innerHTML += `<option value="${m}">${mesNum} - ${nombre} ${selectedAnio}</option>`;
+            });
+    }
+    
+    // Restaurar selección previa si es compatible con el año
+    if (prevSelected !== 'TODOS' && (selectedAnio === 'TODOS' || prevSelected.startsWith(selectedAnio))) {
+        selMes.value = prevSelected;
+    } else {
+        selMes.value = 'TODOS';
+    }
+}
 
+function onAnioChange() {
+    const selAnio = document.getElementById('selAnio');
+    const anio = selAnio ? selAnio.value : 'TODOS';
+    updateMonthDropdown(anio);
+    applyFilters();
+}
+
+function onMesChange() {
+    const selMes = document.getElementById('selMes');
+    const selAnio = document.getElementById('selAnio');
+    if (selMes && selAnio && selMes.value !== 'TODOS') {
+        const mesAnio = selMes.value.split('-')[0];
+        if (selAnio.value !== mesAnio && selAnio.value !== 'TODOS') {
+            selAnio.value = mesAnio;
+            updateMonthDropdown(mesAnio);
+            selMes.value = selMes.value;
+        }
+    }
+    applyFilters();
+}
+
+function initSelectors() {
+    // 1. Coordinar dropdown de meses
+    updateMonthDropdown('TODOS');
+
+    // 2. Regionales únicas y ordenadas
     const selReg = document.getElementById('selRegion');
-    DATA.opciones.regiones.forEach(r => { selReg.innerHTML += `<option value="${r}">${r}</option>`; });
+    if (selReg && DATA.opciones && DATA.opciones.regiones) {
+        selReg.innerHTML = '<option value="TODAS">Todas las Regionales</option>';
+        const uniqueRegiones = Array.from(new Set(DATA.opciones.regiones.map(r => r.trim().toUpperCase()))).sort();
+        uniqueRegiones.forEach(r => {
+            selReg.innerHTML += `<option value="${r}">Regional ${r}</option>`;
+        });
+    }
 
+    // 3. Estados únicos
     const selEst = document.getElementById('selEstado');
-    DATA.opciones.estados.forEach(e => { selEst.innerHTML += `<option value="${e}">${e}</option>`; });
+    if (selEst && DATA.opciones && DATA.opciones.estados) {
+        selEst.innerHTML = '<option value="TODOS">Todos los Estados</option>';
+        const uniqueEstados = Array.from(new Set(DATA.opciones.estados)).sort();
+        uniqueEstados.forEach(e => {
+            selEst.innerHTML += `<option value="${e}">${e}</option>`;
+        });
+    }
 
+    // 4. Macro-Familias
     const selMac = document.getElementById('selMacro');
-    DATA.opciones.macro_familias.forEach(m => { selMac.innerHTML += `<option value="${m}">${m}</option>`; });
+    if (selMac && DATA.opciones && DATA.opciones.macro_familias) {
+        selMac.innerHTML = '<option value="TODAS">Todas las Causas</option>';
+        const uniqueMacros = Array.from(new Set(DATA.opciones.macro_familias)).sort();
+        uniqueMacros.forEach(m => {
+            selMac.innerHTML += `<option value="${m}">${m}</option>`;
+        });
+    }
 }
 
 function switchTab(tabId) {
@@ -579,3 +663,6 @@ function initAuditDirectTable() {
         });
     }
 }
+
+window.onAnioChange = onAnioChange;
+window.onMesChange = onMesChange;
