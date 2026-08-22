@@ -20,10 +20,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <link rel="stylesheet" href={`${baseUrl}/vendor/jquery.dataTables.min.css`} />
 
   <!-- Librerías de Terceros Locales (Zero CORS, 100% Offline) -->
-  <script is:inline src={`${baseUrl}/vendor/jquery.min.js`}></script>
-  <script is:inline src={`${baseUrl}/vendor/jquery.dataTables.min.js`}></script>
-  <script is:inline src={`${baseUrl}/vendor/chart.umd.js`}></script>
-  <script is:inline src={`${baseUrl}/vendor/lucide.min.js`}></script>
+  
+  
+  
+  
 
   <!-- Estilos del Proyecto -->
   <link rel="stylesheet" href={`${baseUrl}/css/styles.css`} />
@@ -146,11 +146,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <!-- Contenido Inyectado -->
   <slot />
 
-  <!-- Scripts Modulares Locales -->
-  <script is:inline src={`${baseUrl}/js/data.js`}></script>
-  <script is:inline src={`${baseUrl}/js/olap_engine.js`}></script>
-  <script is:inline src={`${baseUrl}/js/charts.js`}></script>
-  <script is:inline src={`${baseUrl}/js/app.js`}></script>
+    <!-- Scripts Asíncronos con Defer (Zero Blocking en Head) -->
+  <script is:inline src={`${baseUrl}/vendor/jquery.min.js`} defer></script>
+  <script is:inline src={`${baseUrl}/vendor/jquery.dataTables.min.js`} defer></script>
+  <script is:inline src={`${baseUrl}/vendor/chart.umd.js`} defer></script>
+  <script is:inline src={`${baseUrl}/vendor/lucide.min.js`} defer></script>
+  <script is:inline define:vars={{ baseUrl }}>window.BASE_URL = baseUrl;</script>
+  <script is:inline src={`${baseUrl}/js/data.js`} defer></script>
+  <script is:inline src={`${baseUrl}/js/olap_engine.js`} defer></script>
+  <script is:inline src={`${baseUrl}/js/charts.js`} defer></script>
+  <script is:inline src={`${baseUrl}/js/app.js`} defer></script>
   <script is:inline>
     // Enrutador Global de 7 Pestañas
     window.switchTab = function(tabId) {

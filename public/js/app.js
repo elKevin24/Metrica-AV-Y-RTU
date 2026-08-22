@@ -450,10 +450,20 @@ function filterSubcatTable() {
     rows.forEach(r => { r.style.display = r.innerText.toLowerCase().includes(input) ? '' : 'none'; });
 }
 
-window.onload = function() {
+window.onDataReady = function() {
     initSelectors();
     initCharts();
     initStaticTables();
     applyFilters();
-    lucide.createIcons();
+    if (window.lucide) lucide.createIcons();
 };
+
+window.addEventListener('dataReady', () => {
+    window.onDataReady();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.DATA && window.DATA.loaded) {
+        window.onDataReady();
+    }
+});
