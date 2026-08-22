@@ -3,6 +3,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 import HallazgosPanel from '../components/executive/HallazgosPanel.astro';
 import RegionalTrendsChart from '../components/charts/RegionalTrendsChart';
 import SpeedVsRechazoChart from '../components/charts/SpeedVsRechazoChart';
+import OperatorScatterChart from '../components/charts/OperatorScatterChart';
 ---
 
 <MainLayout title="SAT Guatemala - Tablero Ejecutivo 360°" activeTab="tab-macro">
@@ -46,6 +47,9 @@ import SpeedVsRechazoChart from '../components/charts/SpeedVsRechazoChart';
       <RegionalTrendsChart client:visible />
       <SpeedVsRechazoChart client:visible />
     </div>
+
+    <!-- 4. Matriz de Dispersión de Operadores (4 Cuadrantes) -->
+    <OperatorScatterChart client:visible />
 
     <!-- 4. Lógica de Identificación de Rondas -->
     <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-6 rounded-2xl shadow-sm">

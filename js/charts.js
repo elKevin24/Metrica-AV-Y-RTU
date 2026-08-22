@@ -118,3 +118,86 @@ function initCharts() {
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
     });
 }
+
+
+function renderScatterOperadores(opMap) {
+    const canvas = document.getElementById('chartScatterOperadores');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (window._chartScatterInstance) window._chartScatterInstance.destroy();
+
+    const dataPoints = [];
+    const ops = Object.entries(opMap).filter(([k, v]) => v.total >= 50);
+
+    ops.forEach(([name, data]) => {
+        const rechPct = (data.rech_eventos / data.total) * 100;
+        const avgSec = data.nAte > 0 ? (data.sumAte / data.nAte) : 2.0;
+
+        let bg = 'rgba(16, 185, 129, 0.75)';
+        let border = '#059669';
+        if (rechPct > 40) { bg = 'rgba(59, 130, 246, 0.75)'; border = '#2563EB'; }
+        else if (rechPct < 15 && data.total > 2000) { bg = 'rgba(245, 158, 11, 0.75)'; border = '#D97706'; }
+        else if (avgSec > 60) { bg = 'rgba(239, 68, 68, 0.75)'; border = '#DC2626'; }
+
+        const r = avgSec <= 5 ? 8 : (avgSec <= 30 ? 12 : 18);
+
+        dataPoints.push({
+            x: data.total,
+            y: rechPct,
+            r: r,
+            opName: name,
+            avgSec: avgSec.toFixed(1),
+            total: data.total,
+            rechPct: rechPct.toFixed(1),
+            backgroundColor: bg,
+            borderColor: border
+        });
+    });
+
+    window._chartScatterInstance = new Chart(ctx, {
+        type: 'bubble',
+        data: {
+            datasets: [{
+                label: 'Operadores',
+                data: dataPoints,
+                backgroundColor: dataPoints.map(d => d.backgroundColor),
+                borderColor: dataPoints.map(d => d.borderColor),
+                borderWidth: 1.5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            const raw = ctx.raw;
+                            return [
+                                `👤 Operador: ${raw.opName}`,
+                                `📊 Volumen: ${raw.total.toLocaleString()} trámites`,
+                                `🔴 Tasa Rechazo: ${raw.rechPct}%`,
+                                `⏱️ Tiempo Medio: ${raw.avgSec} seg`
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Volumen de Trámites Procesados', font: { weight: 'bold', size: 11 } },
+                    grid: { color: '#F1F5F9' }
+                },
+                y: {
+                    title: { display: true, text: 'Tasa de Rechazo (%)', font: { weight: 'bold', size: 11 } },
+                    min: 0,
+                    max: 60,
+                    ticks: { callback: v => v + '%' },
+                    grid: { color: '#F1F5F9' }
+                }
+            }
+        }
+    });
+}
