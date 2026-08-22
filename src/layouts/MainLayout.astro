@@ -150,13 +150,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <script is:inline src={`${baseUrl}/js/charts.js`}></script>
   <script is:inline src={`${baseUrl}/js/app.js`}></script>
   <script is:inline>
-    // Enrutador de 6 Pestañas
+    // Enrutador Global de 6 Pestañas
     window.switchTab = function(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-pill').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
 
       const targetContent = document.getElementById(tabId);
-      if (targetContent) targetContent.classList.add('active');
+      if (targetContent) {
+        targetContent.classList.remove('hidden');
+      }
 
       const btnMap = {
         'tab-macro': 'btn-macro',
@@ -174,6 +176,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       }
 
       if (window.lucide) lucide.createIcons();
+
+      if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
+        dtAuditMainInstance.columns.adjust().draw();
+      }
     };
   </script>
 </body>

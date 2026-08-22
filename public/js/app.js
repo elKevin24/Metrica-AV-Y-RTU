@@ -17,20 +17,31 @@ function initSelectors() {
 
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    document.getElementById(tabId).classList.remove('hidden');
+    document.querySelectorAll('.tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
+    
+    const targetContent = document.getElementById(tabId);
+    if (targetContent) {
+        targetContent.classList.remove('hidden');
+    }
     
     const btnMap = {
         'tab-macro': 'btn-macro',
         'tab-operativo': 'btn-operativo',
         'tab-tiempos': 'btn-tiempos',
         'tab-calidad': 'btn-calidad',
-        'tab-gestion': 'btn-gestion'
+        'tab-gestion': 'btn-gestion',
+        'tab-auditoria': 'btn-auditoria'
     };
-    document.getElementById(btnMap[tabId]).classList.add('active');
-    lucide.createIcons();
     
-    if (tabId === 'tab-gestion' && dtAuditMainInstance) {
+    const btnId = btnMap[tabId];
+    if (btnId) {
+        const btn = document.getElementById(btnId);
+        if (btn) btn.classList.add('active');
+    }
+    
+    if (window.lucide) lucide.createIcons();
+    
+    if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
         dtAuditMainInstance.columns.adjust().draw();
     }
 }
