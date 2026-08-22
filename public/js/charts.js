@@ -1,3 +1,15 @@
+
+// Opciones compartidas de tooltips enriquecidos
+const richTooltipOptions = {
+    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+    titleFont: { weight: 'bold', size: 12 },
+    bodyFont: { size: 11 },
+    padding: 10,
+    cornerRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)'
+};
+
 // Administrador de Gráficas Chart.js
 let chartMacroInst = null;
 let chartOpsInst = null;

@@ -101,6 +101,37 @@ function applyFilters() {
         </tr>`;
     });
 
+    
+    // Actualizar Banner Dinámico de Tab 2 según los filtros seleccionados
+    const elPaso1 = document.getElementById('kpiPaso1Cola');
+    if (elPaso1) {
+        const valColaHab = res.nBuzonHab > 0 ? (res.sumBuzonHab / res.nBuzonHab) : 0;
+        const valColaCal = res.nBuzonCal > 0 ? (res.sumBuzonCal / res.nBuzonCal) : 0;
+        elPaso1.innerHTML = `${formatAdaptiveTime(valColaHab)} <span class="text-xs font-normal text-amber-200">hábiles</span>`;
+        document.getElementById('lblPaso1ColaCal').innerText = `Calendario: ${formatAdaptiveTime(valColaCal)}`;
+    }
+
+    const elPaso2 = document.getElementById('kpiPaso2Bandeja');
+    if (elPaso2) {
+        const valBolson = res.nBolson > 0 ? (res.sumBolson / res.nBolson) : 0;
+        elPaso2.innerHTML = `${formatAdaptiveTime(valBolson)}`;
+        document.getElementById('lblPaso2BandejaMed').innerText = `Muestras: ${res.nBolson.toLocaleString()} casos`;
+    }
+
+    const elPaso3 = document.getElementById('kpiPaso3Revision');
+    if (elPaso3) {
+        const valAteFin = res.nAtencionFinal > 0 ? (res.sumAtencionFinal / res.nAtencionFinal) : 0;
+        const valAteRech = res.nAtencionRechazo > 0 ? (res.sumAtencionRechazo / res.nAtencionRechazo) : 0;
+        elPaso3.innerHTML = `${formatAdaptiveTime(valAteFin)}`;
+        document.getElementById('lblPaso3RevisionRech').innerText = `Rechazo: ${formatAdaptiveTime(valAteRech)}`;
+    }
+
+    const elPaso4 = document.getElementById('kpiPaso4Ciclo');
+    if (elPaso4) {
+        elPaso4.innerHTML = `${formatAdaptiveTime(secCicloHab)} <span class="text-xs font-normal text-purple-200">hábiles</span>`;
+        document.getElementById('lblPaso4CicloCal').innerText = `Calendario: ${formatAdaptiveTime(secCicloCal)}`;
+    }
+
     // 2. Pestaña 2
     const activeMonths = (DATA.meses_lista || (DATA.opciones && DATA.opciones.meses) || []).filter(m => res.monthMap[m]);
     const mAtenTrend = activeMonths.map(m => res.monthMap[m].nAten > 0 ? parseFloat((res.monthMap[m].sumAten / res.monthMap[m].nAten / 3600.0).toFixed(2)) : 0);

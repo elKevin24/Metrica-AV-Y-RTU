@@ -140,8 +140,8 @@ import MainLayout from '../layouts/MainLayout.astro';
                                 <span class="font-bold text-amber-300 text-xs">1. Espera en Cola (Buzón)</span>
                                 <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FA - FC</span>
                             </div>
-                            <h4 class="text-2xl font-black text-white mt-1">3.85 h <span class="text-xs font-normal text-amber-200">hábiles</span></h4>
-                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 27.8 horas</span>
+                            <h4 id="kpiPaso1Cola" class="text-2xl font-black text-white mt-1">3.85 h <span class="text-xs font-normal text-amber-200">hábiles</span></h4>
+                            <span id="lblPaso1ColaCal" class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 27.8 horas</span>
                             <p class="text-slate-300 leading-relaxed text-[11px]">
                                 <strong>¿Qué es?</strong> Tiempo que el trámite permanece en espera en el servidor central desde que el ciudadano lo confirma hasta que el sistema lo distribuye a la regional.
                             </p>
@@ -158,8 +158,8 @@ import MainLayout from '../layouts/MainLayout.astro';
                                 <span class="font-bold text-cyan-300 text-xs">2. En Bandeja (Bolsón)</span>
                                 <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FR - FA</span>
                             </div>
-                            <h4 class="text-2xl font-black text-white mt-1">0.03 h <span class="text-xs font-normal text-cyan-200">(1.8 min)</span></h4>
-                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Mediana: 0.02 h (1.2 min)</span>
+                            <h4 id="kpiPaso2Bandeja" class="text-2xl font-black text-white mt-1">0.03 h <span class="text-xs font-normal text-cyan-200">(1.8 min)</span></h4>
+                            <span id="lblPaso2BandejaMed" class="text-[11px] text-slate-400 block mb-2 font-mono">Mediana: 0.02 h (1.2 min)</span>
                             <p class="text-slate-300 leading-relaxed text-[11px]">
                                 <strong>¿Qué es?</strong> Tiempo que transcurre desde que el operador recibe la solicitud en su lista de trabajo hasta que hace clic para abrirla en pantalla.
                             </p>
@@ -176,8 +176,8 @@ import MainLayout from '../layouts/MainLayout.astro';
                                 <span class="font-bold text-emerald-300 text-xs">3. Revisión en Pantalla</span>
                                 <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FF / FRech - FR</span>
                             </div>
-                            <h4 class="text-2xl font-black text-white mt-1">0.0005 h <span class="text-xs font-normal text-emerald-200">(1.8 seg)</span></h4>
-                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Rechazo: 0.0000 h (0.0s)</span>
+                            <h4 id="kpiPaso3Revision" class="text-2xl font-black text-white mt-1">0.0005 h <span class="text-xs font-normal text-emerald-200">(1.8 seg)</span></h4>
+                            <span id="lblPaso3RevisionRech" class="text-[11px] text-slate-400 block mb-2 font-mono">Rechazo: 0.0000 h (0.0s)</span>
                             <p class="text-slate-300 leading-relaxed text-[11px]">
                                 <strong>¿Qué es?</strong> Duración exacta en que el revisor humano audita el DPI y video en pantalla hasta emitir la aprobación o el dictamen de rechazo.
                             </p>
@@ -194,8 +194,8 @@ import MainLayout from '../layouts/MainLayout.astro';
                                 <span class="font-bold text-purple-300 text-xs">4. Ciclo Total de Respuesta</span>
                                 <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FF - FC</span>
                             </div>
-                            <h4 class="text-2xl font-black text-white mt-1">4.12 h <span class="text-xs font-normal text-purple-200">hábiles</span></h4>
-                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 28.5 horas</span>
+                            <h4 id="kpiPaso4Ciclo" class="text-2xl font-black text-white mt-1">4.12 h <span class="text-xs font-normal text-purple-200">hábiles</span></h4>
+                            <span id="lblPaso4CicloCal" class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 28.5 horas</span>
                             <p class="text-slate-300 leading-relaxed text-[11px]">
                                 <strong>¿Qué es?</strong> Tiempo total transcurrido de punta a punta desde la creación original del trámite hasta su resolución final definitiva.
                             </p>
