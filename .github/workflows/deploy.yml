@@ -1,4 +1,4 @@
-name: Deploy Astro to GitHub Pages
+name: Deploy Astro & Full Dashboard to GitHub Pages
 
 on:
   push:
@@ -33,9 +33,10 @@ jobs:
       - name: Build Astro project
         run: npm run build
 
-      - name: Copy standalone HTML and static assets to dist
+      - name: Sync full 5-tab dashboard and assets into dist
         run: |
           cp -r js css Data Catalogo_Motivos.xlsx Auditoria_Detalle_Tiempos.html Dashboard_BI_Metrica_AV_RTU.html dist/ || true
+          cp index.html dist/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
