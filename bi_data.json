@@ -1,0 +1,34 @@
+{
+  "kpis": {
+    "total_universo": "1,686,257",
+    "tasa_exito": "78.52%",
+    "total_exitosas": "1,324,072",
+    "tasa_abandono": "13.13%",
+    "total_abandono": "221,351",
+    "tasa_cancelacion": "8.30%",
+    "total_canceladas": "139,904",
+    "tasa_rechazo_humano": "14.23%",
+    "total_rechazos": "81,611",
+    "mediana_cola_humana": "22.0 hrs",
+    "total_nits": "1,005,276"
+  },
+  "gestiones": {
+    "REINICIO DE CONTRASEÑA": 1112644,
+    "CAMBIO DE CORREO ELECTRÓNICO": 311838,
+    "ACTIVACIÓN": 261775
+  },
+  "estados": {
+    "FINALIZADA": 974443,
+    "APROBADA": 349629,
+    "NO CONFIRMADA": 221351,
+    "CANCELADA": 85780,
+    "CANCELADA POR EL CONTRIBUYENTE": 34653,
+    "CANCELADA POR REQUERIMIENTO": 8638,
+    "CANCELADA POR CANTIDAD DE RECHAZOS": 7399,
+    "CANCELADA POR ADMINISTRADOR": 3279
+  },
+  "regiones": [
+    {
+      "region": "CENTRAL",
+      "total": 227387,
+      "aprobadas": 

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría de Detalle: Tiempos en Horas - SAT</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- DataTables CSS & jQuery CDN -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .dataTables_wrapper { font-size: 12px; color: #334155; padding: 8px 0; }
+        .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { margin-bottom: 14px; font-weight: 600; }
+        .dataTables_wrapper .dataTables_filter input { border: 1px solid #CBD5E1; border-radius: 8px; padding: 5px 10px; margin-left: 8px; background: #F8FAFC; outline: none; }
+        .dataTables_wrapper .dataTables_filter input:focus { border-color: #3B82F6; background: #FFFFFF; }
+        .dataTables_wrapper .dataTables_length select { border: 1px solid #CBD5E1; border-radius: 8px; padding: 4px 8px; background: #F8FAFC; outline: none; }
+        table.dataTable thead th { background-color: #0F172A !important; color: #F8FAFC !important; font-weight: 700 !important; border-bottom: 2px solid #334155 !important; padding: 10px 14px !important; white-space: nowrap; }
+        table.dataTable thead th.sorting:after, table.dataTable thead th.sorting_asc:after, table.dataTable thead th.sorting_desc:after { opacity: 0.9 !important; }
+        table.dataTable tbody tr:hover { background-color: #F1F5F9 !important; }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current { background: #2563EB !important; color: white !important; border-color: #2563EB !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- Header Especializado de Auditoría -->
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3.5">
+                <div class="p-2.5 bg-blue-600/30 border border-blue-400/30 rounded-xl">
+                    <i data-lucide="clock" class="w-7 h-7 text-blue-300"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg font-bold">SAT GUATEMALA - Auditoría de Tiempos en Horas</h1>
+                        <span class="bg-blue-500/30 text-blue-200 text-xs px-2.5 py-0.5 rounded-full border border-blue-400/30 font-medium">Estandarizado en Horas (h)</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Todos los tiempos transaccionales expresados en Horas y fracciones decimales</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="bg-white/10 hover:bg-white/20 text-xs px-3.5 py-2 rounded-lg border border-white/20 flex items-center gap-1.5 transition text-slate-200">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Ir al Tablero Principal (5 Pestañas)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-7xl mx-auto px-6 py-8 space-y-6">
+
+        <!-- Explicación de Fórmulas Transaccionales en Horas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-start gap-3">
+                <div class="p-2 bg-emerald-100 text-emerald-800 rounded-xl mt-0.5"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                <div class="text-xs text-emerald-950">
+                    <span class="font-bold text-emerald-900 text-sm block mb-0.5">🟢 Tiempo en Atender / Aprobación (FF - FR) en Horas</span>
+                    <p>Horas activas en pantalla desde apertura (<code class="font-mono bg-emerald-100 px-1 rounded">FR</code>) hasta resolución final (<code class="font-mono bg-emerald-100 px-1 rounded">FF</code>). Mediana: <strong>0.0005 h (1.8 seg)</strong>.</p>
+                </div>
+            </div>
+
+            <div class="bg-rose-50 border border-rose-200 p-4 rounded-2xl flex items-start gap-3">
+                <div class="p-2 bg-rose-100 text-rose-800 rounded-xl mt-0.5"><i data-lucide="x-circle" class="w-5 h-5"></i></div>
+                <div class="text-xs text-rose-950">
+                    <span class="font-bold text-rose-900 text-sm block mb-0.5">🔴 Tiempo en Rechazar (FRech - FR) en Horas</span>
+                    <p>Horas desde apertura (<code class="font-mono bg-rose-100 px-1 rounded">FR</code>) hasta dictamen de rechazo (<code class="font-mono bg-rose-100 px-1 rounded">FRech</code>). Mediana: <strong>0.0000 h (0.0 seg)</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta Principal con DataTables -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-4">
+            
+            <!-- Filtros Superiores de Rondas y Velocidad -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <i data-lucide="filter" class="w-4 h-4 text-blue-600"></i> Filtros de Segmentación:
+                </div>
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <select id="selRondaDT" onchange="initDataTablesAudit()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 focus:outline-blue-500 font-medium text-slate-700">
+                        <option value="TODOS">Todas las Rondas de Revisión</option>
+                        <option value="1RA_DIRECTA">🟢 1ra Revisión: Aprobación Directa</option>
+                        <option value="1RA_RECHAZO">🔴 1ra Revisión: Dictamen de Rechazo</option>
+                        <option value="2DA_SUBSANADA">🔵 2da Revisión: Subsanación Aprobada</option>
+                        <option value="3RA_LIMITE">⚠️ 3ra+ Revisión: Límite Agotado</option>
+                    </select>
+
+                    <select id="selVelDT" onchange="initDataTablesAudit()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 focus:outline-blue-500 font-medium text-slate-700">
+                        <option value="TODOS">Todos los Rangos</option>
+                        <option value="RECHAZO_RAPIDO">🚨 Rechazo Inmediato (≤ 0.001 h / 2s)</option>
+                        <option value="APROBACION_RAPIDA">⚡ Aprobación Inmediata (≤ 0.001 h / 2s)</option>
+                        <option value="LENTO">⏱️ Revisión Detallada (> 0.016 h / 1 min)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabla DataTables Estandarizada en Horas -->
+            <div class="overflow-x-auto">
+                <table id="tablaAuditoriaDT" class="display cell-border compact stripe hover w-full text-xs">
+                    <thead>
+                        <tr>
+                            <th>NumeroGestion</th>
+                            <th>NIT</th>
+                            <th>Operador</th>
+                            <th>Gestión</th>
+                            <th>Ronda</th>
+                            <th>FechaRevision (FR)</th>
+                            <th>FechaRechazo (FRech)</th>
+                            <th>FechaFinaliza (FF)</th>
+                            <th class="text-right">En Rechazar (Horas)</th>
+                            <th class="text-right">En Atender (Horas)</th>
+                            <th>Motivo Original Registrado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyDT"></tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Scripts Modulares -->
+    <script src="js/data.js"></script>
+    <script src="js/olap_engine.js"></script>
+    <script>
+        let dtInstance = null;
+
+        function formatHoursBadge(totalSeconds, type) {
+            if (totalSeconds == null || isNaN(totalSeconds)) return '<span class="text-slate-300">-</span>';
+            const hrs = totalSeconds / 3600.0;
+            const hrsStr = hrs >= 1.0 ? hrs.toFixed(2) + ' h' : hrs.toFixed(4) + ' h';
+            const secStr = totalSeconds < 60 ? `${totalSeconds.toFixed(1)}s` : `${(totalSeconds/60).toFixed(1)}m`;
+
+            if (type === 'rechazo') {
+                return `<span class="bg-rose-100 text-rose-900 font-bold px-2 py-0.5 rounded text-[11px] border border-rose-200 whitespace-nowrap" title="${totalSeconds} segundos">${hrsStr} <span class="text-rose-600 font-normal">(${secStr})</span></span>`;
+            } else {
+                return `<span class="bg-emerald-100 text-emerald-900 font-bold px-2 py-0.5 rounded text-[11px] border border-emerald-200 whitespace-nowrap" title="${totalSeconds} segundos">${hrsStr} <span class="text-emerald-700 font-normal">(${secStr})</span></span>`;
+            }
+        }
+
+        function initDataTablesAudit() {
+            const fRonda = document.getElementById('selRondaDT').value;
+            const fVel = document.getElementById('selVelDT').value;
+
+            if ($.fn.DataTable.isDataTable('#tablaAuditoriaDT')) {
+                $('#tablaAuditoriaDT').DataTable().destroy();
+            }
+
+            const tbody = document.getElementById('tbodyDT');
+            tbody.innerHTML = '';
+
+            DATA.muestra_expedientes.forEach(e => {
+                const secFinal = e.Atencion_Final_Sec;
+                const secRech = e.Atencion_Rechazo_Sec;
+                const ronda = e.Ronda_Revision;
+
+                if (fRonda !== 'TODOS' && ronda !== fRonda) return;
+                if (fVel === 'RECHAZO_RAPIDO' && (secRech == null || secRech > 2.0)) return;
+                if (fVel === 'APROBACION_RAPIDA' && (secFinal == null || secFinal > 2.0 || e.TuvoRechazo)) return;
+                if (fVel === 'LENTO' && ((secFinal || 0) <= 60.0 && (secRech || 0) <= 60.0)) return;
+
+                let badgeRonda = '';
+                if (ronda === '1RA_DIRECTA') badgeRonda = '<span class="badge-round-directa px-2 py-0.5 rounded text-[11px] whitespace-nowrap">🟢 1ra Rev (Directa)</span>';
+                else if (ronda === '1RA_RECHAZO') badgeRonda = '<span class="badge-round-rechazo px-2 py-0.5 rounded text-[11px] whitespace-nowrap">🔴 1ra Rev (Rechazo)</span>';
+                else if (ronda === '2DA_SUBSANADA') badgeRonda = '<span class="badge-round-subsanada px-2 py-0.5 rounded text-[11px] whitespace-nowrap">🔵 2da Rev (Subsanada)</span>';
+                else badgeRonda = '<span class="badge-round-limite px-2 py-0.5 rounded text-[11px] whitespace-nowrap">⚠️ 3ra+ (Límite)</span>';
+
+                let orderRech = (secRech != null && !isNaN(secRech)) ? (secRech / 3600.0) : 999999;
+                let badgeRech = formatHoursBadge(secRech, 'rechazo');
+
+                let orderFinal = (secFinal != null && !isNaN(secFinal)) ? (secFinal / 3600.0) : 999999;
+                let badgeFinal = formatHoursBadge(secFinal, 'atencion');
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="font-mono font-bold text-blue-700">${e.NumeroGestion}</td>
+                        <td class="font-mono text-slate-600">${e.Nit}</td>
+                        <td class="font-bold text-slate-900">${e.Operador}</td>
+                        <td class="text-slate-700">${e.Gestion}</td>
+                        <td class="text-center">${badgeRonda}</td>
+                        <td class="font-mono text-slate-500">${e.FR}</td>
+                        <td class="font-mono text-rose-600 font-medium">${e.FRech}</td>
+                        <td class="font-mono text-emerald-700 font-medium">${e.FF}</td>
+                        <td class="text-right font-mono" data-order="${orderRech}">${badgeRech}</td>
+                        <td class="text-right font-mono" data-order="${orderFinal}">${badgeFinal}</td>
+                        <td class="text-slate-600 max-w-xs truncate" title="${e.MotivoRechazo}">${e.MotivoRechazo || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            dtInstance = $('#tablaAuditoriaDT').DataTable({
+                pageLength: 25,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                order: [[8, 'asc']], // Orden inicial por Rechazo en Horas de Menor a Mayor
+                columnDefs: [
+                    { targets: [8, 9], type: 'num' }
+                ],
+                language: {
+                    lengthMenu: "Mostrar _MENU_ expedientes por página",
+                    zeroRecords: "No se encontraron expedientes coincidentes",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ expedientes",
+                    infoEmpty: "Mostrando 0 a 0 de 0 expedientes",
+                    infoFiltered: "(filtrado de _MAX_ expedientes totales)",
+                    search: "Buscar en tabla:",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente →",
+                        previous: "← Anterior"
+                    }
+                }
+            });
+
+            lucide.createIcons();
+        }
+
+        $(document).ready(function() {
+            initDataTablesAudit();
+        });
+    </script>
+</body>
+</html>
