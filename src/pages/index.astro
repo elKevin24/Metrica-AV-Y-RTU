@@ -59,128 +59,6 @@ import MainLayout from '../layouts/MainLayout.astro';
         <!-- ============================================================= -->
         <section id="tab-macro" class="tab-content block space-y-8">
             
-            <!-- PANEL PRINCIPAL DE HALLAZGOS EJECUTIVOS -->
-            <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-7 rounded-3xl shadow-xl border border-blue-900/40">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-5 border-b border-white/10">
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/30">
-                            <i data-lucide="sparkles" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-black tracking-tight text-white">Principales Hallazgos y Conclusiones del Negocio</h3>
-                            <p class="text-xs text-blue-200">Evidencia cuantitativa y estadística de 1,686,257 trámites auditados</p>
-                        </div>
-                    </div>
-                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
-                        Auditoría 100% Fundamentada
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6 text-xs">
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
-                                    <i data-lucide="zap" class="w-4 h-4"></i> 1. Atención en Segundos
-                                </span>
-                                <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono">95.86% Casos</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El <strong>95.86%</strong> de los trámites humanos se aprueban o rechazan en <strong>≤ 5 segundos</strong> (mediana de 1.8s a 2.0s). Los operadores utilizan interfaces ágiles y atajos de validación biométrica directa.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
-                            📌 La revisión humana es ultra-rápida; el tiempo no es el cuello de botella.
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
-                                    <i data-lucide="alert-triangle" class="w-4 h-4"></i> 2. Tiempo vs % de Rechazo
-                                </span>
-                                <span class="bg-rose-400/20 text-rose-200 px-2 py-0.5 rounded text-[10px] font-mono">r = +0.698</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                A mayor tiempo en pantalla, la tasa de rechazo salta de <strong>25.0% (≤2s)</strong> a <strong>85.9% (1-5 min)</strong> y <strong>98.6% (>5 min)</strong>. El tiempo extenso delata auditoría activa de casos fraudulentos o con errores.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
-                            📌 El tiempo de revisión es el indicador #1 de expediente defectuoso.
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
-                                    <i data-lucide="trending-up" class="w-4 h-4"></i> 3. Curva de Especialización
-                                </span>
-                                <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono">1.8s vs 144s</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                Operadores titulares (>8k trámites) estandarizan su decisión en <strong>1.8s</strong> sin alterar la calidad del filtro (~27.5% rechazo). Personal de apoyo (&lt;1k) promedia <strong>144.0s (2.4 min)</strong>.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
-                            📌 La experiencia del operador optimiza la velocidad sin reducir el rigor.
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-blue-300 text-xs flex items-center gap-1.5">
-                                    <i data-lucide="user-minus" class="w-4 h-4"></i> 4. Fricción y Abandono (42.6%)
-                                </span>
-                                <span class="bg-blue-400/20 text-blue-200 px-2 py-0.5 rounded text-[10px] font-mono">42,126 Fugas</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                De las solicitudes rechazadas, el <strong>48.7% subsana y aprueba en 2da revisión</strong>, pero un <strong>42.6% abandona el proceso</strong> por no entender las correcciones exigidas de DPI/Video.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
-                            📌 Mejorar la claridad del mensaje de rechazo recuperaría miles de trámites.
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-purple-300 text-xs flex items-center gap-1.5">
-                                    <i data-lucide="git-merge" class="w-4 h-4"></i> 5. Multicausalidad (60.30%)
-                                </span>
-                                <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono">6 de cada 10</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El <strong>60.30%</strong> de los rechazos acumula 2 o más faltas simultáneas. El 80.8% se concentra en la calidad del video (audio inaudible, fecha omitida) y la legibilidad del DPI (reflejos, cortes).
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
-                            📌 El problema principal es de captura en el móvil del contribuyente.
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-cyan-300 text-xs flex items-center gap-1.5">
-                                    <i data-lucide="clock" class="w-4 h-4"></i> 6. SLA y Cola de Servidor
-                                </span>
-                                <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono">75.8% ≤ 8h</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El <strong>75.8%</strong> de la demanda humana se resuelve en <strong>≤ 1 jornada hábil (8h)</strong> y 92.4% en ≤ 3 días. La verdadera espera del ciudadano ocurre en la cola del buzón antes de asignarse.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
-                            📌 La capacidad operativa de la SAT responde en tiempos competitivos.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- KPIs Ejecutivos -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
@@ -235,6 +113,101 @@ import MainLayout from '../layouts/MainLayout.astro';
         <!-- PESTAÑA 2: RENDIMIENTO, TENDENCIAS & REGIONALES (LÍNEAS X REG)-->
         <!-- ============================================================= -->
         <section id="tab-operativo" class="tab-content hidden space-y-8">
+
+            <!-- ========================================================================= -->
+            <!-- BANNER DE PROMEDIOS GENERALES INSTITUCIONALES Y GLOSARIO DE ETAPAS        -->
+            <!-- ========================================================================= -->
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-3xl shadow-md border border-slate-800 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-white/10">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 bg-blue-600/30 text-blue-400 rounded-lg border border-blue-400/20"><i data-lucide="gauge" class="w-4 h-4"></i></span>
+                            <h3 class="text-base font-bold text-white tracking-tight">Promedios Generales Institucionales & Glosario de Etapas</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 mt-0.5">Valores normativos y tiempo promedio que toma cada etapa del ciclo de vida del expediente</p>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
+                        Criterio Oficial: Horas Hábiles (8h/día)
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    
+                    <!-- Paso 1: Cola -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-amber-300 text-xs">1. Espera en Cola (Buzón)</span>
+                                <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FA - FC</span>
+                            </div>
+                            <h4 class="text-2xl font-black text-white mt-1">3.85 h <span class="text-xs font-normal text-amber-200">hábiles</span></h4>
+                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 27.8 horas</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Tiempo que el trámite permanece en espera en el servidor central desde que el ciudadano lo confirma hasta que el sistema lo distribuye a la regional.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-amber-300 font-semibold">
+                            ⚠️ Representa el 93% del tiempo total de espera.
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Bandeja -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-cyan-300 text-xs">2. En Bandeja (Bolsón)</span>
+                                <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FR - FA</span>
+                            </div>
+                            <h4 class="text-2xl font-black text-white mt-1">0.03 h <span class="text-xs font-normal text-cyan-200">(1.8 min)</span></h4>
+                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Mediana: 0.02 h (1.2 min)</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Tiempo que transcurre desde que el operador recibe la solicitud en su lista de trabajo hasta que hace clic para abrirla en pantalla.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-cyan-300 font-semibold">
+                            ⚡ Atención casi inmediata al caer en bandeja.
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Revisión Activa -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-emerald-300 text-xs">3. Revisión en Pantalla</span>
+                                <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FF / FRech - FR</span>
+                            </div>
+                            <h4 class="text-2xl font-black text-white mt-1">0.0005 h <span class="text-xs font-normal text-emerald-200">(1.8 seg)</span></h4>
+                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Rechazo: 0.0000 h (0.0s)</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Duración exacta en que el revisor humano audita el DPI y video en pantalla hasta emitir la aprobación o el dictamen de rechazo.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-emerald-300 font-semibold">
+                            🎯 95.86% de resoluciones toman ≤ 5 segundos.
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Ciclo Total -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-purple-300 text-xs">4. Ciclo Total de Respuesta</span>
+                                <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FF - FC</span>
+                            </div>
+                            <h4 class="text-2xl font-black text-white mt-1">4.12 h <span class="text-xs font-normal text-purple-200">hábiles</span></h4>
+                            <span class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 28.5 horas</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Tiempo total transcurrido de punta a punta desde la creación original del trámite hasta su resolución final definitiva.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-purple-300 font-semibold">
+                            🏆 75.8% se resuelve en ≤ 1 jornada hábil (8h).
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Gráfica 1: Espera en Cola por Regional -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
@@ -684,6 +657,129 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <div class="w-full rounded-2xl overflow-hidden border border-slate-200" style="height: 800px;">
                     <iframe src="Auditoria_Detalle_Tiempos.html" class="w-full h-full border-0"></iframe>
+                </div>
+            </div>
+        </div>
+
+    
+        <!-- ========================================================================= -->
+        <!-- PESTAÑA 7: PRINCIPALES HALLAZGOS Y CONCLUSIONES EJECUTIVAS                -->
+        <!-- ========================================================================= -->
+        <div id="tab-hallazgos" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-7 rounded-3xl shadow-xl border border-blue-900/40">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-5 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/30">
+                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black tracking-tight text-white">Principales Hallazgos y Conclusiones del Negocio</h3>
+                            <p class="text-xs text-blue-200">Evidencia cuantitativa y estadística de 1,686,257 trámites auditados</p>
+                        </div>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
+                        Auditoría 100% Fundamentada
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6 text-xs">
+                    
+                    <!-- 1 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-amber-300 text-xs">⚡ 1. Atención en Segundos</span>
+                                <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono">95.86% Casos</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                El <strong>95.86%</strong> de trámites humanos se aprueban o rechazan en <strong>≤ 5 segundos</strong> (mediana de 1.8s a 2.0s). Los operadores utilizan interfaces ágiles y decisiones biométricas directas.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
+                            📌 La revisión humana es ultra-rápida; el tiempo no es el cuello de botella.
+                        </div>
+                    </div>
+
+                    <!-- 2 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-rose-300 text-xs">🚨 2. Tiempo vs % de Rechazo</span>
+                                <span class="bg-rose-400/20 text-rose-200 px-2 py-0.5 rounded text-[10px] font-mono">r = +0.698</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                A mayor tiempo en pantalla, la tasa de rechazo salta de <strong>25.0% (≤2s)</strong> a <strong>85.9% (1-5 min)</strong> y <strong>98.6% (>5 min)</strong> al auditar casos con anomalías o sospechas.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
+                            📌 El tiempo de revisión es el indicador #1 de expediente defectuoso.
+                        </div>
+                    </div>
+
+                    <!-- 3 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-emerald-300 text-xs">📈 3. Curva de Especialización</span>
+                                <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono">1.8s vs 144s</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                Operadores titulares (>8k trámites) estandarizan su decisión en <strong>1.8s</strong> sin alterar la calidad del filtro (~27.5% rechazo). Personal de apoyo (&lt;1k) promedia <strong>144.0s (2.4 min)</strong>.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
+                            📌 La experiencia del operador optimiza la velocidad sin reducir el rigor.
+                        </div>
+                    </div>
+
+                    <!-- 4 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-blue-300 text-xs">🚪 4. Fricción y Abandono (42.6%)</span>
+                                <span class="bg-blue-400/20 text-blue-200 px-2 py-0.5 rounded text-[10px] font-mono">42,126 Fugas</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                De los rechazados, el <strong>48.7% subsana y aprueba en 2da revisión</strong>, pero un <strong>42.6% abandona el proceso</strong> por no entender las correcciones exigidas de DPI/Video.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
+                            📌 Mejorar la claridad del mensaje de rechazo recuperaría miles de trámites.
+                        </div>
+                    </div>
+
+                    <!-- 5 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-purple-300 text-xs">🧬 5. Multicausalidad (60.30%)</span>
+                                <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono">6 de cada 10</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                El <strong>60.30%</strong> de los rechazos acumula 2 o más faltas simultáneas. El 80.8% se concentra en video (audio inaudible, sin fecha) y DPI (reflejos, cortes).
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
+                            📌 El problema principal es de captura en el móvil del contribuyente.
+                        </div>
+                    </div>
+
+                    <!-- 6 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-cyan-300 text-xs">⏱️ 6. SLA y Cola de Servidor</span>
+                                <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono">75.8% ≤ 8h</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                El <strong>75.8%</strong> de la demanda humana se resuelve en <strong>≤ 1 jornada hábil (8h)</strong> y 92.4% en ≤ 3 días. La verdadera espera del ciudadano ocurre en la cola del buzón antes de asignarse.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-slate-300 font-medium">
+                            📌 La capacidad operativa de la SAT responde en tiempos competitivos.
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

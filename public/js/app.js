@@ -30,7 +30,8 @@ function switchTab(tabId) {
         'tab-tiempos': 'btn-tiempos',
         'tab-calidad': 'btn-calidad',
         'tab-gestion': 'btn-gestion',
-        'tab-auditoria': 'btn-auditoria'
+        'tab-auditoria': 'btn-auditoria',
+        'tab-hallazgos': 'btn-hallazgos'
     };
     
     const btnId = btnMap[tabId];

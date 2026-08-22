@@ -16,22 +16,18 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- DataTables CSS & jQuery CDN -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <!-- DataTables CSS Local -->
+  <link rel="stylesheet" href={`${baseUrl}/vendor/jquery.dataTables.min.css`} />
+
+  <!-- Librerías de Terceros Locales (Zero CORS, 100% Offline) -->
+  <script is:inline src={`${baseUrl}/vendor/jquery.min.js`}></script>
+  <script is:inline src={`${baseUrl}/vendor/jquery.dataTables.min.js`}></script>
+  <script is:inline src={`${baseUrl}/vendor/chart.umd.js`}></script>
+  <script is:inline src={`${baseUrl}/vendor/lucide.min.js`}></script>
 
   <!-- Estilos del Proyecto -->
   <link rel="stylesheet" href={`${baseUrl}/css/styles.css`} />
   <style>
-    /* Navegación Segmentada Premium */
     .tab-pill {
       position: relative;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -79,10 +75,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <div class="flex items-center gap-2">
             <h1 class="text-lg font-black tracking-tight text-white">SAT GUATEMALA</h1>
             <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold tracking-wide">
-              Astro 5.x
+              Métrica 360°
             </span>
           </div>
-          <p class="text-[11px] text-slate-300">Inteligencia de Negocio 360° • Jornada Hábil de 8 Horas • 1,686,257 Trámites</p>
+          <p class="text-[11px] text-slate-300">Inteligencia de Negocio con Jornada Hábil de 8 Horas • 1,686,257 Trámites</p>
         </div>
       </div>
       
@@ -97,7 +93,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       </div>
     </div>
 
-    <!-- BARRA DE NAVEGACIÓN DE 6 PESTAÑAS CON IDENTIFICADORES CLAROS -->
+    <!-- BARRA DE NAVEGACIÓN SEGMENTADA DE 7 PESTAÑAS -->
     <div class="max-w-7xl mx-auto px-6 pb-3 pt-1">
       <nav class="bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-inner flex overflow-x-auto gap-1 text-xs font-semibold">
         
@@ -131,10 +127,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <span>Operadores & Dispersión</span>
         </button>
 
-        <button onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-pill flex items-center gap-2 px-3.5 py-2 rounded-xl text-slate-300 whitespace-nowrap ml-auto bg-slate-800/80 border border-slate-700/80">
+        <button onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap bg-slate-800/60 border border-slate-700/60">
           <span class="tab-num text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.5 rounded-md font-mono font-bold">06</span>
           <i data-lucide="table" class="w-4 h-4 text-emerald-400"></i>
-          <span class="text-emerald-300 font-bold">Auditoría en Horas (DataTables)</span>
+          <span>Auditoría en Horas</span>
+        </button>
+
+        <button onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-pill flex items-center gap-2 px-3 py-2 rounded-xl text-slate-300 whitespace-nowrap ml-auto bg-blue-900/30 border border-blue-700/50">
+          <span class="tab-num text-[10px] bg-blue-950 text-blue-300 px-1.5 py-0.5 rounded-md font-mono font-bold">07</span>
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+          <span class="text-blue-200 font-bold">Hallazgos & Conclusiones</span>
         </button>
 
       </nav>
@@ -144,13 +146,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <!-- Contenido Inyectado -->
   <slot />
 
-  <!-- Scripts Modulares -->
+  <!-- Scripts Modulares Locales -->
   <script is:inline src={`${baseUrl}/js/data.js`}></script>
   <script is:inline src={`${baseUrl}/js/olap_engine.js`}></script>
   <script is:inline src={`${baseUrl}/js/charts.js`}></script>
   <script is:inline src={`${baseUrl}/js/app.js`}></script>
   <script is:inline>
-    // Enrutador Global de 6 Pestañas
+    // Enrutador Global de 7 Pestañas
     window.switchTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
@@ -166,7 +168,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         'tab-tiempos': 'btn-tiempos',
         'tab-calidad': 'btn-calidad',
         'tab-gestion': 'btn-gestion',
-        'tab-auditoria': 'btn-auditoria'
+        'tab-auditoria': 'btn-auditoria',
+        'tab-hallazgos': 'btn-hallazgos'
       };
 
       const btnId = btnMap[tabId];
