@@ -50,6 +50,13 @@ function switchTab(tabId) {
         if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
             dtAuditMainInstance.columns.adjust().draw();
         }
+        if (tabId === 'tab-auditoria') {
+            if (typeof dtAuditDirectInst !== 'undefined' && dtAuditDirectInst) {
+                dtAuditDirectInst.columns.adjust().draw();
+            } else if (typeof initAuditDirectTable === 'function') {
+                initAuditDirectTable();
+            }
+        }
     });
 }
 
@@ -491,6 +498,7 @@ window.onDataReady = function() {
     initSelectors();
     initCharts();
     initStaticTables();
+    initAuditDirectTable();
     applyFilters();
     if (window.lucide) lucide.createIcons();
 };
@@ -514,3 +522,60 @@ document.addEventListener('astro:page-load', () => {
         lucide.createIcons();
     }
 });
+
+
+let dtAuditDirectInst = null;
+
+function initAuditDirectTable() {
+    const tbody = document.getElementById('tbodyAuditDirect');
+    if (!tbody || !DATA.muestra_expedientes) return;
+    
+    if (dtAuditDirectInst) {
+        try { dtAuditDirectInst.destroy(); } catch(e) {}
+    }
+    
+    tbody.innerHTML = '';
+    DATA.muestra_expedientes.slice(0, 200).forEach((row, idx) => {
+        const idExp = row.ID_Expediente || `EXP-${100000 + idx}`;
+        const op = row.Usuario_Responsable || row.U1 || 'AP_MS_SAT_EN_LINEA';
+        const tram = row.Tipo_Gestion || row.Gestion || 'ACTIVACIÓN';
+        const ronda = row.Ronda_Revision || '1RA_LIMPIA';
+        const reg = row.Region || 'CENTRAL';
+        const est = row.Estado_Final || row.Estado || 'APROBADA';
+        const causal = row.Causal_Rechazo || row.ID_Subcategoria || 'Sin Rechazo';
+        
+        const ateSec = row.Segundos_Atencion || 1.8;
+        const rechSec = row.Segundos_Rechazo || 0.0;
+        const cicloHab = row.Horas_Habiles_Ciclo || 4.12;
+        
+        const estBadge = est === 'APROBADA' 
+            ? '<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">APROBADA</span>'
+            : (est === 'RECHAZADA' ? '<span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-bold">RECHAZADA</span>' : `<span class="bg-slate-100 text-slate-800 text-[10px] px-2 py-0.5 rounded-full">${est}</span>`);
+            
+        tbody.innerHTML += `<tr>
+            <td class="font-mono text-blue-700 font-bold">${idExp}</td>
+            <td class="font-medium text-slate-900">${op}</td>
+            <td class="text-slate-600">${tram}</td>
+            <td><span class="text-[10px] font-mono bg-slate-100 px-1.5 py-0.5 rounded">${ronda}</span></td>
+            <td><span class="font-semibold text-slate-700">${reg}</span></td>
+            <td>${estBadge}</td>
+            <td class="text-slate-600 max-w-[150px] truncate" title="${causal}">${causal}</td>
+            <td data-order="${(ateSec/3600).toFixed(6)}" class="font-mono text-right text-emerald-700 font-bold">${formatAdaptiveTime(ateSec)}</td>
+            <td data-order="${(rechSec/3600).toFixed(6)}" class="font-mono text-right text-rose-700 font-bold">${formatAdaptiveTime(rechSec)}</td>
+            <td data-order="${cicloHab}" class="font-mono text-right text-purple-700 font-bold">${cicloHab.toFixed(2)} h</td>
+        </tr>`;
+    });
+    
+    if (typeof jQuery !== 'undefined' && jQuery.fn.DataTable) {
+        dtAuditDirectInst = jQuery('#tableAuditDirect').DataTable({
+            pageLength: 10,
+            order: [[7, 'asc']],
+            language: {
+                search: "Buscar expediente:",
+                lengthMenu: "Mostrar _MENU_ por página",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ expedientes",
+                paginate: { next: "Siguiente →", previous: "← Anterior" }
+            }
+        });
+    }
+}

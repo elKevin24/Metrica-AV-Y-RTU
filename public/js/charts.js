@@ -21,6 +21,16 @@ let chartSpeedVsRechazoInst = null;
 let chartVolumeVsSpeedInst = null;
 
 function initCharts() {
+    // Destruir instancias previas para evitar error de canvas reusado
+    if (chartLineBuzonRegInst) { chartLineBuzonRegInst.destroy(); chartLineBuzonRegInst = null; }
+    if (chartLineBolsonRegInst) { chartLineBolsonRegInst.destroy(); chartLineBolsonRegInst = null; }
+    if (chartComboTrendInst) { chartComboTrendInst.destroy(); chartComboTrendInst = null; }
+    if (chartSpeedVsRechazoInst) { chartSpeedVsRechazoInst.destroy(); chartSpeedVsRechazoInst = null; }
+    if (chartVolumeVsSpeedInst) { chartVolumeVsSpeedInst.destroy(); chartVolumeVsSpeedInst = null; }
+    if (chartDestinoRechInst) { chartDestinoRechInst.destroy(); chartDestinoRechInst = null; }
+    if (chartMacroInst) { chartMacroInst.destroy(); chartMacroInst = null; }
+    if (chartOpsInst) { chartOpsInst.destroy(); chartOpsInst = null; }
+
     chartLineBuzonRegInst = new Chart(document.getElementById('chartLineBuzonReg'), {
         type: 'line',
         data: {
