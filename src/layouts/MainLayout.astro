@@ -43,8 +43,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <span class="text-xs text-slate-400 block">Universo Auditado</span>
           <span class="text-lg font-black text-emerald-400">1,686,257 Trámites</span>
         </div>
-        <a href={`${baseUrl}/auditoria`} class="bg-white/10 hover:bg-white/20 text-xs px-3.5 py-2 rounded-lg border border-white/20 flex items-center gap-1.5 transition text-slate-200">
-          Auditoría Granular →
+        <a href={`${baseUrl}/auditoria`} class="bg-emerald-600 hover:bg-emerald-700 font-bold text-xs px-4 py-2 rounded-xl border border-emerald-500 flex items-center gap-1.5 transition text-white shadow-md">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Módulo Auditoría DataTables ↗
         </a>
       </div>
     </div>
@@ -54,7 +55,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       <a href={`${baseUrl}/`} class={`py-3 flex items-center gap-2 whitespace-nowrap transition ${activeTab === 'tab-macro' ? 'border-b-2 border-blue-400 text-white font-bold' : 'text-slate-300 hover:text-white'}`}>
         1. Tablero Ejecutivo 360°
       </a>
-      <a href={`${baseUrl}/auditoria`} class={`py-3 flex items-center gap-2 whitespace-nowrap transition ${activeTab === 'tab-auditoria' ? 'border-b-2 border-blue-400 text-white font-bold' : 'text-slate-300 hover:text-white'}`}>
+      <a href={`${baseUrl}/auditoria`} class={`py-3 flex items-center gap-2 whitespace-nowrap transition ${activeTab === 'tab-auditoria' ? 'border-b-2 border-emerald-400 text-emerald-300 font-bold' : 'text-slate-300 hover:text-white'}`}>
         2. Auditoría DataTables en Horas
       </a>
     </nav>
