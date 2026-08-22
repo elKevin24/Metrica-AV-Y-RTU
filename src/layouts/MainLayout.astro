@@ -190,9 +190,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
       if (window.lucide) lucide.createIcons();
 
-      if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
-        dtAuditMainInstance.columns.adjust().draw();
-      }
+      requestAnimationFrame(() => {
+        if (typeof window.resizeAllCharts === 'function') {
+          window.resizeAllCharts();
+        }
+        if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
+          dtAuditMainInstance.columns.adjust().draw();
+        }
+      });
     };
   </script>
 </body>

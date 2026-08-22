@@ -24,6 +24,7 @@ window.DATA_READY = (async function loadData() {
         const json = await res.json();
         
         window.DATA.opciones = json.opciones || {};
+        window.DATA.meses_lista = json.opciones.meses || json.meses_lista || [];
         window.DATA.combos = json.combos || [];
         window.DATA.taxonomia = json.taxonomia || [];
         window.DATA.muestra_expedientes = json.dataset_muestral_500 || json.muestra_expedientes || [];

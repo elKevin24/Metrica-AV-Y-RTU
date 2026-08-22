@@ -17,7 +17,7 @@ function initSelectors() {
 
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('.tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-link, .tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
     
     const targetContent = document.getElementById(tabId);
     if (targetContent) {
@@ -42,9 +42,15 @@ function switchTab(tabId) {
     
     if (window.lucide) lucide.createIcons();
     
-    if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
-        dtAuditMainInstance.columns.adjust().draw();
-    }
+    // Forzar redimensionamiento inmediato de gráficas y tablas
+    requestAnimationFrame(() => {
+        if (typeof window.resizeAllCharts === 'function') {
+            window.resizeAllCharts();
+        }
+        if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
+            dtAuditMainInstance.columns.adjust().draw();
+        }
+    });
 }
 
 function resetFilters() {
@@ -96,7 +102,7 @@ function applyFilters() {
     });
 
     // 2. Pestaña 2
-    const activeMonths = DATA.meses_lista.filter(m => res.monthMap[m]);
+    const activeMonths = (DATA.meses_lista || (DATA.opciones && DATA.opciones.meses) || []).filter(m => res.monthMap[m]);
     const mAtenTrend = activeMonths.map(m => res.monthMap[m].nAten > 0 ? parseFloat((res.monthMap[m].sumAten / res.monthMap[m].nAten / 3600.0).toFixed(2)) : 0);
     const mCasosTrend = activeMonths.map(m => res.monthMap[m].casos);
 

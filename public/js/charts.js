@@ -201,3 +201,28 @@ function renderScatterOperadores(opMap) {
         }
     });
 }
+
+
+// Redimensionador Universal de Gráficas para Contenedores Reactivos
+window.resizeAllCharts = function() {
+    const instances = [
+        chartLineBuzonRegInst,
+        chartLineBolsonRegInst,
+        chartComboTrendInst,
+        chartSpeedVsRechazoInst,
+        chartVolumeVsSpeedInst,
+        chartDestinoRechInst,
+        chartMacroInst,
+        chartOpsInst,
+        window._chartScatterInstance
+    ];
+    
+    instances.forEach(chart => {
+        if (chart && typeof chart.resize === 'function') {
+            try {
+                chart.resize();
+                chart.update('none');
+            } catch(e) {}
+        }
+    });
+};
