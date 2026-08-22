@@ -33,10 +33,6 @@ jobs:
       - name: Build Astro project
         run: npm run build
 
-      - name: Copy auxiliary assets to dist
-        run: |
-          cp -r js css Data Catalogo_Motivos.xlsx Auditoria_Detalle_Tiempos.html Dashboard_BI_Metrica_AV_RTU.html dist/ || true
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
