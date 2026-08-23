@@ -13,7 +13,8 @@
 6. [Hallazgo Técnico Crítico: El Microservicio `AP_MS_SAT_EN_LINEA`](#6-hallazgo-técnico-crítico-el-microservicio-ap_ms_sat_en_linea)
 7. [Catálogo de Taxonomía y Multicausalidad de Rechazos](#7-catálogo-de-taxonomía-y-multicausalidad-de-rechazos)
 8. [Guía de Uso de los Tableros y Módulo DataTables](#8-guía-de-uso-de-los-tableros-y-módulo-datatables)
-9. [Recomendaciones Estratégicas y de Ingeniería de Datos](#9-recomendaciones-estratégicas-y-de-ingeniería-de-datos)
+9. [Análisis Cuantitativo de Fuga y Abandono (Fricción)](#9-análisis-cuantitativo-de-fuga-y-abandono-fricción)
+10. [Acciones Estratégicas de Alto Impacto](#10-acciones-estratégicas-de-alto-impacto)
 
 ---
 
@@ -176,14 +177,40 @@ El catálogo institucional ([`Catalogo_Motivos.xlsx`](file:///c:/Users/busqu/Doc
 
 ---
 
-## 9. Recomendaciones Estratégicas y de Ingeniería de Datos
+## 9. Análisis Cuantitativo de Fuga y Abandono (Fricción)
 
-1. **Pre-Validación en la Aplicación Móvil / Web (Filtro de Entrada):**
-   Implementar detección por IA en el dispositivo del contribuyente que verifique la legibilidad del DPI (evitar reflejos) y la presencia de audio antes de permitir el envío del formulario. Esto erradicaría más del **70% de los rechazos**.
-2. **Rediseño de Notificaciones de Rechazo (Frenar el 42.6% de Abandono):**
-   Sustituir los mensajes genéricos por instrucciones visuales con ejemplos de *"Cómo grabar el video correctamente"*, reduciendo la fricción y recuperando miles de trámites.
-3. **Corrección en la Base de Datos Transaccional (Ingeniería de TI):**
-   Modificar el script de caducidad nocturna para que no sobrescriba el campo `UsuarioResponsable` con `AP_MS_SAT_EN_LINEA` cuando ya exista un `UsuarioRevisorOriginal` registrado.
+### 📊 Comparativa de Impacto: Global vs. Intervención Humana
+
+| Métrica Transaccional | Universo Total (con Bot Reinicios) | Gestiones Humanas (Activación / Cambio Correo) |
+| :--- | :---: | :---: |
+| **Volumen Total** | **1,686,257 trámites** | **573,613 trámites** |
+| **Rechazos Emitidos** | 182,431 (10.82%) | **180,306 (31.43%)** |
+| **Subsanados y Aprobados (2da Revisión)** | 88,858 (48.71% de rechazos) | **87,808 (48.70% de rechazos)** |
+| **Abandono Post-Rechazo (Fricción)** | 79,563 (43.61% de rechazos) | **78,488 (43.53% de rechazos)** |
+| **Bloqueados por Límite de Intentos** | 14,010 (7.68% de rechazos) | **14,010 (7.77% de rechazos)** |
+| **% de Abandono sobre el Universo** | **4.72% del total** | **13.68% del total humano** |
+| **Fuga Pre-Atención (No Confirmadas)** | 221,351 (13.13%) | **106,090 (18.50%)** |
+| **Fuga Total Acumulada** | **300,914 (17.84%)** | **184,578 (32.18%)** |
+
+> **Diagnóstico del Analista:** El porcentaje de abandono parece bajo a nivel macro (4.72%) debido a que 1.11 millones de trámites automatizados de reinicio de contraseña diluyen la métrica. Sin embargo, en la **operación real con intervención humana es crítico:** **1 de cada 3 trámites es rechazado (31.43%)** y el **43.53% de esos usuarios (78,488 ciudadanos) abandona el proceso definitivamente**. Sumando las no confirmaciones iniciales, **el 32.18% de los contribuyentes queda fuera del sistema**.
+
+---
+
+## 10. Acciones Estratégicas de Alto Impacto
+
+Para mover la aguja significativamente y erradicar la fuga, se definen tres acciones prioritarias:
+
+1. **Pre-Validación en la Aplicación Móvil / Web (Impacto: Erradicar >70% de rechazos):**
+   * **Diagnóstico:** El 80.8% de los rechazos ocurre por fallas de captura en el móvil del ciudadano: video sin audio/fecha (45.2%) y reflejos/encuadre en DPI (35.6%).
+   * **Acción:** Implementar validación por IA/Software en el dispositivo del usuario antes de permitir el envío del formulario (verificar presencia de pista de audio y nitidez mínima del documento). Esto evitaría más de 120,000 rechazos anuales.
+
+2. **Rediseño de Notificaciones de Rechazo (Impacto: Frenar el 43.53% de abandono):**
+   * **Diagnóstico:** Los contribuyentes abandonan por falta de claridad en las causas del rechazo y dificultad para reintentar.
+   * **Acción:** Sustituir textos genéricos/legales por notificaciones multicanal (Email/SMS) con ejemplos visuales claros (*"Tu video no incluyó la fecha: [Ver ejemplo de 5 seg]"*) y un botón de reintento en 1 clic.
+
+3. **Optimización del Balanceo de Carga en Servidor (Impacto: Subir SLA hábil de 75.8% a >95%):**
+   * **Diagnóstico:** La revisión del operador humano toma solo **1.8 a 2.0 segundos**, pero el expediente pasa **3.5 a 4.1 horas esperando turno en la cola general**.
+   * **Acción:** Mejorar el algoritmo de despacho del microservicio para asignar lotes en tiempo real a los operadores activos, eliminando la retención innecesaria en el buzón central.
 
 ---
 *Desarrollado para la Superintendencia de Administración Tributaria (SAT Guatemala) | Métricas Transaccionales Agencia Virtual & RTU.*
