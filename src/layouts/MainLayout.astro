@@ -225,6 +225,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         animateVisibleCards(`#${tabId}`);
       });
     };
+
+    // Soporte para deep-linking con URL hash (ej. /#tab-auditoria)
+    document.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && document.getElementById(hash)) {
+        window.switchTab(hash);
+      }
+    });
   </script>
 
 </body>

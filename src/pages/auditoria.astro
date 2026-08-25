@@ -3,23 +3,20 @@ import MainLayout from '../layouts/MainLayout.astro';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<MainLayout title="Auditoría Granular en Horas - SAT" activeTab="tab-auditoria">
-  <div class="space-y-6">
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-4">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-100">
-        <div>
-          <h3 class="text-base font-bold text-slate-900">Módulo Especializado de Auditoría con DataTables</h3>
-          <p class="text-xs text-slate-500">Ordenamiento interactivo de menor a mayor en horas y filtros completos</p>
-        </div>
-        <a href={`${baseUrl}/Auditoria_Detalle_Tiempos.html`} target="_blank" class="bg-blue-600 hover:bg-blue-700 text-xs px-3.5 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 transition shadow-sm">
-          Abrir en Pantalla Completa ↗
-        </a>
-      </div>
-
-      <!-- Iframe integrado optimizado -->
-      <div class="w-full rounded-2xl overflow-hidden border border-slate-200" style="height: 750px;">
-        <iframe src={`${baseUrl}/Auditoria_Detalle_Tiempos.html`} class="w-full h-full border-0"></iframe>
-      </div>
+<MainLayout title="Auditoría Granular en Horas - SAT">
+  <div class="max-w-7xl mx-auto px-6 py-12 text-center space-y-4">
+    <div class="inline-flex p-4 bg-blue-100 text-blue-700 rounded-3xl animate-bounce">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
     </div>
+    <h2 class="text-xl font-black text-slate-900">Cargando Módulo de Auditoría Granular...</h2>
+    <p class="text-xs text-slate-500">Conectando con la base de datos de expedientes en tiempo real</p>
   </div>
+
+  <script is:inline define:vars={{ baseUrl }}>
+    // Redirigir limpiamente a la pestaña nativa de auditoría
+    window.location.replace(`${baseUrl}/#tab-auditoria`);
+  </script>
 </MainLayout>
+
