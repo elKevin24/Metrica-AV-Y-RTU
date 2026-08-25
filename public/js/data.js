@@ -45,7 +45,7 @@ function getBaseUrl() {
 
 window.DATA_READY = (async function loadData() {
     try {
-        updateSystemStatus("Descargando 1.68M trámites...", "loading");
+        updateSystemStatus("Descargando 2.57M trámites...", "loading");
         const baseUrl = getBaseUrl();
         const jsonUrl = `${baseUrl}/data/cubo_compacto.json`.replace(/\/\//g, "/");
         
@@ -78,7 +78,7 @@ window.DATA_READY = (async function loadData() {
         window.DATA.cubo = cubo;
         window.DATA.loaded = true;
         
-        updateSystemStatus("Motor OLAP Listo • 1.68M Registros", "ready");
+        updateSystemStatus("Motor OLAP Listo • 2.57M Registros", "ready");
         
         if (typeof window.onDataReady === 'function') {
             window.onDataReady(window.DATA);

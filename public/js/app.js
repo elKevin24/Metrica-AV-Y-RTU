@@ -205,6 +205,38 @@ function applyFilters() {
         </tr>`;
     });
 
+    // Actualizar Tarjetas de Calidad & Trazabilidad (Tab 1)
+    const elFTRCnt = document.getElementById('kpiFTRCnt');
+    if (elFTRCnt) {
+        const ftrPct = res.totalCasos > 0 ? ((res.totalAprobDirectas / res.totalCasos)*100).toFixed(1) : '0.0';
+        elFTRCnt.innerText = res.totalAprobDirectas.toLocaleString();
+        document.getElementById('kpiFTRPct').innerText = `${ftrPct}% de la selección`;
+    }
+
+    const elRecupCnt = document.getElementById('kpiRecupCnt');
+    if (elRecupCnt) {
+        const recupPct = res.totalRechazos > 0 ? ((res.totalAprobSubsanadas / res.totalRechazos)*100).toFixed(1) : '0.0';
+        elRecupCnt.innerText = res.totalAprobSubsanadas.toLocaleString();
+        document.getElementById('kpiRecupPct').innerText = `${recupPct}% tasa recuperación`;
+    }
+
+    const elHuerfCnt = document.getElementById('kpiHuerfCnt');
+    if (elHuerfCnt) {
+        const huerfPct = res.totalRechazos > 0 ? ((res.totalRechHuerfanos / res.totalRechazos)*100).toFixed(1) : '0.0';
+        elHuerfCnt.innerText = res.totalRechHuerfanos.toLocaleString();
+        document.getElementById('kpiHuerfPct').innerText = `${huerfPct}% de los rechazos`;
+    }
+
+    const elDelayDiff = document.getElementById('kpiDelayDiff');
+    if (elDelayDiff) {
+        const avg1ra = res.nCiclo1ra > 0 ? (res.sumCiclo1ra / res.nCiclo1ra) : 0;
+        const avgSub = res.nCicloSub > 0 ? (res.sumCicloSub / res.nCicloSub) : 0;
+        const diffHrs = Math.max(0, (avgSub - avg1ra) / 3600.0);
+        const factor = (avg1ra > 0 && avgSub > 0) ? (avgSub / avg1ra).toFixed(1) : '1.0';
+        elDelayDiff.innerText = `+${diffHrs.toFixed(1)} h`;
+        document.getElementById('lblDelayFactor').innerText = `Retraso: ${factor}x vs 1ra vez`;
+    }
+
     
     // Actualizar Banner Dinámico de Tab 2 según los filtros seleccionados
     const elPaso1 = document.getElementById('kpiPaso1Cola');
@@ -281,6 +313,7 @@ function applyFilters() {
     ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'].forEach(regName => {
         const r = res.regMap[regName];
         const pctAp = r.casos > 0 ? ((r.aprob / r.casos)*100).toFixed(1) : '0.0';
+        const pctFTR = r.casos > 0 ? ((r.aprob_dir / r.casos)*100).toFixed(1) : '0.0';
         const pctRe = r.casos > 0 ? ((r.rech / r.casos)*100).toFixed(1) : '0.0';
         const secBuz = r.nBuzon > 0 ? (r.sumBuzon / r.nBuzon) : 0;
         const secBol = r.nBolson > 0 ? (r.sumBolson / r.nBolson) : 0;
@@ -292,6 +325,7 @@ function applyFilters() {
             <td class="p-3 font-bold text-slate-900">${regName}</td>
             <td class="p-3 text-right font-mono text-slate-600">${r.casos.toLocaleString()}</td>
             <td class="p-3 text-right font-bold text-emerald-700 bg-emerald-50/40">${pctAp}%</td>
+            <td class="p-3 text-right font-bold text-cyan-700 bg-cyan-50/40">${pctFTR}%</td>
             <td class="p-3 text-right font-bold text-rose-700 bg-rose-50/40">${pctRe}%</td>
             <td class="p-3 text-right font-semibold text-blue-700">${formatAdaptiveTime(secBuz)}</td>
             <td class="p-3 text-right font-semibold text-slate-800">${formatAdaptiveTime(secBol)}</td>

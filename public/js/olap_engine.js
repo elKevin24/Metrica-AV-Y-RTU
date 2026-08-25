@@ -32,20 +32,22 @@ function processOlapFilters(cuboData, fGes, fAnio, fMes, fReg, fEst, fMac) {
     });
 
     let totalCasos = 0, totalRechazos = 0, totalAprobados = 0, totalNoConf = 0, totalCanceladas = 0;
+    let totalAprobDirectas = 0, totalAprobSubsanadas = 0, totalRechDefinitivos = 0, totalRechHuerfanos = 0;
     let sumBuzonHab = 0, nBuzonHab = 0, sumBuzonCal = 0, nBuzonCal = 0;
     let sumBolson = 0, nBolson = 0;
     let sumAtencionFinal = 0, nAtencionFinal = 0;
     let sumAtencionRechazo = 0, nAtencionRechazo = 0;
     let sumCreacionAtenHab = 0, nCreacionAtenHab = 0;
     let sumCicloHab = 0, nCicloHab = 0, sumCicloCal = 0, nCicloCal = 0;
+    let sumCiclo1ra = 0, nCiclo1ra = 0, sumCicloSub = 0, nCicloSub = 0;
     let sla1d = 0, sla2d = 0, sla3d = 0, sla5d = 0, slaFuera = 0;
 
     const estCounts = {}, macCounts = {}, subcatCounts = {}, monthMap = {};
     const regMap = {
-        'CENTRAL': { casos: 0, aprob: 0, rech: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 },
-        'OCCIDENTE': { casos: 0, aprob: 0, rech: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 },
-        'SUR': { casos: 0, aprob: 0, rech: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 },
-        'NORORIENTE': { casos: 0, aprob: 0, rech: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 }
+        'CENTRAL': { casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 },
+        'OCCIDENTE': { casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 },
+        'SUR': { casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 },
+        'NORORIENTE': { casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sla1d: 0 }
     };
     const monthRegMap = { 'CENTRAL': {}, 'OCCIDENTE': {}, 'SUR': {}, 'NORORIENTE': {} };
     const speedMap = { '<=2s': { casos: 0, rech: 0 }, '2-5s': { casos: 0, rech: 0 }, '5-15s': { casos: 0, rech: 0 }, '15-60s': { casos: 0, rech: 0 }, '1-5m': { casos: 0, rech: 0 }, '>5m': { casos: 0, rech: 0 } };
@@ -58,6 +60,13 @@ function processOlapFilters(cuboData, fGes, fAnio, fMes, fReg, fEst, fMac) {
         totalAprobados += r.Aprobadas + r.Finalizadas;
         totalNoConf += r.NoConfirmadas;
         totalCanceladas += r.Canceladas;
+        totalAprobDirectas += (r.AprobDirectas || 0);
+        totalAprobSubsanadas += (r.AprobSubsanadas || 0);
+        totalRechDefinitivos += (r.RechDefinitivos || 0);
+
+        if (r.Rechazos > 0 && (r.MacroFamilia === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
+            totalRechHuerfanos += r.Rechazos;
+        }
 
         sumBuzonHab += (r.Suma_Buzon_Hab_Sec || 0);
         nBuzonHab += (r.N_Buzon_Hab || 0);
@@ -80,6 +89,14 @@ function processOlapFilters(cuboData, fGes, fAnio, fMes, fReg, fEst, fMac) {
         nCicloHab += (r.N_Ciclo_Hab || 0);
         sumCicloCal += (r.Suma_Ciclo_Cal_Sec || 0);
         nCicloCal += (r.N_Ciclo_Cal || 0);
+
+        if (r.Ronda_Revision === '1RA_DIRECTA') {
+            sumCiclo1ra += (r.Suma_Ciclo_Hab_Sec || 0);
+            nCiclo1ra += (r.N_Ciclo_Hab || 0);
+        } else if (r.Ronda_Revision === '2DA_SUBSANADA') {
+            sumCicloSub += (r.Suma_Ciclo_Hab_Sec || 0);
+            nCicloSub += (r.N_Ciclo_Hab || 0);
+        }
 
         sla1d += r.SLA_8h;
         sla2d += r.SLA_16h;
@@ -121,6 +138,11 @@ function processOlapFilters(cuboData, fGes, fAnio, fMes, fReg, fEst, fMac) {
             regObj.casos += r.Casos;
             regObj.aprob += (r.Aprobadas + r.Finalizadas);
             regObj.rech += r.Rechazos;
+            regObj.aprob_dir += (r.AprobDirectas || 0);
+            regObj.aprob_sub += (r.AprobSubsanadas || 0);
+            if (r.Rechazos > 0 && (r.MacroFamilia === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
+                regObj.rech_huerf += r.Rechazos;
+            }
             regObj.sumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
             regObj.nBuzon += (r.N_Buzon_Hab || 0);
             regObj.sumBolson += (r.Suma_Bolson_Sec || 0);
@@ -153,12 +175,14 @@ function processOlapFilters(cuboData, fGes, fAnio, fMes, fReg, fEst, fMac) {
 
     return {
         totalCasos, totalRechazos, totalAprobados, totalNoConf, totalCanceladas,
+        totalAprobDirectas, totalAprobSubsanadas, totalRechDefinitivos, totalRechHuerfanos,
         sumBuzonHab, nBuzonHab, sumBuzonCal, nBuzonCal,
         sumBolson, nBolson,
         sumAtencionFinal, nAtencionFinal,
         sumAtencionRechazo, nAtencionRechazo,
         sumCreacionAtenHab, nCreacionAtenHab,
         sumCicloHab, nCicloHab, sumCicloCal, nCicloCal,
+        sumCiclo1ra, nCiclo1ra, sumCicloSub, nCicloSub,
         sla1d, sla2d, sla3d, sla5d, slaFuera,
         estCounts, macCounts, subcatCounts, monthMap, regMap, monthRegMap, speedMap, opMap,
         rechAprob, rechAband, rechBloq
