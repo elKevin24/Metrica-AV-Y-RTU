@@ -98,6 +98,8 @@ window.DATA_READY = (async function loadData() {
         
         updateSystemStatus("Motor OLAP Listo • 2.57M Registros", "ready");
         
+        document.querySelectorAll('[data-skeleton]').forEach(el => el.classList.remove('skeleton-text'));
+        
         if (typeof window.onDataReady === 'function') {
             window.onDataReady(window.DATA);
         }

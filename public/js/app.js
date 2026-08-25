@@ -112,29 +112,7 @@ function resetFilters() {
 }
 
 
-function applyFilters() {
-    if (!window.DATA || !window.DATA.loaded) {
-        if (typeof updateSystemStatus === 'function') {
-            updateSystemStatus("Sincronizando selección con motor...", "loading");
-        }
-        return;
-    }
-
-    const tStart = performance.now();
-    if (typeof updateSystemStatus === 'function') {
-        updateSystemStatus("⚡ Recalculando filtros...", "computing");
-    }
-
-    const fGes = document.getElementById('selGestion').value;
-    const fAnio = document.getElementById('selAnio').value;
-    const fMes = document.getElementById('selMes').value;
-    const fReg = document.getElementById('selRegion').value;
-    const fEst = document.getElementById('selEstado').value;
-    const fMac = document.getElementById('selMacro').value;
-
-    const res = processOlapFilters(DATA.cubo, fGes, fAnio, fMes, fReg, fEst, fMac);
-
-    // 1. Pestaña 1
+function renderTabMacro(res) {
     document.getElementById('kpiUniverso').innerText = res.totalCasos.toLocaleString();
     document.getElementById('kpiAprobados').innerText = res.totalAprobados.toLocaleString();
     document.getElementById('kpiTasaAprobacion').innerText = res.totalCasos > 0 ? ((res.totalAprobados/res.totalCasos)*100).toFixed(1) + '%' : '0%';
@@ -502,6 +480,11 @@ function applyFilters() {
     renderTabGestion(res);
 
     filterAuditTable();
+
+    const elapsed = (performance.now() - tStart).toFixed(1);
+    if (typeof updateSystemStatus === 'function') {
+        updateSystemStatus(`Motor OLAP Listo (${elapsed}ms) • 2.57M Registros`, "ready");
+    }
 }
 
 let auditDebounceTimer = null;

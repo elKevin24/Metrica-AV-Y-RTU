@@ -83,31 +83,31 @@ import MainLayout from '../layouts/MainLayout.astro';
         <section id="tab-macro" class="tab-content block space-y-8">
             
             <!-- KPIs Ejecutivos -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="kpiGrid">
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Universo Filtrado</span>
-                    <h3 id="kpiUniverso" class="text-2xl font-black text-slate-900 mt-1">0</h3>
+                    <h3 id="kpiUniverso" class="text-2xl font-black text-slate-900 mt-1 skeleton-text" data-skeleton>—</h3>
                     <span id="lblSubUniverso" class="text-xs text-blue-600 font-semibold mt-1 inline-block">100% de la selección</span>
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Aprobados con Éxito</span>
-                    <h3 id="kpiAprobados" class="text-2xl font-black text-emerald-600 mt-1">0</h3>
+                    <h3 id="kpiAprobados" class="text-2xl font-black text-emerald-600 mt-1 skeleton-text" data-skeleton>—</h3>
                     <span id="kpiTasaAprobacion" class="text-xs text-emerald-600 font-bold mt-1 inline-block">0.0%</span>
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rechazos Emitidos</span>
-                    <h3 id="kpiRechazos" class="text-2xl font-black text-rose-600 mt-1">0</h3>
+                    <h3 id="kpiRechazos" class="text-2xl font-black text-rose-600 mt-1 skeleton-text" data-skeleton>—</h3>
                     <span id="kpiTasaRechazo" class="text-xs text-rose-600 font-bold mt-1 inline-block">0.0%</span>
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tiempo hasta 1ra Atención</span>
-                    <h3 id="kpiTiempoAtencion" class="text-2xl font-black text-indigo-600 mt-1">0 seg</h3>
+                    <h3 id="kpiTiempoAtencion" class="text-2xl font-black text-indigo-600 mt-1 skeleton-text" data-skeleton>—</h3>
                     <span id="lblTiempoAtencionCal" class="text-xs text-slate-500 mt-1 inline-block">Promedio Hábil</span>
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ciclo Total de Respuesta</span>
-                    <h3 id="kpiCicloHab" class="text-2xl font-black text-purple-600 mt-1">0 seg</h3>
-                    <span id="lblCicloCal" class="text-xs text-slate-500 mt-1 inline-block">Calendario: 0 seg</span>
+                    <h3 id="kpiCicloHab" class="text-2xl font-black text-purple-600 mt-1 skeleton-text" data-skeleton>—</h3>
+                    <span id="lblCicloCal" class="text-xs text-slate-500 mt-1 inline-block">Calendario: —</span>
                 </div>
             </div>
 
