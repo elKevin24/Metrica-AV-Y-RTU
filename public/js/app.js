@@ -99,50 +99,7 @@ function initSelectors() {
     }
 }
 
-function switchTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('.tab-link, .tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
-    
-    const targetContent = document.getElementById(tabId);
-    if (targetContent) {
-        targetContent.classList.remove('hidden');
-    }
-    
-    const btnMap = {
-        'tab-macro': 'btn-macro',
-        'tab-operativo': 'btn-operativo',
-        'tab-tiempos': 'btn-tiempos',
-        'tab-calidad': 'btn-calidad',
-        'tab-gestion': 'btn-gestion',
-        'tab-auditoria': 'btn-auditoria',
-        'tab-hallazgos': 'btn-hallazgos'
-    };
-    
-    const btnId = btnMap[tabId];
-    if (btnId) {
-        const btn = document.getElementById(btnId);
-        if (btn) btn.classList.add('active');
-    }
-    
-    if (window.lucide) lucide.createIcons();
-    
-    // Forzar redimensionamiento inmediato de gráficas y tablas
-    requestAnimationFrame(() => {
-        if (typeof window.resizeAllCharts === 'function') {
-            window.resizeAllCharts();
-        }
-        if (tabId === 'tab-gestion' && typeof dtAuditMainInstance !== 'undefined' && dtAuditMainInstance) {
-            dtAuditMainInstance.columns.adjust().draw();
-        }
-        if (tabId === 'tab-auditoria') {
-            if (typeof dtAuditDirectInst !== 'undefined' && dtAuditDirectInst) {
-                dtAuditDirectInst.columns.adjust().draw();
-            } else if (typeof initAuditDirectTable === 'function') {
-                initAuditDirectTable();
-            }
-        }
-    });
-}
+// switchTab se encuentra centralizado canónicamente en MainLayout.astro
 
 function resetFilters() {
     document.getElementById('selGestion').value = 'HUMANAS';
@@ -205,7 +162,6 @@ function applyFilters() {
         </tr>`;
     });
 
-    // Actualizar Tarjetas de Calidad & Trazabilidad (Tab 1)
     const elFTRCnt = document.getElementById('kpiFTRCnt');
     if (elFTRCnt) {
         const ftrPct = res.totalCasos > 0 ? ((res.totalAprobDirectas / res.totalCasos)*100).toFixed(1) : '0.0';
@@ -236,9 +192,12 @@ function applyFilters() {
         elDelayDiff.innerText = `+${diffHrs.toFixed(1)} h`;
         document.getElementById('lblDelayFactor').innerText = `Retraso: ${factor}x vs 1ra vez`;
     }
+}
 
-    
-    // Actualizar Banner Dinámico de Tab 2 según los filtros seleccionados
+function renderTabOperativo(res) {
+    const secCicloHab = res.nCicloHab > 0 ? (res.sumCicloHab / res.nCicloHab) : 0;
+    const secCicloCal = res.nCicloCal > 0 ? (res.sumCicloCal / res.nCicloCal) : 0;
+
     const elPaso1 = document.getElementById('kpiPaso1Cola');
     if (elPaso1) {
         const valColaHab = res.nBuzonHab > 0 ? (res.sumBuzonHab / res.nBuzonHab) : 0;
@@ -268,7 +227,6 @@ function applyFilters() {
         document.getElementById('lblPaso4CicloCal').innerText = `Calendario: ${formatAdaptiveTime(secCicloCal)}`;
     }
 
-    // 2. Pestaña 2
     const activeMonths = (DATA.meses_lista || (DATA.opciones && DATA.opciones.meses) || []).filter(m => res.monthMap[m]);
     const mAtenTrend = activeMonths.map(m => res.monthMap[m].nAten > 0 ? parseFloat((res.monthMap[m].sumAten / res.monthMap[m].nAten / 3600.0).toFixed(2)) : 0);
     const mCasosTrend = activeMonths.map(m => res.monthMap[m].casos);
@@ -334,8 +292,11 @@ function applyFilters() {
             <td class="p-3 text-right font-bold text-emerald-600">${sla1Pct}%</td>
         </tr>`;
     });
+}
 
-    // 3. Pestaña 3
+function renderTabTiempos(res) {
+    const secCicloHab = res.nCicloHab > 0 ? (res.sumCicloHab / res.nCicloHab) : 0;
+    const secCicloCal = res.nCicloCal > 0 ? (res.sumCicloCal / res.nCicloCal) : 0;
     const totSLA = res.nCicloHab;
     const pct1d = totSLA > 0 ? ((res.sla1d / totSLA)*100).toFixed(1) : '0.0';
     const pct2d = totSLA > 0 ? ((res.sla2d / totSLA)*100).toFixed(1) : '0.0';
@@ -401,8 +362,9 @@ function applyFilters() {
             <td class="p-3 text-right text-slate-500">${formatAdaptiveTime(secCicloCal)}</td>
         </tr>
     `;
+}
 
-    // 4. Pestaña 4
+function renderTabCalidad(res) {
     const totRechFiltrado = res.rechAprob + res.rechAband + res.rechBloq;
     const recupAprobPct = totRechFiltrado > 0 ? ((res.rechAprob / totRechFiltrado)*100).toFixed(1) : '0.0';
     const recupAbandPct = totRechFiltrado > 0 ? ((res.rechAband / totRechFiltrado)*100).toFixed(1) : '0.0';
@@ -443,8 +405,9 @@ function applyFilters() {
             <td class="p-3 text-right font-black text-slate-900">${cnt.toLocaleString()}</td>
         </tr>`;
     });
+}
 
-    // 5. Pestaña 5
+function renderTabGestion(res) {
     const speedLabels = ['<=2s', '2-5s', '5-15s', '15-60s', '1-5m', '>5m'];
     const speedRechPcts = speedLabels.map(lbl => {
         const obj = res.speedMap[lbl];
@@ -508,6 +471,35 @@ function applyFilters() {
             <td class="p-2.5 text-right font-black text-blue-700">${o.tasa_incidencia}%</td>
         </tr>`;
     });
+}
+
+function applyFilters() {
+    if (!window.DATA || !window.DATA.loaded) {
+        if (typeof updateSystemStatus === 'function') {
+            updateSystemStatus("Sincronizando selección con motor...", "loading");
+        }
+        return;
+    }
+
+    const tStart = performance.now();
+    if (typeof updateSystemStatus === 'function') {
+        updateSystemStatus("⚡ Recalculando filtros...", "computing");
+    }
+
+    const fGes = document.getElementById('selGestion').value;
+    const fAnio = document.getElementById('selAnio').value;
+    const fMes = document.getElementById('selMes').value;
+    const fReg = document.getElementById('selRegion').value;
+    const fEst = document.getElementById('selEstado').value;
+    const fMac = document.getElementById('selMacro').value;
+
+    const res = processOlapFilters(DATA.cubo, fGes, fAnio, fMes, fReg, fEst, fMac);
+
+    renderTabMacro(res);
+    renderTabOperativo(res);
+    renderTabTiempos(res);
+    renderTabCalidad(res);
+    renderTabGestion(res);
 
     filterAuditTable();
 }

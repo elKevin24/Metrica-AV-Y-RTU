@@ -47,13 +47,27 @@ window.DATA_READY = (async function loadData() {
     try {
         updateSystemStatus("Descargando 2.57M trámites...", "loading");
         const baseUrl = getBaseUrl();
-        const jsonUrl = `${baseUrl}/data/cubo_compacto.json`.replace(/\/\//g, "/");
-        
-        const res = await fetch(jsonUrl);
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        let json;
+
+        try {
+            const gzUrl = `${baseUrl}/data/cubo_compacto.json.gz`.replace(/\/\//g, "/");
+            const resGz = await fetch(gzUrl);
+            if (resGz.ok && typeof DecompressionStream !== 'undefined') {
+                const ds = new DecompressionStream('gzip');
+                const decompressedStream = resGz.body.pipeThrough(ds);
+                const resp = new Response(decompressedStream);
+                json = await resp.json();
+            } else {
+                throw new Error("GZIP no disponible");
+            }
+        } catch (gzErr) {
+            const jsonUrl = `${baseUrl}/data/cubo_compacto.json`.replace(/\/\//g, "/");
+            const res = await fetch(jsonUrl);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            json = await res.json();
+        }
         
         updateSystemStatus("Procesando matriz analítica...", "loading");
-        const json = await res.json();
         
         window.DATA.opciones = json.opciones || {};
         window.DATA.meses_lista = json.opciones.meses || json.meses_lista || [];

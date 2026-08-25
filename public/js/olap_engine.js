@@ -188,3 +188,8 @@ function processOlapFilters(cuboData, fGes, fAnio, fMes, fReg, fEst, fMac) {
         rechAprob, rechAband, rechBloq
     };
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { formatToHours, formatAdaptiveTime, processOlapFilters };
+}
+

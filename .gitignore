@@ -7,3 +7,15 @@ __pycache__/
 .idea/
 Thumbs.db
 .DS_Store
+
+# Archivos pesados de datos brutos Excel y Parquet (>100MB)
+Data/*.xlsx
+Data/*.xls
+*.xlsx
+*.xls
+*.duckdb
+*.parquet
+Data/*.parquet
+*.tmp
+
+

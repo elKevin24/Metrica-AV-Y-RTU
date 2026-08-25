@@ -114,39 +114,39 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
     <!-- Fila Inferior: Barra de Pestañas Minimalista Integrada -->
     <div class="max-w-7xl mx-auto px-6">
-      <nav class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60">
+      <nav role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60">
         
-        <button onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
+        <button role="tab" aria-selected="true" aria-controls="tab-macro" onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
           <span>Visión & Balance</span>
         </button>
 
-        <button onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-link">
+        <button role="tab" aria-selected="false" aria-controls="tab-operativo" onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-link">
           <i data-lucide="trending-up" class="w-4 h-4"></i>
           <span>Rendimiento & Regionales</span>
         </button>
 
-        <button onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-link">
+        <button role="tab" aria-selected="false" aria-controls="tab-tiempos" onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-link">
           <i data-lucide="clock" class="w-4 h-4"></i>
           <span>Jornada 8h & SLAs</span>
         </button>
 
-        <button onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-link">
+        <button role="tab" aria-selected="false" aria-controls="tab-calidad" onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-link">
           <i data-lucide="alert-octagon" class="w-4 h-4"></i>
           <span>Calidad & Fricción</span>
         </button>
 
-        <button onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
+        <button role="tab" aria-selected="false" aria-controls="tab-gestion" onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
           <i data-lucide="users" class="w-4 h-4"></i>
           <span>Operadores & Dispersión</span>
         </button>
 
-        <button onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
+        <button role="tab" aria-selected="false" aria-controls="tab-auditoria" onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
           <i data-lucide="table" class="w-4 h-4"></i>
           <span>Auditoría en Horas</span>
         </button>
 
-        <button onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link ml-auto text-amber-300 hover:text-amber-200">
+        <button role="tab" aria-selected="false" aria-controls="tab-hallazgos" onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link ml-auto text-amber-300 hover:text-amber-200">
           <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
           <span>Hallazgos & Conclusiones</span>
         </button>
@@ -169,11 +169,18 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <script is:inline src={`${baseUrl}/js/charts.js`} defer></script>
   <script is:inline src={`${baseUrl}/js/app.js`} defer></script>
 
-  <script is:inline>
-    // Enrutador Global Minimalista
+  <!-- Lenis Smooth Scroll & Motion Animations -->
+  <script>
+    import '../scripts/smooth-scroll';
+    import { animateVisibleCards } from '../scripts/motion-effects';
+
+    // Enrutador Canónico Único
     window.switchTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-link, .tab-pill, .tab-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-link').forEach(el => {
+        el.classList.remove('active');
+        el.setAttribute('aria-selected', 'false');
+      });
 
       const targetContent = document.getElementById(tabId);
       if (targetContent) {
@@ -193,7 +200,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       const btnId = btnMap[tabId];
       if (btnId) {
         const targetBtn = document.getElementById(btnId);
-        if (targetBtn) targetBtn.classList.add('active');
+        if (targetBtn) {
+          targetBtn.classList.add('active');
+          targetBtn.setAttribute('aria-selected', 'true');
+        }
       }
 
       if (window.lucide) lucide.createIcons();
@@ -212,22 +222,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             initAuditDirectTable();
           }
         }
-      });
-    };
-  </script>
-
-  <!-- Lenis Smooth Scroll & Motion Animations -->
-  <script>
-    import '../scripts/smooth-scroll';
-    import { animateVisibleCards } from '../scripts/motion-effects';
-
-    // Disparar animación de Motion al cambiar de pestaña
-    const origSwitch = window.switchTab;
-    window.switchTab = function(tabId) {
-      if (typeof origSwitch === 'function') origSwitch(tabId);
-      setTimeout(() => {
         animateVisibleCards(`#${tabId}`);
-      }, 50);
+      });
     };
   </script>
 
