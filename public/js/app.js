@@ -418,6 +418,68 @@ function renderTabGestion(res) {
         chartVolumeVsSpeedInst.update();
     }
 
+    // 1. RENDER TABLA DE CAPACIDAD DIARIA EN JORNADA HÁBIL (8H)
+    const fAnio = document.getElementById('selAnio') ? document.getElementById('selAnio').value : 'TODOS';
+    const fReg = document.getElementById('selRegion') ? document.getElementById('selRegion').value : 'TODAS';
+    const capList = (window.DATA && window.DATA.operadores_productividad_8h) || [];
+
+    const filteredCap = capList.filter(row => {
+        const matchAnio = (fAnio === 'TODOS') ? (row.Anio === 'TODOS') : (String(row.Anio) === String(fAnio));
+        const matchReg = (fReg === 'TODAS') ? (row.Region === 'TODAS') : (String(row.Region) === String(fReg));
+        return matchAnio && matchReg;
+    }).sort((a, b) => b.Total_8h - a.Total_8h);
+
+    const tbCap = document.getElementById('tableProductividadDiaria');
+    if (tbCap) {
+        tbCap.innerHTML = '';
+        const displayCap = filteredCap.slice(0, 10);
+        displayCap.forEach((row, idx) => {
+            let medal = `${idx + 1}.`;
+            if (idx === 0) medal = '🥇';
+            else if (idx === 1) medal = '🥈';
+            else if (idx === 2) medal = '🥉';
+
+            tbCap.innerHTML += `<tr>
+                <td class="p-3 font-semibold text-slate-900 flex items-center gap-2">
+                    <span class="text-sm">${medal}</span>
+                    <span>${row.Revisor}</span>
+                </td>
+                <td class="p-3 text-center font-bold text-slate-900 bg-slate-50/80">${row.Promedio_Diario} gestiones / día</td>
+                <td class="p-3 text-center text-slate-600 font-mono">${row.Mediana_Diaria} / día</td>
+                <td class="p-3 text-center font-black text-purple-700 bg-purple-50/40">${row.Record_Dia} casos</td>
+                <td class="p-3 text-center text-slate-600 font-mono">${row.Dias_Activos} días</td>
+                <td class="p-3 text-right font-black text-slate-900">${Number(row.Total_8h).toLocaleString()} casos</td>
+            </tr>`;
+        });
+
+        // Actualizar mini KPIs de capacidad
+        const regLabel = fReg === 'TODAS' ? 'Nacional' : `Regional ${fReg}`;
+        const anioLabel = fAnio === 'TODOS' ? '2025 - 2026' : fAnio;
+        const ctxPill = document.getElementById('lblCapacidadContexto');
+        if (ctxPill) ctxPill.innerText = `${regLabel} • ${anioLabel}`;
+
+        const elRevisores = document.getElementById('kpiCapRevisores');
+        if (elRevisores) elRevisores.innerText = `${filteredCap.length} revisores`;
+
+        const elTopProm = document.getElementById('kpiCapTopProm');
+        if (elTopProm) elTopProm.innerText = displayCap.length > 0 ? `${displayCap[0].Promedio_Diario} / día` : '-';
+
+        const elMediana = document.getElementById('kpiCapMediana');
+        if (elMediana) {
+            const medVals = displayCap.map(r => r.Mediana_Diaria).sort((a,b) => a-b);
+            const mid = Math.floor(medVals.length / 2);
+            const med = medVals.length > 0 ? (medVals.length % 2 !== 0 ? medVals[mid] : ((medVals[mid - 1] + medVals[mid]) / 2).toFixed(1)) : '-';
+            elMediana.innerText = `${med} / día`;
+        }
+
+        const elMaxRec = document.getElementById('kpiCapMaxRecord');
+        if (elMaxRec) {
+            const maxRec = displayCap.reduce((max, r) => Math.max(max, r.Record_Dia), 0);
+            elMaxRec.innerText = `${maxRec} casos`;
+        }
+    }
+
+    // 2. RENDER TABLA GENERAL Y GRÁFICA DE OPERADORES
     const topOps = Object.keys(res.opMap).map(k => {
         const obj = res.opMap[k];
         const pctIncidencia = obj.total > 0 ? ((obj.rech_eventos / obj.total)*100).toFixed(1) : '0.0';
@@ -436,19 +498,21 @@ function renderTabGestion(res) {
     }
 
     const tbOpD = document.getElementById('tableOperadoresDinamica');
-    tbOpD.innerHTML = '';
-    topOps.forEach(o => {
-        tbOpD.innerHTML += `<tr>
-            <td class="p-2.5 font-bold text-slate-900">${o.op}</td>
-            <td class="p-2.5 text-right font-mono font-bold text-slate-900 bg-slate-50">${o.total.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-mono font-bold text-emerald-700 bg-emerald-50/50">${o.aprob_tot.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-mono text-emerald-600">${o.aprob_dir.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-mono text-amber-600 font-semibold">${o.aprob_sub.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-mono font-bold text-rose-600">${o.rech_def.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-mono font-bold text-rose-700 bg-rose-50/40">${o.rech_eventos.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-black text-blue-700">${o.tasa_incidencia}%</td>
-        </tr>`;
-    });
+    if (tbOpD) {
+        tbOpD.innerHTML = '';
+        topOps.forEach(o => {
+            tbOpD.innerHTML += `<tr>
+                <td class="p-2.5 font-bold text-slate-900">${o.op}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-slate-900 bg-slate-50">${o.total.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-emerald-700 bg-emerald-50/50">${o.aprob_tot.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono text-emerald-600">${o.aprob_dir.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono text-amber-600 font-semibold">${o.aprob_sub.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-rose-600">${o.rech_def.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-rose-700 bg-rose-50/40">${o.rech_eventos.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-black text-blue-700">${o.tasa_incidencia}%</td>
+            </tr>`;
+        });
+    }
 }
 
 function applyFilters() {

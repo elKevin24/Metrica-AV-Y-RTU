@@ -628,6 +628,60 @@ import MainLayout from '../layouts/MainLayout.astro';
                 </div>
             </div>
 
+            <!-- CAPACIDAD DIARIA Y PRODUCTIVIDAD EN JORNADA HÁBIL (8 HORAS) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="award" class="w-5 h-5 text-amber-500"></i> Capacidad Diaria y Métricas de Productividad por Revisor (Jornada 8h)
+                        </h4>
+                        <p class="text-xs text-slate-500">Promedio diario, mediana, récords en 1 día y días activos en jornada laboral oficial (8:00 a 16:00)</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="lblCapacidadContexto" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 px-3 py-1 rounded-xl shadow-xs">
+                            Occidente • 2026
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Mini KPIs de Capacidad Diaria -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                        <span class="text-slate-500 text-[11px] font-medium">Revisores Activos</span>
+                        <h5 id="kpiCapRevisores" class="text-base font-black text-slate-900 mt-0.5">10 revisores</h5>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+                        <span class="text-emerald-700 text-[11px] font-medium">Promedio Diario (Top 1)</span>
+                        <h5 id="kpiCapTopProm" class="text-base font-black text-emerald-800 mt-0.5">66.6 / día</h5>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl">
+                        <span class="text-blue-700 text-[11px] font-medium">Mediana Global Grupo</span>
+                        <h5 id="kpiCapMediana" class="text-base font-black text-blue-800 mt-0.5">52.5 / día</h5>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-3 rounded-xl">
+                        <span class="text-purple-700 text-[11px] font-medium">Récord en 1 Solo Día</span>
+                        <h5 id="kpiCapMaxRecord" class="text-base font-black text-purple-800 mt-0.5">161 casos</h5>
+                    </div>
+                </div>
+
+                <!-- Tabla de Capacidad Diaria Exacta del Informe -->
+                <div class="overflow-x-auto text-xs border border-slate-200 rounded-xl">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200 text-[11px]">
+                            <tr>
+                                <th class="p-3">Revisor</th>
+                                <th class="p-3 text-center font-bold text-slate-900 bg-slate-200/50">Promedio Diario (8h)</th>
+                                <th class="p-3 text-center text-slate-600">Mediana Diaria</th>
+                                <th class="p-3 text-center font-black text-slate-900">Récord en 1 Día</th>
+                                <th class="p-3 text-center text-slate-600">Días Activos</th>
+                                <th class="p-3 text-right font-black text-slate-900">Total Resuelto (8h)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableProductividadDiaria" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Tabla de Operadores con Cuadre Aritmético -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-2">

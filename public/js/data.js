@@ -78,6 +78,7 @@ window.DATA_READY = (async function loadData() {
         window.DATA.combos = json.combos || [];
         window.DATA.taxonomia = json.taxonomia || [];
         window.DATA.muestra_expedientes = json.dataset_muestral_500 || json.muestra_expedientes || [];
+        window.DATA.operadores_productividad_8h = json.operadores_productividad_8h || [];
         
         const cols = json.cols;
         const rows = json.rows;

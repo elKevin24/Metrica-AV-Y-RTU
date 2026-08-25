@@ -406,10 +406,110 @@ def main():
     muestra_500["FechaFinaliza"] = muestra_500["FechaFinaliza"].dt.strftime('%Y-%m-%d %H:%M:%S').fillna('')
     dataset_muestral_500 = muestra_500.to_dict(orient='records')
     
+    # 5B. Capacidad Diaria y Métricas de Productividad por Revisor (Jornada 8h)
+    print("  Calculando capacidad diaria de operadores en jornada 8h...")
+    con = duckdb.connect()
+    con.execute("CREATE OR REPLACE TABLE tramites_mem AS SELECT * FROM df")
+    
+    op_cap_query = """
+    WITH base AS (
+        SELECT 
+            Region,
+            CAST(Anio AS VARCHAR) AS Anio,
+            strftime(COALESCE(FechaFinaliza, FechaRechazo, FechaRevision), '%Y-%m-%d') AS Dia,
+            U1 AS Revisor,
+            Estado,
+            EXTRACT(dow FROM COALESCE(FechaFinaliza, FechaRechazo, FechaRevision)) AS dow,
+            EXTRACT(hour FROM COALESCE(FechaFinaliza, FechaRechazo, FechaRevision)) AS hr
+        FROM tramites_mem
+        WHERE U1 NOT IN ('AP_MS_SAT_EN_LINEA', 'NO_ASIGNADO', 'SIN_OPERADOR', '', 'None', 'nan')
+          AND Gestion != 'REINICIO DE CONTRASEÑA'
+    ),
+    jornada_8h AS (
+        SELECT * FROM base
+        WHERE dow BETWEEN 1 AND 5
+          AND hr BETWEEN 8 AND 15
+    ),
+    dia_counts AS (
+        SELECT 
+            Region,
+            Anio,
+            Revisor,
+            Dia,
+            COUNT(*) as Casos_Dia
+        FROM jornada_8h
+        GROUP BY Region, Anio, Revisor, Dia
+    ),
+    agg_combos AS (
+        -- Por Región y Año
+        SELECT 
+            Region,
+            Anio,
+            Revisor,
+            SUM(Casos_Dia) as Total_8h,
+            COUNT(DISTINCT Dia) as Dias_Activos,
+            ROUND(AVG(Casos_Dia), 1) as Promedio_Diario,
+            ROUND(MEDIAN(Casos_Dia), 1) as Mediana_Diaria,
+            MAX(Casos_Dia) as Record_Dia
+        FROM dia_counts
+        GROUP BY Region, Anio, Revisor
+        
+        UNION ALL
+        
+        -- Por Región (Todos los Años)
+        SELECT 
+            Region,
+            'TODOS' as Anio,
+            Revisor,
+            SUM(Casos_Dia) as Total_8h,
+            COUNT(DISTINCT Dia) as Dias_Activos,
+            ROUND(AVG(Casos_Dia), 1) as Promedio_Diario,
+            ROUND(MEDIAN(Casos_Dia), 1) as Mediana_Diaria,
+            MAX(Casos_Dia) as Record_Dia
+        FROM dia_counts
+        GROUP BY Region, Revisor
+
+        UNION ALL
+        
+        -- Nacional por Año
+        SELECT 
+            'TODAS' as Region,
+            Anio,
+            Revisor,
+            SUM(Casos_Dia) as Total_8h,
+            COUNT(DISTINCT Dia) as Dias_Activos,
+            ROUND(AVG(Casos_Dia), 1) as Promedio_Diario,
+            ROUND(MEDIAN(Casos_Dia), 1) as Mediana_Diaria,
+            MAX(Casos_Dia) as Record_Dia
+        FROM dia_counts
+        GROUP BY Anio, Revisor
+
+        UNION ALL
+        
+        -- Nacional Global
+        SELECT 
+            'TODAS' as Region,
+            'TODOS' as Anio,
+            Revisor,
+            SUM(Casos_Dia) as Total_8h,
+            COUNT(DISTINCT Dia) as Dias_Activos,
+            ROUND(AVG(Casos_Dia), 1) as Promedio_Diario,
+            ROUND(MEDIAN(Casos_Dia), 1) as Mediana_Diaria,
+            MAX(Casos_Dia) as Record_Dia
+        FROM dia_counts
+        GROUP BY Revisor
+    )
+    SELECT * FROM agg_combos ORDER BY Total_8h DESC;
+    """
+    df_op_cap = con.execute(op_cap_query).df()
+    operadores_productividad_8h = df_op_cap.to_dict(orient='records')
+    print(f"  [OK] {len(operadores_productividad_8h):,} métricas de capacidad diaria generadas.")
+
     cubo_dict = {
         "opciones": opciones,
         "taxonomia": tax_export,
         "ranking_operadores": ranking_operadores,
+        "operadores_productividad_8h": operadores_productividad_8h,
         "dataset_muestral_500": dataset_muestral_500,
         "cols": cubo_cols,
         "rows": cubo_df.values.tolist()
