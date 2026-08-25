@@ -31,6 +31,10 @@ function updateSystemStatus(text, state = 'loading') {
     } else if (state === 'computing') {
         pill.className = 'flex items-center gap-2 text-[11px] text-cyan-300 bg-cyan-950/40 px-3 py-1.5 rounded-lg border border-cyan-500/30 transition-all duration-300';
         if (dot) dot.className = 'w-2 h-2 rounded-full bg-cyan-400 animate-pulse';
+    } else if (state === 'error') {
+        pill.className = 'flex items-center gap-2 text-[11px] text-rose-300 bg-rose-950/60 px-3 py-1.5 rounded-lg border border-rose-500/40 shadow-sm';
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-rose-500 animate-ping';
+        if (bar) { bar.style.width = '100%'; bar.style.backgroundColor = '#EF4444'; }
     }
 }
 
@@ -102,6 +106,11 @@ window.DATA_READY = (async function loadData() {
         return window.DATA;
     } catch (e) {
         console.error("Error al cargar cubo_compacto.json:", e);
-        updateSystemStatus("Error de conexión al cargar datos", "loading");
+        updateSystemStatus("Error al cargar datos", "error");
+        const errBanner = document.getElementById('dataErrorBanner');
+        if (errBanner) {
+            errBanner.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
     }
 })();

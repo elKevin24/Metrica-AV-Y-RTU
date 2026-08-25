@@ -504,6 +504,15 @@ function applyFilters() {
     filterAuditTable();
 }
 
+let auditDebounceTimer = null;
+function debounceFilterAudit() {
+    clearTimeout(auditDebounceTimer);
+    auditDebounceTimer = setTimeout(() => {
+        filterAuditTable();
+    }, 150);
+}
+window.debounceFilterAudit = debounceFilterAudit;
+
 function filterAuditTable() {
     const fGes = document.getElementById('selGestion').value;
     const fReg = document.getElementById('selRegion').value;

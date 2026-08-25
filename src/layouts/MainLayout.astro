@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import '../styles/global.css';
 
 interface Props {
   title?: string;
@@ -155,6 +154,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     </div>
   </header>
 
+  <!-- Banner de Error con Botón de Reintento (Visibility of Error State) -->
+  <div id="dataErrorBanner" class="hidden max-w-7xl mx-auto px-6 mt-4">
+    <div class="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-rose-100 text-rose-700 rounded-xl">
+          <i data-lucide="wifi-off" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-rose-900">Error al cargar la base de datos analítica</h4>
+          <p class="text-xs text-rose-700">No se pudo descargar el cubo de datos. Verifique su conexión de red.</p>
+        </div>
+      </div>
+      <button onclick="location.reload()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reintentar Carga
+      </button>
+    </div>
+  </div>
+
   <!-- Contenido Inyectado -->
   <slot />
 
@@ -231,6 +248,29 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       const hash = window.location.hash.replace('#', '');
       if (hash && document.getElementById(hash)) {
         window.switchTab(hash);
+      }
+    });
+
+    // Navegación por teclado accesible (W3C WAI-ARIA Tabs: Flechas Izq / Der, Home, End)
+    document.addEventListener('keydown', (e) => {
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
+        const tabList = Array.from(document.querySelectorAll('nav[role="tablist"] button[role="tab"]'));
+        const activeIdx = tabList.findIndex(t => t.classList.contains('active'));
+        if (activeIdx === -1) return;
+
+        let nextIdx = activeIdx;
+        if (e.key === 'ArrowRight') nextIdx = (activeIdx + 1) % tabList.length;
+        else if (e.key === 'ArrowLeft') nextIdx = (activeIdx - 1 + tabList.length) % tabList.length;
+        else if (e.key === 'Home') nextIdx = 0;
+        else if (e.key === 'End') nextIdx = tabList.length - 1;
+
+        if (nextIdx !== activeIdx) {
+          e.preventDefault();
+          const nextBtn = tabList[nextIdx];
+          nextBtn.focus();
+          const targetTab = nextBtn.getAttribute('aria-controls');
+          if (targetTab) window.switchTab(targetTab);
+        }
       }
     });
   </script>
