@@ -19,6 +19,10 @@ let chartLineBolsonRegInst = null;
 let chartComboTrendInst = null;
 let chartSpeedVsRechazoInst = null;
 let chartVolumeVsSpeedInst = null;
+let chartBarRegVolumenInst = null;
+let chartBarRegTiemposInst = null;
+let chartVolumenVsTiempoRegInst = null;
+let chartSpeedDistributionInst = null;
 
 function initCharts() {
     // Destruir instancias previas para evitar error de canvas reusado
@@ -30,6 +34,92 @@ function initCharts() {
     if (chartDestinoRechInst) { chartDestinoRechInst.destroy(); chartDestinoRechInst = null; }
     if (chartMacroInst) { chartMacroInst.destroy(); chartMacroInst = null; }
     if (chartOpsInst) { chartOpsInst.destroy(); chartOpsInst = null; }
+    if (chartBarRegVolumenInst) { chartBarRegVolumenInst.destroy(); chartBarRegVolumenInst = null; }
+    if (chartBarRegTiemposInst) { chartBarRegTiemposInst.destroy(); chartBarRegTiemposInst = null; }
+    if (chartVolumenVsTiempoRegInst) { chartVolumenVsTiempoRegInst.destroy(); chartVolumenVsTiempoRegInst = null; }
+    if (chartSpeedDistributionInst) { chartSpeedDistributionInst.destroy(); chartSpeedDistributionInst = null; }
+
+    const cvBarVol = document.getElementById('chartBarRegVolumen');
+    if (cvBarVol) {
+        chartBarRegVolumenInst = new Chart(cvBarVol, {
+            type: 'bar',
+            data: {
+                labels: ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'],
+                datasets: [
+                    { label: 'Aprobadas', data: [0, 0, 0, 0], backgroundColor: '#10B981', borderRadius: 6 },
+                    { label: 'Rechazadas', data: [0, 0, 0, 0], backgroundColor: '#F43F5E', borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } } },
+                    tooltip: richTooltipOptions
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Cantidad de Gestiones' } }
+                }
+            }
+        });
+    }
+
+    const cvBarTiempos = document.getElementById('chartBarRegTiempos');
+    if (cvBarTiempos) {
+        chartBarRegTiemposInst = new Chart(cvBarTiempos, {
+            type: 'bar',
+            data: {
+                labels: ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'],
+                datasets: [
+                    { 
+                        label: 'ACTIVACIÓN: Σ(Rev - Crea) / N Activación', 
+                        data: [0, 0, 0, 0], 
+                        backgroundColor: '#0EA5E9', 
+                        borderColor: '#0284C7',
+                        borderWidth: 1,
+                        borderRadius: 6 
+                    },
+                    { 
+                        label: 'CAMBIO DE CORREO: Σ(Rev - Crea) / N Correo', 
+                        data: [0, 0, 0, 0], 
+                        backgroundColor: '#8B5CF6', 
+                        borderColor: '#7C3AED',
+                        borderWidth: 1,
+                        borderRadius: 6 
+                    },
+                    { 
+                        label: 'PROMEDIO GLOBAL: Σ(Rev - Crea) / Total', 
+                        data: [0, 0, 0, 0], 
+                        backgroundColor: '#4F46E5', 
+                        borderColor: '#3730A3',
+                        borderWidth: 1,
+                        borderRadius: 6 
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.raw || 0;
+                                const mins = (val * 60).toFixed(1);
+                                return `${context.dataset.label.split(':')[0]}: ${val} horas/gestión (${mins} min)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Horas Hábiles Promedio por Gestión' } }
+                }
+            }
+        });
+    }
 
     chartLineBuzonRegInst = new Chart(document.getElementById('chartLineBuzonReg'), {
         type: 'line',
@@ -64,14 +154,21 @@ function initCharts() {
         data: {
             labels: [],
             datasets: [
-                { type: 'bar', label: 'Volumen Mensual de Trámites', data: [], backgroundColor: 'rgba(203, 213, 225, 0.7)', borderRadius: 4, yAxisID: 'y' },
-                { type: 'line', label: 'Horas Hábiles hasta 1ra Atención', data: [], borderColor: '#059669', backgroundColor: '#059669', tension: 0.3, borderWidth: 3, pointRadius: 4, yAxisID: 'y1' }
+                { type: 'bar', label: 'Volumen Mensual Total', data: [], backgroundColor: 'rgba(148, 163, 184, 0.4)', borderColor: '#94A3B8', borderWidth: 1, borderRadius: 4, yAxisID: 'y' },
+                { type: 'bar', label: 'Volumen NO Rechazadas (Aprobadas)', data: [], backgroundColor: 'rgba(16, 185, 129, 0.4)', borderColor: '#10B981', borderWidth: 1, borderRadius: 4, yAxisID: 'y' },
+                { type: 'line', label: '1ª Atención (Total Gestiones)', data: [], borderColor: '#6366F1', backgroundColor: '#6366F1', tension: 0.3, borderWidth: 2.5, pointRadius: 4, yAxisID: 'y1' },
+                { type: 'line', label: '1ª Atención (NO Rechazadas / Aprobadas)', data: [], borderColor: '#059669', backgroundColor: '#059669', tension: 0.3, borderWidth: 3, pointRadius: 4, yAxisID: 'y1' }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } } },
+                tooltip: richTooltipOptions
+            },
             scales: {
+                x: { grid: { display: false } },
                 y: { type: 'linear', position: 'left', title: { display: true, text: 'Volumen de Expedientes' } },
                 y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Horas Hábiles de Espera' } }
             }
@@ -131,14 +228,126 @@ function initCharts() {
         options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
     });
 
-    chartOpsInst = new Chart(document.getElementById('chartOperadores'), {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{ label: '% Tasa Incidencia Rechazo', data: [], backgroundColor: '#4F46E5', borderRadius: 4 }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    });
+    const cvVolTiempo = document.getElementById('chartVolumenVsTiempoReg');
+    if (cvVolTiempo) {
+        chartVolumenVsTiempoRegInst = new Chart(cvVolTiempo, {
+            type: 'bar',
+            data: {
+                labels: ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Volumen de Gestiones (Demanda)',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: 'rgba(99, 102, 241, 0.65)',
+                        borderColor: '#4F46E5',
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Espera en Buzón Central (Horas Hábiles)',
+                        data: [0, 0, 0, 0],
+                        borderColor: '#EF4444',
+                        backgroundColor: '#EF4444',
+                        tension: 0.25,
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#B91C1C',
+                        yAxisID: 'y1'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Revisión Humana Activa (Minutos)',
+                        data: [0, 0, 0, 0],
+                        borderColor: '#10B981',
+                        backgroundColor: '#10B981',
+                        borderDash: [5, 5],
+                        tension: 0.25,
+                        borderWidth: 2.5,
+                        pointRadius: 4,
+                        yAxisID: 'y2'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } },
+                    tooltip: richTooltipOptions
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        title: { display: true, text: 'Cantidad de Gestiones', font: { size: 10 } }
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        title: { display: true, text: 'Horas en Cola Buzón', font: { size: 10 } }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        display: false,
+                        grid: { drawOnChartArea: false }
+                    }
+                }
+            }
+        });
+    }
+
+    const cvSpeedDist = document.getElementById('chartSpeedDistribution');
+    if (cvSpeedDist) {
+        chartSpeedDistributionInst = new Chart(cvSpeedDist, {
+            type: 'bar',
+            data: {
+                labels: ['≤ 2s (Flash)', '2-5s (Rápido)', '5-15s (Medio)', '15-60s (Analítico)', '1-5m (Detallado)', '> 5m (Exhaustivo)'],
+                datasets: [
+                    {
+                        label: 'Aprobadas',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: '#10B981',
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'Rechazos',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: '#F43F5E',
+                        borderRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } },
+                    tooltip: richTooltipOptions
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Expedientes Dictaminados', font: { size: 10 } } }
+                }
+            }
+        });
+    }
+    const cvOps = document.getElementById('chartOperadores');
+    if (cvOps) {
+        chartOpsInst = new Chart(cvOps, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{ label: '% Tasa Incidencia Rechazo', data: [], backgroundColor: '#4F46E5', borderRadius: 4 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+    }
 }
 
 
@@ -236,6 +445,10 @@ window.resizeAllCharts = function() {
         chartDestinoRechInst,
         chartMacroInst,
         chartOpsInst,
+        chartBarRegVolumenInst,
+        chartBarRegTiemposInst,
+        chartVolumenVsTiempoRegInst,
+        chartSpeedDistributionInst,
         window._chartScatterInstance
     ];
     

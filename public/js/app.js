@@ -1,42 +1,72 @@
 // Controlador Principal y Renderizador de la Aplicación
 let dtAuditMainInstance = null;
 
-// Nombres de Meses en Español para Selectores
+// Nombres de Meses y Trimestres en Español para Selectores
 const MES_NOMBRES = {
     '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril',
     '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto',
     '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre'
 };
 
-function updateMonthDropdown(selectedAnio = 'TODOS') {
+const QUARTER_MONTHS = {
+    'Q1': ['01', '02', '03'],
+    'Q2': ['04', '05', '06'],
+    'Q3': ['07', '08', '09'],
+    'Q4': ['10', '11', '12']
+};
+
+const MONTH_TO_QUARTER = {
+    '01': 'Q1', '02': 'Q1', '03': 'Q1',
+    '04': 'Q2', '05': 'Q2', '06': 'Q2',
+    '07': 'Q3', '08': 'Q3', '09': 'Q3',
+    '10': 'Q4', '11': 'Q4', '12': 'Q4'
+};
+
+function updateMonthDropdown(selectedAnio = 'TODOS', selectedTrimestre = 'TODOS') {
     const selMes = document.getElementById('selMes');
     if (!selMes || !DATA.opciones || !DATA.opciones.meses) return;
     
     const prevSelected = selMes.value;
     selMes.innerHTML = '';
     
-    if (selectedAnio === 'TODOS') {
-        selMes.innerHTML += '<option value="TODOS">Todos los Meses (2025 - 2026)</option>';
-        DATA.opciones.meses.forEach(m => {
-            const parts = m.split('-');
-            const anio = parts[0];
-            const mesNum = parts[1];
-            const nombre = MES_NOMBRES[mesNum] || mesNum;
-            selMes.innerHTML += `<option value="${m}">${nombre} ${anio} (${m})</option>`;
-        });
+    let labelAll = 'Todos los Meses';
+    if (selectedAnio !== 'TODOS' && selectedTrimestre !== 'TODOS') {
+        labelAll = `Todos los Meses de ${selectedTrimestre} ${selectedAnio}`;
+    } else if (selectedAnio !== 'TODOS') {
+        labelAll = `Todos los Meses de ${selectedAnio}`;
+    } else if (selectedTrimestre !== 'TODOS') {
+        labelAll = `Todos los Meses de ${selectedTrimestre} (2025 - 2026)`;
     } else {
-        selMes.innerHTML += `<option value="TODOS">Todos los Meses de ${selectedAnio}</option>`;
-        DATA.opciones.meses
-            .filter(m => m.startsWith(selectedAnio))
-            .forEach(m => {
-                const mesNum = m.split('-')[1];
-                const nombre = MES_NOMBRES[mesNum] || mesNum;
-                selMes.innerHTML += `<option value="${m}">${mesNum} - ${nombre} ${selectedAnio}</option>`;
-            });
+        labelAll = 'Todos los Meses (2025 - 2026)';
+    }
+    selMes.innerHTML += `<option value="TODOS">${labelAll}</option>`;
+    
+    let filteredMonths = DATA.opciones.meses;
+    if (selectedAnio !== 'TODOS') {
+        filteredMonths = filteredMonths.filter(m => m.startsWith(selectedAnio));
+    }
+    if (selectedTrimestre !== 'TODOS') {
+        const allowedNums = QUARTER_MONTHS[selectedTrimestre] || [];
+        filteredMonths = filteredMonths.filter(m => {
+            const mNum = m.split('-')[1];
+            return allowedNums.includes(mNum);
+        });
     }
     
-    // Restaurar selección previa si es compatible con el año
-    if (prevSelected !== 'TODOS' && (selectedAnio === 'TODOS' || prevSelected.startsWith(selectedAnio))) {
+    filteredMonths.forEach(m => {
+        const parts = m.split('-');
+        const anio = parts[0];
+        const mesNum = parts[1];
+        const nombre = MES_NOMBRES[mesNum] || mesNum;
+        if (selectedAnio !== 'TODOS') {
+            selMes.innerHTML += `<option value="${m}">${mesNum} - ${nombre} ${anio}</option>`;
+        } else {
+            selMes.innerHTML += `<option value="${m}">${nombre} ${anio} (${m})</option>`;
+        }
+    });
+    
+    // Restaurar selección previa si aún existe entre las opciones filtradas
+    if (prevSelected !== 'TODOS' && filteredMonths.includes(prevSelected)) {
         selMes.value = prevSelected;
     } else {
         selMes.value = 'TODOS';
@@ -45,20 +75,46 @@ function updateMonthDropdown(selectedAnio = 'TODOS') {
 
 function onAnioChange() {
     const selAnio = document.getElementById('selAnio');
+    const selTrim = document.getElementById('selTrimestre');
     const anio = selAnio ? selAnio.value : 'TODOS';
-    updateMonthDropdown(anio);
+    const trim = selTrim ? selTrim.value : 'TODOS';
+    updateMonthDropdown(anio, trim);
+    applyFilters();
+}
+
+function onTrimestreChange() {
+    const selAnio = document.getElementById('selAnio');
+    const selTrim = document.getElementById('selTrimestre');
+    const anio = selAnio ? selAnio.value : 'TODOS';
+    const trim = selTrim ? selTrim.value : 'TODOS';
+    updateMonthDropdown(anio, trim);
     applyFilters();
 }
 
 function onMesChange() {
     const selMes = document.getElementById('selMes');
     const selAnio = document.getElementById('selAnio');
-    if (selMes && selAnio && selMes.value !== 'TODOS') {
-        const mesAnio = selMes.value.split('-')[0];
-        if (selAnio.value !== mesAnio && selAnio.value !== 'TODOS') {
+    const selTrim = document.getElementById('selTrimestre');
+    if (selMes && selMes.value !== 'TODOS') {
+        const parts = selMes.value.split('-');
+        const mesAnio = parts[0];
+        const mesNum = parts[1];
+        const mesQuarter = MONTH_TO_QUARTER[mesNum];
+        
+        let needsSync = false;
+        if (selAnio && selAnio.value !== mesAnio && selAnio.value !== 'TODOS') {
             selAnio.value = mesAnio;
-            updateMonthDropdown(mesAnio);
-            selMes.value = selMes.value;
+            needsSync = true;
+        }
+        if (selTrim && selTrim.value !== 'TODOS' && selTrim.value !== mesQuarter) {
+            selTrim.value = mesQuarter;
+            needsSync = true;
+        }
+        if (needsSync) {
+            const anio = selAnio ? selAnio.value : 'TODOS';
+            const trim = selTrim ? selTrim.value : 'TODOS';
+            updateMonthDropdown(anio, trim);
+            selMes.value = `${mesAnio}-${mesNum}`;
         }
     }
     applyFilters();
@@ -104,10 +160,12 @@ function initSelectors() {
 function resetFilters() {
     document.getElementById('selGestion').value = 'HUMANAS';
     document.getElementById('selAnio').value = 'TODOS';
+    if (document.getElementById('selTrimestre')) document.getElementById('selTrimestre').value = 'TODOS';
     document.getElementById('selMes').value = 'TODOS';
     document.getElementById('selRegion').value = 'TODAS';
     document.getElementById('selEstado').value = 'TODOS';
     document.getElementById('selMacro').value = 'TODAS';
+    updateMonthDropdown('TODOS', 'TODOS');
     applyFilters();
 }
 
@@ -220,7 +278,7 @@ function renderTabOperativo(res) {
         chartLineBuzonRegInst.data.datasets[1].data = buzonOccidente;
         chartLineBuzonRegInst.data.datasets[2].data = buzonSur;
         chartLineBuzonRegInst.data.datasets[3].data = buzonNororiente;
-        chartLineBuzonRegInst.update();
+        chartLineBuzonRegInst.update('none');
     }
 
     const bolsonCentral = activeMonths.map(m => (res.monthRegMap['CENTRAL'][m] && res.monthRegMap['CENTRAL'][m].nBolson > 0) ? parseFloat((res.monthRegMap['CENTRAL'][m].sumBolson / res.monthRegMap['CENTRAL'][m].nBolson / 60.0).toFixed(1)) : null);
@@ -234,42 +292,387 @@ function renderTabOperativo(res) {
         chartLineBolsonRegInst.data.datasets[1].data = bolsonOccidente;
         chartLineBolsonRegInst.data.datasets[2].data = bolsonSur;
         chartLineBolsonRegInst.data.datasets[3].data = bolsonNororiente;
-        chartLineBolsonRegInst.update();
+        chartLineBolsonRegInst.update('none');
     }
 
     if (chartComboTrendInst) {
+        const mAtenTrendAprob = activeMonths.map(m => (res.monthMap[m] && res.monthMap[m].aprobNAten > 0) ? parseFloat((res.monthMap[m].aprobSumAten / res.monthMap[m].aprobNAten / 3600.0).toFixed(2)) : 0);
+        const mCasosTrendAprob = activeMonths.map(m => res.monthMap[m] ? res.monthMap[m].aprobCasos : 0);
         chartComboTrendInst.data.labels = activeMonths;
         chartComboTrendInst.data.datasets[0].data = mCasosTrend;
-        chartComboTrendInst.data.datasets[1].data = mAtenTrend;
-        chartComboTrendInst.update();
+        chartComboTrendInst.data.datasets[1].data = mCasosTrendAprob;
+        chartComboTrendInst.data.datasets[2].data = mAtenTrend;
+        chartComboTrendInst.data.datasets[3].data = mAtenTrendAprob;
+        chartComboTrendInst.update('none');
+    }
+
+    const regLabels = ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'];
+    if (chartBarRegVolumenInst) {
+        chartBarRegVolumenInst.data.datasets[0].data = regLabels.map(reg => res.regMap[reg] ? res.regMap[reg].aprob : 0);
+        chartBarRegVolumenInst.data.datasets[1].data = regLabels.map(reg => res.regMap[reg] ? res.regMap[reg].rech : 0);
+        chartBarRegVolumenInst.update('none');
+    }
+
+    if (chartBarRegTiemposInst) {
+        const hrsAct = regLabels.map(reg => {
+            const r = res.regMap[reg];
+            return (r && r.actN > 0) ? parseFloat((r.actSum / r.actN / 3600.0).toFixed(2)) : 0;
+        });
+        const hrsCor = regLabels.map(reg => {
+            const r = res.regMap[reg];
+            return (r && r.corN > 0) ? parseFloat((r.corSum / r.corN / 3600.0).toFixed(2)) : 0;
+        });
+        const hrsGlob = regLabels.map(reg => {
+            const r = res.regMap[reg];
+            return (r && r.nCreacionAten > 0) ? parseFloat((r.sumCreacionAten / r.nCreacionAten / 3600.0).toFixed(2)) : 0;
+        });
+        chartBarRegTiemposInst.data.datasets[0].data = hrsAct;
+        chartBarRegTiemposInst.data.datasets[1].data = hrsCor;
+        chartBarRegTiemposInst.data.datasets[2].data = hrsGlob;
+        chartBarRegTiemposInst.update('none');
+    }
+
+    // -------------------------------------------------------------
+    // ACTUALIZACIÓN DE MÓDULO: RELACIÓN VOLUMEN VS TIEMPO DE ATENCIÓN
+    // -------------------------------------------------------------
+    const secAprob = res.nAtencionFinal > 0 ? (res.sumAtencionFinal / res.nAtencionFinal) : 0;
+    const secRech = res.nAtencionRechazo > 0 ? (res.sumAtencionRechazo / res.nAtencionRechazo) : 0;
+    const nTotAten = res.nAtencionFinal + res.nAtencionRechazo;
+    const secActivo = nTotAten > 0 ? ((res.sumAtencionFinal + res.sumAtencionRechazo) / nTotAten) : 0;
+
+    const elRelRevProm = document.getElementById('kpiRelacionRevisionProm');
+    if (elRelRevProm) elRelRevProm.innerText = formatAdaptiveTime(secActivo);
+
+    const elRelAprobMin = document.getElementById('kpiRelacionAprobMin');
+    if (elRelAprobMin) elRelAprobMin.innerText = formatAdaptiveTime(secAprob);
+
+    const elRelRechSeg = document.getElementById('kpiRelacionRechSeg');
+    if (elRelRechSeg) elRelRechSeg.innerText = formatAdaptiveTime(secRech);
+
+    const elRelBuzonProm = document.getElementById('kpiRelacionBuzonProm');
+    if (elRelBuzonProm) {
+        const valColaHab = res.nBuzonHab > 0 ? (res.sumBuzonHab / res.nBuzonHab) : 0;
+        elRelBuzonProm.innerHTML = `${formatAdaptiveTime(valColaHab)} <span class="text-xs font-normal text-amber-800">hábiles</span>`;
+    }
+
+    const elRel1raAten = document.getElementById('kpiRelacion1raAtenProm');
+    if (elRel1raAten) {
+        const val1raAten = res.nCreacionAtenHab > 0 ? (res.sumCreacionAtenHab / res.nCreacionAtenHab) : 0;
+        elRel1raAten.innerHTML = `${formatAdaptiveTime(val1raAten)} <span class="text-xs font-normal text-indigo-800">hábiles</span>`;
+    }
+
+    const elRelCicloProm = document.getElementById('kpiRelacionCicloProm');
+    if (elRelCicloProm) {
+        elRelCicloProm.innerText = formatAdaptiveTime(secCicloHab);
+    }
+
+    if (chartVolumenVsTiempoRegInst) {
+        const volTotales = regLabels.map(reg => res.regMap[reg] ? res.regMap[reg].total : 0);
+        const buzonHrs = regLabels.map(reg => {
+            const r = res.regMap[reg];
+            return (r && r.buzN > 0) ? parseFloat((r.buzSum / r.buzN / 3600.0).toFixed(2)) : 0;
+        });
+        const revMins = regLabels.map(reg => {
+            const r = res.regMap[reg];
+            return (r && r.nAtencion > 0) ? parseFloat((r.sumAtencion / r.nAtencion / 60.0).toFixed(2)) : 2.5;
+        });
+
+        chartVolumenVsTiempoRegInst.data.datasets[0].data = volTotales;
+        chartVolumenVsTiempoRegInst.data.datasets[1].data = buzonHrs;
+        chartVolumenVsTiempoRegInst.data.datasets[2].data = revMins;
+        chartVolumenVsTiempoRegInst.update('none');
+    }
+
+    if (chartSpeedDistributionInst) {
+        const speedKeys = ['<=2s', '2-5s', '5-15s', '15-60s', '1-5m', '>5m'];
+        const spdAprob = speedKeys.map(k => res.speedMap[k] ? Math.max(0, res.speedMap[k].casos - res.speedMap[k].rech) : 0);
+        const spdRech = speedKeys.map(k => res.speedMap[k] ? res.speedMap[k].rech : 0);
+
+        chartSpeedDistributionInst.data.datasets[0].data = spdAprob;
+        chartSpeedDistributionInst.data.datasets[1].data = spdRech;
+        chartSpeedDistributionInst.update('none');
+    }
+
+    // Renderizar la Tabla Ejecutiva de Tiempo hasta 1ª Atención (A LA PAR: Total vs No Rechazadas)
+    const tbAten = document.getElementById('tableRegionalAtencion');
+    const tbAtenFoot = document.getElementById('tableRegionalAtencionFoot');
+    if (tbAten && tbAtenFoot) {
+        tbAten.innerHTML = '';
+        let totActN = 0, totActSum = 0;
+        let totCorN = 0, totCorSum = 0;
+        let totBuzN = 0, totBuzSum = 0;
+        let totBolN = 0, totBolSum = 0;
+        let totGlobN = 0, totGlobSum = 0;
+
+        let totAprobActN = 0, totAprobActSum = 0;
+        let totAprobCorN = 0, totAprobCorSum = 0;
+        let totAprobGlobN = 0, totAprobGlobSum = 0;
+
+        const regColors = {
+            'CENTRAL': 'text-blue-900 bg-blue-50 border-blue-200',
+            'OCCIDENTE': 'text-emerald-900 bg-emerald-50 border-emerald-200',
+            'SUR': 'text-amber-900 bg-amber-50 border-amber-200',
+            'NORORIENTE': 'text-purple-900 bg-purple-50 border-purple-200'
+        };
+
+        let htmlAten = '';
+        regLabels.forEach(regName => {
+            const r = res.regMap[regName] || {};
+            const actN = r.actN || 0;
+            const actSum = r.actSum || 0;
+            const actProm = actN > 0 ? (actSum / actN) : 0;
+
+            const corN = r.corN || 0;
+            const corSum = r.corSum || 0;
+            const corProm = corN > 0 ? (corSum / corN) : 0;
+
+            const secBuz = r.nBuzon > 0 ? (r.sumBuzon / r.nBuzon) : 0;
+            const secBol = r.nBolson > 0 ? (r.sumBolson / r.nBolson) : 0;
+
+            const globN = r.nCreacionAten || 0;
+            const globSum = r.sumCreacionAten || 0;
+            const globProm = globN > 0 ? (globSum / globN) : 0;
+
+            // Métricas NO Rechazadas (Aprobadas)
+            const apActN = r.aprobActN || 0;
+            const apActSum = r.aprobActSum || 0;
+            const apActProm = apActN > 0 ? (apActSum / apActN) : 0;
+
+            const apCorN = r.aprobCorN || 0;
+            const apCorSum = r.aprobCorSum || 0;
+            const apCorProm = apCorN > 0 ? (apCorSum / apCorN) : 0;
+
+            const apGlobN = r.aprobNCreacionAten || 0;
+            const apGlobSum = r.aprobSumCreacionAten || 0;
+            const apGlobProm = apGlobN > 0 ? (apGlobSum / apGlobN) : 0;
+
+            totActN += actN; totActSum += actSum;
+            totCorN += corN; totCorSum += corSum;
+            totBuzN += (r.nBuzon || 0); totBuzSum += (r.sumBuzon || 0);
+            totBolN += (r.nBolson || 0); totBolSum += (r.sumBolson || 0);
+            totGlobN += globN; totGlobSum += globSum;
+
+            totAprobActN += apActN; totAprobActSum += apActSum;
+            totAprobCorN += apCorN; totAprobCorSum += apCorSum;
+            totAprobGlobN += apGlobN; totAprobGlobSum += apGlobSum;
+
+            const colorClass = regColors[regName] || 'text-slate-900 bg-slate-50 border-slate-200';
+
+            htmlAten += `
+            <tr class="hover:bg-slate-50/80 transition-colors">
+                <td class="p-3 font-bold text-slate-900">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-bold ${colorClass}">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${regName}
+                    </span>
+                </td>
+                <td class="p-2.5 text-right font-mono text-slate-700 bg-slate-50/30">${formatAdaptiveTime(actProm)}</td>
+                <td class="p-2.5 text-right font-mono text-slate-700 bg-slate-50/30">${formatAdaptiveTime(corProm)}</td>
+                <td class="p-2.5 text-right font-bold text-indigo-900 bg-indigo-50/50 border-r border-slate-200">
+                    ${formatAdaptiveTime(globProm)}
+                </td>
+                <td class="p-2.5 text-right font-bold text-sky-800 bg-sky-50/40">${formatAdaptiveTime(apActProm)}</td>
+                <td class="p-2.5 text-right font-bold text-violet-800 bg-violet-50/40">${formatAdaptiveTime(apCorProm)}</td>
+                <td class="p-2.5 text-right font-black text-emerald-800 bg-emerald-50/70 border-r border-slate-200">
+                    <span class="inline-block px-2 py-0.5 rounded bg-emerald-100/80 border border-emerald-200">${formatAdaptiveTime(apGlobProm)}</span>
+                </td>
+                <td class="p-2.5 text-right font-semibold text-blue-700">${formatAdaptiveTime(secBuz)}</td>
+                <td class="p-2.5 text-right font-semibold text-slate-700">${formatAdaptiveTime(secBol)}</td>
+            </tr>`;
+        });
+        tbAten.innerHTML = htmlAten;
+
+        const totActProm = totActN > 0 ? (totActSum / totActN) : 0;
+        const totCorProm = totCorN > 0 ? (totCorSum / totCorN) : 0;
+        const totBuzProm = totBuzN > 0 ? (totBuzSum / totBuzN) : 0;
+        const totBolProm = totBolN > 0 ? (totBolSum / totBolN) : 0;
+        const totGlobProm = totGlobN > 0 ? (totGlobSum / totGlobN) : 0;
+
+        const totAprobActProm = totAprobActN > 0 ? (totAprobActSum / totAprobActN) : 0;
+        const totAprobCorProm = totAprobCorN > 0 ? (totAprobCorSum / totAprobCorN) : 0;
+        const totAprobGlobProm = totAprobGlobN > 0 ? (totAprobGlobSum / totAprobGlobN) : 0;
+
+        tbAtenFoot.innerHTML = `
+        <tr class="bg-slate-100 border-t-2 border-slate-300">
+            <td class="p-3 font-black text-slate-900 flex items-center gap-1.5">
+                <i data-lucide="globe" class="w-4 h-4 text-indigo-700"></i> TOTAL NACIONAL
+            </td>
+            <td class="p-2.5 text-right font-bold text-slate-900 bg-slate-200/50">${formatAdaptiveTime(totActProm)}</td>
+            <td class="p-2.5 text-right font-bold text-slate-900 bg-slate-200/50">${formatAdaptiveTime(totCorProm)}</td>
+            <td class="p-2.5 text-right font-black text-indigo-950 bg-indigo-100/80 border-r border-slate-300">
+                ${formatAdaptiveTime(totGlobProm)}
+            </td>
+            <td class="p-2.5 text-right font-black text-sky-900 bg-sky-100/70">${formatAdaptiveTime(totAprobActProm)}</td>
+            <td class="p-2.5 text-right font-black text-violet-900 bg-violet-100/70">${formatAdaptiveTime(totAprobCorProm)}</td>
+            <td class="p-2.5 text-right font-black text-emerald-950 bg-emerald-100 border-r border-slate-300">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-emerald-600 text-white shadow-xs">${formatAdaptiveTime(totAprobGlobProm)}</span>
+            </td>
+            <td class="p-2.5 text-right font-bold text-blue-900">${formatAdaptiveTime(totBuzProm)}</td>
+            <td class="p-2.5 text-right font-bold text-slate-900">${formatAdaptiveTime(totBolProm)}</td>
+        </tr>`;
+    }
+
+    // Renderizar la Tabla Histórica por Fechas / Meses (A la Par: Total vs No Rechazadas)
+    const tbFechas = document.getElementById('tableFechasComparativa');
+    const tbFechasFoot = document.getElementById('tableFechasComparativaFoot');
+    if (tbFechas && tbFechasFoot) {
+        tbFechas.innerHTML = '';
+        let totMCasos = 0, totMSumBuz = 0, totMNBuz = 0, totMSumAten = 0, totMNAten = 0, totMSumCic = 0, totMNCic = 0;
+        let totMApCasos = 0, totMApSumBuz = 0, totMApNBuz = 0, totMApSumAten = 0, totMApNAten = 0, totMApSumCic = 0, totMApNCic = 0;
+
+        activeMonths.forEach(m => {
+            const mObj = res.monthMap[m] || {};
+            const casos = mObj.casos || 0;
+            const secBuz = mObj.nBuzon > 0 ? (mObj.sumBuzon / mObj.nBuzon) : 0;
+            const secAten = mObj.nAten > 0 ? (mObj.sumAten / mObj.nAten) : 0;
+            const secCic = mObj.nCiclo > 0 ? (mObj.sumCiclo / mObj.nCiclo) : 0;
+
+            const apCasos = mObj.aprobCasos || 0;
+            const pctExito = casos > 0 ? ((apCasos / casos) * 100).toFixed(1) : '0.0';
+            const apSecBuz = mObj.aprobNBuzon > 0 ? (mObj.aprobSumBuzon / mObj.aprobNBuzon) : 0;
+            const apSecAten = mObj.aprobNAten > 0 ? (mObj.aprobSumAten / mObj.aprobNAten) : 0;
+            const apSecCic = mObj.aprobNCiclo > 0 ? (mObj.aprobSumCiclo / mObj.aprobNCiclo) : 0;
+
+            totMCasos += casos;
+            totMSumBuz += (mObj.sumBuzon || 0); totMNBuz += (mObj.nBuzon || 0);
+            totMSumAten += (mObj.sumAten || 0); totMNAten += (mObj.nAten || 0);
+            totMSumCic += (mObj.sumCiclo || 0); totMNCic += (mObj.nCiclo || 0);
+
+            totMApCasos += apCasos;
+            totMApSumBuz += (mObj.aprobSumBuzon || 0); totMApNBuz += (mObj.aprobNBuzon || 0);
+            totMApSumAten += (mObj.aprobSumAten || 0); totMApNAten += (mObj.aprobNAten || 0);
+            totMApSumCic += (mObj.aprobSumCiclo || 0); totMApNCic += (mObj.aprobNCiclo || 0);
+
+            tbFechas.innerHTML += `
+            <tr class="hover:bg-slate-50/80 transition-colors">
+                <td class="p-2.5 font-bold text-slate-900 flex items-center gap-1.5">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i> ${m}
+                </td>
+                <td class="p-2 text-right font-mono text-slate-600 border-l border-slate-200">${casos.toLocaleString()}</td>
+                <td class="p-2 text-right font-mono text-blue-700">${formatAdaptiveTime(secBuz)}</td>
+                <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/50">${formatAdaptiveTime(secAten)}</td>
+                <td class="p-2 text-right font-bold text-purple-900 bg-purple-50/50 border-r border-slate-200">${formatAdaptiveTime(secCic)}</td>
+                
+                <td class="p-2 text-right font-mono font-bold text-emerald-800 bg-emerald-50/40">
+                    ${apCasos.toLocaleString()} <span class="text-[10px] font-normal text-emerald-600">(${pctExito}%)</span>
+                </td>
+                <td class="p-2 text-right font-mono text-blue-800 bg-blue-50/20">${formatAdaptiveTime(apSecBuz)}</td>
+                <td class="p-2 text-right font-black text-emerald-900 bg-emerald-50">${formatAdaptiveTime(apSecAten)}</td>
+                <td class="p-2 text-right font-black text-purple-950 bg-purple-50/60">${formatAdaptiveTime(apSecCic)}</td>
+            </tr>`;
+        });
+
+        const totMSecBuz = totMNBuz > 0 ? (totMSumBuz / totMNBuz) : 0;
+        const totMSecAten = totMNAten > 0 ? (totMSumAten / totMNAten) : 0;
+        const totMSecCic = totMNCic > 0 ? (totMSumCic / totMNCic) : 0;
+
+        const totPctExito = totMCasos > 0 ? ((totMApCasos / totMCasos) * 100).toFixed(1) : '0.0';
+        const totMApSecBuz = totMApNBuz > 0 ? (totMApSumBuz / totMApNBuz) : 0;
+        const totMApSecAten = totMApNAten > 0 ? (totMApSumAten / totMApNAten) : 0;
+        const totMApSecCic = totMApNCic > 0 ? (totMApSumCic / totMApNCic) : 0;
+
+        tbFechasFoot.innerHTML = `
+        <tr class="bg-slate-100 border-t-2 border-slate-300">
+            <td class="p-3 font-black text-slate-900 flex items-center gap-1.5">
+                <i data-lucide="globe" class="w-4 h-4 text-indigo-700"></i> TOTAL HISTÓRICO
+            </td>
+            <td class="p-2 text-right font-mono font-bold text-slate-900 border-l border-slate-300">${totMCasos.toLocaleString()}</td>
+            <td class="p-2 text-right font-bold text-blue-900">${formatAdaptiveTime(totMSecBuz)}</td>
+            <td class="p-2 text-right font-black text-indigo-950 bg-indigo-100/70">${formatAdaptiveTime(totMSecAten)}</td>
+            <td class="p-2 text-right font-black text-purple-950 bg-purple-100/70 border-r border-slate-300">${formatAdaptiveTime(totMSecCic)}</td>
+
+            <td class="p-2 text-right font-mono font-black text-emerald-950 bg-emerald-100/80">
+                ${totMApCasos.toLocaleString()} <span class="text-[10px] font-bold text-emerald-700">(${totPctExito}%)</span>
+            </td>
+            <td class="p-2 text-right font-bold text-blue-950 bg-blue-100/50">${formatAdaptiveTime(totMApSecBuz)}</td>
+            <td class="p-2 text-right font-black text-emerald-950 bg-emerald-100">${formatAdaptiveTime(totMApSecAten)}</td>
+            <td class="p-2 text-right font-black text-purple-950 bg-purple-100">${formatAdaptiveTime(totMApSecCic)}</td>
+        </tr>`;
     }
 
     const tbRegD = document.getElementById('tableRegionalDinamica');
-    tbRegD.innerHTML = '';
-    ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'].forEach(regName => {
-        const r = res.regMap[regName];
-        const pctAp = r.casos > 0 ? ((r.aprob / r.casos)*100).toFixed(1) : '0.0';
-        const pctFTR = r.casos > 0 ? ((r.aprob_dir / r.casos)*100).toFixed(1) : '0.0';
-        const pctRe = r.casos > 0 ? ((r.rech / r.casos)*100).toFixed(1) : '0.0';
-        const secBuz = r.nBuzon > 0 ? (r.sumBuzon / r.nBuzon) : 0;
-        const secBol = r.nBolson > 0 ? (r.sumBolson / r.nBolson) : 0;
-        const secAte = r.nAte > 0 ? (r.sumAte / r.nAte) : 0;
-        const secCic = r.nCiclo > 0 ? (r.sumCiclo / r.nCiclo) : 0;
-        const sla1Pct = r.nCiclo > 0 ? ((r.sla1d / r.nCiclo)*100).toFixed(1) : '0.0';
+    if (tbRegD) {
+        tbRegD.innerHTML = '';
+        ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'].forEach(regName => {
+            const r = res.regMap[regName] || { casos: 0, aprob: 0, aprob_dir: 0, rech: 0, nBuzon: 0, sumBuzon: 0, nBolson: 0, sumBolson: 0, nAte: 0, sumAte: 0, nCiclo: 0, sumCiclo: 0, sla1d: 0 };
+            const pctAp = r.casos > 0 ? ((r.aprob / r.casos)*100).toFixed(1) : '0.0';
+            const pctFTR = r.casos > 0 ? ((r.aprob_dir / r.casos)*100).toFixed(1) : '0.0';
+            const pctRe = r.casos > 0 ? ((r.rech / r.casos)*100).toFixed(1) : '0.0';
+            const secBuz = r.nBuzon > 0 ? (r.sumBuzon / r.nBuzon) : 0;
+            const secBol = r.nBolson > 0 ? (r.sumBolson / r.nBolson) : 0;
+            const secAte = r.nAte > 0 ? (r.sumAte / r.nAte) : 0;
+            const secCic = r.nCiclo > 0 ? (r.sumCiclo / r.nCiclo) : 0;
+            const sla1Pct = r.nCiclo > 0 ? ((r.sla1d / r.nCiclo)*100).toFixed(1) : '0.0';
 
-        tbRegD.innerHTML += `<tr>
-            <td class="p-3 font-bold text-slate-900">${regName}</td>
-            <td class="p-3 text-right font-mono text-slate-600">${r.casos.toLocaleString()}</td>
-            <td class="p-3 text-right font-bold text-emerald-700 bg-emerald-50/40">${pctAp}%</td>
-            <td class="p-3 text-right font-bold text-cyan-700 bg-cyan-50/40">${pctFTR}%</td>
-            <td class="p-3 text-right font-bold text-rose-700 bg-rose-50/40">${pctRe}%</td>
-            <td class="p-3 text-right font-semibold text-blue-700">${formatAdaptiveTime(secBuz)}</td>
-            <td class="p-3 text-right font-semibold text-slate-800">${formatAdaptiveTime(secBol)}</td>
-            <td class="p-3 text-right font-semibold text-slate-600">${formatAdaptiveTime(secAte)}</td>
-            <td class="p-3 text-right font-black text-purple-700 bg-purple-50/50">${formatAdaptiveTime(secCic)}</td>
-            <td class="p-3 text-right font-bold text-emerald-600">${sla1Pct}%</td>
-        </tr>`;
-    });
+            tbRegD.innerHTML += `<tr>
+                <td class="p-3 font-bold text-slate-900">${regName}</td>
+                <td class="p-3 text-right font-mono text-slate-600">${r.casos.toLocaleString()}</td>
+                <td class="p-3 text-right font-bold text-emerald-700 bg-emerald-50/40">${pctAp}%</td>
+                <td class="p-3 text-right font-bold text-cyan-700 bg-cyan-50/40">${pctFTR}%</td>
+                <td class="p-3 text-right font-bold text-rose-700 bg-rose-50/40">${pctRe}%</td>
+                <td class="p-3 text-right font-semibold text-blue-700">${formatAdaptiveTime(secBuz)}</td>
+                <td class="p-3 text-right font-semibold text-slate-800">${formatAdaptiveTime(secBol)}</td>
+                <td class="p-3 text-right font-semibold text-slate-600">${formatAdaptiveTime(secAte)}</td>
+                <td class="p-3 text-right font-black text-purple-700 bg-purple-50/50">${formatAdaptiveTime(secCic)}</td>
+                <td class="p-3 text-right font-bold text-emerald-600">${sla1Pct}%</td>
+            </tr>`;
+        });
+    }
+
+    // Render Tabla de Balance de Carga & Ratio de Sobrecarga Regional
+    const tbSobrecarga = document.getElementById('tableSobrecargaRegional');
+    if (tbSobrecarga) {
+        let totalDemanda = 0;
+        let totalRevisores = 0;
+        const regData = ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'].map(reg => {
+            const r = res.regMap[reg] || { casos: 0, ops: {} };
+            const numOps = r.ops ? Object.keys(r.ops).length : 0;
+            totalDemanda += r.casos;
+            totalRevisores += numOps;
+            return {
+                reg: reg,
+                casos: r.casos,
+                revisores: numOps,
+                cargaMedia: numOps > 0 ? Math.round(r.casos / numOps) : 0
+            };
+        });
+
+        tbSobrecarga.innerHTML = '';
+        regData.forEach(item => {
+            const pctDemanda = totalDemanda > 0 ? ((item.casos / totalDemanda) * 100) : 0;
+            const pctRevisores = totalRevisores > 0 ? ((item.revisores / totalRevisores) * 100) : 0;
+            const ratioSobrecarga = pctRevisores > 0 ? (pctDemanda / pctRevisores) : 1.0;
+            
+            let statusBadge = '';
+            if (ratioSobrecarga > 1.15) {
+                statusBadge = '<span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-1 rounded-md border border-rose-200">🔴 Sobrecarga Severa</span>';
+            } else if (ratioSobrecarga < 0.85) {
+                statusBadge = '<span class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2.5 py-1 rounded-md border border-blue-200">🔵 Capacidad Holgada</span>';
+            } else {
+                statusBadge = '<span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-1 rounded-md border border-emerald-200">🟢 Balance Óptimo</span>';
+            }
+
+            const ratioClass = ratioSobrecarga > 1.15 ? 'text-rose-700 font-black' : (ratioSobrecarga < 0.85 ? 'text-blue-700 font-bold' : 'text-emerald-700 font-bold');
+
+            tbSobrecarga.innerHTML += `
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-3 font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full ${ratioSobrecarga > 1.15 ? 'bg-rose-500' : 'bg-emerald-500'}"></span>
+                    <span>${item.reg}</span>
+                </td>
+                <td class="p-3 text-right font-mono font-bold text-slate-800">${item.casos.toLocaleString()}</td>
+                <td class="p-3 text-right font-bold text-slate-700">${pctDemanda.toFixed(1)}%</td>
+                <td class="p-3 text-right font-mono font-semibold text-slate-700">${item.revisores} revisores</td>
+                <td class="p-3 text-right font-mono font-bold text-indigo-700 bg-indigo-50/40">${item.cargaMedia.toLocaleString()} casos/rev</td>
+                <td class="p-3 text-right font-mono text-slate-600">${pctRevisores.toFixed(1)}%</td>
+                <td class="p-3 text-right font-mono ${ratioClass} bg-slate-50">${ratioSobrecarga.toFixed(2)}x</td>
+                <td class="p-3 text-center">${statusBadge}</td>
+            </tr>`;
+        });
+    }
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
 }
 
 function renderTabTiempos(res) {
@@ -302,6 +705,44 @@ function renderTabTiempos(res) {
     document.getElementById('kpiSLAFueraCnt').innerText = res.slaFuera.toLocaleString() + ' rezagados';
     document.getElementById('barSLAFuera').style.width = pctFuera + '%';
 
+    // Diagnóstico de Horas Calendario vs Horas Hábiles (Horarios Inhábiles / Fin de Semana)
+    if (res.offHoursStats) {
+        const elCal = document.getElementById('kpiCicloCalProm');
+        if (elCal) elCal.innerText = res.offHoursStats.horasCalProm.toFixed(1) + ' horas';
+        const elHab = document.getElementById('kpiCicloHabProm');
+        if (elHab) elHab.innerText = res.offHoursStats.horasHabProm.toFixed(2) + ' horas';
+        const elFuera = document.getElementById('kpiCicloFueraProm');
+        if (elFuera) elFuera.innerText = res.offHoursStats.horasFueraJornada.toFixed(1) + ' h (' + res.offHoursStats.pctFueraJornada.toFixed(1) + '%)';
+    }
+
+    // Descomposición del Cuello de Botella: Espera Pasiva en Cola vs Dictamen Activo
+    if (res.queueDecompStats) {
+        const pEsp = res.queueDecompStats.pctEsperaPasiva;
+        const pDic = res.queueDecompStats.pctDictamenActivo;
+        const strEsp = formatAdaptiveTime(res.queueDecompStats.secEsperaPasiva);
+        const strDic = formatAdaptiveTime(res.queueDecompStats.secDictamenActivo);
+
+        const elPEsp = document.getElementById('kpiEsperaPasivaPct');
+        if (elPEsp) elPEsp.innerText = pEsp.toFixed(1) + '%';
+        const elHEsp = document.getElementById('kpiEsperaPasivaHoras');
+        if (elHEsp) elHEsp.innerText = strEsp;
+
+        const elPDic = document.getElementById('kpiDictamenActivoPct');
+        if (elPDic) elPDic.innerText = pDic.toFixed(1) + '%';
+        const elSDic = document.getElementById('kpiDictamenActivoSeg');
+        if (elSDic) elSDic.innerText = strDic;
+
+        const elBEsp = document.getElementById('barEsperaPasiva');
+        if (elBEsp) elBEsp.style.width = pEsp + '%';
+        const elBDic = document.getElementById('barDictamenActivo');
+        if (elBDic) elBDic.style.width = pDic + '%';
+
+        const elCardEsp = document.getElementById('cardEsperaPasivaVal');
+        if (elCardEsp) elCardEsp.innerText = `${strEsp} (${pEsp.toFixed(1)}%)`;
+        const elCardDic = document.getElementById('cardDictamenActivoVal');
+        if (elCardDic) elCardDic.innerText = `${strDic} (${pDic.toFixed(1)}%)`;
+    }
+
     const tbTiemposD = document.getElementById('bodyTiemposDinamicos');
     tbTiemposD.innerHTML = `
         <tr>
@@ -316,6 +757,15 @@ function renderTabTiempos(res) {
             <td class="p-3 text-slate-600 font-mono">FechaRevision - FechaAsignacion</td>
             <td class="p-3 text-right font-mono text-slate-600">${res.nBolson.toLocaleString()}</td>
             <td class="p-3 text-right font-black text-blue-700 bg-blue-50/40">${formatAdaptiveTime(res.nBolson > 0 ? (res.sumBolson/res.nBolson) : 0)}</td>
+            <td class="p-3 text-right text-slate-500">-</td>
+        </tr>
+        <tr class="bg-indigo-50/60 font-semibold border-y border-indigo-100">
+            <td class="p-3 font-bold text-indigo-950 flex items-center gap-1.5">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-600"></i> Tiempo hasta 1ª Atención (Apertura)
+            </td>
+            <td class="p-3 text-indigo-800 font-mono text-[11px]">Σ(FechaRevision - FechaCreacion) / N</td>
+            <td class="p-3 text-right font-mono text-indigo-900">${res.nCreacionAtenHab.toLocaleString()}</td>
+            <td class="p-3 text-right font-black text-indigo-700 bg-indigo-100/50">${formatAdaptiveTime(res.nCreacionAtenHab > 0 ? (res.sumCreacionAtenHab/res.nCreacionAtenHab) : 0)}</td>
             <td class="p-3 text-right text-slate-500">-</td>
         </tr>
         <tr class="bg-rose-50/30">
@@ -343,6 +793,28 @@ function renderTabTiempos(res) {
 }
 
 function renderTabCalidad(res) {
+    // 1. Rondas de Identificación Dinámicas
+    const elR1AprobCnt = document.getElementById('dynRonda1raAprobCnt');
+    if (elR1AprobCnt) {
+        const pct1Aprob = res.totalCasos > 0 ? ((res.totalAprobDirectas / res.totalCasos)*100).toFixed(1) : '0.0';
+        elR1AprobCnt.innerText = res.totalAprobDirectas.toLocaleString();
+        document.getElementById('dynRonda1raAprobPct').innerText = `${pct1Aprob}% del universo`;
+    }
+
+    const elR1RechCnt = document.getElementById('dynRonda1raRechCnt');
+    if (elR1RechCnt) {
+        const pct1Rech = res.totalCasos > 0 ? ((res.totalRechazos / res.totalCasos)*100).toFixed(1) : '0.0';
+        elR1RechCnt.innerText = res.totalRechazos.toLocaleString();
+        document.getElementById('dynRonda1raRechPct').innerText = `${pct1Rech}% incidencias`;
+    }
+
+    const elR2SubCnt = document.getElementById('dynRonda2daSubCnt');
+    if (elR2SubCnt) {
+        const pct2Sub = res.totalRechazos > 0 ? ((res.totalAprobSubsanadas / res.totalRechazos)*100).toFixed(1) : '0.0';
+        elR2SubCnt.innerText = res.totalAprobSubsanadas.toLocaleString();
+        document.getElementById('dynRonda2daSubPct').innerText = `${pct2Sub}% subsanaron`;
+    }
+
     const totRechFiltrado = res.rechAprob + res.rechAband + res.rechBloq;
     const recupAprobPct = totRechFiltrado > 0 ? ((res.rechAprob / totRechFiltrado)*100).toFixed(1) : '0.0';
     const recupAbandPct = totRechFiltrado > 0 ? ((res.rechAband / totRechFiltrado)*100).toFixed(1) : '0.0';
@@ -355,9 +827,83 @@ function renderTabCalidad(res) {
     document.getElementById('kpiRecupBloqPct').innerText = recupBloqPct + '%';
     document.getElementById('kpiRecupBloqCnt').innerText = res.rechBloq.toLocaleString() + ' Trámites';
 
+    // 2. Diagnóstico del Costo Oculto de Re-trabajo
+    if (res.retrabajoStats) {
+        const elRCasos = document.getElementById('kpiRetrabajoCasos');
+        if (elRCasos) elRCasos.innerText = res.retrabajoStats.casos.toLocaleString() + ' casos';
+        const elRHoras = document.getElementById('kpiRetrabajoHoras');
+        if (elRHoras) elRHoras.innerText = res.retrabajoStats.horasHombre.toFixed(1) + ' horas';
+        const elRJornadas = document.getElementById('kpiRetrabajoJornadas');
+        if (elRJornadas) elRJornadas.innerText = res.retrabajoStats.jornadas8h.toFixed(1) + ' jornadas';
+    }
+
+    // 3. Matriz de Rescate vs Deserción por Causal Taxonómica
+    const tbRescate = document.getElementById('tableRescateCausal');
+    if (tbRescate && res.causalOutcomeMap) {
+        tbRescate.innerHTML = '';
+        const causalEntries = Object.keys(res.causalOutcomeMap).map(k => {
+            const item = res.causalOutcomeMap[k];
+            const tasaRescate = item.total > 0 ? ((item.subsanadas / item.total) * 100) : 0;
+            const tasaAbandono = item.total > 0 ? ((item.abandonadas / item.total) * 100) : 0;
+            return {
+                causal: k,
+                total: item.total,
+                subsanadas: item.subsanadas,
+                abandonadas: item.abandonadas,
+                bloqueadas: item.bloqueadas,
+                tasaRescate: tasaRescate,
+                tasaAbandono: tasaAbandono
+            };
+        }).sort((a, b) => b.total - a.total);
+
+        causalEntries.forEach(item => {
+            let badgeRescate = '';
+            if (item.tasaRescate >= 70) {
+                badgeRescate = '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200">Alta Recuperación</span>';
+            } else if (item.tasaRescate >= 40) {
+                badgeRescate = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200">Fricción Moderada</span>';
+            } else {
+                badgeRescate = '<span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-rose-200">Fuga / Fricción Crítica</span>';
+            }
+
+            tbRescate.innerHTML += `
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-3 font-semibold text-slate-800">${item.causal}</td>
+                <td class="p-3 text-right font-mono font-bold text-slate-900">${item.total.toLocaleString()}</td>
+                <td class="p-3 text-right font-mono font-bold text-emerald-700 bg-emerald-50/40">${item.subsanadas.toLocaleString()}</td>
+                <td class="p-3 text-right font-bold text-emerald-800">${item.tasaRescate.toFixed(1)}%</td>
+                <td class="p-3 text-right font-mono text-rose-700">${item.abandonadas.toLocaleString()}</td>
+                <td class="p-3 text-right font-mono text-slate-500">${item.bloqueadas.toLocaleString()}</td>
+                <td class="p-3 text-center">${badgeRescate}</td>
+            </tr>`;
+        });
+    }
+
+    // 4. Índice de Fricción por Reincidencia (Single-Touch vs Multi-Touch Bounce)
+    if (res.reincidenciaStats) {
+        const sCasos = res.reincidenciaStats.singleTouchCasos;
+        const mCasos = res.reincidenciaStats.multiTouchCasos;
+        const totRecup = sCasos + mCasos;
+        const pctSingle = totRecup > 0 ? ((sCasos / totRecup) * 100) : 73.5;
+        const pctMulti = totRecup > 0 ? (100 - pctSingle) : 26.5;
+
+        const elSPct = document.getElementById('kpiSingleTouchPct');
+        if (elSPct) elSPct.innerText = pctSingle.toFixed(1) + '%';
+        const elSCnt = document.getElementById('kpiSingleTouchCasos');
+        if (elSCnt) elSCnt.innerText = `${sCasos.toLocaleString()} casos recuperados`;
+
+        const elMPct = document.getElementById('kpiMultiTouchPct');
+        if (elMPct) elMPct.innerText = pctMulti.toFixed(1) + '%';
+        const elMCnt = document.getElementById('kpiMultiTouchCasos');
+        if (elMCnt) elMCnt.innerText = `${mCasos.toLocaleString()} casos reincidentes`;
+
+        const elTR = document.getElementById('kpiTasaReincidencia');
+        if (elTR) elTR.innerText = res.reincidenciaStats.pctReincidencia.toFixed(1) + '%';
+    }
+
     if (chartDestinoRechInst) {
         chartDestinoRechInst.data.datasets[0].data = [res.rechAprob, res.rechAband, res.rechBloq];
-        chartDestinoRechInst.update();
+        chartDestinoRechInst.update('none');
     }
 
     document.getElementById('lblFugaInicialCnt').innerText = res.totalNoConf.toLocaleString();
@@ -368,22 +914,81 @@ function renderTabCalidad(res) {
     if (chartMacroInst) {
         chartMacroInst.data.labels = Object.keys(res.macCounts);
         chartMacroInst.data.datasets[0].data = Object.values(res.macCounts);
-        chartMacroInst.update();
+        chartMacroInst.update('none');
     }
 
     const tbTaxD = document.getElementById('tableTaxonomiaDinamica');
-    tbTaxD.innerHTML = '';
-    DATA.taxonomia.forEach(t => {
-        const cnt = res.subcatCounts[t.ID_Subcategoria] || 0;
-        tbTaxD.innerHTML += `<tr>
-            <td class="p-3 font-mono font-bold text-blue-700">${t.ID_Subcategoria}</td>
-            <td class="p-3 font-mono text-slate-500">${t.ID_Macro}</td>
-            <td class="p-3 font-medium text-slate-800">${t.Macro_Familia}</td>
-            <td class="p-3 text-slate-700">${t.Subcategoria_Granular}</td>
-            <td class="p-3 text-right font-black text-slate-900">${cnt.toLocaleString()}</td>
-        </tr>`;
-    });
+    if (tbTaxD) {
+        tbTaxD.innerHTML = '';
+        DATA.taxonomia.forEach(t => {
+            const cnt = res.subcatCounts[t.ID_Subcategoria] || 0;
+            tbTaxD.innerHTML += `<tr>
+                <td class="p-3 font-mono font-bold text-blue-700">${t.ID_Subcategoria}</td>
+                <td class="p-3 font-mono text-slate-500">${t.ID_Macro}</td>
+                <td class="p-3 font-medium text-slate-800">${t.Macro_Familia}</td>
+                <td class="p-3 text-slate-700">${t.Subcategoria_Granular}</td>
+                <td class="p-3 text-right font-black text-slate-900">${cnt.toLocaleString()}</td>
+            </tr>`;
+        });
+    }
 }
+
+let cachedEvaluatedOps = [];
+
+function renderFilteredOperadoresTable() {
+    const regBadgeStyles = {
+        'CENTRAL': 'bg-blue-100 text-blue-800 border-blue-200',
+        'OCCIDENTE': 'bg-amber-100 text-amber-800 border-amber-200',
+        'SUR': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+        'NORORIENTE': 'bg-purple-100 text-purple-800 border-purple-200'
+    };
+
+    const selCuadrante = document.getElementById('selCuadranteOp');
+    const selectedQ = selCuadrante ? selCuadrante.value : 'TODOS';
+
+    let displayOps = cachedEvaluatedOps;
+    if (selectedQ !== 'TODOS') {
+        displayOps = cachedEvaluatedOps.filter(o => o.cuadrante === selectedQ);
+    }
+
+    const tbOpD = document.getElementById('tableOperadoresDinamica');
+    if (tbOpD) {
+        let htmlOps = '';
+        displayOps.slice(0, 30).forEach(o => {
+            const badgeClass = regBadgeStyles[o.region] || 'bg-slate-100 text-slate-800 border-slate-200';
+            htmlOps += `<tr>
+                <td class="p-2.5 font-bold text-slate-900 flex items-center gap-1.5">${o.op}</td>
+                <td class="p-2.5 text-center">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-md border ${badgeClass}">${o.region}</span>
+                </td>
+                <td class="p-2.5 text-right font-mono font-bold text-slate-900 bg-slate-50">${o.total.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-emerald-700 bg-emerald-50/50">${o.aprob_tot.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono text-emerald-600">${o.aprob_dir.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono text-amber-600 font-semibold">${o.aprob_sub.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-rose-600">${o.rech_def.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-mono font-bold text-rose-700 bg-rose-50/40">${o.rech_eventos.toLocaleString()}</td>
+                <td class="p-2.5 text-right font-black text-blue-700">${o.tasa_incidencia}%</td>
+                <td class="p-2.5 text-right font-mono font-black text-amber-800 bg-amber-50/70 border-l border-slate-100">${o.tiempoStr}</td>
+            </tr>`;
+        });
+        if (displayOps.length === 0) {
+            htmlOps = `<tr><td colspan="10" class="p-6 text-center text-slate-400">No se encontraron revisores en este cuadrante para los filtros seleccionados.</td></tr>`;
+        }
+        tbOpD.innerHTML = htmlOps;
+    }
+}
+
+window.selectCuadranteQuick = function(qId) {
+    const sel = document.getElementById('selCuadranteOp');
+    if (sel) {
+        sel.value = qId;
+        renderFilteredOperadoresTable();
+    }
+};
+
+window.filterOperadoresCuadrante = function() {
+    renderFilteredOperadoresTable();
+};
 
 function renderTabGestion(res) {
     const speedLabels = ['<=2s', '2-5s', '5-15s', '15-60s', '1-5m', '>5m'];
@@ -395,7 +1000,7 @@ function renderTabGestion(res) {
     if (chartSpeedVsRechazoInst) {
         chartSpeedVsRechazoInst.data.labels = ['Ultra-Rápido (≤2s)', 'Rápido (2-5s)', 'Moderado (5-15s)', 'Analítico (15-60s)', 'Detallado (1-5m)', 'Pausa/Audit (>5m)'];
         chartSpeedVsRechazoInst.data.datasets[0].data = speedRechPcts;
-        chartSpeedVsRechazoInst.update();
+        chartSpeedVsRechazoInst.update('none');
     }
 
     const opsArray = Object.keys(res.opMap).map(k => res.opMap[k]);
@@ -415,7 +1020,7 @@ function renderTabGestion(res) {
             calcAvgSec(segMedio),
             calcAvgSec(segBajo)
         ];
-        chartVolumeVsSpeedInst.update();
+        chartVolumeVsSpeedInst.update('none');
     }
 
     // 1. RENDER TABLA DE CAPACIDAD DIARIA EN JORNADA HÁBIL (8H)
@@ -479,43 +1084,127 @@ function renderTabGestion(res) {
         }
     }
 
-    // 2. RENDER TABLA GENERAL Y GRÁFICA DE OPERADORES
-    const topOps = Object.keys(res.opMap).map(k => {
+    // 2. RENDER MATRIZ DE CUADRANTES Y TABLA DE OPERADORES
+    let countQ1 = 0, countQ2 = 0, countQ3 = 0, countQ4 = 0;
+
+    cachedEvaluatedOps = Object.keys(res.opMap).map(k => {
         const obj = res.opMap[k];
         const pctIncidencia = obj.total > 0 ? ((obj.rech_eventos / obj.total)*100).toFixed(1) : '0.0';
+        const numIncidencia = parseFloat(pctIncidencia);
+        
+        let mainReg = 'MULTIRREGIONAL';
+        let maxRegCasos = 0;
+        if (obj.regions) {
+            Object.keys(obj.regions).forEach(rg => {
+                if (obj.regions[rg] > maxRegCasos) {
+                    maxRegCasos = obj.regions[rg];
+                    mainReg = rg;
+                }
+            });
+        }
+        
+        const avgSec = (obj.nAte > 0 && obj.sumAte > 0) ? (obj.sumAte / obj.nAte) : 0;
+        const tiempoStr = typeof formatAdaptiveTime === 'function' ? formatAdaptiveTime(avgSec) : `${avgSec.toFixed(1)}s`;
+
+        // Asignación de Cuadrante (Velocidad vs Incidencia/Rechazo)
+        let cuadrante = 'Q1';
+        if (avgSec <= 4.0 && numIncidencia <= 25.0) {
+            cuadrante = 'Q1';
+            countQ1++;
+        } else if (avgSec > 4.0 && numIncidencia <= 25.0) {
+            cuadrante = 'Q2';
+            countQ2++;
+        } else if (avgSec <= 3.0 && numIncidencia > 25.0) {
+            cuadrante = 'Q3';
+            countQ3++;
+        } else {
+            cuadrante = 'Q4';
+            countQ4++;
+        }
+
         return {
-            op: k, total: obj.total, aprob_tot: obj.aprob,
+            op: k, region: mainReg, total: obj.total, aprob_tot: obj.aprob,
             aprob_dir: obj.aprob_dir, aprob_sub: obj.aprob_sub,
             rech_def: obj.rech_def, rech_eventos: obj.rech_eventos,
-            tasa_incidencia: pctIncidencia
+            tasa_incidencia: pctIncidencia,
+            avgSec: avgSec,
+            tiempoStr: tiempoStr,
+            cuadrante: cuadrante
         };
-    }).sort((a,b) => b.total - a.total).slice(0, 20);
+    }).sort((a,b) => b.total - a.total);
+
+    // Actualizar Badges de Cuadrantes
+    const bQ1 = document.getElementById('badgeCountQ1');
+    if (bQ1) bQ1.innerText = countQ1;
+    const bQ2 = document.getElementById('badgeCountQ2');
+    if (bQ2) bQ2.innerText = countQ2;
+    const bQ3 = document.getElementById('badgeCountQ3');
+    if (bQ3) bQ3.innerText = countQ3;
+    const bQ4 = document.getElementById('badgeCountQ4');
+    if (bQ4) bQ4.innerText = countQ4;
+
+    // 3. CÁLCULO DE DISPERSIÓN Y SUBJETIVIDAD INTER-REVISORES
+    const validOpsForDisp = cachedEvaluatedOps.filter(o => o.total >= 50);
+    if (validOpsForDisp.length > 1) {
+        let minOp = validOpsForDisp[0];
+        let maxOp = validOpsForDisp[0];
+        let sumRates = 0;
+
+        validOpsForDisp.forEach(o => {
+            const r = parseFloat(o.tasa_incidencia);
+            sumRates += r;
+            if (r < parseFloat(minOp.tasa_incidencia)) minOp = o;
+            if (r > parseFloat(maxOp.tasa_incidencia)) maxOp = o;
+        });
+
+        const meanRate = sumRates / validOpsForDisp.length;
+        let sumSqDiff = 0;
+        validOpsForDisp.forEach(o => {
+            const diff = parseFloat(o.tasa_incidencia) - meanRate;
+            sumSqDiff += (diff * diff);
+        });
+        const stdDev = Math.sqrt(sumSqDiff / validOpsForDisp.length);
+        const cvPct = meanRate > 0 ? ((stdDev / meanRate) * 100) : 0;
+        const rangePts = (parseFloat(maxOp.tasa_incidencia) - parseFloat(minOp.tasa_incidencia)).toFixed(1);
+
+        const elDMin = document.getElementById('kpiDispMin');
+        if (elDMin) elDMin.innerText = `${parseFloat(minOp.tasa_incidencia).toFixed(1)}%`;
+        const elDMinOp = document.getElementById('kpiDispMinOp');
+        if (elDMinOp) elDMinOp.innerText = `${minOp.op} (${minOp.region})`;
+
+        const elDMax = document.getElementById('kpiDispMax');
+        if (elDMax) elDMax.innerText = `${parseFloat(maxOp.tasa_incidencia).toFixed(1)}%`;
+        const elDMaxOp = document.getElementById('kpiDispMaxOp');
+        if (elDMaxOp) elDMaxOp.innerText = `${maxOp.op} (${maxOp.region})`;
+
+        const elDRange = document.getElementById('kpiDispRange');
+        if (elDRange) elDRange.innerText = `${rangePts} pts`;
+
+        const elDCV = document.getElementById('kpiDispCV');
+        if (elDCV) elDCV.innerText = `${cvPct.toFixed(1)}%`;
+    }
 
     if (chartOpsInst) {
-        chartOpsInst.data.labels = topOps.slice(0, 12).map(o => o.op);
-        chartOpsInst.data.datasets[0].data = topOps.slice(0, 12).map(o => parseFloat(o.tasa_incidencia));
-        chartOpsInst.update();
+        chartOpsInst.data.labels = cachedEvaluatedOps.slice(0, 12).map(o => o.op);
+        chartOpsInst.data.datasets[0].data = cachedEvaluatedOps.slice(0, 12).map(o => parseFloat(o.tasa_incidencia));
+        chartOpsInst.update('none');
     }
 
-    const tbOpD = document.getElementById('tableOperadoresDinamica');
-    if (tbOpD) {
-        tbOpD.innerHTML = '';
-        topOps.forEach(o => {
-            tbOpD.innerHTML += `<tr>
-                <td class="p-2.5 font-bold text-slate-900">${o.op}</td>
-                <td class="p-2.5 text-right font-mono font-bold text-slate-900 bg-slate-50">${o.total.toLocaleString()}</td>
-                <td class="p-2.5 text-right font-mono font-bold text-emerald-700 bg-emerald-50/50">${o.aprob_tot.toLocaleString()}</td>
-                <td class="p-2.5 text-right font-mono text-emerald-600">${o.aprob_dir.toLocaleString()}</td>
-                <td class="p-2.5 text-right font-mono text-amber-600 font-semibold">${o.aprob_sub.toLocaleString()}</td>
-                <td class="p-2.5 text-right font-mono font-bold text-rose-600">${o.rech_def.toLocaleString()}</td>
-                <td class="p-2.5 text-right font-mono font-bold text-rose-700 bg-rose-50/40">${o.rech_eventos.toLocaleString()}</td>
-                <td class="p-2.5 text-right font-black text-blue-700">${o.tasa_incidencia}%</td>
-            </tr>`;
-        });
-    }
+    renderFilteredOperadoresTable();
 }
 
+let applyFiltersFrameId = null;
 function applyFilters() {
+    if (applyFiltersFrameId) {
+        cancelAnimationFrame(applyFiltersFrameId);
+    }
+    applyFiltersFrameId = requestAnimationFrame(() => {
+        applyFiltersImmediate();
+        applyFiltersFrameId = null;
+    });
+}
+
+function applyFiltersImmediate() {
     if (!window.DATA || !window.DATA.loaded) {
         if (typeof updateSystemStatus === 'function') {
             updateSystemStatus("Sincronizando selección con motor...", "loading");
@@ -530,12 +1219,24 @@ function applyFilters() {
 
     const fGes = document.getElementById('selGestion').value;
     const fAnio = document.getElementById('selAnio').value;
+    const fTrim = document.getElementById('selTrimestre') ? document.getElementById('selTrimestre').value : 'TODOS';
     const fMes = document.getElementById('selMes').value;
     const fReg = document.getElementById('selRegion').value;
     const fEst = document.getElementById('selEstado').value;
     const fMac = document.getElementById('selMacro').value;
 
-    const res = processOlapFilters(DATA.cubo, fGes, fAnio, fMes, fReg, fEst, fMac);
+    const res = processOlapFilters(DATA.cubo, fGes, fAnio, fTrim, fMes, fReg, fEst, fMac);
+
+    // Actualizar resumen de filtros en versión móvil
+    const elMobSummary = document.getElementById('mobileFilterSummary');
+    if (elMobSummary) {
+        const regStr = fReg === 'TODAS' ? 'Todas' : fReg;
+        const anioStr = fAnio === 'TODOS' ? '' : ` • ${fAnio}`;
+        const trimStr = fTrim === 'TODOS' ? '' : ` (${fTrim})`;
+        const mesStr = fMes === 'TODOS' ? '' : ` • ${fMes}`;
+        const gestShort = fGes === 'HUMANAS' ? 'Humanas' : (fGes.includes('ACTIVACIÓN') ? 'Activación' : 'Correo');
+        elMobSummary.innerText = `${regStr} • ${gestShort}${anioStr}${trimStr}${mesStr}`;
+    }
 
     renderTabMacro(res);
     renderTabOperativo(res);
@@ -562,6 +1263,9 @@ window.debounceFilterAudit = debounceFilterAudit;
 
 function filterAuditTable() {
     const fGes = document.getElementById('selGestion').value;
+    const fAnio = document.getElementById('selAnio') ? document.getElementById('selAnio').value : 'TODOS';
+    const fTrim = document.getElementById('selTrimestre') ? document.getElementById('selTrimestre').value : 'TODOS';
+    const fMes = document.getElementById('selMes') ? document.getElementById('selMes').value : 'TODOS';
     const fReg = document.getElementById('selRegion').value;
     const fEst = document.getElementById('selEstado').value;
     const fMac = document.getElementById('selMacro').value;
@@ -576,14 +1280,30 @@ function filterAuditTable() {
 
     const tbAud = targetTable.querySelector('tbody') || document.getElementById('tableAudit');
     if (!tbAud) return;
-    tbAud.innerHTML = '';
+
+    let htmlBuffer = '';
 
     DATA.muestra_expedientes.forEach(e => {
-        if (fGes === 'HUMANAS' && e.Gestion === 'REINICIO DE CONTRASEÑA') return;
-        if (fGes !== 'HUMANAS' && fGes !== 'TODAS' && e.Gestion !== fGes) return;
+        // Exclusión total y permanente de trámites de reinicio automático
+        if (e._isReinicio || (e.Gestion && e.Gestion.toUpperCase().includes('REINICIO'))) return;
+        if (fGes === 'ACTIVACIÓN' && !e._isActivacion && (!e.Gestion || !e.Gestion.toUpperCase().includes('ACTIVAC'))) return;
+        if (fGes === 'CAMBIO DE CORREO ELECTRÓNICO' && !e._isCorreo && (!e.Gestion || !e.Gestion.toUpperCase().includes('CORREO'))) return;
+        if (fGes !== 'HUMANAS' && fGes !== 'TODAS' && e.Gestion !== fGes && !e.Gestion.toUpperCase().includes(fGes.toUpperCase())) return;
         if (fReg !== 'TODAS' && e.Region !== fReg) return;
         if (fEst !== 'TODOS' && e.Estado !== fEst) return;
         if (fMac !== 'TODAS' && e.MacroFamilia !== fMac) return;
+
+        // Filtro por Año en muestra
+        if (fAnio !== 'TODOS' && e.FechaCreacion && !e.FechaCreacion.startsWith(fAnio)) return;
+
+        // Filtro por Trimestre en muestra
+        if (fTrim !== 'TODOS') {
+            const trimVal = e._trimestre || (e.FechaCreacion && e.FechaCreacion.length >= 7 ? ((e.FechaCreacion.substring(5, 7) <= '03') ? 'Q1' : ((e.FechaCreacion.substring(5, 7) <= '06') ? 'Q2' : ((e.FechaCreacion.substring(5, 7) <= '09') ? 'Q3' : 'Q4'))) : null);
+            if (trimVal !== fTrim) return;
+        }
+
+        // Filtro por Mes en muestra
+        if (fMes !== 'TODOS' && e.FechaCreacion && !e.FechaCreacion.startsWith(fMes)) return;
 
         const secFinal = e.Atencion_Final_Sec;
         const secRech = e.Atencion_Rechazo_Sec;
@@ -617,7 +1337,7 @@ function filterAuditTable() {
             badgeFinal = `<span class="bg-emerald-100 text-emerald-900 font-bold px-2 py-0.5 rounded text-[11px] border border-emerald-200 whitespace-nowrap">${hrsF} h <span class="text-emerald-700 font-normal">(${secStr})</span></span>`;
         }
 
-        tbAud.innerHTML += `<tr>
+        htmlBuffer += `<tr>
             <td class="font-mono font-bold text-blue-700">${e.NumeroGestion}</td>
             <td class="font-mono text-slate-600">${e.Nit}</td>
             <td class="font-bold text-slate-900">${e.Operador}</td>
@@ -632,8 +1352,11 @@ function filterAuditTable() {
         </tr>`;
     });
 
+    tbAud.innerHTML = htmlBuffer;
+
     dtAuditMainInstance = $(targetTable).DataTable({
         pageLength: 25,
+        deferRender: true,
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
         order: [[8, 'asc']], // Orden inicial por Rechazo de menor a mayor
         columnDefs: [
@@ -658,13 +1381,16 @@ function filterAuditTable() {
 
 function initStaticTables() {
     const tbCombos = document.getElementById('tableCombos');
+    if (!tbCombos || !DATA.combos) return;
+    let htmlCombos = '';
     DATA.combos.forEach(c => {
-        tbCombos.innerHTML += `<tr>
+        htmlCombos += `<tr>
             <td class="p-2.5 font-medium text-slate-800">${c.Combinacion_Multicausal_Frecuente}</td>
             <td class="p-2.5 text-right font-bold text-indigo-600">${Number(c.Frecuencia).toLocaleString()}</td>
             <td class="p-2.5 text-right text-slate-500">${c['% del Total']}%</td>
         </tr>`;
     });
+    tbCombos.innerHTML = htmlCombos;
 }
 
 function filterSubcatTable() {
@@ -713,7 +1439,7 @@ function initAuditDirectTable() {
         try { dtAuditDirectInst.destroy(); } catch(e) {}
     }
     
-    tbody.innerHTML = '';
+    let htmlAudit = '';
     DATA.muestra_expedientes.slice(0, 200).forEach((row, idx) => {
         const idExp = row.ID_Expediente || `EXP-${100000 + idx}`;
         const op = row.Usuario_Responsable || row.U1 || 'AP_MS_SAT_EN_LINEA';
@@ -731,7 +1457,7 @@ function initAuditDirectTable() {
             ? '<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">APROBADA</span>'
             : (est === 'RECHAZADA' ? '<span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-bold">RECHAZADA</span>' : `<span class="bg-slate-100 text-slate-800 text-[10px] px-2 py-0.5 rounded-full">${est}</span>`);
             
-        tbody.innerHTML += `<tr>
+        htmlAudit += `<tr>
             <td class="font-mono text-blue-700 font-bold">${idExp}</td>
             <td class="font-medium text-slate-900">${op}</td>
             <td class="text-slate-600">${tram}</td>
@@ -744,10 +1470,12 @@ function initAuditDirectTable() {
             <td data-order="${cicloHab}" class="font-mono text-right text-purple-700 font-bold">${cicloHab.toFixed(2)} h</td>
         </tr>`;
     });
+    tbody.innerHTML = htmlAudit;
     
     if (typeof jQuery !== 'undefined' && jQuery.fn.DataTable) {
         dtAuditDirectInst = jQuery('#tableAuditDirect').DataTable({
             pageLength: 10,
+            deferRender: true,
             order: [[7, 'asc']],
             language: {
                 search: "Buscar expediente:",

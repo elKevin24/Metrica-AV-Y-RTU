@@ -85,13 +85,62 @@ window.DATA_READY = (async function loadData() {
         const numRows = rows.length;
         const cubo = new Array(numRows);
         
+        // Mapeo de índices de columnas para construcción ultrarrápida
+        const idxGestion = cols.indexOf('Gestion');
+        const idxMes = cols.indexOf('Mes');
+        const idxAnio = cols.indexOf('Anio');
+        const idxRegion = cols.indexOf('Region');
+        const idxEstado = cols.indexOf('Estado');
+        const idxAprobadas = cols.indexOf('Aprobadas');
+        const idxFinalizadas = cols.indexOf('Finalizadas');
+        const idxRechazos = cols.indexOf('Rechazos');
+        
         for (let i = 0; i < numRows; i++) {
             const r = rows[i];
             const obj = {};
             for (let j = 0; j < cols.length; j++) {
                 obj[cols[j]] = r[j];
             }
+            
+            // Pre-cómputo de banderas para filtrado OLAP ultrarrápido O(1)
+            const g = r[idxGestion] || '';
+            const gUpper = g.toUpperCase();
+            obj._isReinicio = gUpper.includes('REINICIO');
+            obj._isActivacion = gUpper.includes('ACTIVAC');
+            obj._isCorreo = gUpper.includes('CORREO');
+            
+            const m = r[idxMes];
+            if (m && m !== 'NaT' && m.length >= 7) {
+                const mNum = m.substring(5, 7);
+                obj._mesNum = mNum;
+                obj._trimestre = (mNum <= '03') ? 'Q1' : ((mNum <= '06') ? 'Q2' : ((mNum <= '09') ? 'Q3' : 'Q4'));
+            } else {
+                obj._mesNum = null;
+                obj._trimestre = null;
+            }
+            
+            obj._anioStr = String(r[idxAnio] || '');
+            
+            const rech = r[idxRechazos] || 0;
+            const est = r[idxEstado] || '';
+            const aprob = (r[idxAprobadas] || 0) + (r[idxFinalizadas] || 0);
+            obj._isNoRech = (rech === 0 && (est === 'APROBADA' || est === 'FINALIZADA' || aprob > 0));
+            
             cubo[i] = obj;
+        }
+        
+        // Pre-procesar flags en dataset muestral
+        if (Array.isArray(window.DATA.muestra_expedientes)) {
+            window.DATA.muestra_expedientes.forEach(e => {
+                const g = (e.Gestion || '').toUpperCase();
+                e._isReinicio = g.includes('REINICIO');
+                e._isActivacion = g.includes('ACTIVAC');
+                e._isCorreo = g.includes('CORREO');
+                if (e.FechaCreacion && e.FechaCreacion.length >= 7) {
+                    const mNum = e.FechaCreacion.substring(5, 7);
+                    e._trimestre = (mNum <= '03') ? 'Q1' : ((mNum <= '06') ? 'Q2' : ((mNum <= '09') ? 'Q3' : 'Q4'));
+                }
+            });
         }
         
         window.DATA.cubo = cubo;

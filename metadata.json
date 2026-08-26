@@ -1,0 +1,6 @@
+{
+  "name": "SAT Guatemala - Métricas AV y RTU",
+  "description": "Tablero Ejecutivo BI 360° para métricas cuantitativas y auditoría de trámites de Agencia Virtual y RTU de SAT Guatemala",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

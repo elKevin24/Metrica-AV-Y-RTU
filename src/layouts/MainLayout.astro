@@ -18,6 +18,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <title>{title}</title>
   <ClientRouter />
   
+  <!-- Preload de Datos Críticos para Carga Instantánea en GitHub Pages -->
+  <link rel="preload" href={`${baseUrl}/data/cubo_compacto.json`} as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href={`${baseUrl}/vendor/chart.umd.js`} as="script" />
+  <link rel="preload" href={`${baseUrl}/vendor/jquery.dataTables.min.css`} as="style" />
+  
   <!-- DataTables CSS Local -->
   <link rel="stylesheet" href={`${baseUrl}/vendor/jquery.dataTables.min.css`} />
 
@@ -38,15 +43,17 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       font-size: 0.8125rem;
       font-weight: 500;
       white-space: nowrap;
+      user-select: none;
     }
     .tab-link:hover {
       color: #F8FAFC;
+      background: rgba(255, 255, 255, 0.02);
     }
     .tab-link.active {
       color: #FFFFFF !important;
       font-weight: 600;
       border-bottom-color: #3B82F6;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.06);
       border-top-left-radius: 0.5rem;
       border-top-right-radius: 0.5rem;
     }
@@ -86,6 +93,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
+    /* Command Palette Blur & Modal */
+    .cmd-backdrop {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
@@ -93,81 +105,345 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <!-- Barra de Carga Superior Ultra-Delgada (System Status) -->
   <div id="topProgressBar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 z-[100] transition-all duration-300 ease-out w-1/3 opacity-100"></div>
 
-
   <!-- Header Institucional SAT Integrado y Elegante -->
-  <header class="bg-slate-950 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800/80">
+  <header id="mainHeader" class="bg-slate-950 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800/80">
     
-    <!-- Fila Superior: Marca y Controles -->
-    <div class="max-w-7xl mx-auto px-6 pt-3.5 pb-2 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20">
-          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+    <!-- Fila Superior: Marca, Búsqueda Rápida y Controles -->
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
+      <!-- Marca SAT -->
+      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0" onclick="switchTab('tab-macro')" title="Ir al Inicio / Diagnóstico">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group hover:scale-105 transition shrink-0">
+          <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base font-bold tracking-tight text-white">SAT GUATEMALA</h1>
-            <span class="bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-xs sm:text-base font-bold tracking-tight text-white hover:text-blue-300 transition truncate">SAT GUATEMALA</h1>
+            <span class="hidden sm:inline-block bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium">
               Agencia Virtual & RTU
             </span>
           </div>
-          <p class="text-[11px] text-slate-400">Auditoría Cuantitativa • 2,570,090 Trámites • Jornada Hábil de 8 Horas</p>
+          <p class="hidden md:block text-[11px] text-slate-400">Auditoría Cuantitativa • 2,570,090 Trámites • Jornada Hábil 8h</p>
         </div>
       </div>
       
-      <div class="flex items-center gap-3">
-        <button onclick="resetFilters()" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 transition">
-          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restablecer Filtros
+      <!-- Controles: Una Sola Lupa + Reset + Estado del Sistema -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Buscador Global / Paleta de Comandos (UNA SOLA LUPA EN MÓVIL Y DESKTOP) -->
+        <button onclick="toggleCommandPalette()" class="text-xs p-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 transition group shadow-inner" aria-label="Buscar vista o métrica (Ctrl+K)" title="Buscar vista o métrica (Ctrl+K)">
+          <i data-lucide="search" class="w-4 h-4 text-blue-400"></i>
+          <span class="hidden sm:inline text-slate-400 group-hover:text-slate-200">Buscar...</span>
+          <kbd class="hidden sm:inline-block bg-slate-800 text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700 font-semibold group-hover:border-slate-600">⌘K</kbd>
         </button>
-        <!-- Indicador de Estado del Sistema en Vivo (Visibility of System Status) -->
-        <div id="statusMotorPill" class="flex items-center gap-2 text-[11px] text-amber-300 bg-amber-950/40 px-3 py-1.5 rounded-lg border border-amber-500/30 transition-all duration-300 shadow-sm">
-          <span id="statusMotorDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-          <span id="statusMotorTxt" class="font-medium tracking-tight">Cargando 2.57M trámites...</span>
+
+        <!-- Botón Reset Filtros -->
+        <button onclick="resetFilters()" class="text-xs p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition" title="Restablecer filtros (Alt+R)">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <span class="hidden md:inline">Restablecer</span>
+        </button>
+
+        <!-- Botón Ayuda / Atajos de Teclado (Solo visible en desktop) -->
+        <button onclick="toggleShortcutsModal()" class="hidden md:flex text-xs p-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-white items-center justify-center transition" title="Ver Atajos de Teclado (?)">
+          <i data-lucide="help-circle" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Indicador de Estado del Sistema en Vivo -->
+        <div id="statusMotorPill" class="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-amber-300 bg-amber-950/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-amber-500/30 transition-all duration-300 shadow-sm whitespace-nowrap">
+          <span id="statusMotorDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+          <span id="statusMotorTxt" class="font-medium tracking-tight">2.57M</span>
         </div>
       </div>
     </div>
 
-    <!-- Fila Inferior: Barra de Pestañas Minimalista Integrada -->
-    <div class="max-w-7xl mx-auto px-6">
-      <nav role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60">
+    <!-- Fila Inferior: Barra de Pestañas (Visible en Desktop y Tablet, en móvil se utiliza el dock inferior y menú drawer) -->
+    <div class="hidden md:block max-w-7xl mx-auto px-6 relative">
+      <nav id="navTabsContainer" role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60 scroll-smooth">
         
         <button role="tab" aria-selected="true" aria-controls="tab-macro" onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>Visión & Balance</span>
+          <span>1. Diagnóstico & Balance</span>
         </button>
 
         <button role="tab" aria-selected="false" aria-controls="tab-operativo" onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-link">
-          <i data-lucide="trending-up" class="w-4 h-4"></i>
-          <span>Rendimiento & Regionales</span>
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span>2. Regionales & Sobrecarga</span>
         </button>
 
         <button role="tab" aria-selected="false" aria-controls="tab-tiempos" onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-link">
           <i data-lucide="clock" class="w-4 h-4"></i>
-          <span>Jornada 8h & SLAs</span>
+          <span>3. Jornada 8h & SLAs</span>
         </button>
 
         <button role="tab" aria-selected="false" aria-controls="tab-calidad" onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-link">
           <i data-lucide="alert-octagon" class="w-4 h-4"></i>
-          <span>Calidad & Fricción</span>
+          <span>4. Rechazos & Re-trabajo</span>
         </button>
 
         <button role="tab" aria-selected="false" aria-controls="tab-gestion" onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
           <i data-lucide="users" class="w-4 h-4"></i>
-          <span>Operadores & Dispersión</span>
+          <span>5. Revisores & Cuadrantes</span>
         </button>
 
         <button role="tab" aria-selected="false" aria-controls="tab-auditoria" onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
           <i data-lucide="table" class="w-4 h-4"></i>
-          <span>Auditoría en Horas</span>
+          <span>6. Auditoría Forense</span>
         </button>
 
-        <button role="tab" aria-selected="false" aria-controls="tab-hallazgos" onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link ml-auto text-amber-300 hover:text-amber-200">
+        <button role="tab" aria-selected="false" aria-controls="tab-informe2026" onclick="switchTab('tab-informe2026')" id="btn-informe2026" class="tab-link text-blue-300 hover:text-blue-200">
+          <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
+          <span>7. Informe Ejecutivo 2026</span>
+        </button>
+
+        <button role="tab" aria-selected="false" aria-controls="tab-hallazgos" onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link text-amber-300 hover:text-amber-200">
           <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
-          <span>Hallazgos & Conclusiones</span>
+          <span>8. Hallazgos & Plan de Acción</span>
         </button>
 
       </nav>
     </div>
   </header>
+
+  <!-- Barra de Breadcrumbs Dinámica (Solo Visible en Desktop para ahorrar espacio móvil) -->
+  <div class="hidden md:block bg-white/80 backdrop-blur-sm border-b border-slate-200/80 px-6 py-2 sticky top-[102px] z-30 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-xs">
+      <div class="flex items-center gap-2 text-slate-500 overflow-hidden">
+        <span class="flex items-center gap-1 text-slate-400">
+          <i data-lucide="home" class="w-3.5 h-3.5"></i>
+          <span>Inicio</span>
+        </span>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
+        <span id="breadcrumbCurrentTab" class="font-bold text-slate-800 truncate">1. Diagnóstico & Balance General</span>
+      </div>
+
+      <!-- Accesos Rápidos de Navegación Anterior / Siguiente -->
+      <div class="flex items-center gap-2 text-[11px]">
+        <button onclick="navigateTabStep(-1)" class="px-2 py-1 rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-900 flex items-center gap-1 transition" title="Pestaña anterior (Alt + Flecha Izq)">
+          <i data-lucide="arrow-left" class="w-3 h-3"></i> <span class="hidden sm:inline">Anterior</span>
+        </button>
+        <span class="text-slate-300">|</span>
+        <button onclick="navigateTabStep(1)" class="px-2 py-1 rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-900 flex items-center gap-1 transition" title="Pestaña siguiente (Alt + Flecha Der)">
+          <span class="hidden sm:inline">Siguiente</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Palette Modal (Ctrl+K / ⌘K) -->
+  <div id="cmdPaletteModal" class="fixed inset-0 z-[110] hidden cmd-backdrop flex items-start justify-center pt-20 px-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden text-white animate-in fade-in zoom-in-95 duration-150">
+      <div class="p-3.5 border-b border-slate-800 flex items-center gap-3">
+        <i data-lucide="search" class="w-5 h-5 text-blue-400"></i>
+        <input 
+          id="cmdPaletteInput"
+          type="text" 
+          placeholder="Escribe para buscar pestaña, métrica o reporte... (ej. rechazos, sla, regional, revisores)" 
+          class="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none"
+          oninput="filterCommandPalette(this.value)"
+        />
+        <button onclick="toggleCommandPalette()" class="p-1 text-slate-400 hover:text-white rounded-lg">
+          <kbd class="text-[10px] font-mono bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">ESC</kbd>
+        </button>
+      </div>
+
+      <!-- Lista de Comandos / Vistas -->
+      <div id="cmdPaletteList" class="max-h-80 overflow-y-auto p-2 space-y-1 text-xs text-slate-300">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <div class="p-2.5 bg-slate-950/80 border-t border-slate-800/80 text-[11px] text-slate-400 flex justify-between items-center px-4">
+        <span>Usa <strong class="text-slate-300">↑ ↓</strong> para navegar, <strong class="text-slate-300">ENTER</strong> para seleccionar</span>
+        <span><strong class="text-blue-400">8 Pestañas</strong> Disponibles</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Atajos de Teclado (?) -->
+  <div id="shortcutsModal" class="fixed inset-0 z-[110] hidden cmd-backdrop flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden text-white p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="keyboard" class="w-5 h-5 text-blue-400"></i>
+          <h3 class="font-bold text-sm">Atajos de Teclado</h3>
+        </div>
+        <button onclick="toggleShortcutsModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2.5 text-xs text-slate-300">
+        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50">
+          <span>Abrir Buscador / Paleta de Comandos</span>
+          <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700">Ctrl + K / ⌘K</kbd>
+        </div>
+        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50">
+          <span>Navegar entre pestañas</span>
+          <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700">← Flechas →</kbd>
+        </div>
+        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50">
+          <span>Ir a Pestaña 1..8 directamente</span>
+          <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700">1 ... 8</kbd>
+        </div>
+        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50">
+          <span>Restablecer Filtros</span>
+          <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700">Alt + R</kbd>
+        </div>
+        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50">
+          <span>Ver este diálogo de ayuda</span>
+          <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700">?</kbd>
+        </div>
+      </div>
+
+      <div class="pt-2 text-right">
+        <button onclick="toggleShortcutsModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra de Navegación Inferior Móvil (Mobile Quick Dock) -->
+  <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.4)]" style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom));">
+    <button onclick="switchTab('tab-macro')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95 text-blue-400 font-bold" data-tab="tab-macro">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[10px] leading-tight">Inicio</span>
+    </button>
+    <button onclick="switchTab('tab-operativo')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-operativo">
+      <i data-lucide="map-pin" class="w-5 h-5"></i>
+      <span class="text-[10px] leading-tight">Regional</span>
+    </button>
+    <button onclick="switchTab('tab-tiempos')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-tiempos">
+      <i data-lucide="clock" class="w-5 h-5"></i>
+      <span class="text-[10px] leading-tight">Tiempos</span>
+    </button>
+    <button onclick="switchTab('tab-calidad')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-calidad">
+      <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+      <span class="text-[10px] leading-tight">Rechazos</span>
+    </button>
+    <button onclick="switchTab('tab-gestion')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-gestion">
+      <i data-lucide="users" class="w-5 h-5"></i>
+      <span class="text-[10px] leading-tight">Revisores</span>
+    </button>
+    <button onclick="toggleMobileMenuDrawer()" class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-white p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+      <i data-lucide="grid" class="w-5 h-5 text-indigo-400"></i>
+      <span class="text-[10px] leading-tight text-indigo-400 font-semibold">Más (8)</span>
+    </button>
+  </nav>
+
+  <!-- Drawer / Menú Completo Móvil (Bottom Sheet) -->
+  <div id="mobileMenuDrawer" class="fixed inset-0 z-[115] hidden cmd-backdrop flex items-end justify-center md:hidden">
+    <div class="bg-slate-900 border-t border-slate-700 w-full max-h-[85vh] rounded-t-3xl shadow-2xl overflow-hidden flex flex-col text-white animate-in slide-in-from-bottom duration-200" style="padding-bottom: max(1rem, env(safe-area-inset-bottom));">
+      <!-- Header Drawer -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">Secciones del Tablero SAT</h3>
+            <p class="text-[11px] text-slate-400">Selecciona cualquier vista analítica</p>
+          </div>
+        </div>
+        <button onclick="toggleMobileMenuDrawer()" class="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Lista de Pestañas Móviles -->
+      <div class="overflow-y-auto p-3 space-y-1.5 text-xs divide-y divide-slate-800/40">
+        <button onclick="selectMobileTab('tab-macro')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group">
+          <div class="flex items-center gap-3">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-blue-400"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">1. Diagnóstico & Balance</div>
+              <div class="text-[11px] text-slate-400">KPIs globales, FTR y tasa de recuperación</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-operativo')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">2. Regionales & Sobrecarga</div>
+              <div class="text-[11px] text-slate-400">Demanda vs tiempos por gerencia</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-tiempos')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">3. Jornada 8h & SLAs</div>
+              <div class="text-[11px] text-slate-400">Espera pasiva (98.2%) vs dictamen activo</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-calidad')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-400"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">4. Rechazos & Re-trabajo</div>
+              <div class="text-[11px] text-slate-400">Taxonomía, huérfanos y multi-touch bounce</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-gestion')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">5. Revisores & Cuadrantes</div>
+              <div class="text-[11px] text-slate-400">Dispersión de criterio y ranking operadores</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-auditoria')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="table" class="w-4 h-4 text-amber-400"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">6. Auditoría Forense</div>
+              <div class="text-[11px] text-slate-400">Muestreo de expedientes y traza NIT</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-informe2026')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="file-text" class="w-4 h-4 text-blue-300"></i>
+            <div>
+              <div class="font-bold text-slate-200 text-xs">7. Informe Ejecutivo 2026</div>
+              <div class="text-[11px] text-slate-400">Dictamen institucional consolidado</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+
+        <button onclick="selectMobileTab('tab-hallazgos')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5">
+          <div class="flex items-center gap-3">
+            <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
+            <div>
+              <div class="font-bold text-amber-300 text-xs">8. Hallazgos & Plan de Acción</div>
+              <div class="text-[11px] text-slate-400">Matriz de rescate y plan de modernización</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón Flotante Volver Arriba (Scroll to Top) -->
+  <button id="btnScrollTop" onclick="scrollToTop()" class="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 bg-slate-900/90 hover:bg-blue-600 text-white p-3 rounded-2xl shadow-xl border border-slate-700 transition-all duration-300 translate-y-16 opacity-0 pointer-events-none hover:scale-110 flex items-center justify-center" aria-label="Volver arriba" title="Volver al inicio de la página">
+    <i data-lucide="chevron-up" class="w-5 h-5"></i>
+  </button>
 
   <!-- Banner de Error con Botón de Reintento (Visibility of Error State) -->
   <div id="dataErrorBanner" class="hidden max-w-7xl mx-auto px-6 mt-4">
@@ -206,6 +482,28 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     import '../scripts/smooth-scroll';
     import { animateVisibleCards } from '../scripts/motion-effects';
 
+    const TAB_NAMES = {
+      'tab-macro': '1. Diagnóstico & Balance General',
+      'tab-operativo': '2. Regionales & Sobrecarga',
+      'tab-tiempos': '3. Jornada 8h & SLAs',
+      'tab-calidad': '4. Rechazos & Re-trabajo',
+      'tab-gestion': '5. Revisores & Cuadrantes',
+      'tab-auditoria': '6. Auditoría Forense',
+      'tab-informe2026': '7. Informe Ejecutivo 2026',
+      'tab-hallazgos': '8. Hallazgos & Plan de Acción'
+    };
+
+    const TAB_ORDER = [
+      'tab-macro',
+      'tab-operativo',
+      'tab-tiempos',
+      'tab-calidad',
+      'tab-gestion',
+      'tab-auditoria',
+      'tab-informe2026',
+      'tab-hallazgos'
+    ];
+
     // Enrutador Canónico Único
     window.switchTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -226,6 +524,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         'tab-calidad': 'btn-calidad',
         'tab-gestion': 'btn-gestion',
         'tab-auditoria': 'btn-auditoria',
+        'tab-informe2026': 'btn-informe2026',
         'tab-hallazgos': 'btn-hallazgos'
       };
 
@@ -235,8 +534,32 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         if (targetBtn) {
           targetBtn.classList.add('active');
           targetBtn.setAttribute('aria-selected', 'true');
+          // Auto-scroll la barra de pestañas para que el botón activo esté visible en móviles
+          targetBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
       }
+
+      // Actualizar botones del dock móvil
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.classList.add('text-blue-400', 'font-bold');
+          btn.classList.remove('text-slate-400');
+        } else {
+          btn.classList.remove('text-blue-400', 'font-bold');
+          btn.classList.add('text-slate-400');
+        }
+      });
+
+      // Actualizar breadcrumb
+      const elBreadcrumb = document.getElementById('breadcrumbCurrentTab');
+      if (elBreadcrumb && TAB_NAMES[tabId]) {
+        elBreadcrumb.innerText = TAB_NAMES[tabId];
+      }
+
+      // Actualizar Hash de URL sin saltos de scroll
+      try {
+        history.replaceState(null, '', '#' + tabId);
+      } catch(e) {}
 
       if (window.lucide) lucide.createIcons();
 
@@ -258,6 +581,144 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       });
     };
 
+    // Navegar paso a paso (Anterior -1 / Siguiente +1)
+    window.navigateTabStep = function(direction) {
+      const activeBtn = document.querySelector('.tab-link.active');
+      let currentTab = 'tab-macro';
+      if (activeBtn) {
+        currentTab = activeBtn.getAttribute('aria-controls') || 'tab-macro';
+      }
+      const currentIndex = TAB_ORDER.indexOf(currentTab);
+      if (currentIndex === -1) return;
+
+      const nextIndex = (currentIndex + direction + TAB_ORDER.length) % TAB_ORDER.length;
+      window.switchTab(TAB_ORDER[nextIndex]);
+    };
+
+    // Botón Scroll to Top
+    window.scrollToTop = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('btnScrollTop');
+      if (!btn) return;
+      if (window.scrollY > 300) {
+        btn.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+        btn.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      } else {
+        btn.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+        btn.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      }
+    });
+
+    // Command Palette Elements
+    const SEARCH_ITEMS = [
+      { id: 'tab-macro', title: '1. Diagnóstico & Balance General', desc: 'KPIs globales, First-Time Resolution (FTR), Tasa de Recuperación', icon: 'layout-dashboard', keywords: 'resumen kpi general universo aprobados ftr balance macro' },
+      { id: 'tab-operativo', title: '2. Regionales & Sobrecarga', desc: 'Demanda vs Tiempo de atención, Índice de saturación por gerencia', icon: 'map-pin', keywords: 'regional central occidente sur nororiente sobrecarga volumen cuellos botella' },
+      { id: 'tab-tiempos', title: '3. Jornada 8h & SLAs', desc: 'Descomposición espera pasiva (98.2%) vs dictamen activo (1.8%), Horas hábiles', icon: 'clock', keywords: 'tiempo sla jornada buzon bolson espera cola dictamen horas habiles calendario' },
+      { id: 'tab-calidad', title: '4. Rechazos & Re-trabajo', desc: 'Taxonomía de causas, Multi-Touch Bounce (26.5%), Retraso del contribuyente', icon: 'alert-octagon', keywords: 'rechazos motivos huérfanos causas reincidencia bounce multitouch errores dpi selfie audio' },
+      { id: 'tab-gestion', title: '5. Revisores & Cuadrantes', desc: 'Matriz de dispersión inter-revisores, Top operadores, Cuadrantes operativos', icon: 'users', keywords: 'revisores operadores dispersión subjetividad cuadrantes velocidad productividad' },
+      { id: 'tab-auditoria', title: '6. Auditoría Forense', desc: 'Muestreo individual de expedientes, traza por NIT y rondas de dictamen', icon: 'table', keywords: 'auditoría expedientes muestra forense nit estado rondas detalle tabla' },
+      { id: 'tab-informe2026', title: '7. Informe Ejecutivo 2026', desc: 'Dictamen directivo consolidado, metas y estadísticas 2026', icon: 'file-text', keywords: 'informe ejecutivo 2026 reporte directores gerencia' },
+      { id: 'tab-hallazgos', title: '8. Hallazgos & Plan de Acción', desc: 'Matriz de rescate, recomendaciones de TI, modelo dual de medición', icon: 'sparkles', keywords: 'hallazgos recomendaciones plan accion rescate oportunidades ia mejoras' }
+    ];
+
+    function renderCommandPalette(items) {
+      const list = document.getElementById('cmdPaletteList');
+      if (!list) return;
+      if (items.length === 0) {
+        list.innerHTML = `<div class="p-6 text-center text-slate-500">No se encontraron resultados para tu búsqueda.</div>`;
+        return;
+      }
+      list.innerHTML = items.map((item, idx) => `
+        <div 
+          onclick="selectCommandItem('${item.id}')"
+          class="p-3 rounded-xl hover:bg-slate-800/80 cursor-pointer flex items-center justify-between transition group ${idx === 0 ? 'bg-slate-800/40' : ''}"
+        >
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-slate-800 text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition">
+              <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="font-bold text-slate-200 group-hover:text-blue-300 text-xs">${item.title}</div>
+              <div class="text-[11px] text-slate-400 leading-tight mt-0.5">${item.desc}</div>
+            </div>
+          </div>
+          <span class="text-[10px] font-mono text-slate-500 group-hover:text-slate-300 bg-slate-800/60 px-2 py-1 rounded">Ir →</span>
+        </div>
+      `).join('');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    window.filterCommandPalette = function(query) {
+      const q = (query || '').toLowerCase().trim();
+      if (!q) {
+        renderCommandPalette(SEARCH_ITEMS);
+        return;
+      }
+      const filtered = SEARCH_ITEMS.filter(it => 
+        it.title.toLowerCase().includes(q) || 
+        it.desc.toLowerCase().includes(q) || 
+        it.keywords.toLowerCase().includes(q)
+      );
+      renderCommandPalette(filtered);
+    };
+
+    window.selectCommandItem = function(tabId) {
+      window.switchTab(tabId);
+      window.toggleCommandPalette();
+    };
+
+    window.toggleCommandPalette = function() {
+      const modal = document.getElementById('cmdPaletteModal');
+      if (!modal) return;
+      const isHidden = modal.classList.contains('hidden');
+      if (isHidden) {
+        modal.classList.remove('hidden');
+        renderCommandPalette(SEARCH_ITEMS);
+        const input = document.getElementById('cmdPaletteInput');
+        if (input) {
+          input.value = '';
+          setTimeout(() => input.focus(), 50);
+        }
+      } else {
+        modal.classList.add('hidden');
+      }
+    };
+
+    window.toggleShortcutsModal = function() {
+      const modal = document.getElementById('shortcutsModal');
+      if (!modal) return;
+      modal.classList.toggle('hidden');
+    };
+
+    window.toggleMobileMenuDrawer = function() {
+      const drawer = document.getElementById('mobileMenuDrawer');
+      if (!drawer) return;
+      drawer.classList.toggle('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.selectMobileTab = function(tabId) {
+      window.switchTab(tabId);
+      window.toggleMobileMenuDrawer();
+    };
+
+    window.toggleMobileFilters = function() {
+      const container = document.getElementById('filterGridContainer');
+      const chevron = document.getElementById('mobileFilterChevron');
+      if (!container) return;
+      const isHidden = container.classList.contains('hidden');
+      if (isHidden) {
+        container.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        container.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    };
+
     // Soporte para deep-linking con URL hash (ej. /#tab-auditoria)
     document.addEventListener('DOMContentLoaded', () => {
       const hash = window.location.hash.replace('#', '');
@@ -266,9 +727,55 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       }
     });
 
-    // Navegación por teclado accesible (W3C WAI-ARIA Tabs: Flechas Izq / Der, Home, End)
+    // Navegación por teclado accesible y atajos globales
     document.addEventListener('keydown', (e) => {
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
+      // 1. Abrir Command Palette con Ctrl+K o ⌘K
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        window.toggleCommandPalette();
+        return;
+      }
+
+      // 2. Cerrar modales con ESC
+      if (e.key === 'Escape') {
+        const cmd = document.getElementById('cmdPaletteModal');
+        if (cmd && !cmd.classList.contains('hidden')) {
+          cmd.classList.add('hidden');
+          return;
+        }
+        const sc = document.getElementById('shortcutsModal');
+        if (sc && !sc.classList.contains('hidden')) {
+          sc.classList.add('hidden');
+          return;
+        }
+      }
+
+      // 3. Ver Ayuda con ? (si no está en un input)
+      if (e.key === '?' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
+        e.preventDefault();
+        window.toggleShortcutsModal();
+        return;
+      }
+
+      // 4. Restablecer con Alt+R
+      if (e.altKey && e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        if (typeof resetFilters === 'function') resetFilters();
+        return;
+      }
+
+      // 5. Ir directo a pestaña 1..8 con teclas numéricas (si no está escribiendo)
+      if (!e.ctrlKey && !e.altKey && !e.metaKey && !['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
+        const num = parseInt(e.key, 10);
+        if (num >= 1 && num <= 8) {
+          e.preventDefault();
+          window.switchTab(TAB_ORDER[num - 1]);
+          return;
+        }
+      }
+
+      // 6. Flechas Izq / Der en pestañas
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key) && !['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
         const tabList = Array.from(document.querySelectorAll('nav[role="tablist"] button[role="tab"]'));
         const activeIdx = tabList.findIndex(t => t.classList.contains('active'));
         if (activeIdx === -1) return;

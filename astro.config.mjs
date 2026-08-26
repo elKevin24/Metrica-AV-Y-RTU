@@ -4,8 +4,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://elkevin24.github.io',
-  base: '/Metrica-AV-Y-RTU/',
+  base: '/',
   integrations: [
     react(),
     tailwind({
