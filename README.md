@@ -23,32 +23,52 @@
 El presente repositorio contiene el análisis cuantitativo, el motor OLAP en tiempo real y el tablero interactivo de Business Intelligence (BI) desarrollado para auditar el ciclo de vida completo de las solicitudes de **Agencia Virtual (Activación, Cambio de Correo Electrónico y Reinicio de Contraseña)** en la SAT de Guatemala.
 
 ### 📈 Universo Transaccional Auditado
-* **Total de Trámites Procesados:** `1,686,257 registros`.
-* **Trámites con Intervención Humana:** `369,943 registros` (Activación y Cambio de Correo con validación biométrica).
-* **Trámites Automatizados por Servidor (Bot):** `1,316,314 registros` (`AP_MS_SAT_EN_LINEA` / Reinicios y cierres por caducidad).
-* **Criterio Oficial de Medición:** Jornada laboral hábil de **8 horas netas diarias (Lunes a Viernes de 08:00 a 16:00)** con exclusión de fines de semana y noches.
+* **Total de Solicitudes Digitales SAT:** `2,569,726 registros`.
+* **Trámites con Intervención Humana (Auditados):** `865,876 registros` (Activación y Cambio de Correo con validación biométrica/documental).
+* **Trámites Automatizados por Servidor (Autoservicio):** `1,703,850 registros` (`AP_MS_SAT_EN_LINEA` / Reinicios y cierres por caducidad).
+* **Criterio Oficial de Medición:** Jornada laboral hábil de **8 horas netas diarias (Lunes a Viernes de 08:00 a 16:00)** con exclusión de fines de semana y asuetos oficiales.
 
 ---
 
-## 2. Arquitectura y Estructura Modular del Proyecto
+## 2. Arquitectura y Documentación Técnica
 
-La solución está completamente desacoplada en una arquitectura web modular ligera, garantizando máxima velocidad de renderizado y portabilidad local (`file:///` sin bloqueos de CORS):
+La solución está construida sobre una arquitectura web moderna, rápida y accesible con **Astro 5 + TailwindCSS + React Islands + Motor OLAP $O(N)$ en el cliente**, optimizada para su despliegue continuo en **GitHub Pages**.
+
+### 📚 Suite Documental Formal
+* 📐 [**ARCHITECTURE.md**](./ARCHITECTURE.md): Arquitectura del sistema, flujo de datos, descompresión gzip y gestión de memoria.
+* 📊 [**METRICS.md**](./METRICS.md): Catálogo matemático formal de cada KPI, fórmulas, filtros, unidades y fuentes.
+* 🗄️ [**DATA_DICTIONARY.md**](./DATA_DICTIONARY.md): Diccionario de datos del cubo multidimensional y muestras forenses.
+
+### 🛠️ Comandos de Desarrollo y Verificación
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar suite de pruebas unitarias
+npm test
+
+# Iniciar servidor de desarrollo local
+npm run dev
+
+# Compilar sitio estático para producción (GitHub Pages)
+npm run build
+```
 
 ```
 Metrica AV Y RTU/
-├── 📄 README.md                            # Documentación integral ejecutiva y técnica
-├── 📄 index.html                           # Tablero Principal 360° (5 Pestañas interactivas, 52 KB)
-├── 📄 Dashboard_BI_Metrica_AV_RTU.html     # Acceso directo al Tablero Principal
-├── 📄 Auditoria_Detalle_Tiempos.html       # Módulo especializado de Auditoría con DataTables Pro
-├── 📁 css/
-│   └── 🎨 styles.css                       # Estilos institucionales, scrollbars y badges de rondas
-├── 📁 js/
-│   ├── 📦 data.js                          # Cubo OLAP estructurado y muestra estratificada (23.8 MB)
-│   ├── ⚙️ olap_engine.js                   # Motor de filtros dinámicos, cálculo hábil y métricas en horas
-│   ├── 📊 charts.js                        # Controladores de gráficas dinámicas (Chart.js)
-│   └── 🚀 app.js                           # Enrutador de eventos, interfaz y sincronización de datos
-├── 📁 Data/                                # Archivos fuente originales (reporteAV_*.xlsx)
-└── 📊 Catalogo_Motivos.xlsx                # Catálogo de taxonomía granular y combinaciones multicausales
+├── 📄 README.md                            # Documentación integral ejecutiva
+├── 📄 ARCHITECTURE.md                      # Arquitectura técnica y CI/CD
+├── 📄 METRICS.md                           # Catálogo formal de métricas y fórmulas
+├── 📄 DATA_DICTIONARY.md                   # Diccionario de datos y columnas del cubo
+├── 📁 src/
+│   ├── 📁 components/                      # React Islands (KpiSummary) y componentes Astro
+│   ├── 📁 layouts/                         # Layout institucional y navegación accesible
+│   └── 📁 pages/                           # Páginas estáticas (index.astro, auditoria.astro)
+├── 📁 public/
+│   ├── 📁 data/                            # Cubo compacto comprimido (cubo_compacto.json.gz)
+│   ├── 📁 js/                              # data.js, olap_engine.js, charts.js, app.js
+│   └── 📁 vendor/                          # Chart.js, DataTables, Lucide
+└── 📁 tests/                               # Pruebas automatizadas (Vitest)
 ```
 
 ---

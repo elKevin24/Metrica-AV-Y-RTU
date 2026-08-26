@@ -13,7 +13,7 @@ function formatToHours(totalSeconds, includeDetail = true, fallback = '0.00 h') 
         return fallback;
     }
     if (totalSeconds === 0) {
-        return '0.00 h (0.0 seg)';
+        return '0.00 h';
     }
     
     const hrs = totalSeconds / 3600.0;
@@ -34,20 +34,29 @@ function formatAdaptiveTime(totalSeconds) {
     return formatToHours(totalSeconds, true);
 }
 
-function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOrEst, fEstOrMac, fMacOpt) {
+function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOrEst, fEstOrMac, fMacOrTipo, fTipoOpt) {
     let fTrim = 'TODOS';
     let fMes = 'TODOS';
     let fReg = 'TODAS';
     let fEst = 'TODOS';
     let fMac = 'TODAS';
+    let fTipo = 'TODAS';
 
-    if (fMacOpt !== undefined) {
-        // Invocación completa de 8 argumentos: cuboData, fGes, fAnio, fTrim, fMes, fReg, fEst, fMac
+    if (fTipoOpt !== undefined) {
+        // Invocación completa de 9 argumentos: cuboData, fGes, fAnio, fTrim, fMes, fReg, fEst, fMac, fTipo
         fTrim = fTrimOrMes || 'TODOS';
         fMes = fMesOrReg || 'TODOS';
         fReg = fRegOrEst || 'TODAS';
         fEst = fEstOrMac || 'TODOS';
-        fMac = fMacOpt || 'TODAS';
+        fMac = fMacOrTipo || 'TODAS';
+        fTipo = fTipoOpt || 'TODAS';
+    } else if (fMacOrTipo !== undefined) {
+        // Invocación de 8 argumentos: cuboData, fGes, fAnio, fTrim, fMes, fReg, fEst, fMac
+        fTrim = fTrimOrMes || 'TODOS';
+        fMes = fMesOrReg || 'TODOS';
+        fReg = fRegOrEst || 'TODAS';
+        fEst = fEstOrMac || 'TODOS';
+        fMac = fMacOrTipo || 'TODAS';
     } else {
         // Invocación retrocompatible de 7 argumentos: cuboData, fGes, fAnio, fMes, fReg, fEst, fMac
         fMes = fTrimOrMes || 'TODOS';
@@ -63,6 +72,13 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
     const hasFilterReg = fReg !== 'TODAS';
     const hasFilterEst = fEst !== 'TODOS';
     const hasFilterMac = fMac !== 'TODAS';
+    const hasFilterTipo = fTipo !== 'TODAS';
+
+    const isHumanas = fGes === 'HUMANAS';
+    const isActivacion = fGes === 'ACTIVACIÓN';
+    const isCorreo = fGes === 'CAMBIO DE CORREO ELECTRÓNICO';
+    const isTodasGes = fGes === 'TODAS';
+    const isJuridica = fTipo === 'JURIDICA';
 
     let totalCasos = 0, totalRechazos = 0, totalAprobados = 0, totalNoConf = 0, totalCanceladas = 0;
     let totalAprobDirectas = 0, totalAprobSubsanadas = 0, totalRechDefinitivos = 0, totalRechHuerfanos = 0;
@@ -74,56 +90,54 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
     let sumCicloHab = 0, nCicloHab = 0, sumCicloCal = 0, nCicloCal = 0;
     let sumCiclo1ra = 0, nCiclo1ra = 0, sumCicloSub = 0, nCicloSub = 0;
     let sla1d = 0, sla2d = 0, sla3d = 0, sla5d = 0, slaFuera = 0;
+    let persIndCasos = 0, persIndAprob = 0, persIndRech = 0;
+    let persJurCasos = 0, persJurAprob = 0, persJurRech = 0;
 
-    const estCounts = {}, macCounts = {}, subcatCounts = {}, monthMap = {};
-    const regMap = {
-        'CENTRAL': { 
+    const estCounts = Object.create(null);
+    const macCounts = Object.create(null);
+    const subcatCounts = Object.create(null);
+    const monthMap = Object.create(null);
+    
+    function createRegObject() {
+        return { 
             casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, 
             sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sumCreacionAten: 0, nCreacionAten: 0, actSum: 0, actN: 0, corSum: 0, corN: 0, sla1d: 0,
             aprobCasos: 0, aprobSumCreacionAten: 0, aprobNCreacionAten: 0, aprobActSum: 0, aprobActN: 0, aprobCorSum: 0, aprobCorN: 0, aprobSumBuzon: 0, aprobNBuzon: 0, aprobSumBolson: 0, aprobNBolson: 0, aprobSumCiclo: 0, aprobNCiclo: 0,
-            ops: {}
-        },
-        'OCCIDENTE': { 
-            casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, 
-            sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sumCreacionAten: 0, nCreacionAten: 0, actSum: 0, actN: 0, corSum: 0, corN: 0, sla1d: 0,
-            aprobCasos: 0, aprobSumCreacionAten: 0, aprobNCreacionAten: 0, aprobActSum: 0, aprobActN: 0, aprobCorSum: 0, aprobCorN: 0, aprobSumBuzon: 0, aprobNBuzon: 0, aprobSumBolson: 0, aprobNBolson: 0, aprobSumCiclo: 0, aprobNCiclo: 0,
-            ops: {}
-        },
-        'SUR': { 
-            casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, 
-            sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sumCreacionAten: 0, nCreacionAten: 0, actSum: 0, actN: 0, corSum: 0, corN: 0, sla1d: 0,
-            aprobCasos: 0, aprobSumCreacionAten: 0, aprobNCreacionAten: 0, aprobActSum: 0, aprobActN: 0, aprobCorSum: 0, aprobCorN: 0, aprobSumBuzon: 0, aprobNBuzon: 0, aprobSumBolson: 0, aprobNBolson: 0, aprobSumCiclo: 0, aprobNCiclo: 0,
-            ops: {}
-        },
-        'NORORIENTE': { 
-            casos: 0, aprob: 0, rech: 0, aprob_dir: 0, aprob_sub: 0, rech_huerf: 0, 
-            sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAte: 0, nAte: 0, sumCiclo: 0, nCiclo: 0, sumCreacionAten: 0, nCreacionAten: 0, actSum: 0, actN: 0, corSum: 0, corN: 0, sla1d: 0,
-            aprobCasos: 0, aprobSumCreacionAten: 0, aprobNCreacionAten: 0, aprobActSum: 0, aprobActN: 0, aprobCorSum: 0, aprobCorN: 0, aprobSumBuzon: 0, aprobNBuzon: 0, aprobSumBolson: 0, aprobNBolson: 0, aprobSumCiclo: 0, aprobNCiclo: 0,
-            ops: {}
-        }
-    };
-    const causalOutcomeMap = {};
-    const monthRegMap = { 'CENTRAL': {}, 'OCCIDENTE': {}, 'SUR': {}, 'NORORIENTE': {} };
+            ops: Object.create(null)
+        };
+    }
+    const regCentral = createRegObject(), regOccidente = createRegObject(), regSur = createRegObject(), regNororiente = createRegObject();
+    const regMap = { 'CENTRAL': regCentral, 'OCCIDENTE': regOccidente, 'SUR': regSur, 'NORORIENTE': regNororiente };
+    
+    const causalOutcomeMap = Object.create(null);
+    const mRegCentral = Object.create(null), mRegOccidente = Object.create(null), mRegSur = Object.create(null), mRegNororiente = Object.create(null);
+    const monthRegMap = { 'CENTRAL': mRegCentral, 'OCCIDENTE': mRegOccidente, 'SUR': mRegSur, 'NORORIENTE': mRegNororiente };
+    
     const speedMap = { '<=2s': { casos: 0, rech: 0 }, '2-5s': { casos: 0, rech: 0 }, '5-15s': { casos: 0, rech: 0 }, '15-60s': { casos: 0, rech: 0 }, '1-5m': { casos: 0, rech: 0 }, '>5m': { casos: 0, rech: 0 } };
-    const opMap = {};
+    const opMap = Object.create(null);
     let rechAprob = 0, rechAband = 0, rechBloq = 0;
 
-    const dataLen = cuboData.length;
+    const dataLen = (Array.isArray(cuboData)) ? cuboData.length : 0;
 
     // UN SOLO CICLO O(N) de Alta Velocidad (Single-Pass Aggregation)
     for (let i = 0; i < dataLen; i++) {
         const r = cuboData[i];
 
-        // 1. Exclusión estricta de reinicios automáticos
-        if (r._isReinicio || (r.Gestion && r.Gestion.toUpperCase().includes('REINICIO'))) continue;
-
-        // 2. Filtro de Tipo de Gestión
-        if (fGes === 'ACTIVACIÓN') {
+        // 1. Filtro de Tipo de Gestión
+        if (isHumanas) {
+            if (r._isReinicio || (r.Gestion && r.Gestion.toUpperCase().includes('REINICIO'))) continue;
+        } else if (isActivacion) {
             if (!r._isActivacion && (!r.Gestion || !r.Gestion.toUpperCase().includes('ACTIVAC'))) continue;
-        } else if (fGes === 'CAMBIO DE CORREO ELECTRÓNICO') {
+        } else if (isCorreo) {
             if (!r._isCorreo && (!r.Gestion || !r.Gestion.toUpperCase().includes('CORREO'))) continue;
-        } else if (fGes !== 'HUMANAS' && fGes !== 'TODAS') {
+        } else if (!isTodasGes) {
             if (r.Gestion !== fGes && (!r.Gestion || !r.Gestion.toUpperCase().includes(fGes.toUpperCase()))) continue;
+        }
+
+        // 1B. Filtro de Tipo de Persona (Individual vs Jurídica / Sociedades)
+        if (hasFilterTipo) {
+            const isJur = r._isJuridica !== undefined ? r._isJuridica : (r.TipoPersona === 'JURIDICA');
+            if (isJuridica !== isJur) continue;
         }
 
         // 3. Filtro de Año
@@ -143,48 +157,50 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
         if (hasFilterEst && r.Estado !== fEst) continue;
         if (hasFilterMac && r.MacroFamilia !== fMac) continue;
 
+        const rCasos = r.Casos;
+        const rRech = r.Rechazos;
+        const rAprob = r.Aprobadas + r.Finalizadas;
+        const rReg = r.Region;
+        const rMes = r.Mes;
+        const rEst = r.Estado;
+        const rMac = r.MacroFamilia;
+
         // --- ACUMULACIÓN ---
-        totalCasos += r.Casos;
-        totalRechazos += r.Rechazos;
-        totalAprobados += r.Aprobadas + r.Finalizadas;
+        totalCasos += rCasos;
+        totalRechazos += rRech;
+        totalAprobados += rAprob;
         totalNoConf += r.NoConfirmadas;
         totalCanceladas += r.Canceladas;
         totalAprobDirectas += (r.AprobDirectas || 0);
         totalAprobSubsanadas += (r.AprobSubsanadas || 0);
         totalRechDefinitivos += (r.RechDefinitivos || 0);
 
-        if (r.Rechazos > 0 && (r.MacroFamilia === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
-            totalRechHuerfanos += r.Rechazos;
+        if (rRech > 0 && (rMac === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
+            totalRechHuerfanos += rRech;
         }
 
-        sumBuzonHab += (r.Suma_Buzon_Hab_Sec || 0);
-        nBuzonHab += (r.N_Buzon_Hab || 0);
-        sumBuzonCal += (r.Suma_Buzon_Cal_Sec || 0);
-        nBuzonCal += (r.N_Buzon_Cal || 0);
+        const sBuzH = r.Suma_Buzon_Hab_Sec || 0, nBuzH = r.N_Buzon_Hab || 0;
+        const sBuzC = r.Suma_Buzon_Cal_Sec || 0, nBuzC = r.N_Buzon_Cal || 0;
+        const sBol = r.Suma_Bolson_Sec || 0, nBol = r.N_Bolson || 0;
+        const sAteFin = r.Suma_Atencion_Final_Sec || 0, nAteFin = r.N_Atencion_Final || 0;
+        const sAteRech = r.Suma_Atencion_Rechazo_Sec || 0, nAteRech = r.N_Atencion_Rechazo || 0;
+        const sCreAte = r.Suma_Creacion_Atencion_Hab_Sec || 0, nCreAte = r.N_Creacion_Atencion_Hab || 0;
+        const sCicH = r.Suma_Ciclo_Hab_Sec || 0, nCicH = r.N_Ciclo_Hab || 0;
+        const sCicC = r.Suma_Ciclo_Cal_Sec || 0, nCicC = r.N_Ciclo_Cal || 0;
 
-        sumBolson += (r.Suma_Bolson_Sec || 0);
-        nBolson += (r.N_Bolson || 0);
-        
-        sumAtencionFinal += (r.Suma_Atencion_Final_Sec || 0);
-        nAtencionFinal += (r.N_Atencion_Final || 0);
-
-        sumAtencionRechazo += (r.Suma_Atencion_Rechazo_Sec || 0);
-        nAtencionRechazo += (r.N_Atencion_Rechazo || 0);
-
-        sumCreacionAtenHab += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-        nCreacionAtenHab += (r.N_Creacion_Atencion_Hab || 0);
-
-        sumCicloHab += (r.Suma_Ciclo_Hab_Sec || 0);
-        nCicloHab += (r.N_Ciclo_Hab || 0);
-        sumCicloCal += (r.Suma_Ciclo_Cal_Sec || 0);
-        nCicloCal += (r.N_Ciclo_Cal || 0);
+        sumBuzonHab += sBuzH; nBuzonHab += nBuzH;
+        sumBuzonCal += sBuzC; nBuzonCal += nBuzC;
+        sumBolson += sBol; nBolson += nBol;
+        sumAtencionFinal += sAteFin; nAtencionFinal += nAteFin;
+        sumAtencionRechazo += sAteRech; nAtencionRechazo += nAteRech;
+        sumCreacionAtenHab += sCreAte; nCreacionAtenHab += nCreAte;
+        sumCicloHab += sCicH; nCicloHab += nCicH;
+        sumCicloCal += sCicC; nCicloCal += nCicC;
 
         if (r.Ronda_Revision === '1RA_DIRECTA') {
-            sumCiclo1ra += (r.Suma_Ciclo_Hab_Sec || 0);
-            nCiclo1ra += (r.N_Ciclo_Hab || 0);
+            sumCiclo1ra += sCicH; nCiclo1ra += nCicH;
         } else if (r.Ronda_Revision === '2DA_SUBSANADA') {
-            sumCicloSub += (r.Suma_Ciclo_Hab_Sec || 0);
-            nCicloSub += (r.N_Ciclo_Hab || 0);
+            sumCicloSub += sCicH; nCicloSub += nCicH;
         }
 
         sla1d += r.SLA_8h;
@@ -193,159 +209,143 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
         sla5d += r.SLA_40h;
         slaFuera += r.Fuera_SLA_40h;
 
-        estCounts[r.Estado] = (estCounts[r.Estado] || 0) + r.Casos;
-        if (r.MacroFamilia !== 'Sin Rechazo') macCounts[r.MacroFamilia] = (macCounts[r.MacroFamilia] || 0) + r.Casos;
-        if (r.ID_Subcategoria && r.ID_Subcategoria !== 'SUB-00') subcatCounts[r.ID_Subcategoria] = (subcatCounts[r.ID_Subcategoria] || 0) + r.Casos;
+        estCounts[rEst] = (estCounts[rEst] || 0) + rCasos;
+        if (rMac !== 'Sin Rechazo') macCounts[rMac] = (macCounts[rMac] || 0) + rCasos;
+        if (r.ID_Subcategoria && r.ID_Subcategoria !== 'SUB-00') subcatCounts[r.ID_Subcategoria] = (subcatCounts[r.ID_Subcategoria] || 0) + rCasos;
         if (speedMap[r.Rango_Velocidad]) {
-            speedMap[r.Rango_Velocidad].casos += r.Casos;
-            speedMap[r.Rango_Velocidad].rech += r.Rechazos;
+            speedMap[r.Rango_Velocidad].casos += rCasos;
+            speedMap[r.Rango_Velocidad].rech += rRech;
         }
 
-        const isNoRech = r._isNoRech !== undefined ? r._isNoRech : (r.Rechazos === 0 && (r.Estado === 'APROBADA' || r.Estado === 'FINALIZADA' || r.Aprobadas > 0));
+        const isJur = r._isJuridica !== undefined ? r._isJuridica : (r.TipoPersona === 'JURIDICA');
+        if (isJur) {
+            persJurCasos += rCasos;
+            persJurAprob += rAprob;
+            persJurRech += rRech;
+        } else {
+            persIndCasos += rCasos;
+            persIndAprob += rAprob;
+            persIndRech += rRech;
+        }
 
-        if (r.Mes && r.Mes !== 'NaT') {
-            if (!monthMap[r.Mes]) {
-                monthMap[r.Mes] = { 
+        const isNoRech = r._isNoRech !== undefined ? r._isNoRech : (rRech === 0 && (rEst === 'APROBADA' || rEst === 'FINALIZADA' || rAprob > 0));
+
+        if (rMes && rMes !== 'NaT') {
+            let mObj = monthMap[rMes];
+            if (!mObj) {
+                mObj = monthMap[rMes] = { 
                     casos: 0, sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAten: 0, nAten: 0, sumCiclo: 0, nCiclo: 0,
                     aprobCasos: 0, aprobSumAten: 0, aprobNAten: 0, aprobSumBuzon: 0, aprobNBuzon: 0, aprobSumBolson: 0, aprobNBolson: 0, aprobSumCiclo: 0, aprobNCiclo: 0 
                 };
             }
-            const mObj = monthMap[r.Mes];
-            mObj.casos += r.Casos;
-            mObj.sumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
-            mObj.nBuzon += (r.N_Buzon_Hab || 0);
-            mObj.sumBolson += (r.Suma_Bolson_Sec || 0);
-            mObj.nBolson += (r.N_Bolson || 0);
-            mObj.sumAten += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-            mObj.nAten += (r.N_Creacion_Atencion_Hab || 0);
-            mObj.sumCiclo += (r.Suma_Ciclo_Hab_Sec || 0);
-            mObj.nCiclo += (r.N_Ciclo_Hab || 0);
+            mObj.casos += rCasos;
+            mObj.sumBuzon += sBuzH; mObj.nBuzon += nBuzH;
+            mObj.sumBolson += sBol; mObj.nBolson += nBol;
+            mObj.sumAten += sCreAte; mObj.nAten += nCreAte;
+            mObj.sumCiclo += sCicH; mObj.nCiclo += nCicH;
 
             if (isNoRech) {
-                mObj.aprobCasos += (r.Aprobadas + r.Finalizadas || r.Casos);
-                mObj.aprobSumAten += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                mObj.aprobNAten += (r.N_Creacion_Atencion_Hab || 0);
-                mObj.aprobSumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
-                mObj.aprobNBuzon += (r.N_Buzon_Hab || 0);
-                mObj.aprobSumBolson += (r.Suma_Bolson_Sec || 0);
-                mObj.aprobNBolson += (r.N_Bolson || 0);
-                mObj.aprobSumCiclo += (r.Suma_Ciclo_Hab_Sec || 0);
-                mObj.aprobNCiclo += (r.N_Ciclo_Hab || 0);
+                mObj.aprobCasos += (rAprob || rCasos);
+                mObj.aprobSumAten += sCreAte; mObj.aprobNAten += nCreAte;
+                mObj.aprobSumBuzon += sBuzH; mObj.aprobNBuzon += nBuzH;
+                mObj.aprobSumBolson += sBol; mObj.aprobNBolson += nBol;
+                mObj.aprobSumCiclo += sCicH; mObj.aprobNCiclo += nCicH;
             }
 
-            if (monthRegMap[r.Region]) {
-                if (!monthRegMap[r.Region][r.Mes]) {
-                    monthRegMap[r.Region][r.Mes] = { 
+            const rMReg = monthRegMap[rReg];
+            if (rMReg) {
+                let mrObj = rMReg[rMes];
+                if (!mrObj) {
+                    mrObj = rMReg[rMes] = { 
                         sumBuzon: 0, nBuzon: 0, sumBolson: 0, nBolson: 0, sumAten: 0, nAten: 0,
                         aprobSumBuzon: 0, aprobNBuzon: 0, aprobSumBolson: 0, aprobNBolson: 0, aprobSumAten: 0, aprobNAten: 0 
                     };
                 }
-                const mrObj = monthRegMap[r.Region][r.Mes];
-                mrObj.sumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
-                mrObj.nBuzon += (r.N_Buzon_Hab || 0);
-                mrObj.sumBolson += (r.Suma_Bolson_Sec || 0);
-                mrObj.nBolson += (r.N_Bolson || 0);
-                mrObj.sumAten += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                mrObj.nAten += (r.N_Creacion_Atencion_Hab || 0);
+                mrObj.sumBuzon += sBuzH; mrObj.nBuzon += nBuzH;
+                mrObj.sumBolson += sBol; mrObj.nBolson += nBol;
+                mrObj.sumAten += sCreAte; mrObj.nAten += nCreAte;
 
                 if (isNoRech) {
-                    mrObj.aprobSumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
-                    mrObj.aprobNBuzon += (r.N_Buzon_Hab || 0);
-                    mrObj.aprobSumBolson += (r.Suma_Bolson_Sec || 0);
-                    mrObj.aprobNBolson += (r.N_Bolson || 0);
-                    mrObj.aprobSumAten += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                    mrObj.aprobNAten += (r.N_Creacion_Atencion_Hab || 0);
+                    mrObj.aprobSumBuzon += sBuzH; mrObj.aprobNBuzon += nBuzH;
+                    mrObj.aprobSumBolson += sBol; mrObj.aprobNBolson += nBol;
+                    mrObj.aprobSumAten += sCreAte; mrObj.aprobNAten += nCreAte;
                 }
             }
         }
 
-        if (regMap[r.Region]) {
-            const regObj = regMap[r.Region];
-            regObj.casos += r.Casos;
-            regObj.aprob += (r.Aprobadas + r.Finalizadas);
-            regObj.rech += r.Rechazos;
+        const regObj = regMap[rReg];
+        if (regObj) {
+            regObj.casos += rCasos;
+            regObj.aprob += rAprob;
+            regObj.rech += rRech;
             regObj.aprob_dir += (r.AprobDirectas || 0);
             regObj.aprob_sub += (r.AprobSubsanadas || 0);
-            if (r.Rechazos > 0 && (r.MacroFamilia === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
-                regObj.rech_huerf += r.Rechazos;
+            if (rRech > 0 && (rMac === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
+                regObj.rech_huerf += rRech;
             }
-            regObj.sumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
-            regObj.nBuzon += (r.N_Buzon_Hab || 0);
-            regObj.sumBolson += (r.Suma_Bolson_Sec || 0);
-            regObj.nBolson += (r.N_Bolson || 0);
-            regObj.sumAte += (r.Suma_Atencion_Final_Sec || 0);
-            regObj.nAte += (r.N_Atencion_Final || 0);
-            regObj.sumCiclo += (r.Suma_Ciclo_Hab_Sec || 0);
-            regObj.nCiclo += (r.N_Ciclo_Hab || 0);
-            regObj.sumCreacionAten += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-            regObj.nCreacionAten += (r.N_Creacion_Atencion_Hab || 0);
+            regObj.sumBuzon += sBuzH; regObj.nBuzon += nBuzH;
+            regObj.sumBolson += sBol; regObj.nBolson += nBol;
+            regObj.sumAte += sAteFin; regObj.nAte += nAteFin;
+            regObj.sumCiclo += sCicH; regObj.nCiclo += nCicH;
+            regObj.sumCreacionAten += sCreAte; regObj.nCreacionAten += nCreAte;
             
             const isAct = r._isActivacion !== undefined ? r._isActivacion : (r.Gestion && r.Gestion.toUpperCase().includes('ACTIVAC'));
             const isCor = r._isCorreo !== undefined ? r._isCorreo : (r.Gestion && r.Gestion.toUpperCase().includes('CORREO'));
             
             if (isAct) {
-                regObj.actSum += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                regObj.actN += (r.N_Creacion_Atencion_Hab || 0);
+                regObj.actSum += sCreAte; regObj.actN += nCreAte;
             } else if (isCor) {
-                regObj.corSum += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                regObj.corN += (r.N_Creacion_Atencion_Hab || 0);
+                regObj.corSum += sCreAte; regObj.corN += nCreAte;
             }
 
             if (isNoRech) {
-                regObj.aprobCasos += (r.Aprobadas + r.Finalizadas || r.Casos);
-                regObj.aprobSumCreacionAten += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                regObj.aprobNCreacionAten += (r.N_Creacion_Atencion_Hab || 0);
-                regObj.aprobSumCiclo += (r.Suma_Ciclo_Hab_Sec || 0);
-                regObj.aprobNCiclo += (r.N_Ciclo_Hab || 0);
-                regObj.aprobSumBuzon += (r.Suma_Buzon_Hab_Sec || 0);
-                regObj.aprobNBuzon += (r.N_Buzon_Hab || 0);
-                regObj.aprobSumBolson += (r.Suma_Bolson_Sec || 0);
-                regObj.aprobNBolson += (r.N_Bolson || 0);
+                regObj.aprobCasos += (rAprob || rCasos);
+                regObj.aprobSumCreacionAten += sCreAte; regObj.aprobNCreacionAten += nCreAte;
+                regObj.aprobSumCiclo += sCicH; regObj.aprobNCiclo += nCicH;
+                regObj.aprobSumBuzon += sBuzH; regObj.aprobNBuzon += nBuzH;
+                regObj.aprobSumBolson += sBol; regObj.aprobNBolson += nBol;
                 if (isAct) {
-                    regObj.aprobActSum += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                    regObj.aprobActN += (r.N_Creacion_Atencion_Hab || 0);
+                    regObj.aprobActSum += sCreAte; regObj.aprobActN += nCreAte;
                 } else if (isCor) {
-                    regObj.aprobCorSum += (r.Suma_Creacion_Atencion_Hab_Sec || 0);
-                    regObj.aprobCorN += (r.N_Creacion_Atencion_Hab || 0);
+                    regObj.aprobCorSum += sCreAte; regObj.aprobCorN += nCreAte;
                 }
             }
             regObj.sla1d += r.SLA_8h;
         }
 
-        if (r.U1 && r.U1 !== 'AP_MS_SAT_EN_LINEA' && r.U1 !== 'SIN_OPERADOR') {
-            if (!opMap[r.U1]) opMap[r.U1] = { total: 0, aprob: 0, aprob_dir: 0, aprob_sub: 0, rech_def: 0, rech_eventos: 0, sumAte: 0, nAte: 0, regions: {} };
-            opMap[r.U1].total += r.Casos;
-            opMap[r.U1].aprob += (r.Aprobadas + r.Finalizadas);
-            opMap[r.U1].aprob_dir += (r.AprobDirectas || 0);
-            opMap[r.U1].aprob_sub += (r.AprobSubsanadas || 0);
-            opMap[r.U1].rech_def += (r.RechDefinitivos || 0);
-            opMap[r.U1].rech_eventos += r.Rechazos;
-            opMap[r.U1].sumAte += (r.Suma_Atencion_Final_Sec || 0);
-            opMap[r.U1].nAte += (r.N_Atencion_Final || 0);
-            if (r.Region) {
-                opMap[r.U1].regions[r.Region] = (opMap[r.U1].regions[r.Region] || 0) + r.Casos;
-                if (regMap[r.Region]) {
-                    regMap[r.Region].ops[r.U1] = (regMap[r.Region].ops[r.U1] || 0) + r.Casos;
-                }
+        const u1 = r.U1;
+        if (u1 && u1 !== 'AP_MS_SAT_EN_LINEA' && u1 !== 'SIN_OPERADOR') {
+            let oObj = opMap[u1];
+            if (!oObj) oObj = opMap[u1] = { total: 0, aprob: 0, aprob_dir: 0, aprob_sub: 0, rech_def: 0, rech_eventos: 0, sumAte: 0, nAte: 0, regions: Object.create(null) };
+            oObj.total += rCasos;
+            oObj.aprob += rAprob;
+            oObj.aprob_dir += (r.AprobDirectas || 0);
+            oObj.aprob_sub += (r.AprobSubsanadas || 0);
+            oObj.rech_def += (r.RechDefinitivos || 0);
+            oObj.rech_eventos += rRech;
+            oObj.sumAte += sAteFin;
+            oObj.nAte += nAteFin;
+            if (rReg) {
+                oObj.regions[rReg] = (oObj.regions[rReg] || 0) + rCasos;
+                if (regObj) regObj.ops[u1] = (regObj.ops[u1] || 0) + rCasos;
             }
         }
 
-        if (r.Rechazos > 0) {
-            const isRecuperado = (r.Estado === 'APROBADA' || r.Estado === 'FINALIZADA');
-            const isBloqueado = (r.Estado.includes('CANTIDAD') || r.Estado.includes('REQUERIMIENTO'));
+        if (rRech > 0) {
+            const isRecuperado = (rEst === 'APROBADA' || rEst === 'FINALIZADA');
+            const isBloqueado = (rEst.includes('CANTIDAD') || rEst.includes('REQUERIMIENTO'));
             
-            if (isRecuperado) rechAprob += r.Rechazos;
-            else if (isBloqueado) rechBloq += r.Rechazos;
-            else rechAband += r.Rechazos;
+            if (isRecuperado) rechAprob += rRech;
+            else if (isBloqueado) rechBloq += rRech;
+            else rechAband += rRech;
 
-            const causalKey = r.MacroFamilia && r.MacroFamilia !== 'Sin Rechazo' ? r.MacroFamilia : 'Otras/Sin Clasificar';
-            if (!causalOutcomeMap[causalKey]) {
-                causalOutcomeMap[causalKey] = { total: 0, subsanadas: 0, abandonadas: 0, bloqueadas: 0 };
-            }
-            causalOutcomeMap[causalKey].total += r.Rechazos;
-            if (isRecuperado) causalOutcomeMap[causalKey].subsanadas += r.Rechazos;
-            else if (isBloqueado) causalOutcomeMap[causalKey].bloqueadas += r.Rechazos;
-            else causalOutcomeMap[causalKey].abandonadas += r.Rechazos;
+            const causalKey = rMac && rMac !== 'Sin Rechazo' ? rMac : 'Otras/Sin Clasificar';
+            let cObj = causalOutcomeMap[causalKey];
+            if (!cObj) cObj = causalOutcomeMap[causalKey] = { total: 0, subsanadas: 0, abandonadas: 0, bloqueadas: 0 };
+            cObj.total += rRech;
+            if (isRecuperado) cObj.subsanadas += rRech;
+            else if (isBloqueado) cObj.bloqueadas += rRech;
+            else cObj.abandonadas += rRech;
         }
     }
 
@@ -416,6 +416,10 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
             multiTouchCasos,
             multiTouchTotalRech,
             pctReincidencia
+        },
+        persStats: {
+            ind: { casos: persIndCasos, aprob: persIndAprob, rech: persIndRech },
+            jur: { casos: persJurCasos, aprob: persJurAprob, rech: persJurRech }
         }
     };
 }

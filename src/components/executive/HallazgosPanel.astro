@@ -26,11 +26,11 @@
     <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between mb-2">
-          <span class="font-bold text-amber-300 text-xs">⏳ 1. Cuello de Botella en Cola (95.7%)</span>
-          <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono">28.77h en Servidor</span>
+          <span class="font-bold text-amber-300 text-xs">⏳ 1. Cuello de Botella en Cola (93.5% Prom. • 95.7% Med.)</span>
+          <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono">Servidor vs Operador</span>
         </div>
         <p class="text-slate-200 leading-relaxed">
-          El <strong>95.7% del tiempo total</strong> transcurre en la cola general de asignación (mediana de <strong>28.77 horas</strong>), mientras que el operador humano dictamina el caso en solo <strong>1.25 minutos</strong>.
+          En <strong>promedio aritmético</strong>, el <strong>93.5% del ciclo</strong> corresponde a espera en cola (3.85h de 4.12h totales), y en <strong>mediana operativa</strong> alcanza el <strong>95.7%</strong> (28.77h en servidor), mientras que la decisión activa en pantalla toma solo <strong>1.8 segundos</strong> (Paso 3).
         </p>
       </div>
       <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-amber-200 font-medium">
@@ -59,14 +59,14 @@
       <div>
         <div class="flex items-center justify-between mb-2">
           <span class="font-bold text-cyan-300 text-xs">🏭 3. Capacidad Diaria en 8 Horas</span>
-          <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono">1,166 Casos / Día</span>
+          <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono">1,166 Dictámenes / Jornada</span>
         </div>
         <p class="text-slate-200 leading-relaxed">
-          El equipo nacional resuelve un promedio de <strong>1,166.0 gestiones por jornada hábil</strong> (898.6 aprobadas + 333.4 rechazadas / día). El Top 10 absorbe >32% de toda la demanda institucional.
+          El equipo nacional procesa <strong>1,166 dictámenes finalizados por jornada efectiva de 8 horas</strong> (898.6 aprobadas + 333.4 rechazadas / día). El Top 10 absorbe >32% de toda la demanda institucional.
         </p>
       </div>
       <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-cyan-200 font-medium">
-        📌 Ritmo constante de 146 dictámenes por hora en horario laboral hábil.
+        📌 Ritmo constante de 146 dictámenes finalizados por hora hábil (1,166 / 8 = 145.8).
       </div>
     </div>
 
@@ -78,7 +78,7 @@
           <span class="bg-blue-400/20 text-blue-200 px-2 py-0.5 rounded text-[10px] font-mono">Central 35% • Occ 24%</span>
         </div>
         <p class="text-slate-200 leading-relaxed">
-          Central resuelve <strong>408 casos/día</strong> (35.0%), Occidente <strong>284 casos/día</strong> (24.3%), Nororiente <strong>238 casos/día</strong> (20.4%) y Sur <strong>238 casos/día</strong> (20.3%), con liderazgo operativo en Sur (77.7% First-Time).
+          Central resuelve <strong>408 casos/jornada</strong> (35.0%), Occidente <strong>284 casos/jornada</strong> (24.3%), Nororiente <strong>238 casos/jornada</strong> (20.4%) y Sur <strong>238 casos/jornada</strong> (20.3%), con liderazgo operativo en Sur (77.7% First-Time).
         </p>
       </div>
       <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-blue-200 font-medium">
@@ -90,15 +90,15 @@
     <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between mb-2">
-          <span class="font-bold text-rose-300 text-xs">⚠️ 5. Rechazos Huérfanos (51.4%)</span>
+          <span class="font-bold text-rose-300 text-xs">⚠️ 5. Rechazos Sin Causal Formal (51.4%)</span>
           <span class="bg-rose-400/20 text-rose-200 px-2 py-0.5 rounded text-[10px] font-mono">46,064 Sin Motivo</span>
         </div>
         <p class="text-slate-200 leading-relaxed">
-          El <strong>51.42% de rechazos</strong> en 2026 carece de motivo registrado. El 91.8% de ellos culminó en aprobación (subsanaciones tácitas) y 3,777 sufrieron cancelación definitiva a ciegas.
+          El <strong>51.42% de rechazos</strong> en 2026 carece de motivo tipificado. El 91.8% de esos casos posteriormente culminó en aprobación y 3,777 sufrieron cancelación sin registro de causa.
         </p>
       </div>
       <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-rose-200 font-medium">
-        📌 Urge hacer obligatoria la causal taxonómica en la interfaz del revisor.
+        📌 Recomendación: Hacer obligatoria la selección de causal taxonómica en la interfaz del revisor.
       </div>
     </div>
 
@@ -106,15 +106,15 @@
     <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between mb-2">
-          <span class="font-bold text-purple-300 text-xs">🔄 6. Primer Intento vs Subsanación</span>
-          <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono">94.9% vs 70.6%</span>
+          <span class="font-bold text-purple-300 text-xs">🔄 6. Taxonomía de Rondas (1ª vs 2ª vs 3ª+)</span>
+          <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono">Ronda 1 ➔ 2 ➔ 3+</span>
         </div>
         <p class="text-slate-200 leading-relaxed">
-          En solicitudes limpias, el <strong>94.93% se aprueba en ≤ 3 días hábiles</strong>. En solicitudes con rechazo, el 47.2% subsana con éxito pero tarda 16h hábiles / 70h reloj por la demora del usuario.
+          En <strong>Ronda 1 (limpia)</strong>, el 94.93% aprueba en ≤ 3 días. En <strong>Ronda 2 (subsanada)</strong>, el 47.2% se recupera pero triplica el ciclo. La <strong>Ronda 3+</strong> acumula bloqueos por límite de intentos.
         </p>
       </div>
       <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-purple-200 font-medium">
-        📌 El 80.8% de los rechazos ocurre por errores móviles del usuario (audio, fecha, DPI).
+        📌 El 80.8% de los rechazos ocurre por fallas del usuario en video o DPI (causas prevenibles).
       </div>
     </div>
 

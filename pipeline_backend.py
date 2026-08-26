@@ -256,6 +256,16 @@ def main():
     
     df["Estado"] = df["Estado"].str.upper()
     df["U1"] = df["U1"].fillna('SIN_OPERADOR').replace({'': 'SIN_OPERADOR'})
+
+    # Clasificación de Tipo de Persona (Persona Individual / Natural vs Persona Jurídica / Sociedades)
+    pattern_juridica = (
+        r'(?i)\b(S\.?\s*A\.?|SOCIEDAD|SOCIEDADES|S\.?\s*C\.?|S\.?\s*EN\s*C\.?|LTDA|LIMITADA|'
+        r'ASOCIACI[OÓ]N|ASOCIACIN|ASOC|FUNDACI[OÓ]N|FUNDACIN|COOPERATIVA|R\.?\s*L\.?|'
+        r'IGLESIA|CONDOMINIO|ENTIDAD|CORPORACI[OÓ]N|INVERSIONES|COMERCIAL|DISTRIBUIDORA|'
+        r'CONSORCIO|COMPA[NÑ][IÍ]A|SERVICIOS\s+INTEGRALES|TRANSPORTES|CIA\.?|CORP)\b'
+    )
+    df["TipoPersona"] = np.where(df["NIT"].astype(str).str.contains(pattern_juridica, regex=True), 'JURIDICA', 'INDIVIDUAL')
+    print(f"  [OK] Tipo de Persona clasificado: {len(df[df['TipoPersona']=='JURIDICA']):,} Jurídicas / Sociedades, {len(df[df['TipoPersona']=='INDIVIDUAL']):,} Individuales")
     
     # 3. Clasificación de Rechazos
     print("\n3. CLASIFICACIÓN TAXONÓMICA")
@@ -327,7 +337,7 @@ def main():
     # 5. Agregación OLAP
     print("\n5. AGREGACIÓN MULTIDIMENSIONAL OLAP")
     t0 = time.time()
-    group_cols = ['Mes', 'Anio', 'Gestion', 'Region', 'Estado', 'MacroFamilia', 'ID_Subcategoria', 'U1', 'Rango_Velocidad', 'Ronda_Revision']
+    group_cols = ['Mes', 'Anio', 'Gestion', 'Region', 'Estado', 'MacroFamilia', 'ID_Subcategoria', 'U1', 'Rango_Velocidad', 'Ronda_Revision', 'TipoPersona']
     
     agg_dict = {
         'NoGestion': 'count',
@@ -365,7 +375,7 @@ def main():
     cubo_df = df.groupby(group_cols, as_index=False).agg(agg_dict)
     
     cubo_cols = [
-        "Mes", "Anio", "Gestion", "Region", "Estado", "MacroFamilia", "ID_Subcategoria", "U1", "Rango_Velocidad", "Ronda_Revision",
+        "Mes", "Anio", "Gestion", "Region", "Estado", "MacroFamilia", "ID_Subcategoria", "U1", "Rango_Velocidad", "Ronda_Revision", "TipoPersona",
         "Casos", "Rechazos", "Aprobadas", "Finalizadas", "NoConfirmadas", "Canceladas",
         "AprobDirectas", "AprobSubsanadas", "RechDefinitivos",
         "Suma_Buzon_Hab_Sec", "N_Buzon_Hab", "Suma_Buzon_Cal_Sec", "N_Buzon_Cal",
@@ -392,7 +402,8 @@ def main():
         "gestiones": gestiones_sorted,
         "regiones": regiones_sorted,
         "estados": estados_sorted,
-        "macro_familias": macros_sorted
+        "macro_familias": macros_sorted,
+        "tipos_persona": ["TODAS", "INDIVIDUAL", "JURIDICA"]
     }
     
     tax_export = [{"ID_Macro": item["ID_Macro"], "Macro_Familia": item["Macro_Familia"], "ID_Sub": item["ID_Sub"], "Subcategoria": item["Subcategoria"]} for item in RAW_TAXONOMIA]
@@ -400,7 +411,7 @@ def main():
     top_ops = df[df["U1"].notna() & ~df["U1"].isin(['AP_MS_SAT_EN_LINEA', 'SIN_OPERADOR'])]["U1"].value_counts().head(20).to_dict()
     ranking_operadores = [{"operador": op, "casos": cnt} for op, cnt in top_ops.items()]
     
-    muestral_cols = ["NoGestion", "NIT", "Gestion", "Region", "FechaCreacion", "FechaFinaliza", "U1", "Estado", "MotivoRechazo", "MacroFamilia"]
+    muestral_cols = ["NoGestion", "NIT", "Gestion", "Region", "FechaCreacion", "FechaFinaliza", "U1", "Estado", "MotivoRechazo", "MacroFamilia", "TipoPersona"]
     muestra_500 = df[muestral_cols].sample(min(500, len(df)), random_state=42).copy()
     muestra_500["FechaCreacion"] = muestra_500["FechaCreacion"].dt.strftime('%Y-%m-%d %H:%M:%S').fillna('')
     muestra_500["FechaFinaliza"] = muestra_500["FechaFinaliza"].dt.strftime('%Y-%m-%d %H:%M:%S').fillna('')

@@ -1,0 +1,170 @@
+---
+// Componente Modal de Metodología y Trazabilidad de Métricas
+---
+
+<div id="metodologiaModal" class="fixed inset-0 z-[120] hidden cmd-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalMetodologiaTitle">
+  <div class="bg-slate-900 border border-slate-700 w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col text-white">
+    
+    <!-- Modal Header -->
+    <div class="p-5 sm:p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 bg-blue-600/30 text-blue-400 border border-blue-500/40 rounded-2xl">
+          <i data-lucide="book-open-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 id="modalMetodologiaTitle" class="text-base sm:text-lg font-black text-white">
+            Manual Metodológico & Trazabilidad de Fórmulas
+          </h3>
+          <p class="text-xs text-slate-400">
+            Especificación matemática formal, fuentes y reglas de agregación del Tablero BI 360°
+          </p>
+        </div>
+      </div>
+      <button 
+        onclick="window.toggleMetodologiaModal()" 
+        class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition focus-visible:ring-2 focus-visible:ring-blue-500"
+        aria-label="Cerrar modal de metodología"
+      >
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Modal Content (Scrollable) -->
+    <div class="p-5 sm:p-6 overflow-y-auto space-y-6 text-xs text-slate-300 leading-relaxed">
+      
+      <!-- Bloque 1: Fuente y Universo de Datos -->
+      <section class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60 space-y-2">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
+          <i data-lucide="database" class="w-4 h-4"></i> 1. Universo y Fuente de Datos
+        </h4>
+        <p>
+          El tablero procesa el <strong>100% de transacciones electrónicas</strong> registradas en el sistema de gestión tributaria de la SAT para los trámites de <em>Activación de Agencia Virtual</em> y <em>Actualización RTU / Correo</em>.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+            <span class="text-[11px] font-bold text-slate-400">Universo Total SAT:</span>
+            <p class="text-sm font-black text-white mt-0.5">2,569,726 Solicitudes</p>
+            <span class="text-[10px] text-slate-500">Incluye 1.70M reinicios automáticos (autoservicio)</span>
+          </div>
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+            <span class="text-[11px] font-bold text-emerald-400">Carga Humana Auditada:</span>
+            <p class="text-sm font-black text-emerald-300 mt-0.5">865,876 Expedientes</p>
+            <span class="text-[10px] text-slate-500">Dictaminados por los 172 revisores tributarios</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloque 2: Calendario Laboral y Cálculo de Horas Hábiles -->
+      <section class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60 space-y-2">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+          <i data-lucide="clock" class="w-4 h-4"></i> 2. Calendario Laboral y Jornada Hábil (8 Horas)
+        </h4>
+        <p>
+          Para aislar la eficiencia del personal institucional del tiempo ocioso del contribuyente y de las noches/fines de semana, el sistema aplica un cálculo dual de tiempo:
+        </p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-300">
+          <li><strong>Horas Hábiles (Horario Laboral Oficial):</strong> Contabiliza únicamente minutos transcurridos de <strong>Lunes a Viernes entre las 08:00 y las 16:00 horas</strong> (8 horas/jornada). Se excluyen automáticamente fines de semana y días de asueto oficial.</li>
+          <li><strong>Horas Calendario (Tiempo Reloj Corrido):</strong> Mide el tiempo total desde el envío del contribuyente hasta la resolución final, incluyendo fines de semana y horarios no hábiles.</li>
+        </ul>
+      </section>
+
+      <!-- Bloque 3: Matriz de Fórmulas y KPIs -->
+      <section class="space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+          <i data-lucide="calculator" class="w-4 h-4"></i> 3. Fichas Técnicas de Indicadores Clave
+        </h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          
+          <!-- Ficha 1 -->
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">Tiempo hasta 1ª Atención (Paso 1)</span>
+              <span class="text-[10px] bg-blue-900/60 text-blue-300 px-2 py-0.5 rounded font-mono">Cola Servidor</span>
+            </div>
+            <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-blue-300">
+              Cola = FechaAsignación - FechaConfirmación
+            </div>
+            <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800">
+              <strong>Estadístico:</strong> Promedio Aritmético (3.85h hábiles) | Mediana (28.77h calendario).
+            </div>
+          </div>
+
+          <!-- Ficha 2 -->
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">Dictamen Activo en Pantalla (Paso 3)</span>
+              <span class="text-[10px] bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded font-mono">Revisión Humana</span>
+            </div>
+            <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-emerald-300">
+              Dictamen = FechaFinalización - FechaRevisión
+            </div>
+            <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800">
+              <strong>Estadístico:</strong> Promedio (1.8 segundos). El 95.86% de los trámites se resuelve en &le; 5s.
+            </div>
+          </div>
+
+          <!-- Ficha 3 -->
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">First-Time Resolution (FTR)</span>
+              <span class="text-[10px] bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded font-mono">Calidad Limpia</span>
+            </div>
+            <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-emerald-300">
+              FTR % = (Aprobadas 1er Intento / Universo Total) × 100
+            </div>
+            <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800">
+              <strong>Resultado Global:</strong> 53.4% (462,808 expedientes aprobados sin re-trabajo).
+            </div>
+          </div>
+
+          <!-- Ficha 4 -->
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">Cumplimiento de SLAs en Jornada</span>
+              <span class="text-[10px] bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded font-mono">Estándar 8h</span>
+            </div>
+            <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-purple-300">
+              SLA % = (Casos con Ciclo Hábil &le; Umbral / Casos Dictaminados) × 100
+            </div>
+            <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800">
+              <strong>Umbrales:</strong> 1d (8h: 48.0%) | 2d (16h: 68.4%) | 3d (24h: 81.3%) | 5d (40h: 90.2%).
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Bloque 4: Taxonomía de Rondas de Revisión -->
+      <section class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60 space-y-2">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4"></i> 4. Taxonomía de Rondas Operativas
+        </h4>
+        <div class="space-y-2 text-[11px]">
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+            <strong class="text-white">• Ronda 1 (Directa / Limpia):</strong> FechaRechazo es NULO y Estado final es APROBADA o FINALIZADA.
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+            <strong class="text-white">• Ronda 2 (Subsanada tras Rechazo):</strong> FechaRechazo NO es nulo y FechaRevisión posterior culmina en APROBADA.
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+            <strong class="text-white">• Ronda 3+ (Multi-revisión / Bloqueo):</strong> Solicitudes con &ge; 2 rechazos que consumen re-trabajo o alcanzan límite institucional.
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-[11px] text-slate-400">
+      <span>Presione <kbd class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] font-mono border border-slate-700">ESC</kbd> para cerrar</span>
+      <button 
+        onclick="window.toggleMetodologiaModal()" 
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl transition"
+      >
+        Entendido
+      </button>
+    </div>
+
+  </div>
+</div>

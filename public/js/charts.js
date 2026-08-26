@@ -17,15 +17,19 @@ let chartDestinoRechInst = null;
 let chartLineBuzonRegInst = null;
 let chartLineBolsonRegInst = null;
 let chartComboTrendInst = null;
+let chartMacroDestinoInst = null;
+let chartMacroPersoneriaInst = null;
 let chartSpeedVsRechazoInst = null;
 let chartVolumeVsSpeedInst = null;
 let chartBarRegVolumenInst = null;
 let chartBarRegTiemposInst = null;
-let chartVolumenVsTiempoRegInst = null;
+let chartSobrecargaBarInst = null;
 let chartSpeedDistributionInst = null;
 
 function initCharts() {
     // Destruir instancias previas para evitar error de canvas reusado
+    if (chartMacroDestinoInst) { chartMacroDestinoInst.destroy(); chartMacroDestinoInst = null; }
+    if (chartMacroPersoneriaInst) { chartMacroPersoneriaInst.destroy(); chartMacroPersoneriaInst = null; }
     if (chartLineBuzonRegInst) { chartLineBuzonRegInst.destroy(); chartLineBuzonRegInst = null; }
     if (chartLineBolsonRegInst) { chartLineBolsonRegInst.destroy(); chartLineBolsonRegInst = null; }
     if (chartComboTrendInst) { chartComboTrendInst.destroy(); chartComboTrendInst = null; }
@@ -36,7 +40,7 @@ function initCharts() {
     if (chartOpsInst) { chartOpsInst.destroy(); chartOpsInst = null; }
     if (chartBarRegVolumenInst) { chartBarRegVolumenInst.destroy(); chartBarRegVolumenInst = null; }
     if (chartBarRegTiemposInst) { chartBarRegTiemposInst.destroy(); chartBarRegTiemposInst = null; }
-    if (chartVolumenVsTiempoRegInst) { chartVolumenVsTiempoRegInst.destroy(); chartVolumenVsTiempoRegInst = null; }
+    if (chartSobrecargaBarInst) { chartSobrecargaBarInst.destroy(); chartSobrecargaBarInst = null; }
     if (chartSpeedDistributionInst) { chartSpeedDistributionInst.destroy(); chartSpeedDistributionInst = null; }
 
     const cvBarVol = document.getElementById('chartBarRegVolumen');
@@ -222,52 +226,49 @@ function initCharts() {
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
     });
 
-    chartMacroInst = new Chart(document.getElementById('chartMacro'), {
-        type: 'bar',
-        data: { labels: [], datasets: [{ label: 'Casos', data: [], backgroundColor: ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE', '#F43F5E'], borderRadius: 6 }] },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    });
+    const cvMacroDest = document.getElementById('chartMacroDestino');
+    if (cvMacroDest) {
+        chartMacroDestinoInst = new Chart(cvMacroDest, {
+            type: 'doughnut',
+            data: {
+                labels: ['Aprobación Directa (1ª Vez)', 'Subsanada tras Rechazo', 'Rechazo Definitivo', 'En Proceso / Otros'],
+                datasets: [{
+                    data: [0, 0, 0, 0],
+                    backgroundColor: ['#10B981', '#06B6D4', '#F43F5E', '#94A3B8'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } },
+                    tooltip: richTooltipOptions
+                },
+                cutout: '65%'
+            }
+        });
+    }
 
-    const cvVolTiempo = document.getElementById('chartVolumenVsTiempoReg');
-    if (cvVolTiempo) {
-        chartVolumenVsTiempoRegInst = new Chart(cvVolTiempo, {
+    const cvMacroPers = document.getElementById('chartMacroPersoneria');
+    if (cvMacroPers) {
+        chartMacroPersoneriaInst = new Chart(cvMacroPers, {
             type: 'bar',
             data: {
-                labels: ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'],
+                labels: ['Individuales (99.5%)', 'Sociedades (0.5%)'],
                 datasets: [
                     {
-                        type: 'bar',
-                        label: 'Volumen de Gestiones (Demanda)',
-                        data: [0, 0, 0, 0],
-                        backgroundColor: 'rgba(99, 102, 241, 0.65)',
-                        borderColor: '#4F46E5',
-                        borderWidth: 1.5,
-                        borderRadius: 6,
-                        yAxisID: 'y'
-                    },
-                    {
-                        type: 'line',
-                        label: 'Espera en Buzón Central (Horas Hábiles)',
-                        data: [0, 0, 0, 0],
-                        borderColor: '#EF4444',
-                        backgroundColor: '#EF4444',
-                        tension: 0.25,
-                        borderWidth: 3,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#B91C1C',
-                        yAxisID: 'y1'
-                    },
-                    {
-                        type: 'line',
-                        label: 'Revisión Humana Activa (Minutos)',
-                        data: [0, 0, 0, 0],
-                        borderColor: '#10B981',
+                        label: '% Aprobación',
+                        data: [0, 0],
                         backgroundColor: '#10B981',
-                        borderDash: [5, 5],
-                        tension: 0.25,
-                        borderWidth: 2.5,
-                        pointRadius: 4,
-                        yAxisID: 'y2'
+                        borderRadius: 6
+                    },
+                    {
+                        label: '% Tasa Rechazo',
+                        data: [0, 0],
+                        backgroundColor: '#F43F5E',
+                        borderRadius: 6
                     }
                 ]
             },
@@ -276,26 +277,79 @@ function initCharts() {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } },
-                    tooltip: richTooltipOptions
+                    tooltip: {
+                        ...richTooltipOptions,
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}%`
+                        }
+                    }
                 },
                 scales: {
                     x: { grid: { display: false } },
                     y: {
-                        type: 'linear',
-                        position: 'left',
-                        title: { display: true, text: 'Cantidad de Gestiones', font: { size: 10 } }
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { callback: v => v + '%' },
+                        title: { display: true, text: 'Tasa de Dictamen (%)', font: { size: 10 } }
+                    }
+                }
+            }
+        });
+    }
+
+    chartMacroInst = new Chart(document.getElementById('chartMacro'), {
+        type: 'bar',
+        data: { labels: [], datasets: [{ label: 'Casos', data: [], backgroundColor: ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE', '#F43F5E'], borderRadius: 6 }] },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+
+    const cvSobrecarga = document.getElementById('chartSobrecargaBar');
+    if (cvSobrecarga) {
+        chartSobrecargaBarInst = new Chart(cvSobrecarga, {
+            type: 'bar',
+            data: {
+                labels: ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'],
+                datasets: [
+                    {
+                        label: '% Demanda de Trámites',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: '#3B82F6',
+                        borderColor: '#2563EB',
+                        borderWidth: 1.5,
+                        borderRadius: 6
                     },
-                    y1: {
-                        type: 'linear',
-                        position: 'right',
-                        grid: { drawOnChartArea: false },
-                        title: { display: true, text: 'Horas en Cola Buzón', font: { size: 10 } }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        display: false,
-                        grid: { drawOnChartArea: false }
+                    {
+                        label: '% Capacidad de Revisores',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: '#8B5CF6',
+                        borderColor: '#7C3AED',
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } },
+                    tooltip: {
+                        ...richTooltipOptions,
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) { return v + '%'; }
+                        },
+                        title: { display: true, text: 'Participación (%)', font: { size: 10 } }
                     }
                 }
             }
@@ -437,6 +491,8 @@ function renderScatterOperadores(opMap) {
 // Redimensionador Universal de Gráficas para Contenedores Reactivos
 window.resizeAllCharts = function() {
     const instances = [
+        chartMacroDestinoInst,
+        chartMacroPersoneriaInst,
         chartLineBuzonRegInst,
         chartLineBolsonRegInst,
         chartComboTrendInst,
@@ -447,7 +503,7 @@ window.resizeAllCharts = function() {
         chartOpsInst,
         chartBarRegVolumenInst,
         chartBarRegTiemposInst,
-        chartVolumenVsTiempoRegInst,
+        chartSobrecargaBarInst,
         chartSpeedDistributionInst,
         window._chartScatterInstance
     ];

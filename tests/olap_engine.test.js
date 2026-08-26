@@ -93,4 +93,76 @@ describe('Motor OLAP: Filtrado y Agregación Multidimensional', () => {
         expect(res.opMap['PAPEREZT'].total).toBe(50);
         expect(res.opMap['AP_MS_SAT_EN_LINEA']).toBeUndefined();
     });
+
+    it('filtra correctamente por Tipo de Personería (INDIVIDUAL vs JURIDICA)', () => {
+        const mockConPersonas = [
+            {
+                Mes: '2026-01', Anio: '2026', Gestion: 'ACTIVACIÓN', Region: 'CENTRAL', Estado: 'APROBADA',
+                MacroFamilia: 'Sin Rechazo', ID_Subcategoria: 'SUB-00', U1: 'MKNAJERA', Rango_Velocidad: '<=2s', Ronda_Revision: '1RA_DIRECTA',
+                TipoPersona: 'INDIVIDUAL', _isJuridica: false,
+                Casos: 100, Rechazos: 0, Aprobadas: 100, Finalizadas: 0, NoConfirmadas: 0, Canceladas: 0,
+                AprobDirectas: 100, AprobSubsanadas: 0, RechDefinitivos: 0,
+                Suma_Buzon_Hab_Sec: 2880000, N_Buzon_Hab: 100, Suma_Buzon_Cal_Sec: 3600000, N_Buzon_Cal: 100,
+                Suma_Bolson_Sec: 5000, N_Bolson: 100, Suma_Atencion_Final_Sec: 200, N_Atencion_Final: 100,
+                Suma_Atencion_Rechazo_Sec: 0, N_Atencion_Rechazo: 0,
+                Suma_Creacion_Atencion_Hab_Sec: 2885000, N_Creacion_Atencion_Hab: 100,
+                Suma_Ciclo_Hab_Sec: 2885200, N_Ciclo_Hab: 100, Suma_Ciclo_Cal_Sec: 3605200, N_Ciclo_Cal: 100,
+                SLA_8h: 100, SLA_16h: 0, SLA_24h: 0, SLA_40h: 0, Fuera_SLA_40h: 0
+            },
+            {
+                Mes: '2026-01', Anio: '2026', Gestion: 'ACTIVACIÓN', Region: 'CENTRAL', Estado: 'APROBADA',
+                MacroFamilia: 'Sin Rechazo', ID_Subcategoria: 'SUB-00', U1: 'MKNAJERA', Rango_Velocidad: '<=2s', Ronda_Revision: '1RA_DIRECTA',
+                TipoPersona: 'JURIDICA', _isJuridica: true,
+                Casos: 25, Rechazos: 0, Aprobadas: 25, Finalizadas: 0, NoConfirmadas: 0, Canceladas: 0,
+                AprobDirectas: 25, AprobSubsanadas: 0, RechDefinitivos: 0,
+                Suma_Buzon_Hab_Sec: 720000, N_Buzon_Hab: 25, Suma_Buzon_Cal_Sec: 900000, N_Buzon_Cal: 25,
+                Suma_Bolson_Sec: 1250, N_Bolson: 25, Suma_Atencion_Final_Sec: 50, N_Atencion_Final: 25,
+                Suma_Atencion_Rechazo_Sec: 0, N_Atencion_Rechazo: 0,
+                Suma_Creacion_Atencion_Hab_Sec: 721250, N_Creacion_Atencion_Hab: 25,
+                Suma_Ciclo_Hab_Sec: 721300, N_Ciclo_Hab: 25, Suma_Ciclo_Cal_Sec: 901300, N_Ciclo_Cal: 25,
+                SLA_8h: 25, SLA_16h: 0, SLA_24h: 0, SLA_40h: 0, Fuera_SLA_40h: 0
+            }
+        ];
+
+        const resTodas = processOlapFilters(mockConPersonas, 'HUMANAS', '2026', 'TODOS', 'TODOS', 'CENTRAL', 'TODOS', 'TODAS', 'TODAS');
+        expect(resTodas.totalCasos).toBe(125);
+
+        const resInd = processOlapFilters(mockConPersonas, 'HUMANAS', '2026', 'TODOS', 'TODOS', 'CENTRAL', 'TODOS', 'TODAS', 'INDIVIDUAL');
+        expect(resInd.totalCasos).toBe(100);
+
+        const resJur = processOlapFilters(mockConPersonas, 'HUMANAS', '2026', 'TODOS', 'TODOS', 'CENTRAL', 'TODOS', 'TODAS', 'JURIDICA');
+        expect(resJur.totalCasos).toBe(25);
+    });
+
+    it('maneja cubos vacíos o nulos sin excepciones y devuelve ceros estructurados', () => {
+        const resEmpty = processOlapFilters([], 'HUMANAS', 'TODOS', 'TODOS', 'TODAS', 'TODOS', 'TODAS');
+        expect(resEmpty.totalCasos).toBe(0);
+        expect(resEmpty.totalAprobados).toBe(0);
+        expect(resEmpty.totalRechazos).toBe(0);
+        expect(resEmpty.totalAprobDirectas).toBe(0);
+        expect(resEmpty.sla1d).toBe(0);
+
+        const resNull = processOlapFilters(null, 'HUMANAS', 'TODOS', 'TODOS', 'TODAS', 'TODOS', 'TODAS');
+        expect(resNull.totalCasos).toBe(0);
+    });
+
+    it('calcula la distribución exacta de SLAs acumulados', () => {
+        const mockSlaCubo = [
+            {
+                Mes: '2026-01', Anio: '2026', Gestion: 'ACTIVACIÓN', Region: 'CENTRAL', Estado: 'APROBADA',
+                MacroFamilia: 'Sin Rechazo', ID_Subcategoria: 'SUB-00', U1: 'OPERADOR1', Rango_Velocidad: '<=2s', Ronda_Revision: '1RA_DIRECTA',
+                Casos: 100, Rechazos: 0, Aprobadas: 100, Finalizadas: 0, NoConfirmadas: 0, Canceladas: 0,
+                AprobDirectas: 100, AprobSubsanadas: 0, RechDefinitivos: 0,
+                SLA_8h: 40, SLA_16h: 30, SLA_24h: 15, SLA_40h: 10, Fuera_SLA_40h: 5
+            }
+        ];
+
+        const res = processOlapFilters(mockSlaCubo, 'HUMANAS', '2026', 'TODOS', 'TODOS', 'CENTRAL', 'TODOS', 'TODAS', 'TODAS');
+        expect(res.sla1d).toBe(40);
+        expect(res.sla2d).toBe(30);
+        expect(res.sla3d).toBe(15);
+        expect(res.sla5d).toBe(10);
+        expect(res.slaFuera).toBe(5);
+        expect(res.totalCasos).toBe(100);
+    });
 });

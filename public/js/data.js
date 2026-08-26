@@ -47,9 +47,12 @@ function getBaseUrl() {
     return "";
 }
 
-window.DATA_READY = (async function loadData() {
+async function loadData() {
+    const errBanner = document.getElementById('dataErrorBanner');
+    if (errBanner) errBanner.classList.add('hidden');
+
     try {
-        updateSystemStatus("Descargando 2.57M trámites...", "loading");
+        updateSystemStatus("Descargando 865.8k trámites humanos...", "loading");
         const baseUrl = getBaseUrl();
         let json;
 
@@ -69,6 +72,10 @@ window.DATA_READY = (async function loadData() {
             const res = await fetch(jsonUrl);
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             json = await res.json();
+        }
+
+        if (!json || !Array.isArray(json.rows) || json.rows.length === 0) {
+            throw new Error("Dataset vacío o formato de cubo inválido.");
         }
         
         updateSystemStatus("Procesando matriz analítica...", "loading");
@@ -91,6 +98,7 @@ window.DATA_READY = (async function loadData() {
         const idxAnio = cols.indexOf('Anio');
         const idxRegion = cols.indexOf('Region');
         const idxEstado = cols.indexOf('Estado');
+        const idxTipoPersona = cols.indexOf('TipoPersona');
         const idxAprobadas = cols.indexOf('Aprobadas');
         const idxFinalizadas = cols.indexOf('Finalizadas');
         const idxRechazos = cols.indexOf('Rechazos');
@@ -109,6 +117,9 @@ window.DATA_READY = (async function loadData() {
             obj._isActivacion = gUpper.includes('ACTIVAC');
             obj._isCorreo = gUpper.includes('CORREO');
             
+            const tp = (idxTipoPersona !== -1 ? r[idxTipoPersona] : obj.TipoPersona) || 'INDIVIDUAL';
+            obj._isJuridica = (tp === 'JURIDICA');
+
             const m = r[idxMes];
             if (m && m !== 'NaT' && m.length >= 7) {
                 const mNum = m.substring(5, 7);
@@ -136,6 +147,7 @@ window.DATA_READY = (async function loadData() {
                 e._isReinicio = g.includes('REINICIO');
                 e._isActivacion = g.includes('ACTIVAC');
                 e._isCorreo = g.includes('CORREO');
+                e._isJuridica = (e.TipoPersona === 'JURIDICA');
                 if (e.FechaCreacion && e.FechaCreacion.length >= 7) {
                     const mNum = e.FechaCreacion.substring(5, 7);
                     e._trimestre = (mNum <= '03') ? 'Q1' : ((mNum <= '06') ? 'Q2' : ((mNum <= '09') ? 'Q3' : 'Q4'));
@@ -146,7 +158,7 @@ window.DATA_READY = (async function loadData() {
         window.DATA.cubo = cubo;
         window.DATA.loaded = true;
         
-        updateSystemStatus("Motor OLAP Listo • 2.57M Registros", "ready");
+        updateSystemStatus("Motor OLAP Listo • 865.8k Trámites Humanos", "ready");
         
         document.querySelectorAll('[data-skeleton]').forEach(el => el.classList.remove('skeleton-text'));
         
@@ -157,12 +169,14 @@ window.DATA_READY = (async function loadData() {
         window.dispatchEvent(new CustomEvent('dataReady', { detail: window.DATA }));
         return window.DATA;
     } catch (e) {
-        console.error("Error al cargar cubo_compacto.json:", e);
+        console.error("Error al cargar dataset analítico:", e);
         updateSystemStatus("Error al cargar datos", "error");
-        const errBanner = document.getElementById('dataErrorBanner');
         if (errBanner) {
             errBanner.classList.remove('hidden');
             if (window.lucide) lucide.createIcons();
         }
     }
-})();
+}
+
+window.retryLoadData = loadData;
+window.DATA_READY = loadData();

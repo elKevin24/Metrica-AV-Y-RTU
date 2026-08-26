@@ -159,6 +159,7 @@ function initSelectors() {
 
 function resetFilters() {
     document.getElementById('selGestion').value = 'HUMANAS';
+    if (document.getElementById('selTipoPersona')) document.getElementById('selTipoPersona').value = 'TODAS';
     document.getElementById('selAnio').value = 'TODOS';
     if (document.getElementById('selTrimestre')) document.getElementById('selTrimestre').value = 'TODOS';
     document.getElementById('selMes').value = 'TODOS';
@@ -171,32 +172,69 @@ function resetFilters() {
 
 
 function renderTabMacro(res) {
-    document.getElementById('kpiUniverso').innerText = res.totalCasos.toLocaleString();
-    document.getElementById('kpiAprobados').innerText = res.totalAprobados.toLocaleString();
-    document.getElementById('kpiTasaAprobacion').innerText = res.totalCasos > 0 ? ((res.totalAprobados/res.totalCasos)*100).toFixed(1) + '%' : '0%';
-    document.getElementById('kpiRechazos').innerText = res.totalRechazos.toLocaleString();
-    document.getElementById('kpiTasaRechazo').innerText = res.totalCasos > 0 ? ((res.totalRechazos/res.totalCasos)*100).toFixed(1) + '%' : '0%';
-
+    // Dispatch to React Island (KpiSummary)
     const secCreacionAtenHab = res.nCreacionAtenHab > 0 ? (res.sumCreacionAtenHab / res.nCreacionAtenHab) : 0;
     const secCicloHab = res.nCicloHab > 0 ? (res.sumCicloHab / res.nCicloHab) : 0;
     const secCicloCal = res.nCicloCal > 0 ? (res.sumCicloCal / res.nCicloCal) : 0;
-    
-    document.getElementById('kpiTiempoAtencion').innerText = formatAdaptiveTime(secCreacionAtenHab);
-    document.getElementById('lblTiempoAtencionCal').innerText = 'Promedio Hábil Real';
-    document.getElementById('kpiCicloHab').innerText = formatAdaptiveTime(secCicloHab);
-    document.getElementById('lblCicloCal').innerText = 'Calendario: ' + formatAdaptiveTime(secCicloCal);
+    const kpiPayload = {
+        totalCasos: res.totalCasos,
+        totalAprobados: res.totalAprobados,
+        totalRechazos: res.totalRechazos,
+        secCreacionAtenHab,
+        secCicloHab,
+        secCicloCal
+    };
+    window.__lastKpi = kpiPayload;
+    document.dispatchEvent(new CustomEvent('olap:kpi', { detail: kpiPayload }));
 
     const tbBal = document.getElementById('tableBalanceDinamico');
-    tbBal.innerHTML = '';
-    Object.keys(res.estCounts).sort((a,b) => res.estCounts[b] - res.estCounts[a]).forEach(est => {
-        const cnt = res.estCounts[est];
-        const pct = res.totalCasos > 0 ? ((cnt / res.totalCasos)*100).toFixed(2) : 0;
-        tbBal.innerHTML += `<tr>
-            <td class="p-2.5 font-medium text-slate-800">${est}</td>
-            <td class="p-2.5 text-right font-mono text-slate-600">${cnt.toLocaleString()}</td>
-            <td class="p-2.5 text-right font-bold text-blue-700">${pct}%</td>
-        </tr>`;
-    });
+    if (tbBal) {
+        let htmlBal = '';
+        Object.keys(res.estCounts).sort((a,b) => res.estCounts[b] - res.estCounts[a]).forEach(est => {
+            const cnt = res.estCounts[est];
+            const pct = res.totalCasos > 0 ? ((cnt / res.totalCasos)*100).toFixed(1) : 0;
+            const barColor = est.includes('APROB') ? 'bg-emerald-500' : (est.includes('RECH') ? 'bg-rose-500' : 'bg-blue-500');
+            htmlBal += `<tr>
+                <td class="p-3 font-semibold text-slate-800 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full ${barColor}"></span>
+                    <span>${est}</span>
+                </td>
+                <td class="p-3 text-right font-mono font-bold text-slate-700">${cnt.toLocaleString()}</td>
+                <td class="p-3 text-right font-black text-slate-900 w-24">${pct}%</td>
+                <td class="p-3 w-40 hidden sm:table-cell">
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                    </div>
+                </td>
+            </tr>`;
+        });
+        tbBal.innerHTML = htmlBal;
+    }
+
+    // Actualizar Gráficos Macro de Balance
+    if (chartMacroDestinoInst) {
+        const otrosCasos = Math.max(0, res.totalCasos - res.totalAprobDirectas - res.totalAprobSubsanadas - res.totalRechazos);
+        chartMacroDestinoInst.data.datasets[0].data = [
+            res.totalAprobDirectas,
+            res.totalAprobSubsanadas,
+            res.totalRechazos,
+            otrosCasos
+        ];
+        chartMacroDestinoInst.update('none');
+    }
+
+    if (chartMacroPersoneriaInst && res.persStats) {
+        const indCasos = res.persStats.ind.casos;
+        const jurCasos = res.persStats.jur.casos;
+        const indAprPct = indCasos > 0 ? parseFloat(((res.persStats.ind.aprob / indCasos) * 100).toFixed(1)) : 0;
+        const indRechPct = indCasos > 0 ? parseFloat(((res.persStats.ind.rech / indCasos) * 100).toFixed(1)) : 0;
+        const jurAprPct = jurCasos > 0 ? parseFloat(((res.persStats.jur.aprob / jurCasos) * 100).toFixed(1)) : 0;
+        const jurRechPct = jurCasos > 0 ? parseFloat(((res.persStats.jur.rech / jurCasos) * 100).toFixed(1)) : 0;
+
+        chartMacroPersoneriaInst.data.datasets[0].data = [indAprPct, jurAprPct];
+        chartMacroPersoneriaInst.data.datasets[1].data = [indRechPct, jurRechPct];
+        chartMacroPersoneriaInst.update('none');
+    }
 
     const elFTRCnt = document.getElementById('kpiFTRCnt');
     if (elFTRCnt) {
@@ -219,14 +257,12 @@ function renderTabMacro(res) {
         document.getElementById('kpiHuerfPct').innerText = `${huerfPct}% de los rechazos`;
     }
 
-    const elDelayDiff = document.getElementById('kpiDelayDiff');
-    if (elDelayDiff) {
-        const avg1ra = res.nCiclo1ra > 0 ? (res.sumCiclo1ra / res.nCiclo1ra) : 0;
-        const avgSub = res.nCicloSub > 0 ? (res.sumCicloSub / res.nCicloSub) : 0;
-        const diffHrs = Math.max(0, (avgSub - avg1ra) / 3600.0);
-        const factor = (avg1ra > 0 && avgSub > 0) ? (avgSub / avg1ra).toFixed(1) : '1.0';
-        elDelayDiff.innerText = `+${diffHrs.toFixed(1)} h`;
-        document.getElementById('lblDelayFactor').innerText = `Retraso: ${factor}x vs 1ra vez`;
+    const elTipifCnt = document.getElementById('kpiTipifCnt');
+    if (elTipifCnt) {
+        const tipifCasos = Math.max(0, res.totalRechazos - res.totalRechHuerfanos);
+        const tipifPct = res.totalRechazos > 0 ? ((tipifCasos / res.totalRechazos)*100).toFixed(1) : '0.0';
+        elTipifCnt.innerText = tipifCasos.toLocaleString();
+        document.getElementById('kpiTipifPct').innerText = `${tipifPct}% de los rechazos`;
     }
 }
 
@@ -366,23 +402,6 @@ function renderTabOperativo(res) {
         elRelCicloProm.innerText = formatAdaptiveTime(secCicloHab);
     }
 
-    if (chartVolumenVsTiempoRegInst) {
-        const volTotales = regLabels.map(reg => res.regMap[reg] ? res.regMap[reg].total : 0);
-        const buzonHrs = regLabels.map(reg => {
-            const r = res.regMap[reg];
-            return (r && r.buzN > 0) ? parseFloat((r.buzSum / r.buzN / 3600.0).toFixed(2)) : 0;
-        });
-        const revMins = regLabels.map(reg => {
-            const r = res.regMap[reg];
-            return (r && r.nAtencion > 0) ? parseFloat((r.sumAtencion / r.nAtencion / 60.0).toFixed(2)) : 2.5;
-        });
-
-        chartVolumenVsTiempoRegInst.data.datasets[0].data = volTotales;
-        chartVolumenVsTiempoRegInst.data.datasets[1].data = buzonHrs;
-        chartVolumenVsTiempoRegInst.data.datasets[2].data = revMins;
-        chartVolumenVsTiempoRegInst.update('none');
-    }
-
     if (chartSpeedDistributionInst) {
         const speedKeys = ['<=2s', '2-5s', '5-15s', '15-60s', '1-5m', '>5m'];
         const spdAprob = speedKeys.map(k => res.speedMap[k] ? Math.max(0, res.speedMap[k].casos - res.speedMap[k].rech) : 0);
@@ -515,7 +534,7 @@ function renderTabOperativo(res) {
     const tbFechas = document.getElementById('tableFechasComparativa');
     const tbFechasFoot = document.getElementById('tableFechasComparativaFoot');
     if (tbFechas && tbFechasFoot) {
-        tbFechas.innerHTML = '';
+        let htmlFechas = '';
         let totMCasos = 0, totMSumBuz = 0, totMNBuz = 0, totMSumAten = 0, totMNAten = 0, totMSumCic = 0, totMNCic = 0;
         let totMApCasos = 0, totMApSumBuz = 0, totMApNBuz = 0, totMApSumAten = 0, totMApNAten = 0, totMApSumCic = 0, totMApNCic = 0;
 
@@ -542,7 +561,7 @@ function renderTabOperativo(res) {
             totMApSumAten += (mObj.aprobSumAten || 0); totMApNAten += (mObj.aprobNAten || 0);
             totMApSumCic += (mObj.aprobSumCiclo || 0); totMApNCic += (mObj.aprobNCiclo || 0);
 
-            tbFechas.innerHTML += `
+            htmlFechas += `
             <tr class="hover:bg-slate-50/80 transition-colors">
                 <td class="p-2.5 font-bold text-slate-900 flex items-center gap-1.5">
                     <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i> ${m}
@@ -560,6 +579,7 @@ function renderTabOperativo(res) {
                 <td class="p-2 text-right font-black text-purple-950 bg-purple-50/60">${formatAdaptiveTime(apSecCic)}</td>
             </tr>`;
         });
+        tbFechas.innerHTML = htmlFechas;
 
         const totMSecBuz = totMNBuz > 0 ? (totMSumBuz / totMNBuz) : 0;
         const totMSecAten = totMNAten > 0 ? (totMSumAten / totMNAten) : 0;
@@ -591,7 +611,7 @@ function renderTabOperativo(res) {
 
     const tbRegD = document.getElementById('tableRegionalDinamica');
     if (tbRegD) {
-        tbRegD.innerHTML = '';
+        let htmlRegD = '';
         ['CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'].forEach(regName => {
             const r = res.regMap[regName] || { casos: 0, aprob: 0, aprob_dir: 0, rech: 0, nBuzon: 0, sumBuzon: 0, nBolson: 0, sumBolson: 0, nAte: 0, sumAte: 0, nCiclo: 0, sumCiclo: 0, sla1d: 0 };
             const pctAp = r.casos > 0 ? ((r.aprob / r.casos)*100).toFixed(1) : '0.0';
@@ -603,7 +623,7 @@ function renderTabOperativo(res) {
             const secCic = r.nCiclo > 0 ? (r.sumCiclo / r.nCiclo) : 0;
             const sla1Pct = r.nCiclo > 0 ? ((r.sla1d / r.nCiclo)*100).toFixed(1) : '0.0';
 
-            tbRegD.innerHTML += `<tr>
+            htmlRegD += `<tr>
                 <td class="p-3 font-bold text-slate-900">${regName}</td>
                 <td class="p-3 text-right font-mono text-slate-600">${r.casos.toLocaleString()}</td>
                 <td class="p-3 text-right font-bold text-emerald-700 bg-emerald-50/40">${pctAp}%</td>
@@ -616,6 +636,7 @@ function renderTabOperativo(res) {
                 <td class="p-3 text-right font-bold text-emerald-600">${sla1Pct}%</td>
             </tr>`;
         });
+        tbRegD.innerHTML = htmlRegD;
     }
 
     // Render Tabla de Balance de Carga & Ratio de Sobrecarga Regional
@@ -636,7 +657,7 @@ function renderTabOperativo(res) {
             };
         });
 
-        tbSobrecarga.innerHTML = '';
+        let htmlSobrecarga = '';
         regData.forEach(item => {
             const pctDemanda = totalDemanda > 0 ? ((item.casos / totalDemanda) * 100) : 0;
             const pctRevisores = totalRevisores > 0 ? ((item.revisores / totalRevisores) * 100) : 0;
@@ -653,7 +674,7 @@ function renderTabOperativo(res) {
 
             const ratioClass = ratioSobrecarga > 1.15 ? 'text-rose-700 font-black' : (ratioSobrecarga < 0.85 ? 'text-blue-700 font-bold' : 'text-emerald-700 font-bold');
 
-            tbSobrecarga.innerHTML += `
+            htmlSobrecarga += `
             <tr class="hover:bg-slate-50 transition-colors">
                 <td class="p-3 font-bold text-slate-900 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full ${ratioSobrecarga > 1.15 ? 'bg-rose-500' : 'bg-emerald-500'}"></span>
@@ -668,6 +689,15 @@ function renderTabOperativo(res) {
                 <td class="p-3 text-center">${statusBadge}</td>
             </tr>`;
         });
+        tbSobrecarga.innerHTML = htmlSobrecarga;
+
+        if (chartSobrecargaBarInst) {
+            const pctDemandaArr = regData.map(item => totalDemanda > 0 ? parseFloat(((item.casos / totalDemanda) * 100).toFixed(1)) : 0);
+            const pctRevisoresArr = regData.map(item => totalRevisores > 0 ? parseFloat(((item.revisores / totalRevisores) * 100).toFixed(1)) : 0);
+            chartSobrecargaBarInst.data.datasets[0].data = pctDemandaArr;
+            chartSobrecargaBarInst.data.datasets[1].data = pctRevisoresArr;
+            chartSobrecargaBarInst.update('none');
+        }
     }
 
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -856,6 +886,7 @@ function renderTabCalidad(res) {
             };
         }).sort((a, b) => b.total - a.total);
 
+        let htmlRescate = '';
         causalEntries.forEach(item => {
             let badgeRescate = '';
             if (item.tasaRescate >= 70) {
@@ -866,7 +897,7 @@ function renderTabCalidad(res) {
                 badgeRescate = '<span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-rose-200">Fuga / Fricción Crítica</span>';
             }
 
-            tbRescate.innerHTML += `
+            htmlRescate += `
             <tr class="hover:bg-slate-50 transition-colors">
                 <td class="p-3 font-semibold text-slate-800">${item.causal}</td>
                 <td class="p-3 text-right font-mono font-bold text-slate-900">${item.total.toLocaleString()}</td>
@@ -877,6 +908,7 @@ function renderTabCalidad(res) {
                 <td class="p-3 text-center">${badgeRescate}</td>
             </tr>`;
         });
+        tbRescate.innerHTML = htmlRescate;
     }
 
     // 4. Índice de Fricción por Reincidencia (Single-Touch vs Multi-Touch Bounce)
@@ -919,10 +951,10 @@ function renderTabCalidad(res) {
 
     const tbTaxD = document.getElementById('tableTaxonomiaDinamica');
     if (tbTaxD) {
-        tbTaxD.innerHTML = '';
+        let htmlTax = '';
         DATA.taxonomia.forEach(t => {
             const cnt = res.subcatCounts[t.ID_Subcategoria] || 0;
-            tbTaxD.innerHTML += `<tr>
+            htmlTax += `<tr>
                 <td class="p-3 font-mono font-bold text-blue-700">${t.ID_Subcategoria}</td>
                 <td class="p-3 font-mono text-slate-500">${t.ID_Macro}</td>
                 <td class="p-3 font-medium text-slate-800">${t.Macro_Familia}</td>
@@ -930,6 +962,7 @@ function renderTabCalidad(res) {
                 <td class="p-3 text-right font-black text-slate-900">${cnt.toLocaleString()}</td>
             </tr>`;
         });
+        tbTaxD.innerHTML = htmlTax;
     }
 }
 
@@ -1036,7 +1069,7 @@ function renderTabGestion(res) {
 
     const tbCap = document.getElementById('tableProductividadDiaria');
     if (tbCap) {
-        tbCap.innerHTML = '';
+        let htmlCap = '';
         const displayCap = filteredCap.slice(0, 10);
         displayCap.forEach((row, idx) => {
             let medal = `${idx + 1}.`;
@@ -1044,7 +1077,7 @@ function renderTabGestion(res) {
             else if (idx === 1) medal = '🥈';
             else if (idx === 2) medal = '🥉';
 
-            tbCap.innerHTML += `<tr>
+            htmlCap += `<tr>
                 <td class="p-3 font-semibold text-slate-900 flex items-center gap-2">
                     <span class="text-sm">${medal}</span>
                     <span>${row.Revisor}</span>
@@ -1056,6 +1089,7 @@ function renderTabGestion(res) {
                 <td class="p-3 text-right font-black text-slate-900">${Number(row.Total_8h).toLocaleString()} casos</td>
             </tr>`;
         });
+        tbCap.innerHTML = htmlCap;
 
         // Actualizar mini KPIs de capacidad
         const regLabel = fReg === 'TODAS' ? 'Nacional' : `Regional ${fReg}`;
@@ -1218,6 +1252,7 @@ function applyFiltersImmediate() {
     }
 
     const fGes = document.getElementById('selGestion').value;
+    const fTipoPersona = document.getElementById('selTipoPersona') ? document.getElementById('selTipoPersona').value : 'TODAS';
     const fAnio = document.getElementById('selAnio').value;
     const fTrim = document.getElementById('selTrimestre') ? document.getElementById('selTrimestre').value : 'TODOS';
     const fMes = document.getElementById('selMes').value;
@@ -1225,7 +1260,7 @@ function applyFiltersImmediate() {
     const fEst = document.getElementById('selEstado').value;
     const fMac = document.getElementById('selMacro').value;
 
-    const res = processOlapFilters(DATA.cubo, fGes, fAnio, fTrim, fMes, fReg, fEst, fMac);
+    const res = processOlapFilters(DATA.cubo, fGes, fAnio, fTrim, fMes, fReg, fEst, fMac, fTipoPersona);
 
     // Actualizar resumen de filtros en versión móvil
     const elMobSummary = document.getElementById('mobileFilterSummary');
@@ -1234,8 +1269,9 @@ function applyFiltersImmediate() {
         const anioStr = fAnio === 'TODOS' ? '' : ` • ${fAnio}`;
         const trimStr = fTrim === 'TODOS' ? '' : ` (${fTrim})`;
         const mesStr = fMes === 'TODOS' ? '' : ` • ${fMes}`;
+        const tipoStr = fTipoPersona === 'TODAS' ? '' : (fTipoPersona === 'JURIDICA' ? ' • Sociedades' : ' • Individual');
         const gestShort = fGes === 'HUMANAS' ? 'Humanas' : (fGes.includes('ACTIVACIÓN') ? 'Activación' : 'Correo');
-        elMobSummary.innerText = `${regStr} • ${gestShort}${anioStr}${trimStr}${mesStr}`;
+        elMobSummary.innerText = `${regStr} • ${gestShort}${tipoStr}${anioStr}${trimStr}${mesStr}`;
     }
 
     renderTabMacro(res);
@@ -1248,7 +1284,8 @@ function applyFiltersImmediate() {
 
     const elapsed = (performance.now() - tStart).toFixed(1);
     if (typeof updateSystemStatus === 'function') {
-        updateSystemStatus(`Motor OLAP Listo (${elapsed}ms) • 2.57M Registros`, "ready");
+        const totalBaseLabel = fGes === 'HUMANAS' ? '865.8k Gestiones Humanas' : '2.57M Registros';
+        updateSystemStatus(`Motor OLAP Listo (${elapsed}ms) • ${totalBaseLabel}`, "ready");
     }
 }
 
@@ -1263,6 +1300,7 @@ window.debounceFilterAudit = debounceFilterAudit;
 
 function filterAuditTable() {
     const fGes = document.getElementById('selGestion').value;
+    const fTipoPersona = document.getElementById('selTipoPersona') ? document.getElementById('selTipoPersona').value : 'TODAS';
     const fAnio = document.getElementById('selAnio') ? document.getElementById('selAnio').value : 'TODOS';
     const fTrim = document.getElementById('selTrimestre') ? document.getElementById('selTrimestre').value : 'TODOS';
     const fMes = document.getElementById('selMes') ? document.getElementById('selMes').value : 'TODOS';
@@ -1284,11 +1322,17 @@ function filterAuditTable() {
     let htmlBuffer = '';
 
     DATA.muestra_expedientes.forEach(e => {
-        // Exclusión total y permanente de trámites de reinicio automático
-        if (e._isReinicio || (e.Gestion && e.Gestion.toUpperCase().includes('REINICIO'))) return;
-        if (fGes === 'ACTIVACIÓN' && !e._isActivacion && (!e.Gestion || !e.Gestion.toUpperCase().includes('ACTIVAC'))) return;
-        if (fGes === 'CAMBIO DE CORREO ELECTRÓNICO' && !e._isCorreo && (!e.Gestion || !e.Gestion.toUpperCase().includes('CORREO'))) return;
-        if (fGes !== 'HUMANAS' && fGes !== 'TODAS' && e.Gestion !== fGes && !e.Gestion.toUpperCase().includes(fGes.toUpperCase())) return;
+        if (fGes === 'HUMANAS') {
+            if (e._isReinicio || (e.Gestion && e.Gestion.toUpperCase().includes('REINICIO'))) return;
+        } else if (fGes === 'ACTIVACIÓN') {
+            if (!e._isActivacion && (!e.Gestion || !e.Gestion.toUpperCase().includes('ACTIVAC'))) return;
+        } else if (fGes === 'CAMBIO DE CORREO ELECTRÓNICO') {
+            if (!e._isCorreo && (!e.Gestion || !e.Gestion.toUpperCase().includes('CORREO'))) return;
+        } else if (fGes !== 'TODAS') {
+            if (e.Gestion !== fGes && !e.Gestion.toUpperCase().includes(fGes.toUpperCase())) return;
+        }
+        if (fTipoPersona === 'JURIDICA' && !e._isJuridica) return;
+        if (fTipoPersona === 'INDIVIDUAL' && e._isJuridica) return;
         if (fReg !== 'TODAS' && e.Region !== fReg) return;
         if (fEst !== 'TODOS' && e.Estado !== fEst) return;
         if (fMac !== 'TODAS' && e.MacroFamilia !== fMac) return;
