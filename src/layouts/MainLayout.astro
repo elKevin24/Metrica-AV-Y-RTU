@@ -111,7 +111,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     <!-- Fila Superior: Marca, Búsqueda Rápida y Controles -->
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
       <!-- Marca SAT -->
-      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0" onclick="switchTab('tab-macro')" title="Ir al Inicio / Diagnóstico">
+      <button type="button" class="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0 text-left bg-transparent border-0 p-0 hover:opacity-90 transition" onclick="switchTab('tab-macro')" title="Ir al Inicio / Diagnóstico">
         <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group hover:scale-105 transition shrink-0">
           <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
         </div>
@@ -124,7 +124,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
           <p class="hidden md:block text-[11px] text-slate-400">Auditoría Cuantitativa • 2,570,090 Trámites • Jornada Hábil 8h</p>
         </div>
-      </div>
+      </button>
       
       <!-- Controles: Una Sola Lupa + Reset + Estado del Sistema -->
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -156,7 +156,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
     <!-- Fila Inferior: Barra de Pestañas (Visible en Desktop y Tablet, en móvil se utiliza el dock inferior y menú drawer) -->
     <div class="hidden md:block max-w-7xl mx-auto px-6 relative">
-      <nav id="navTabsContainer" role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60 scroll-smooth">
+      <div id="navTabsContainer" role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60 scroll-smooth">
         
         <button role="tab" aria-selected="true" aria-controls="tab-macro" onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
@@ -198,7 +198,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <span>8. Hallazgos & Plan de Acción</span>
         </button>
 
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -505,7 +505,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     ];
 
     // Enrutador Canónico Único
-    window.switchTab = function(tabId) {
+    window.switchTab = function(rawTabId) {
+      const tabId = rawTabId.startsWith('tab-') ? rawTabId : `tab-${rawTabId}`;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-link').forEach(el => {
         el.classList.remove('active');
@@ -776,7 +777,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
       // 6. Flechas Izq / Der en pestañas
       if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key) && !['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
-        const tabList = Array.from(document.querySelectorAll('nav[role="tablist"] button[role="tab"]'));
+        const tabList = Array.from(document.querySelectorAll('#navTabsContainer button[role="tab"]'));
         const activeIdx = tabList.findIndex(t => t.classList.contains('active'));
         if (activeIdx === -1) return;
 

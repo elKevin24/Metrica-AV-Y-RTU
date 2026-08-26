@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import HallazgosPanel from '../components/executive/HallazgosPanel.astro';
 ---
 
 <MainLayout title="SAT Guatemala - Tablero Ejecutivo BI 360°">
@@ -22,7 +23,7 @@ import MainLayout from '../layouts/MainLayout.astro';
             <div id="filterGridContainer" class="hidden md:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3 text-xs pt-2 md:pt-0">
                 <!-- 1. Regional al Inicio -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selRegion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i> Regional
                     </label>
                     <select id="selRegion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -32,7 +33,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <!-- 2. Tipo de Trámite -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selGestion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i> Tipo de Trámite
                     </label>
                     <select id="selGestion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -44,7 +45,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <!-- 3. Año -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selAnio" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-600"></i> Año
                     </label>
                     <select id="selAnio" onchange="onAnioChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -56,7 +57,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <!-- 4. Trimestre -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selTrimestre" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-indigo-600"></i> Trimestre
                     </label>
                     <select id="selTrimestre" onchange="onTrimestreChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -70,7 +71,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <!-- 5. Mes Específico (Coordinado con Año y Trimestre) -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selMes" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-600"></i> Mes
                     </label>
                     <select id="selMes" onchange="onMesChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -80,7 +81,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <!-- 6. Estado del Trámite -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selEstado" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-600"></i> Estado del Trámite
                     </label>
                     <select id="selEstado" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -90,7 +91,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
                 <!-- 7. Macro-Familia Rechazo -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                    <label for="selMacro" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
                         <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i> Causal de Rechazo
                     </label>
                     <select id="selMacro" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
@@ -151,7 +152,7 @@ import MainLayout from '../layouts/MainLayout.astro';
                         Un operador humano dictamina en promedio en <strong class="text-emerald-400 font-mono">~2.5 minutos</strong> (mediana 1.25 min). Sin embargo, el tiempo de respuesta total al contribuyente es de <strong class="text-amber-300 font-mono">~9.5 horas hábiles</strong> debido a la acumulación de expedientes en el <strong class="text-amber-200">Buzón Central (cola de espera)</strong>.
                     </p>
                 </div>
-                <button onclick="switchTab('operativo')" class="cursor-pointer whitespace-nowrap bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-indigo-400/40">
+                <button onclick="switchTab('tab-operativo')" class="cursor-pointer whitespace-nowrap bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-indigo-400/40">
                     <span>Ver Análisis Volumen vs Tiempo</span>
                     <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </button>
@@ -1532,11 +1533,15 @@ import MainLayout from '../layouts/MainLayout.astro';
                                 <th class="p-2.5 font-mono text-slate-300">FechaRevision (FR)</th>
                                 <th class="p-2.5 font-mono text-rose-300">FechaRechazo (FRech)</th>
                                 <th class="p-2.5 font-mono text-emerald-300">FechaFinaliza (FF)</th>
-                                <th onclick="setAuditSort('rechazo')" class="cursor-pointer p-2.5 text-right font-bold text-rose-300 bg-rose-950/50 hover:bg-rose-900 transition select-none" title="Clic para ordenar Menor a Mayor / Mayor a Menor">
-                                    En Rechazar (Horas) ⇅
+                                <th class="p-2.5 text-right font-bold text-rose-300 bg-rose-950/50 hover:bg-rose-900 transition select-none">
+                                    <button type="button" onclick="setAuditSort('rechazo')" class="w-full text-right cursor-pointer bg-transparent border-0 text-inherit font-bold" title="Clic para ordenar Menor a Mayor / Mayor a Menor">
+                                        En Rechazar (Horas) ⇅
+                                    </button>
                                 </th>
-                                <th onclick="setAuditSort('atencion')" class="cursor-pointer p-2.5 text-right font-black text-emerald-300 bg-emerald-950/50 hover:bg-emerald-900 transition select-none" title="Clic para ordenar Menor a Mayor / Mayor a Menor">
-                                    En Atender (Horas) ⇅
+                                <th class="p-2.5 text-right font-black text-emerald-300 bg-emerald-950/50 hover:bg-emerald-900 transition select-none">
+                                    <button type="button" onclick="setAuditSort('atencion')" class="w-full text-right cursor-pointer bg-transparent border-0 text-inherit font-black" title="Clic para ordenar Menor a Mayor / Mayor a Menor">
+                                        En Atender (Horas) ⇅
+                                    </button>
                                 </th>
                                 <th class="p-2.5">Motivo Original Registrado</th>
                             </tr>
@@ -1988,122 +1993,7 @@ import MainLayout from '../layouts/MainLayout.astro';
         <!-- PESTAÑA 8: PRINCIPALES HALLAZGOS Y CONCLUSIONES EJECUTIVAS                -->
         <!-- ========================================================================= -->
         <div id="tab-hallazgos" class="tab-content hidden space-y-8">
-            <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-7 rounded-3xl shadow-xl border border-blue-900/40">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-5 border-b border-white/10">
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/30">
-                            <i data-lucide="sparkles" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-black tracking-tight text-white">Macro-Hallazgos y Conclusiones del Negocio</h3>
-                            <p class="text-xs text-blue-200">Auditoría cuantitativa fundamentada sobre 2,570,090 trámites y desglose 2026</p>
-                        </div>
-                    </div>
-                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
-                        Auditoría 100% Fundamentada
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6 text-xs">
-                    
-                    <!-- 1 -->
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-amber-300 text-xs">⏳ 1. Cuello de Botella en Cola (95.7%)</span>
-                                <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono">28.77h en Servidor</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El <strong>95.7% del tiempo total</strong> transcurre en la cola general de asignación (mediana de <strong>28.77 horas</strong>), mientras que el operador humano dictamina el caso en solo <strong>1.25 minutos</strong>.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-amber-200 font-medium">
-                            📌 La saturación está en la distribución de tickets, no en la velocidad del revisor.
-                        </div>
-                    </div>
-
-                    <!-- 2 -->
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-emerald-300 text-xs">⚖️ 2. Marco Dual de Medición</span>
-                                <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono">81.3% SLA • 72.0% Éxito</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El <strong>81.31%</strong> de las 253k solicitudes dictaminadas recibe 1ª respuesta en <strong>≤ 3 días hábiles</strong> (48.0% en ≤ 1 día). La tasa de resolución final de casos atendidos alcanza el <strong>71.95%</strong>.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-emerald-200 font-medium">
-                            📌 Separar velocidad de efectividad evita el sesgo de supervivencia.
-                        </div>
-                    </div>
-
-                    <!-- 3 -->
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-cyan-300 text-xs">🏭 3. Capacidad Diaria en 8 Horas</span>
-                                <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono">1,166 Casos / Día</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El equipo nacional resuelve un promedio de <strong>1,166.0 gestiones por jornada hábil</strong> (898.6 aprobadas + 333.4 rechazadas / día). El Top 10 absorbe >32% de toda la demanda institucional.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-cyan-200 font-medium">
-                            📌 Ritmo constante de 146 dictámenes por hora en horario laboral hábil.
-                        </div>
-                    </div>
-
-                    <!-- 4 -->
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-blue-300 text-xs">🗺️ 4. Distribución Multirregional</span>
-                                <span class="bg-blue-400/20 text-blue-200 px-2 py-0.5 rounded text-[10px] font-mono">Central 35% • Occ 24%</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                Central resuelve <strong>408 casos/día</strong> (35.0%), Occidente <strong>284 casos/día</strong> (24.3%), Nororiente <strong>238 casos/día</strong> (20.4%) y Sur <strong>238 casos/día</strong> (20.3%), con liderazgo operativo en Sur (77.7% First-Time).
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-blue-200 font-medium">
-                            📌 Sur y Occidente muestran la mayor disciplina y efectividad de resolución directa.
-                        </div>
-                    </div>
-
-                    <!-- 5 -->
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-rose-300 text-xs">⚠️ 5. Rechazos Huérfanos (51.4%)</span>
-                                <span class="bg-rose-400/20 text-rose-200 px-2 py-0.5 rounded text-[10px] font-mono">46,064 Sin Motivo</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                El <strong>51.42% de rechazos</strong> en 2026 carece de motivo registrado. El 91.8% de ellos culminó en aprobación (subsanaciones tácitas) y 3,777 sufrieron cancelación definitiva a ciegas.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-rose-200 font-medium">
-                            📌 Urge hacer obligatoria la causal taxonómica en la interfaz del revisor.
-                        </div>
-                    </div>
-
-                    <!-- 6 -->
-                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-purple-300 text-xs">🔄 6. Primer Intento vs Subsanación</span>
-                                <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono">94.9% vs 70.6%</span>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">
-                                En solicitudes limpias, el <strong>94.93% se aprueba en ≤ 3 días hábiles</strong>. En solicitudes con rechazo, el 47.2% subsana con éxito pero tarda 16h hábiles / 70h reloj por la demora del usuario.
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-purple-200 font-medium">
-                            📌 El 80.8% de los rechazos ocurre por errores móviles del usuario (audio, fecha, DPI).
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <HallazgosPanel />
         </div>
 
     </main>
