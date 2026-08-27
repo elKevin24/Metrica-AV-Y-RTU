@@ -1308,6 +1308,7 @@ function filterAuditTable() {
     const fEst = document.getElementById('selEstado').value;
     const fMac = document.getElementById('selMacro').value;
     const fSpeed = document.getElementById('selAuditSpeed') ? document.getElementById('selAuditSpeed').value : 'TODOS';
+    const fSearch = document.getElementById('filterAudit') ? document.getElementById('filterAudit').value.toLowerCase().trim() : '';
 
     const targetTable = document.getElementById('auditTableDT') || document.getElementById('auditTable');
     if (!targetTable) return;
@@ -1359,6 +1360,12 @@ function filterAuditTable() {
         if (fSpeed === '3RA_LIMITE' && ronda !== '3RA_LIMITE') return;
         if (fSpeed === 'RECHAZO_RAPIDO' && (secRech == null || secRech > 2.0)) return;
         if (fSpeed === 'APROBACION_RAPIDA' && (secFinal == null || secFinal > 2.0 || e.TuvoRechazo)) return;
+
+        if (fSearch && !(
+            (e.NoGestion && e.NoGestion.toLowerCase().includes(fSearch)) ||
+            (e.NIT && e.NIT.toLowerCase().includes(fSearch)) ||
+            (e.U1 && e.U1.toLowerCase().includes(fSearch))
+        )) return;
 
         let badgeRonda = '';
         if (ronda === '1RA_DIRECTA') badgeRonda = '<span class="badge-round-directa px-2 py-0.5 rounded text-[11px] whitespace-nowrap">🟢 1ra Rev (Directa)</span>';

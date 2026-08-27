@@ -913,23 +913,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     }
 
     async function queryDirectGestion() {
-      const inputVal = document.getElementById('txtDirectGestionId').value.trim();
+      const inputEl = document.getElementById('txtDirectGestionId');
+      const inputVal = inputEl ? inputEl.value.trim() : '';
       const resultContainer = document.getElementById('directResultContainer');
       const alertContainer = document.getElementById('directAlertContainer');
       const alertMsg = document.getElementById('lblDirectAlertMsg');
-      
-      resultContainer.classList.add('hidden');
-      alertContainer.classList.add('hidden');
+
+      if (resultContainer) resultContainer.classList.add('hidden');
+      if (alertContainer) alertContainer.classList.add('hidden');
       
       if (!inputVal) {
-        alertMsg.innerText = 'Por favor, ingrese o pegue un Número de Gestión válido.';
-        alertContainer.classList.remove('hidden');
+        if (alertMsg) alertMsg.innerText = 'Por favor, ingrese o pegue un Número de Gestión válido.';
+        if (alertContainer) alertContainer.classList.remove('hidden');
         return;
       }
       
       if (inputVal.length < 5) {
-        alertMsg.innerText = 'El Número de Gestión ingresado es muy corto.';
-        alertContainer.classList.remove('hidden');
+        if (alertMsg) alertMsg.innerText = 'El Número de Gestión ingresado es muy corto.';
+        if (alertContainer) alertContainer.classList.remove('hidden');
         return;
       }
 
@@ -945,8 +946,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         const matchingKey = Object.keys(partitionData).find(k => k.toLowerCase() === inputVal.toLowerCase());
         
         if (!matchingKey) {
-          alertMsg.innerText = `No se encontró el expediente "${inputVal}" en los registros de Julio 2026.`;
-          alertContainer.classList.remove('hidden');
+          if (alertMsg) alertMsg.innerText = `No se encontró el expediente "${inputVal}" en los registros de Julio 2026.`;
+          if (alertContainer) alertContainer.classList.remove('hidden');
           return;
         }
         
@@ -991,19 +992,25 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           }
         }
         
-        document.getElementById('lblDirectNo').innerText = matchingKey;
-        document.getElementById('lblDirectNIT').innerText = nit;
-        document.getElementById('lblDirectGestion').innerText = gestion;
-        document.getElementById('lblDirectInicio').innerText = fechaInicio;
-        document.getElementById('lblDirectFin').innerText = fechaFin;
-        document.getElementById('lblDirectDuracion').innerText = durationText;
+        const elNo = document.getElementById('lblDirectNo');
+        const elNIT = document.getElementById('lblDirectNIT');
+        const elGes = document.getElementById('lblDirectGestion');
+        const elIni = document.getElementById('lblDirectInicio');
+        const elFin = document.getElementById('lblDirectFin');
+        const elDur = document.getElementById('lblDirectDuracion');
+        if (elNo) elNo.innerText = matchingKey;
+        if (elNIT) elNIT.innerText = nit;
+        if (elGes) elGes.innerText = gestion;
+        if (elIni) elIni.innerText = fechaInicio;
+        if (elFin) elFin.innerText = fechaFin;
+        if (elDur) elDur.innerText = durationText;
         
         // Renderizar tabla de Rondas de Eficiencia
         const rounds = calculateRevisionRounds(events);
         const roundsCard = document.getElementById('directRoundsCard');
         const roundsTbody = document.getElementById('directRoundsTableBody');
         
-        if (rounds.length > 0) {
+        if (rounds.length > 0 && roundsTbody) {
           roundsTbody.innerHTML = rounds.map(r => `
             <tr class="hover:bg-slate-50 transition border-b border-slate-100">
               <td class="px-3 py-2.5 font-bold text-slate-800">${r.id}</td>
@@ -1020,34 +1027,40 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               </td>
             </tr>
           `).join('');
-          roundsCard.classList.remove('hidden');
+          if (roundsCard) roundsCard.classList.remove('hidden');
 
           // Calcular promedio de bandeja para este expediente específico (Reloj corrido vs hábil)
           const avgBandejaThis = rounds.reduce((sum, r) => sum + r.bandejaMin, 0) / rounds.length;
           const avgBandejaHabThis = rounds.reduce((sum, r) => sum + r.bandejaHabMin, 0) / rounds.length;
 
           const labelThis = document.getElementById('lblDirectBandejaAvg');
-          if (avgBandejaThis < 60) {
-            labelThis.innerText = `${avgBandejaThis.toFixed(1)} min`;
-          } else {
-            labelThis.innerText = `${avgBandejaThis.toFixed(1)} min (${(avgBandejaThis / 60).toFixed(1)} h)`;
+          if (labelThis) {
+            if (avgBandejaThis < 60) {
+              labelThis.innerText = `${avgBandejaThis.toFixed(1)} min`;
+            } else {
+              labelThis.innerText = `${avgBandejaThis.toFixed(1)} min (${(avgBandejaThis / 60).toFixed(1)} h)`;
+            }
           }
 
           const labelHabThis = document.getElementById('lblDirectBandejaHabAvg');
-          if (avgBandejaHabThis < 60) {
-            labelHabThis.innerText = `${avgBandejaHabThis.toFixed(1)} min`;
-          } else {
-            labelHabThis.innerText = `${avgBandejaHabThis.toFixed(1)} min (${(avgBandejaHabThis / 60).toFixed(1)} h)`;
+          if (labelHabThis) {
+            if (avgBandejaHabThis < 60) {
+              labelHabThis.innerText = `${avgBandejaHabThis.toFixed(1)} min`;
+            } else {
+              labelHabThis.innerText = `${avgBandejaHabThis.toFixed(1)} min (${(avgBandejaHabThis / 60).toFixed(1)} h)`;
+            }
           }
         } else {
-          roundsCard.classList.add('hidden');
-          document.getElementById('lblDirectBandejaAvg').innerText = '-';
-          document.getElementById('lblDirectBandejaHabAvg').innerText = '-';
+          if (roundsCard) roundsCard.classList.add('hidden');
+          const elBAvg = document.getElementById('lblDirectBandejaAvg');
+          const elBHab = document.getElementById('lblDirectBandejaHabAvg');
+          if (elBAvg) elBAvg.innerText = '-';
+          if (elBHab) elBHab.innerText = '-';
         }
         
         const directCycles = groupEventsIntoCycles(events);
         const timelineDiv = document.getElementById('directTimeline');
-        timelineDiv.innerHTML = directCycles.map(c => `
+        if (timelineDiv) timelineDiv.innerHTML = directCycles.map(c => `
           <div class="border border-slate-200 rounded-xl p-3 bg-slate-50/50 space-y-3">
             <div class="flex justify-between items-center border-b border-slate-200 pb-1.5 mb-2">
               <span class="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -1079,7 +1092,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
         `).join('');
         
-        resultContainer.classList.remove('hidden');
+        if (resultContainer) resultContainer.classList.remove('hidden');
         
         if (window.lucide) {
           window.lucide.createIcons();
@@ -1087,8 +1100,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         
       } catch (err) {
         console.error(err);
-        alertMsg.innerText = `Error al consultar la gestión: ${err.message}`;
-        alertContainer.classList.remove('hidden');
+        if (alertMsg) alertMsg.innerText = `Error al consultar la gestión: ${err.message}`;
+        if (alertContainer) alertContainer.classList.remove('hidden');
       }
     }
 
