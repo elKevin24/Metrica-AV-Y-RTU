@@ -5,9 +5,10 @@ import MetodologiaModal from '../components/executive/MetodologiaModal.astro';
 
 interface Props {
   title?: string;
+  loadOlapScripts?: boolean;
 }
 
-const { title = "SAT Guatemala - Tablero Ejecutivo BI 360°" } = Astro.props;
+const { title = "SAT Guatemala - Tablero Ejecutivo BI 360°", loadOlapScripts = false } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
@@ -20,7 +21,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <ClientRouter />
   
   <!-- Preload de Datos Críticos para Carga Instantánea en GitHub Pages -->
-  <link rel="preload" href={`${baseUrl}/data/cubo_compacto.json`} as="fetch" crossorigin="anonymous" />
+  {loadOlapScripts && (
+    <link rel="preload" href={`${baseUrl}/data/cubo_compacto.json`} as="fetch" crossorigin="anonymous" />
+  )}
   <link rel="preload" href={`${baseUrl}/vendor/chart.umd.js`} as="script" />
   <link rel="preload" href={`${baseUrl}/vendor/jquery.dataTables.min.css`} as="style" />
   
@@ -111,21 +114,39 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     
     <!-- Fila Superior: Marca, Búsqueda Rápida y Controles -->
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
-      <!-- Marca SAT -->
-      <button type="button" class="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0 text-left bg-transparent border-0 p-0 hover:opacity-90 transition" onclick="switchTab('tab-macro')" title="Ir al Inicio / Diagnóstico">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group hover:scale-105 transition shrink-0">
-          <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
-        </div>
-        <div class="min-w-0">
-          <div class="flex items-center gap-1.5">
-            <h1 class="text-xs sm:text-base font-bold tracking-tight text-white hover:text-blue-300 transition truncate">SAT GUATEMALA</h1>
-            <span class="hidden sm:inline-block bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium">
-              Agencia Virtual & RTU
-            </span>
+      <!-- Marca SAT y Selector de Módulos -->
+      <div class="flex items-center gap-3 sm:gap-6 min-w-0">
+        <a href={`${baseUrl}/`} class="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0 text-left hover:opacity-90 transition" title="Ir al Menú Principal">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group hover:scale-105 transition shrink-0">
+            <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
           </div>
-          <p class="hidden md:block text-[11px] text-slate-400">Auditoría Cuantitativa • 865,876 Trámites Humanos • Jornada Hábil 8h</p>
-        </div>
-      </button>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h1 class="text-xs sm:text-base font-bold tracking-tight text-white hover:text-blue-300 transition truncate">SAT GUATEMALA</h1>
+              <span class="hidden sm:inline-block bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium">
+                BI & Auditoría
+              </span>
+            </div>
+            <p class="hidden md:block text-[10px] text-slate-400">Arquitectura Maestro-Detalle • Jornada Hábil 8h</p>
+          </div>
+        </a>
+
+        <!-- Enlaces Rápidos de Módulos (Desktop) -->
+        <nav class="hidden lg:flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl text-xs font-semibold text-slate-300">
+          <a href={`${baseUrl}/`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400"></i> Menú
+          </a>
+          <a href={`${baseUrl}/historico`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-indigo-400"></i> Histórico
+          </a>
+          <a href={`${baseUrl}/bitacora`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> Bitácora 2026
+          </a>
+          <a href={`${baseUrl}/cargar-datos`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="database" class="w-3.5 h-3.5 text-amber-400"></i> Cargar Datos
+          </a>
+        </nav>
+      </div>
       
       <!-- Controles: Una Sola Lupa + Reset + Estado del Sistema -->
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -459,10 +480,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <script is:inline src={`${baseUrl}/vendor/chart.umd.js`} defer></script>
   <script is:inline src={`${baseUrl}/vendor/lucide.min.js`} defer></script>
   <script is:inline define:vars={{ baseUrl }}>window.BASE_URL = baseUrl;</script>
-  <script is:inline src={`${baseUrl}/js/data.js`} defer></script>
-  <script is:inline src={`${baseUrl}/js/olap_engine.js`} defer></script>
-  <script is:inline src={`${baseUrl}/js/charts.js`} defer></script>
-  <script is:inline src={`${baseUrl}/js/app.js`} defer></script>
+  {loadOlapScripts && (
+    <>
+      <script is:inline src={`${baseUrl}/js/data.js`} defer></script>
+      <script is:inline src={`${baseUrl}/js/olap_engine.js`} defer></script>
+      <script is:inline src={`${baseUrl}/js/charts.js`} defer></script>
+      <script is:inline src={`${baseUrl}/js/app.js`} defer></script>
+    </>
+  )}
 
   <!-- Lenis Smooth Scroll & Motion Animations -->
   <script>

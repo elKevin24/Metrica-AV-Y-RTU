@@ -1,0 +1,20 @@
+{
+  "fecha_auditoria": "2026-08-26 23:42:41",
+  "total_archivos_fuente": 6,
+  "total_eventos_brutos": 466006,
+  "total_expedientes_unicos": 64197,
+  "promedio_eventos_por_expediente": 7.26,
+  "limpieza_y_saneamiento": {
+    "filas_desplazadas_reparadas": 154,
+    "nits_saneados_sin_float": 460303,
+    "regiones_imputadas": 7,
+    "tasa_integridad_referencial": "100.0%",
+    "estados_con_operadores_infiltrados": 0
+  },
+  "metricas_consolidadas": {
+    "aprobadas": 36264,
+    "no_confirmadas": 11317,
+    "canceladas_o_rechazadas": 16605,
+    "en_proceso": 11
+  }
+}

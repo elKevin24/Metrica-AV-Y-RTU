@@ -1,0 +1,1104 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<MainLayout title="SAT Guatemala - Bitácora Transaccional & Auditoría de Eventos">
+  
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-8">
+    
+    <!-- ENCABEZADO MINIMALISTA Y ENLACES DE CONTEXTO -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div class="flex items-center gap-3">
+        <a href={`${baseUrl}/`} class="text-xs font-bold text-slate-500 hover:text-indigo-600 flex items-center gap-1">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Menú Principal
+        </a>
+        <span class="text-slate-300">|</span>
+        <h1 class="text-sm font-black text-slate-800 flex items-center gap-1.5">
+          <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i>
+          Buscador de Bitácoras Transaccionales (Julio 2026)
+        </h1>
+      </div>
+      <a href={`${baseUrl}/historico`} class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <i data-lucide="history" class="w-3.5 h-3.5 text-blue-400"></i> Tablero Histórico
+      </a>
+    </div>
+
+    <!-- BALANCE OPERATIVO GENERAL DE JULIO 2026 (MISMA ESTRUCTURA QUE HISTÓRICO) -->
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 1: Universo -->
+        <div class="bg-gradient-to-br from-slate-50 to-white p-4 rounded-2xl shadow-xs border border-slate-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Universo Gestionado</span>
+            <span class="p-1 bg-slate-100 text-slate-600 rounded"><i data-lucide="layers" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-slate-900 font-mono mt-1">64,197</h3>
+          <span class="text-xs text-slate-500 font-bold mt-1 inline-block">100% de expedientes</span>
+          <p class="text-[11px] text-slate-400 mt-1 font-mono">Julio 2026</p>
+        </div>
+
+        <!-- Card 2: Aprobadas con Éxito -->
+        <div class="bg-gradient-to-br from-emerald-50 to-white p-4 rounded-2xl shadow-xs border border-emerald-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider">Aprobadas con Éxito</span>
+            <span class="p-1 bg-emerald-100 text-emerald-800 rounded"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-emerald-700 font-mono mt-1">36,264</h3>
+          <span class="text-xs text-emerald-800 font-bold mt-1 inline-block">56.5% del universo</span>
+          <p class="text-[11px] text-emerald-600 mt-1 font-mono">Trámites resueltos</p>
+        </div>
+
+        <!-- Card 3: Rechazos Emitidos -->
+        <div class="bg-gradient-to-br from-rose-50 to-white p-4 rounded-2xl shadow-xs border border-rose-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-rose-900 uppercase tracking-wider">Rechazos Emitidos</span>
+            <span class="p-1 bg-rose-100 text-rose-800 rounded"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-rose-700 font-mono mt-1">16,285</h3>
+          <span class="text-xs text-rose-800 font-bold mt-1 inline-block">25.4% del universo</span>
+          <p class="text-[11px] text-rose-600 mt-1 font-mono">Rechazos definitivos</p>
+        </div>
+
+        <!-- Card 4: En Proceso / Otras -->
+        <div class="bg-gradient-to-br from-amber-50 to-white p-4 rounded-2xl shadow-xs border border-amber-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider">En Proceso / Otras</span>
+            <span class="p-1 bg-amber-100 text-amber-800 rounded"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-amber-700 font-mono mt-1">11,648</h3>
+          <span class="text-xs text-amber-800 font-bold mt-1 inline-block">18.1% del universo</span>
+          <p class="text-[11px] text-amber-600 mt-1 font-mono">Abandono / Expiración</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 5: Aprobadas a la 1ª -->
+        <div class="bg-gradient-to-br from-green-50 to-white p-4 rounded-2xl shadow-xs border border-green-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-green-900 uppercase tracking-wider">Aprobadas a la 1ª (Limpias)</span>
+            <span class="p-1 bg-green-100 text-green-800 rounded"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-green-700 font-mono mt-1">27,155</h3>
+          <span class="text-xs text-green-800 font-bold mt-1 inline-block">74.9% de las aprobaciones</span>
+          <p class="text-[11px] text-green-600 mt-1 font-mono">Directas sin rechazo</p>
+        </div>
+
+        <!-- Card 6: Subsanadas tras Rechazo -->
+        <div class="bg-gradient-to-br from-cyan-50 to-white p-4 rounded-2xl shadow-xs border border-cyan-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-cyan-900 uppercase tracking-wider">Subsanadas tras Rechazo</span>
+            <span class="p-1 bg-cyan-100 text-cyan-800 rounded"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-cyan-700 font-mono mt-1">9,109</h3>
+          <span class="text-xs text-cyan-800 font-bold mt-1 inline-block">30.9% tasa recuperación</span>
+          <p class="text-[11px] text-cyan-600 mt-1 font-mono">Recuperadas tras subsanar</p>
+        </div>
+
+        <!-- Card 7: Rechazos Sin Motivo -->
+        <div class="bg-gradient-to-br from-orange-50 to-white p-4 rounded-2xl shadow-xs border border-orange-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-orange-900 uppercase tracking-wider">Rechazos Sin Motivo</span>
+            <span class="p-1 bg-orange-100 text-orange-800 rounded"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-orange-700 font-mono mt-1">15,070</h3>
+          <span class="text-xs text-orange-800 font-bold mt-1 inline-block">51.1% de los rechazos</span>
+          <p class="text-[11px] text-orange-600 mt-1 font-mono">Falta de tipificación formal</p>
+        </div>
+
+        <!-- Card 8: Rechazos con Causal -->
+        <div class="bg-gradient-to-br from-red-50 to-white p-4 rounded-2xl shadow-xs border border-red-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold text-red-900 uppercase tracking-wider">Rechazos con Causal</span>
+            <span class="p-1 bg-red-100 text-red-800 rounded"><i data-lucide="slash" class="w-3.5 h-3.5"></i></span>
+          </div>
+          <h3 class="text-2xl font-black text-red-700 font-mono mt-1">14,428</h3>
+          <span class="text-xs text-red-800 font-bold mt-1 inline-block">48.9% de los rechazos</span>
+          <p class="text-[11px] text-red-600 mt-1 font-mono">Tipificados formalmente</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUSCADOR PRIORITARIO (PUESTO ABAJO DE LOS KPIS) -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden">
+      <div class="p-5 border-b border-slate-100 bg-slate-900 text-white flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0">
+          <i data-lucide="search" class="w-4.5 h-4.5"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-black tracking-tight">Buscador y Consulta de Bitácora</h2>
+          <p class="text-[10px] text-slate-400 font-semibold">Pega el Número de Gestión para obtener su historial y ciclos operativos de inmediato</p>
+        </div>
+      </div>
+      
+      <div class="p-5 space-y-4">
+        <div class="flex gap-2 max-w-xl">
+          <input 
+            type="text" 
+            id="txtDirectGestionId" 
+            placeholder="Pegar No. Gestión aquí... (ej. 20267AV34B0CEC5)" 
+            class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-blue-500 text-xs font-bold text-slate-800 shadow-inner"
+            onkeydown="if(event.key === 'Enter') queryDirectGestion()"
+          />
+          <button onclick="queryDirectGestion()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-blue-500/20 shrink-0">
+            Consultar
+          </button>
+        </div>
+
+        <!-- Resultados de la Consulta Directa -->
+        <div id="directResultContainer" class="hidden space-y-6 pt-2">
+          <!-- Detalles Cabecera -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs font-semibold">
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">No. Gestión</span><p id="lblDirectNo" class="font-bold font-mono text-slate-900 mt-0.5">-</p></div>
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">NIT Contribuyente</span><p id="lblDirectNIT" class="font-bold font-mono text-slate-900 mt-0.5">-</p></div>
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">Tipo Trámite</span><p id="lblDirectGestion" class="font-bold text-blue-700 mt-0.5">-</p></div>
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">Fecha Inicio</span><p id="lblDirectInicio" class="font-bold text-slate-700 mt-0.5">-</p></div>
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">Fecha Finalización</span><p id="lblDirectFin" class="font-bold text-slate-700 mt-0.5">-</p></div>
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">Tiempo de Respuesta</span><p id="lblDirectDuracion" class="font-bold text-indigo-700 mt-0.5">-</p></div>
+          </div>
+
+          <!-- Tabla de Rondas y Tiempos Internos -->
+          <div id="directRoundsCard" class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 hidden">
+            <h3 class="text-xs font-black text-slate-800 flex items-center gap-1.5 border-b border-slate-100 pb-2">
+              <i data-lucide="clock" class="w-4 h-4 text-indigo-600"></i>
+              Eficiencia Operativa por Ronda de Revisión
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200 uppercase text-[9px] tracking-wider">
+                  <tr>
+                    <th class="px-3 py-2">Ronda</th>
+                    <th class="px-3 py-2">Asignación</th>
+                    <th class="px-3 py-2">Revisión (Inicio)</th>
+                    <th class="px-3 py-2">Resolución / Rechazo</th>
+                    <th class="px-3 py-2 text-right">Espera en Bandeja (min)</th>
+                    <th class="px-3 py-2 text-right">Tiempo Dictamen (min)</th>
+                    <th class="px-3 py-2">Operador</th>
+                    <th class="px-3 py-2 text-right">Resultado</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-mono text-[11px] text-slate-600" id="directRoundsTableBody">
+                  <!-- populate dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Timeline Detallada -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+            <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5 border-b border-slate-100 pb-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              Bitácora de Estados y Línea de Tiempo Secuencial
+            </h3>
+            <div id="directTimeline" class="space-y-4">
+              <!-- Cargado dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerta de No Encontrado / Error -->
+        <div id="directAlertContainer" class="hidden p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs font-semibold flex items-center gap-2">
+          <span id="lblDirectAlertMsg">No se encontró información para el expediente ingresado.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE EMBUDO DE ESTADOS TRANSACCIONALES (FUNNEL DEL PROCESO) -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+            <i data-lucide="git-commit" class="w-5 h-5 text-indigo-600"></i>
+            Embudo de Ciclo de Vida Transaccional (Process Funnel)
+          </h2>
+          <p class="text-xs text-slate-500">Flujo de volumen a través de las etapas del ciclo de vida de los trámites</p>
+        </div>
+      </div>
+
+      <!-- Pasos del Funnel -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-slate-500">Paso 1</span>
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          </div>
+          <h3 class="text-xs font-bold text-slate-900 mt-1">CREADA</h3>
+          <p class="text-lg font-black text-slate-900 font-mono mt-0.5">64,197</p>
+          <p class="text-[11px] text-slate-500">100.0% Base Inicial</p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-slate-500">Paso 2</span>
+            <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+          </div>
+          <h3 class="text-xs font-bold text-slate-900 mt-1">CONFIRMADA</h3>
+          <p class="text-lg font-black text-sky-700 font-mono mt-0.5">58,422</p>
+          <p class="text-[11px] text-emerald-600 font-semibold">91.0% Confirmación</p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-slate-500">Paso 3</span>
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          </div>
+          <h3 class="text-xs font-bold text-slate-900 mt-1">EN COLA (BUZÓN)</h3>
+          <p class="text-lg font-black text-amber-700 font-mono mt-0.5">47,231</p>
+          <p class="text-[11px] text-slate-500">Espera de Asignación</p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-slate-500">Paso 4</span>
+            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+          </div>
+          <h3 class="text-xs font-bold text-slate-900 mt-1">ASIGNADA</h3>
+          <p class="text-lg font-black text-indigo-700 font-mono mt-0.5">46,900</p>
+          <p class="text-[11px] text-slate-500">Bandeja Operador</p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-slate-500">Paso 5</span>
+            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+          </div>
+          <h3 class="text-xs font-bold text-slate-900 mt-1">EN PROCESO</h3>
+          <p class="text-lg font-black text-purple-700 font-mono mt-0.5">133,296</p>
+          <p class="text-[11px] text-purple-600 font-semibold">Incluye Re-trabajo</p>
+        </div>
+
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-emerald-800">Resultado</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+          <h3 class="text-xs font-bold text-emerald-900 mt-1">APROBADA</h3>
+          <p class="text-lg font-black text-emerald-700 font-mono mt-0.5">36,264</p>
+          <p class="text-[11px] text-emerald-800 font-bold">56.5% Éxito Final</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMEDIOS GENERALES INSTITUCIONALES & GLOSARIO DE ETAPAS (JULIO 2026) -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-6">
+      <div>
+        <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+          <i data-lucide="clock" class="w-5 h-5 text-indigo-600"></i>
+          Promedios Generales Institucionales & Glosario de Etapas
+        </h2>
+        <p class="text-xs text-slate-500">Valores normativos y tiempo promedio que toma cada etapa del ciclo de vida del expediente en Julio 2026</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Etapa 1: Espera en Cola -->
+        <div class="space-y-2 border-l-4 border-amber-400 pl-4 py-1">
+          <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
+          <h3 class="text-xs font-black text-slate-900 uppercase">1. Espera en Cola (Buzón)</h3>
+          <p class="text-[10px] text-slate-400 font-mono">FechaAsignación - FechaCreación</p>
+          <div class="text-2xl font-black text-slate-900 font-mono mt-1">10.24 <span class="text-xs font-normal text-slate-500">horas hábiles</span></div>
+          <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario: 45.04 horas</span>
+          <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
+            Tiempo que el trámite permanece en espera en el servidor central desde que el ciudadano realiza la creación de su solicitud hasta que el sistema la distribuye a la regional.
+          </p>
+          <div class="mt-2 text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-lg border border-amber-100/60 inline-block">
+            ⚠️ Representa el 27.9% del tiempo total.
+          </div>
+        </div>
+
+        <!-- Etapa 2: En Bandeja (Bolsón) -->
+        <div class="space-y-2 border-l-4 border-blue-400 pl-4 py-1">
+          <span class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
+          <h3 class="text-xs font-black text-slate-900 uppercase">2. En Bandeja (Bolsón)</h3>
+          <p class="text-[10px] text-slate-400 font-mono">FechaRevisión - FechaAsignación</p>
+          <div class="text-2xl font-black text-slate-900 font-mono mt-1">2.4 <span class="text-xs font-normal text-slate-500">minutos hábiles</span></div>
+          <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario Deduplicado: 150.2 min (2.5 h)</span>
+          
+          <div class="text-[11px] text-slate-600 font-semibold space-y-0.5 mt-1 border-t border-blue-100 pt-1">
+            <div>• Activación (AV): <strong class="text-blue-955 font-mono">2.52 min</strong> <span class="text-slate-400 font-normal">| Reloj: 157.7 min</span></div>
+            <div>• Correo (RTU): <strong class="text-blue-955 font-mono">2.30 min</strong> <span class="text-slate-400 font-normal">| Reloj: 145.8 min</span></div>
+          </div>
+          
+          <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
+            Tiempo que transcurre desde que el operador recibe la solicitud en su lista de trabajo hasta que hace clic para abrirla en pantalla.
+          </p>
+          <div class="mt-2 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-lg border border-blue-100/60 inline-block">
+            ⚡ Muestras: 46,326 casos (68,999 asignaciones reales).
+          </div>
+        </div>
+
+        <!-- Etapa 3: Revisión en Pantalla -->
+        <div class="space-y-2 border-l-4 border-purple-400 pl-4 py-1">
+          <span class="text-[10px] font-bold text-purple-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
+          <h3 class="text-xs font-black text-slate-900 uppercase">3. Revisión en Pantalla</h3>
+          <p class="text-[10px] text-slate-400 font-mono">FechaResolución - FechaRevisión (Atención Activa)</p>
+          
+          <div class="space-y-3 mt-2">
+            <div>
+              <span class="text-[10px] font-extrabold text-slate-500 block uppercase tracking-wider">Activación de Agencia Virtual</span>
+              <div class="text-xl font-black text-slate-900 font-mono">57.09 <span class="text-xs font-normal text-slate-500">segundos</span></div>
+              <span class="text-[10px] text-slate-500 font-mono">Muestra: 10,627 gestiones</span>
+            </div>
+            
+            <div class="border-t border-slate-100 pt-2">
+              <span class="text-[10px] font-extrabold text-slate-500 block uppercase tracking-wider">Cambio de Correo Electrónico</span>
+              <div class="text-xl font-black text-slate-900 font-mono">60.69 <span class="text-xs font-normal text-slate-500">segundos</span></div>
+              <span class="text-[10px] text-slate-500 font-mono">Muestra: 17,413 gestiones</span>
+            </div>
+          </div>
+          
+          <p class="text-[11px] text-slate-500 leading-relaxed mt-2.5">
+            Duración exacta en que el revisor humano audita los requisitos en pantalla hasta emitir la aprobación o el dictamen de rechazo.
+          </p>
+          <div class="mt-2 text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-1 rounded-lg border border-purple-100/60 inline-block">
+            🎯 Evaluación humana en pantalla.
+          </div>
+        </div>
+
+        <!-- Etapa 4: Ciclo Total de Respuesta -->
+        <div class="space-y-2 border-l-4 border-indigo-500 pl-4 py-1">
+          <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
+          <h3 class="text-xs font-black text-slate-900 uppercase">4. Ciclo Total de Respuesta</h3>
+          <p class="text-[10px] text-slate-400 font-mono">FechaFinaliza - FechaCreación</p>
+          <div class="text-2xl font-black text-slate-900 font-mono mt-1">36.71 <span class="text-xs font-normal text-slate-500">horas hábiles</span></div>
+          <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario: 153.84 horas</span>
+          <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
+            Tiempo total transcurrido de punta a punta desde la creación original del trámite hasta su resolución final definitiva.
+          </p>
+          <div class="mt-2 text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-1 rounded-lg border border-indigo-100/60 inline-block">
+            🏆 30.8% se resuelve en ≤ 1 jornada hábil (8h).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JORNADA 8H & SLAS DE RESPUESTA (JULIO 2026) -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+        <div>
+          <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+            <i data-lucide="moon" class="w-5 h-5 text-indigo-600"></i>
+            Desmitificación del Tiempo: ¿Dónde Ocurre la Espera del Contribuyente?
+          </h2>
+          <p class="text-xs text-slate-500">Comparación cuantitativa entre el tiempo percibido por el ciudadano (reloj corrido) vs tiempo de oficina hábil en Julio 2026</p>
+        </div>
+        <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5 shrink-0">
+          <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i> Análisis Inactividad
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <!-- Tarjeta 1: Calendario Total -->
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+          <span class="text-slate-500 font-bold uppercase text-[10px]">1. Tiempo Reloj Corrido (Calendario)</span>
+          <h4 class="text-2xl font-black text-slate-900 mt-1">153.84 horas</h4>
+          <p class="text-[11px] text-slate-500 mt-2">
+            Tiempo cronológico total de punta a punta que percibe el solicitante desde el botón enviar.
+          </p>
+        </div>
+
+        <!-- Tarjeta 2: Horas Hábiles Efectivas -->
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+          <span class="text-emerald-800 font-bold uppercase text-[10px]">2. Horas Hábiles Efectivas SAT (8h/día)</span>
+          <h4 class="text-2xl font-black text-emerald-700 mt-1">36.71 horas</h4>
+          <p class="text-[11px] text-emerald-800 mt-2">
+            Tiempo real consumido dentro del horario oficial de atención (08:00 a 16:00, L-V).
+          </p>
+        </div>
+
+        <!-- Tarjeta 3: Inactividad Fuera de Horario -->
+        <div class="p-4 bg-purple-50 border border-purple-200 rounded-2xl">
+          <span class="text-purple-800 font-bold uppercase text-[10px]">3. Horas en Noches & Fines de Semana</span>
+          <h4 class="text-2xl font-black text-purple-700 mt-1">117.13 h (76.1%)</h4>
+          <p class="text-[11px] text-purple-800 mt-2">
+            Tiempo en que la solicitud estuvo en espera mientras las oficinas y revisores estaban cerrados.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
+        <strong>💡 Diagnóstico de SLAs:</strong> El <strong>76.1% del tiempo de retraso</strong> acumulado por los trámites ocurre fuera de la jornada laboral. En horas netas hábiles de la institución, <strong>el 30.8% de las solicitudes se resuelven en menos de 1 jornada laboral de 8 horas</strong>.
+      </div>
+
+      <!-- SLAs Bars -->
+      <div class="space-y-4 pt-4 border-t border-slate-100">
+        <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+          <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+          Cumplimiento Real de Tiempos de Respuesta (Jornada de 8 Horas Hábiles)
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-semibold text-slate-500">Hasta 1 Día (8h)</span>
+            <h4 class="text-xl font-black text-emerald-600 mt-1">30.8%</h4>
+            <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-emerald-500 h-full rounded-full" style="width: 30.8%"></div></div>
+            <span class="text-[11px] text-slate-400 mt-1.5 block">19,221 expedientes</span>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-semibold text-slate-500">Hasta 2 Días (16h)</span>
+            <h4 class="text-xl font-black text-blue-600 mt-1">16.9%</h4>
+            <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-blue-500 h-full rounded-full" style="width: 16.9%"></div></div>
+            <span class="text-[11px] text-slate-400 mt-1.5 block">10,520 expedientes</span>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-semibold text-slate-500">Hasta 3 Días (24h)</span>
+            <h4 class="text-xl font-black text-indigo-600 mt-1">13.0%</h4>
+            <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-indigo-500 h-full rounded-full" style="width: 13.0%"></div></div>
+            <span class="text-[11px] text-slate-400 mt-1.5 block">8,140 expedientes</span>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-semibold text-slate-500">Hasta 1 Semana (40h)</span>
+            <h4 class="text-xl font-black text-purple-600 mt-1">8.7%</h4>
+            <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 8.7%"></div></div>
+            <span class="text-[11px] text-slate-400 mt-1.5 block">5,436 expedientes</span>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-rose-200 bg-rose-50/40 shadow-sm">
+            <span class="text-xs font-semibold text-rose-700">Más de 1 Semana</span>
+            <h4 class="text-xl font-black text-rose-600 mt-1">30.6%</h4>
+            <div class="w-full bg-slate-250 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-rose-500 h-full rounded-full" style="width: 30.6%"></div></div>
+            <span class="text-[11px] text-rose-700 mt-1.5 block font-semibold">19,063 rezagados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE GRÁFICOS Y ANÁLISIS MULTIDIMENSIONAL -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+        <h3 class="text-sm font-black text-slate-950 flex items-center gap-2">
+          <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
+          Distribución por Trámite y Región (Julio 2026)
+        </h3>
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            <span class="font-bold text-slate-800">Cambio de Correo:</span>
+            <p class="text-base font-black text-blue-600 font-mono mt-1">43,369 <span class="text-xs font-normal text-slate-500">(67.6%)</span></p>
+          </div>
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            <span class="font-bold text-slate-800">Activación AV:</span>
+            <p class="text-base font-black text-indigo-600 font-mono mt-1">20,828 <span class="text-xs font-normal text-slate-500">(32.4%)</span></p>
+          </div>
+        </div>
+        <div class="space-y-2 pt-2 border-t border-slate-100 text-xs">
+          <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Central:</span> <span class="font-mono font-bold text-slate-900">25,548 (39.8%)</span></div>
+          <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[39.8%]"></div></div>
+
+          <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Occidente:</span> <span class="font-mono font-bold text-slate-900">14,289 (22.3%)</span></div>
+          <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-full w-[22.3%]"></div></div>
+
+          <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Sur:</span> <span class="font-mono font-bold text-slate-900">12,886 (20.1%)</span></div>
+          <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-sky-600 h-full w-[20.1%]"></div></div>
+
+          <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Nororiente:</span> <span class="font-mono font-bold text-slate-900">11,473 (17.9%)</span></div>
+          <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-teal-600 h-full w-[17.9%]"></div></div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+        <h3 class="text-sm font-black text-slate-950 flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-4 h-4 text-amber-600"></i>
+          Rondas de Revisión & Frecuencia de Reasignaciones
+        </h3>
+        <div class="space-y-3 text-xs">
+          <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/60">
+            <div class="flex justify-between font-bold text-emerald-900">
+              <span>1.ª Revisión Directa (First-Time Resolution)</span>
+              <span class="font-mono">54,989 casos (85.7%)</span>
+            </div>
+            <p class="text-[11px] text-emerald-700 mt-1">Expedientes aprobados o resueltos sin requerimientos de subsanación.</p>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/60">
+            <div class="flex justify-between font-bold text-amber-900">
+              <span>2.ª Ronda Subsanada</span>
+              <span class="font-mono">6,254 casos (9.7%)</span>
+            </div>
+            <p class="text-[11px] text-amber-700 mt-1">Expedientes con 1 rechazo previo subsanado exitosamente.</p>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200/60">
+            <div class="flex justify-between font-bold text-rose-900">
+              <span>3.ª o Más Rondas de Rechazo</span>
+              <span class="font-mono">2,954 casos (4.6%)</span>
+            </div>
+            <p class="text-[11px] text-rose-700 mt-1">Re-trabajo crítico con múltiples ciclos de devolución por reasignaciones.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLA COMPARATIVA: TIEMPO PROMEDIO HASTA 1ª ATENCIÓN (JULIO 2026) -->
+    <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h4 class="text-sm font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="table" class="w-4 h-4 text-indigo-600"></i> Tabla Comparativa: Tiempo Promedio hasta 1ª Atención (Total vs. NO Rechazadas)
+          </h4>
+          <p class="text-xs text-slate-500 mt-0.5">Métrica individual por trámite: <span class="font-mono font-semibold text-indigo-700">Σ(FechaRevision - FechaCreacion) / N</span> comparando el universo general vs aquellas gestiones aprobadas</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> A la par: No Rechazadas
+          </span>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-900 text-white font-semibold">
+              <th class="p-3 rounded-tl-xl" rowspan="2">Dirección Regional</th>
+              <th class="p-2.5 text-center bg-slate-800 text-slate-200 border-x border-slate-700" colspan="3">
+                <div class="font-bold">📊 UNIVERSO TOTAL DE GESTIONES</div>
+                <div class="text-[10px] font-normal text-slate-300 font-mono">Todas las solicitudes dictaminadas</div>
+              </th>
+              <th class="p-2.5 text-center bg-emerald-950 text-emerald-200 border-r border-slate-800" colspan="3">
+                <div class="font-bold text-emerald-300">🟢 GESTIONES NO RECHAZADAS (APROBADAS)</div>
+                <div class="text-[10px] font-normal text-emerald-400 font-mono">Excluye rechazos y cancelaciones</div>
+              </th>
+              <th class="p-2.5 text-center bg-indigo-950 text-indigo-200 rounded-tr-xl" colspan="2">
+                <div class="font-bold">Desglose de Espera</div>
+                <div class="text-[10px] font-normal text-indigo-300">1. Buzón + 2. Bandeja</div>
+              </th>
+            </tr>
+            <tr class="bg-slate-100 text-slate-700 font-medium text-[11px] border-b border-slate-200">
+              <th class="p-2 text-right font-mono bg-slate-100 border-l border-slate-200">Activación</th>
+              <th class="p-2 text-right font-mono bg-slate-100">Correo</th>
+              <th class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/70 border-r border-slate-300">Total Global</th>
+              <th class="p-2 text-right font-bold text-sky-800 bg-sky-50/60">Activación Aprob.</th>
+              <th class="p-2 text-right font-bold text-violet-800 bg-violet-50/60">Correo Aprob.</th>
+              <th class="p-2 text-right font-black text-emerald-900 bg-emerald-50 border-r border-slate-300">Global Aprobadas</th>
+              <th class="p-2 text-right text-blue-700">1. Buzón Cola</th>
+              <th class="p-2 text-right text-slate-700">2. En Bandeja</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-bold text-slate-900 font-sans">CENTRAL</td>
+              <td class="p-2 text-right">11.31 horas</td>
+              <td class="p-2 text-right">10.54 horas</td>
+              <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">10.84 horas</td>
+              <td class="p-2 text-right text-sky-800 bg-sky-50/30">11.16 horas</td>
+              <td class="p-2 text-right text-violet-800 bg-violet-50/30">10.21 horas</td>
+              <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">10.61 horas</td>
+              <td class="p-2 text-right text-blue-700">10.81 horas</td>
+              <td class="p-2 text-right text-slate-700">0.05 horas</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-bold text-slate-900 font-sans">OCCIDENTE</td>
+              <td class="p-2 text-right">4.86 h</td>
+              <td class="p-2 text-right">4.86 h</td>
+              <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">4.86 h</td>
+              <td class="p-2 text-right text-sky-800 bg-sky-50/30">4.83 h</td>
+              <td class="p-2 text-right text-violet-800 bg-violet-50/30">4.75 h</td>
+              <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">4.78 h</td>
+              <td class="p-2 text-right text-blue-700">4.83 h</td>
+              <td class="p-2 text-right text-slate-700">0.04 h</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-bold text-slate-900 font-sans">SUR</td>
+              <td class="p-2 text-right">18.32 horas</td>
+              <td class="p-2 text-right">18.78 horas</td>
+              <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">18.62 horas</td>
+              <td class="p-2 text-right text-sky-800 bg-sky-50/30">18.27 horas</td>
+              <td class="p-2 text-right text-violet-800 bg-violet-50/30">18.66 horas</td>
+              <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">18.52 horas</td>
+              <td class="p-2 text-right text-blue-700">18.59 h</td>
+              <td class="p-2 text-right text-slate-700">0.04 h</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-bold text-slate-900 font-sans">NORORIENTE</td>
+              <td class="p-2 text-right">6.72 h</td>
+              <td class="p-2 text-right">6.97 h</td>
+              <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">6.88 h</td>
+              <td class="p-2 text-right text-sky-800 bg-sky-50/30">6.65 h</td>
+              <td class="p-2 text-right text-violet-800 bg-violet-50/30">6.89 h</td>
+              <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">6.80 h</td>
+              <td class="p-2 text-right text-blue-700">6.86 h</td>
+              <td class="p-2 text-right text-slate-700">0.03 h</td>
+            </tr>
+          </tbody>
+          <tfoot class="bg-slate-900 font-bold border-t-2 border-slate-300 text-white font-mono text-[11px]">
+            <tr>
+              <td class="p-3 font-black font-sans">TOTAL NACIONAL</td>
+              <td class="p-2 text-right">10.38 horas</td>
+              <td class="p-2 text-right">10.20 horas</td>
+              <td class="p-2 text-right font-black text-yellow-300">10.27 horas</td>
+              <td class="p-2 text-right text-sky-200">10.26 horas</td>
+              <td class="p-2 text-right text-violet-200">10.06 horas</td>
+              <td class="p-2 text-right font-black text-emerald-300">10.14 horas</td>
+              <td class="p-2 text-right text-blue-300">10.24 horas</td>
+              <td class="p-2 text-right text-slate-300">0.04 horas</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRODUCTIVIDAD Y CAPACIDAD DIARIA DE REVISORES (JULIO 2026) -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+        <div>
+          <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+            <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
+            Capacidad Diaria y Métricas de Productividad por Revisor (Jornada 8h)
+          </h2>
+          <p class="text-xs text-slate-500">Promedio diario, mediana, récords en 1 día y días activos en jornada laboral oficial (8:00 a 16:00) en Julio 2026</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="lblCapacidadContexto" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 px-3 py-1 rounded-xl shadow-xs">
+            Nacional • Julio 2026
+          </span>
+        </div>
+      </div>
+
+      <!-- Mini KPIs de Capacidad Diaria -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+          <span class="text-slate-500 text-[11px] font-medium">Revisores Activos</span>
+          <h5 id="kpiCapRevisores" class="text-base font-black text-slate-900 mt-0.5">...</h5>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+          <span class="text-emerald-700 text-[11px] font-medium">Promedio Diario (Top 1)</span>
+          <h5 id="kpiCapTopProm" class="text-base font-black text-emerald-800 mt-0.5">...</h5>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl">
+          <span class="text-blue-700 text-[11px] font-medium">Mediana Global Grupo</span>
+          <h5 id="kpiCapMediana" class="text-base font-black text-blue-800 mt-0.5">...</h5>
+        </div>
+        <div class="bg-purple-50 border border-purple-200 p-3 rounded-xl">
+          <span class="text-purple-700 text-[11px] font-medium">Récord en 1 Solo Día</span>
+          <h5 id="kpiCapMaxRecord" class="text-base font-black text-purple-800 mt-0.5">...</h5>
+        </div>
+      </div>
+
+      <!-- Tabla de Capacidad Diaria -->
+      <div class="overflow-x-auto text-xs border border-slate-200 rounded-xl">
+        <table class="w-full text-left">
+          <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200 text-[11px]">
+            <tr>
+              <th class="p-3">Revisor</th>
+              <th class="p-3 text-center font-bold text-slate-900 bg-slate-200/50">Promedio Diario (8h)</th>
+              <th class="p-3 text-center text-slate-600">Mediana Diaria</th>
+              <th class="p-3 text-center font-black text-slate-900">Récord en 1 Día</th>
+              <th class="p-3 text-center text-slate-600">Días Activos</th>
+              <th class="p-3 text-right font-black text-slate-900">Total Resuelto (8h)</th>
+            </tr>
+          </thead>
+          <tbody id="tableProductividadDiaria" class="divide-y divide-slate-100 text-slate-700 font-medium">
+            <tr>
+              <td colspan="6" class="p-4 text-center text-slate-400">Cargando datos de productividad...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Script Cliente para Carga y Filtrado Dinámico -->
+  <script is:inline define:vars={{ baseUrl }}>
+    let gBitacoraData = null;
+
+    async function loadBitacoraData() {
+      try {
+        const res = await fetch(`${baseUrl}/data/cubo_bitacora.json`);
+        if (!res.ok) throw new Error('Error al cargar cubo_bitacora.json');
+        gBitacoraData = await res.json();
+        if (gBitacoraData && gBitacoraData.operadores_productividad_8h) {
+          renderProductividad(gBitacoraData.operadores_productividad_8h);
+        }
+      } catch (err) {
+        console.error('Error cargando datos de bitácora:', err);
+      }
+    }
+
+    function renderProductividad(capList) {
+      if (!capList || capList.length === 0) return;
+      const filteredCap = [...capList].sort((a, b) => b.Total_8h - a.Total_8h);
+      const tbCap = document.getElementById('tableProductividadDiaria');
+      if (tbCap) {
+        let htmlCap = '';
+        const displayCap = filteredCap.slice(0, 10);
+        displayCap.forEach((row, idx) => {
+          let medal = `${idx + 1}.`;
+          if (idx === 0) medal = '🥇';
+          else if (idx === 1) medal = '🥈';
+          else if (idx === 2) medal = '🥉';
+          
+          const revisorName = row.Revisor || 'SIN_OPERADOR';
+          const promDiario = row.Promedio_Diario !== undefined ? row.Promedio_Diario : 0;
+          const medianaDiaria = row.Mediana_Diaria !== undefined ? row.Mediana_Diaria : 0;
+          const recordDia = row.Record_Dia !== undefined ? row.Record_Dia : 0;
+          const diasActivos = row.Dias_Activos !== undefined ? row.Dias_Activos : 0;
+          const total8h = row.Total_8h !== undefined ? row.Total_8h : 0;
+          
+          htmlCap += `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+              <td class="p-3 font-semibold text-slate-900 flex items-center gap-2">
+                <span class="text-sm font-sans">${medal}</span>
+                <span class="font-sans uppercase">${revisorName}</span>
+              </td>
+              <td class="p-3 text-center font-bold text-slate-900 bg-slate-50/80 font-mono">${promDiario} / día</td>
+              <td class="p-3 text-center text-slate-600 font-mono">${medianaDiaria} / día</td>
+              <td class="p-3 text-center font-black text-purple-700 bg-purple-50/40 font-mono">${recordDia} casos</td>
+              <td class="p-3 text-center text-slate-600 font-mono">${diasActivos} días</td>
+              <td class="p-3 text-right font-black text-slate-900 font-mono">${Number(total8h).toLocaleString()} casos</td>
+            </tr>
+          `;
+        });
+        tbCap.innerHTML = htmlCap;
+        
+        const elRevisores = document.getElementById('kpiCapRevisores');
+        if (elRevisores) elRevisores.innerText = `${filteredCap.length} revisores`;
+        
+        const elTopProm = document.getElementById('kpiCapTopProm');
+        if (elTopProm) elTopProm.innerText = displayCap.length > 0 ? `${displayCap[0].Promedio_Diario} / día` : '-';
+        
+        const elMediana = document.getElementById('kpiCapMediana');
+        if (elMediana) {
+          const medVals = displayCap.map(r => r.Mediana_Diaria).sort((a,b) => a-b);
+          const mid = Math.floor(medVals.length / 2);
+          const med = medVals.length > 0 ? (medVals.length % 2 !== 0 ? medVals[mid] : ((medVals[mid - 1] + medVals[mid]) / 2).toFixed(1)) : '-';
+          elMediana.innerText = `${med} / día`;
+        }
+        
+        const elMaxRec = document.getElementById('kpiCapMaxRecord');
+        if (elMaxRec) {
+          const maxRec = displayCap.reduce((max, r) => Math.max(max, r.Record_Dia), 0);
+          elMaxRec.innerText = `${maxRec} casos`;
+        }
+      }
+    }
+
+    function groupEventsIntoCycles(events) {
+      if (!events || events.length === 0) return [];
+      const cycles = [];
+      let currentEvents = [];
+      let cycleNum = 1;
+      
+      events.forEach(ev => {
+        const stepNum = ev.s || ev.Secuencia || 1;
+        const name = ev.e || ev.Evento || '';
+        const date = ev.f || ev.Fecha || '';
+        const op = ev.o || ev.Operador || 'SIN_OPERADOR';
+        const motif = ev.m || ev.Motivo || '';
+        
+        const normalizedEvent = { stepNum, name, date, op, motif };
+        currentEvents.push(normalizedEvent);
+        
+        const nameUpper = name.toUpperCase();
+        if (
+          nameUpper.includes('RECHAZADA') || 
+          nameUpper.includes('APROBADA') || 
+          nameUpper.includes('CANCELADA')
+        ) {
+          cycles.push({
+            number: cycleNum,
+            title: cycleNum === 1 ? '1.er Ciclo: Revisión Inicial' : `${cycleNum}.º Ciclo: Subsanación y Re-evaluación`,
+            events: currentEvents
+          });
+          cycleNum++;
+          currentEvents = [];
+        }
+      });
+      
+      if (currentEvents.length > 0) {
+        cycles.push({
+          number: cycleNum,
+          title: cycleNum === 1 ? '1.er Ciclo: Revisión Inicial (En Proceso)' : `${cycleNum}.º Ciclo: Subsanación (En Proceso)`,
+          events: currentEvents
+        });
+      }
+      
+      return cycles;
+    }
+
+    function calculateBusinessMinutes(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      if (isNaN(start) || isNaN(end) || start > end) return 0;
+      
+      let totalMinutes = 0;
+      let current = new Date(start.getTime());
+      
+      while (current <= end) {
+        const dayOfWeek = current.getDay();
+        const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6); // 0 = Dom, 6 = Sáb
+        
+        if (!isWeekend) {
+          const workStart = new Date(current.getTime());
+          workStart.setHours(8, 0, 0, 0);
+          
+          const workEnd = new Date(current.getTime());
+          workEnd.setHours(16, 0, 0, 0);
+          
+          const activeStart = new Date(Math.max(current.getTime(), workStart.getTime()));
+          const dayEnd = new Date(current.getFullYear(), current.getMonth(), current.getDate(), 23, 59, 59, 999);
+          const activeEnd = new Date(Math.min(end.getTime(), workEnd.getTime(), dayEnd.getTime()));
+          
+          if (activeStart < activeEnd) {
+            totalMinutes += (activeEnd - activeStart) / (1000 * 60);
+          }
+        }
+        
+        current.setDate(current.getDate() + 1);
+        current.setHours(0, 0, 0, 0);
+      }
+      
+      return totalMinutes;
+    }
+
+    function calculateRevisionRounds(events) {
+      const rounds = [];
+      let roundNum = 1;
+      
+      events.forEach(ev => {
+        const nameUpper = (ev.e || '').toUpperCase();
+        
+        // Si el evento marca el fin de una ronda (Rechazo, Aprobación o Cancelación)
+        if (
+          nameUpper.includes('RECHAZADA') || 
+          nameUpper.includes('APROBADA') || 
+          nameUpper.includes('CANCELADA')
+        ) {
+          const asigStr = ev.a || '';
+          const revStr = ev.r || '';
+          const resStr = ev.d || ev.x || ev.f || '';
+          
+          if (asigStr && resStr) {
+            const tAsig = new Date(asigStr);
+            const tRev = revStr ? new Date(revStr) : tAsig;
+            const tRes = new Date(resStr);
+            
+            const diffBandejaMs = tRev - tAsig;
+            const diffDictamenMs = tRes - tRev;
+            
+            const bandejaMin = !isNaN(diffBandejaMs) && diffBandejaMs >= 0 ? (diffBandejaMs / (1000 * 60)) : 0;
+            const bandejaHabMin = calculateBusinessMinutes(tAsig, tRev);
+            const dictamenMin = !isNaN(diffDictamenMs) && diffDictamenMs >= 0 ? (diffDictamenMs / (1000 * 60)) : 0;
+            
+            rounds.push({
+              id: `R${roundNum++}`,
+              asignacion: asigStr,
+              revision: revStr || asigStr,
+              resolucion: resStr,
+              bandejaMin,
+              bandejaHabMin,
+              dictamenMin,
+              operador: ev.o || 'SIN_OPERADOR',
+              evento: ev.e
+            });
+          }
+        }
+      });
+      
+      return rounds;
+    }
+
+    function formatShortDate(dateStr) {
+      if (!dateStr || dateStr === '-') return '-';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      
+      const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      const day = d.getDate();
+      const month = months[d.getMonth()];
+      const hour = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      
+      return `${day} ${month} ${hour}:${min}`;
+    }
+
+    async function queryDirectGestion() {
+      const inputVal = document.getElementById('txtDirectGestionId').value.trim();
+      const resultContainer = document.getElementById('directResultContainer');
+      const alertContainer = document.getElementById('directAlertContainer');
+      const alertMsg = document.getElementById('lblDirectAlertMsg');
+      
+      resultContainer.classList.add('hidden');
+      alertContainer.classList.add('hidden');
+      
+      if (!inputVal) {
+        alertMsg.innerText = 'Por favor, ingrese o pegue un Número de Gestión válido.';
+        alertContainer.classList.remove('hidden');
+        return;
+      }
+      
+      if (inputVal.length < 5) {
+        alertMsg.innerText = 'El Número de Gestión ingresado es muy corto.';
+        alertContainer.classList.remove('hidden');
+        return;
+      }
+
+      const suffix = inputVal.substring(inputVal.length - 2).toLowerCase();
+      
+      try {
+        const res = await fetch(`${baseUrl}/data/bitacora_partitions/${suffix}.json`);
+        if (!res.ok) {
+          throw new Error('No se pudo encontrar el archivo de partición correspondiente.');
+        }
+        
+        const partitionData = await res.json();
+        const matchingKey = Object.keys(partitionData).find(k => k.toLowerCase() === inputVal.toLowerCase());
+        
+        if (!matchingKey) {
+          alertMsg.innerText = `No se encontró el expediente "${inputVal}" en los registros de Julio 2026.`;
+          alertContainer.classList.remove('hidden');
+          return;
+        }
+        
+        const events = partitionData[matchingKey];
+        
+        let nit = '-';
+        let gestion = '-';
+        let region = '-';
+        
+        if (gBitacoraData && gBitacoraData.dataset_muestral_500) {
+          const matchedSample = gBitacoraData.dataset_muestral_500.find(r => r.NoGestion.toLowerCase() === inputVal.toLowerCase());
+          if (matchedSample) {
+            nit = matchedSample.NIT || matchedSample.nit || '-';
+            gestion = matchedSample.Gestion || '-';
+            region = matchedSample.Region || '-';
+          }
+        }
+        
+        if (gestion === '-') {
+          gestion = inputVal.includes('AV') ? 'ACTIVACIÓN DE AGENCIA VIRTUAL' : 'CAMBIO DE CORREO ELECTRÓNICO';
+          region = 'CENTRAL';
+        }
+
+        // Calcular tiempos e hitos cronológicos desde los eventos
+        const fechaInicio = events.length > 0 ? (events[0].f || events[0].Fecha) : '-';
+        const fechaFin = events.length > 0 ? (events[events.length - 1].f || events[events.length - 1].Fecha) : '-';
+        
+        let durationText = '-';
+        if (events.length > 1) {
+          const start = new Date(events[0].f || events[0].Fecha);
+          const end = new Date(events[events.length - 1].f || events[events.length - 1].Fecha);
+          const diffMs = end - start;
+          if (!isNaN(diffMs) && diffMs >= 0) {
+            const diffHrs = diffMs / (1000 * 60 * 60);
+            if (diffHrs < 1) {
+              durationText = `${Math.round(diffHrs * 60)} min`;
+            } else if (diffHrs < 24) {
+              durationText = `${diffHrs.toFixed(1)} horas`;
+            } else {
+              durationText = `${(diffHrs / 24).toFixed(1)} días`;
+            }
+          }
+        }
+        
+        document.getElementById('lblDirectNo').innerText = matchingKey;
+        document.getElementById('lblDirectNIT').innerText = nit;
+        document.getElementById('lblDirectGestion').innerText = gestion;
+        document.getElementById('lblDirectInicio').innerText = fechaInicio;
+        document.getElementById('lblDirectFin').innerText = fechaFin;
+        document.getElementById('lblDirectDuracion').innerText = durationText;
+        
+        // Renderizar tabla de Rondas de Eficiencia
+        const rounds = calculateRevisionRounds(events);
+        const roundsCard = document.getElementById('directRoundsCard');
+        const roundsTbody = document.getElementById('directRoundsTableBody');
+        
+        if (rounds.length > 0) {
+          roundsTbody.innerHTML = rounds.map(r => `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+              <td class="px-3 py-2.5 font-bold text-slate-800">${r.id}</td>
+              <td class="px-3 py-2.5 text-slate-500">${formatShortDate(r.asignacion)}</td>
+              <td class="px-3 py-2.5 text-slate-500">${formatShortDate(r.revision)}</td>
+              <td class="px-3 py-2.5 text-slate-500">${formatShortDate(r.resolucion)}</td>
+              <td class="px-3 py-2.5 text-right font-bold text-slate-700">${r.bandejaMin.toLocaleString('es-GT', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
+              <td class="px-3 py-2.5 text-right font-bold text-indigo-700">${r.dictamenMin.toLocaleString('es-GT', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
+              <td class="px-3 py-2.5 text-slate-700 font-semibold uppercase">${r.operador}</td>
+              <td class="px-3 py-2.5 text-right">
+                <span class="px-2 py-0.5 rounded font-black text-[9px] ${r.evento.includes('APROBADA') ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                  ${r.evento}
+                </span>
+              </td>
+            </tr>
+          `).join('');
+          roundsCard.classList.remove('hidden');
+
+          // Calcular promedio de bandeja para este expediente específico (Reloj corrido vs hábil)
+          const avgBandejaThis = rounds.reduce((sum, r) => sum + r.bandejaMin, 0) / rounds.length;
+          const avgBandejaHabThis = rounds.reduce((sum, r) => sum + r.bandejaHabMin, 0) / rounds.length;
+
+          const labelThis = document.getElementById('lblDirectBandejaAvg');
+          if (avgBandejaThis < 60) {
+            labelThis.innerText = `${avgBandejaThis.toFixed(1)} min`;
+          } else {
+            labelThis.innerText = `${avgBandejaThis.toFixed(1)} min (${(avgBandejaThis / 60).toFixed(1)} h)`;
+          }
+
+          const labelHabThis = document.getElementById('lblDirectBandejaHabAvg');
+          if (avgBandejaHabThis < 60) {
+            labelHabThis.innerText = `${avgBandejaHabThis.toFixed(1)} min`;
+          } else {
+            labelHabThis.innerText = `${avgBandejaHabThis.toFixed(1)} min (${(avgBandejaHabThis / 60).toFixed(1)} h)`;
+          }
+        } else {
+          roundsCard.classList.add('hidden');
+          document.getElementById('lblDirectBandejaAvg').innerText = '-';
+          document.getElementById('lblDirectBandejaHabAvg').innerText = '-';
+        }
+        
+        const directCycles = groupEventsIntoCycles(events);
+        const timelineDiv = document.getElementById('directTimeline');
+        timelineDiv.innerHTML = directCycles.map(c => `
+          <div class="border border-slate-200 rounded-xl p-3 bg-slate-50/50 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-1.5 mb-2">
+              <span class="text-[11px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full ${c.title.includes('Inicial') ? 'bg-blue-500' : 'bg-amber-500'}"></span>
+                ${c.title}
+              </span>
+              <span class="text-[9px] bg-slate-200 text-slate-700 font-bold px-1.5 py-0.5 rounded-md">${c.events.length} transiciones</span>
+            </div>
+            <div class="space-y-2.5">
+              ${c.events.map(ev => `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-l-2 border-indigo-500 pl-4 py-2 relative">
+                  <div class="absolute -left-[5px] top-3.5 w-2 h-2 rounded-full bg-indigo-600 border border-white"></div>
+                  <div>
+                    <span class="text-[9px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md uppercase">Paso ${ev.stepNum}</span>
+                    <strong class="text-slate-900 ml-2 text-xs">${ev.name}</strong>
+                  </div>
+                  <div class="flex items-center gap-4 text-slate-500 text-[10px] font-semibold">
+                    <span><strong class="text-slate-700">Fecha/Hora:</strong> ${ev.date}</span>
+                    <span><strong class="text-slate-700">Operador:</strong> ${ev.op}</span>
+                  </div>
+                  ${ev.motif ? `
+                    <div class="w-full text-[10px] text-rose-700 font-semibold bg-rose-50 border border-rose-100 rounded-lg p-2.5 mt-1 leading-relaxed">
+                      Causal: ${ev.motif}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+        
+        resultContainer.classList.remove('hidden');
+        
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+        
+      } catch (err) {
+        console.error(err);
+        alertMsg.innerText = `Error al consultar la gestión: ${err.message}`;
+        alertContainer.classList.remove('hidden');
+      }
+    }
+
+    window.queryDirectGestion = queryDirectGestion;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadBitacoraData);
+    } else {
+      loadBitacoraData();
+    }
+  </script>
+
+</MainLayout>

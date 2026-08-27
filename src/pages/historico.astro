@@ -1,0 +1,2087 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import HallazgosPanel from '../components/executive/HallazgosPanel.astro';
+import KpiSummary from '../components/react/KpiSummary.tsx';
+---
+
+<MainLayout title="SAT Guatemala - Tablero Ejecutivo BI 360°" loadOlapScripts={true}>
+<!-- BARRA DE FILTROS DINÁMICOS EN VIVO (Ultra-Compacta, Plegable en Móvil) -->
+    <section class="bg-white border-b border-slate-200 shadow-xs relative md:sticky md:top-[98px] z-20 px-3 sm:px-6 py-2 sm:py-3">
+        <div class="max-w-7xl mx-auto">
+            <!-- Barra Móvil de Resumen y Desplegable de Filtros -->
+            <div class="flex md:hidden items-center justify-between gap-2">
+                <button onclick="toggleMobileFilters()" class="flex items-center gap-2 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl transition flex-1 justify-between shadow-xs border border-slate-200/60">
+                    <span class="flex items-center gap-1.5 min-w-0">
+                        <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-blue-600 shrink-0"></i>
+                        <span class="shrink-0">Filtros:</span>
+                        <span id="mobileFilterSummary" class="text-[11px] text-blue-700 font-medium truncate">Todas • Humanas</span>
+                    </span>
+                    <i id="mobileFilterChevron" data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform shrink-0"></i>
+                </button>
+            </div>
+
+            <!-- Grilla de Filtros (Plegable en Móvil, Permanente en Desktop) -->
+            <div id="filterGridContainer" class="hidden md:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3 text-xs pt-2 md:pt-0">
+                <!-- 1. Regional al Inicio -->
+                <div>
+                    <label for="selRegion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i> Regional
+                    </label>
+                    <select id="selRegion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="TODAS">Todas las Regionales</option>
+                    </select>
+                </div>
+
+                <!-- 2. Tipo de Trámite -->
+                <div>
+                    <label for="selGestion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i> Tipo de Trámite
+                    </label>
+                    <select id="selGestion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="HUMANAS" selected>Todas las Gestiones Humanas</option>
+                        <option value="ACTIVACIÓN">Activación de Agencia Virtual</option>
+                        <option value="CAMBIO DE CORREO ELECTRÓNICO">Actualización RTU / Cambio de Correo</option>
+                    </select>
+                </div>
+
+                <!-- 3. Tipo de Personería (Empresas / Sociedades vs Personas Individuales) -->
+                <div>
+                    <label for="selTipoPersona" class="block font-bold text-slate-800 mb-1 flex items-center gap-1">
+                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-sky-600"></i> Empresa / Persona
+                    </label>
+                    <select id="selTipoPersona" onchange="applyFilters()" class="w-full bg-sky-50/40 border border-sky-300 rounded-lg px-2.5 py-1.5 focus:outline-sky-500 font-medium text-slate-800 shadow-xs">
+                        <option value="TODAS" selected>Todas (Personas y Empresas)</option>
+                        <option value="INDIVIDUAL">👤 Personas Individuales</option>
+                        <option value="JURIDICA">🏢 Empresas / Sociedades</option>
+                    </select>
+                </div>
+
+                <!-- 4. Año -->
+                <div>
+                    <label for="selAnio" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-600"></i> Año
+                    </label>
+                    <select id="selAnio" onchange="onAnioChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="TODOS">Todos los Años</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+
+                <!-- 4. Trimestre -->
+                <div>
+                    <label for="selTrimestre" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-indigo-600"></i> Trimestre
+                    </label>
+                    <select id="selTrimestre" onchange="onTrimestreChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="TODOS">Todos (Q1 - Q4)</option>
+                        <option value="Q1">Q1 (Ene - Mar)</option>
+                        <option value="Q2">Q2 (Abr - Jun)</option>
+                        <option value="Q3">Q3 (Jul - Sep)</option>
+                        <option value="Q4">Q4 (Oct - Dic)</option>
+                    </select>
+                </div>
+
+                <!-- 5. Mes Específico (Coordinado con Año y Trimestre) -->
+                <div>
+                    <label for="selMes" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-600"></i> Mes
+                    </label>
+                    <select id="selMes" onchange="onMesChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="TODOS">Todos los Meses</option>
+                    </select>
+                </div>
+
+                <!-- 6. Estado del Trámite -->
+                <div>
+                    <label for="selEstado" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-600"></i> Estado del Trámite
+                    </label>
+                    <select id="selEstado" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="TODOS">Todos los Estados</option>
+                    </select>
+                </div>
+
+                <!-- 7. Macro-Familia Rechazo -->
+                <div>
+                    <label for="selMacro" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i> Causal de Rechazo
+                    </label>
+                    <select id="selMacro" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                        <option value="TODAS">Todas las Causas</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 pb-28 md:pb-8">
+
+        <!-- ============================================================= -->
+        <!-- PESTAÑA 1: VISIÓN EJECUTIVA & BALANCE 100%                    -->
+        <!-- ============================================================= -->
+        <section id="tab-macro" class="tab-content block space-y-4">
+            
+            <!-- KPIs Ejecutivos — React Island (hidratada en cliente) -->
+            <KpiSummary client:load />
+
+            <!-- Fila de Calidad & Trazabilidad de Trámites (First-Time Resolution, Recuperación y Huérfanos) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                <div class="bg-gradient-to-br from-emerald-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-emerald-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider">Aprobadas a la 1ª (Limpias)</span>
+                        <span class="p-1 bg-emerald-100 text-emerald-800 rounded"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
+                    </div>
+                    <h3 id="kpiFTRCnt" class="text-2xl font-black text-emerald-700 mt-1">0</h3>
+                    <span id="kpiFTRPct" class="text-xs text-emerald-800 font-bold mt-1 inline-block">0.0% de la selección</span>
+                    <p class="text-[11px] text-emerald-600 mt-1 font-mono" id="lblFTRHab">Directas sin rechazo</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-cyan-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-cyan-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-cyan-900 uppercase tracking-wider">Subsanadas tras Rechazo</span>
+                        <span class="p-1 bg-cyan-100 text-cyan-800 rounded"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></span>
+                    </div>
+                    <h3 id="kpiRecupCnt" class="text-2xl font-black text-cyan-700 mt-1">0</h3>
+                    <span id="kpiRecupPct" class="text-xs text-cyan-800 font-bold mt-1 inline-block">0.0% de recuperadas</span>
+                    <p class="text-[11px] text-cyan-600 mt-1 font-mono" id="lblRecupHab">Recuperadas en 2da ronda</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-amber-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-amber-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider">Rechazos Sin Motivo</span>
+                        <span class="p-1 bg-amber-100 text-amber-800 rounded"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></span>
+                    </div>
+                    <h3 id="kpiHuerfCnt" class="text-2xl font-black text-amber-700 mt-1">0</h3>
+                    <span id="kpiHuerfPct" class="text-xs text-amber-800 font-bold mt-1 inline-block">0.0% de los rechazos</span>
+                    <p class="text-[11px] text-amber-600 mt-1">Falta de tipificación formal</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-rose-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-rose-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-rose-900 uppercase tracking-wider">Rechazos con Causal</span>
+                        <span class="p-1 bg-rose-100 text-rose-800 rounded"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i></span>
+                    </div>
+                    <h3 id="kpiTipifCnt" class="text-2xl font-black text-rose-700 mt-1">0</h3>
+                    <span id="kpiTipifPct" class="text-xs text-rose-800 font-bold mt-1 inline-block">0.0% de los rechazos</span>
+                    <p class="text-[11px] text-rose-600 mt-1 font-mono">Tipificados formalmente</p>
+                </div>
+            </div>
+
+            <!-- DOS GRÁFICOS VISUALES DE BALANCE MACRO: DESTINO DEL TRÁMITE & COMPARATIVA PERSONERÍA -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Gráfico 1: Dona de Destino Operativo del Trámite -->
+                <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <div>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i> Destino Operativo Final del Trámite
+                            </h4>
+                            <p class="text-[11px] text-slate-500">Distribución porcentual entre aprobación directa, recuperación y rechazo</p>
+                        </div>
+                        <span class="text-[10px] font-mono bg-slate-100 border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-bold">Dona 360°</span>
+                    </div>
+                    <div class="relative h-60"><canvas id="chartMacroDestino"></canvas></div>
+                    <div class="mt-2.5 p-2.5 bg-blue-50/80 rounded-xl border border-blue-200/80 text-[11px] text-blue-950 leading-relaxed">
+                        <strong>💡 Diagnóstico de Flujo:</strong> El <strong>53.4%</strong> de trámites se aprueba directo (FTR). Un <strong>6.7%</strong> adicional se rescata tras subsanar, alcanzando el <strong>60.1% de éxito global</strong>.
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Brecha de Rechazo por Personería (Individuales vs Empresas) -->
+                <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <div>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                                <i data-lucide="building-2" class="w-4 h-4 text-indigo-600"></i> Brecha Operativa: Personas vs. Empresas
+                            </h4>
+                            <p class="text-[11px] text-slate-500">Tasa de aprobación y rechazo según la personería jurídica</p>
+                        </div>
+                        <span class="text-[10px] font-mono bg-slate-100 border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-bold">Segmentado</span>
+                    </div>
+                    <div class="relative h-60"><canvas id="chartMacroPersoneria"></canvas></div>
+                    <div class="mt-2.5 p-2.5 bg-amber-50/80 rounded-xl border border-amber-200/80 text-[11px] text-amber-950 leading-relaxed">
+                        <strong>🚨 Fricción Empresarial:</strong> Las <strong>Sociedades sufren 47.5% de rechazo</strong> (vs. 30.4% en Individuales) por validación en nombramientos legales vencidos.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Balance de Estados al 100% con Barras Visuales -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5 pb-2 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i> Balance de Estados en la Selección Actual (100% de Masa)
+                        </h4>
+                        <p class="text-[11px] text-slate-500">Distribución exacta y barras de peso relativo según los filtros aplicados</p>
+                    </div>
+                    <span class="text-[10px] font-mono bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded border border-slate-200 self-start sm:self-auto">
+                        Total Auditado
+                    </span>
+                </div>
+                <div class="overflow-x-auto text-xs">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-900 text-white font-semibold text-[11px]">
+                            <tr>
+                                <th class="p-2.5 rounded-l-xl">Estado en Base de Datos</th>
+                                <th class="p-2.5 text-right">Expedientes</th>
+                                <th class="p-2.5 text-right font-black text-blue-300 w-28">% Selección</th>
+                                <th class="p-2.5 w-44 hidden sm:table-cell rounded-r-xl">Distribución Visual</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBalanceDinamico" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PESTAÑA 2: RENDIMIENTO, TENDENCIAS & REGIONALES (LÍNEAS X REG)-->
+        <!-- ============================================================= -->
+        <section id="tab-operativo" class="tab-content hidden space-y-8">
+
+            <!-- ========================================================================= -->
+            <!-- MÓDULO DESTACADO: RELACIÓN ENTRE TIEMPO DE ATENCIÓN Y CANTIDAD DE GESTIÓN -->
+            <!-- ========================================================================= -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <div class="flex items-center gap-2.5">
+                            <span class="p-2 bg-indigo-100 text-indigo-700 rounded-xl">
+                                <i data-lucide="split" class="w-5 h-5"></i>
+                            </span>
+                            <h3 class="text-lg font-black text-slate-900 tracking-tight">
+                                Relación entre Demanda (Volumen) y Tiempo de Atención en Promedio
+                            </h3>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Análisis cuantitativo de la capacidad de respuesta: ¿Cuánto se tardan en atender en promedio una gestión y cómo interactúa el volumen con la cola de espera?
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5">
+                            <i data-lucide="map" class="w-3.5 h-3.5 text-indigo-600"></i> Análisis Multirregional Nacional
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 4 Tarjetas de Síntesis de Tiempos Promedio -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <!-- Tarjeta 1: Tiempo de Dictamen Activo (Humano) -->
+                    <div class="bg-gradient-to-br from-emerald-50 via-white to-emerald-50/30 p-4 rounded-2xl border border-emerald-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-emerald-900 text-xs uppercase tracking-wider">Dictamen Activo (Revisor)</span>
+                                <span class="bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded text-[10px] font-mono font-bold">En Pantalla</span>
+                            </div>
+                            <h4 id="kpiRelacionRevisionProm" class="text-2xl font-black text-emerald-700 mt-1">~2.5 min</h4>
+                            <div class="space-y-1 mt-2 text-[11px] text-slate-600 font-mono">
+                                <div class="flex justify-between border-b border-emerald-100 pb-1">
+                                    <span class="text-emerald-800 font-semibold">🟢 Aprobaciones:</span>
+                                    <span id="kpiRelacionAprobMin" class="font-bold text-emerald-900">~3.8 min</span>
+                                </div>
+                                <div class="flex justify-between border-b border-emerald-100 pb-1">
+                                    <span class="text-rose-800 font-semibold">🔴 Rechazos:</span>
+                                    <span id="kpiRelacionRechSeg" class="font-bold text-rose-900">~2.1 seg</span>
+                                </div>
+                                <div class="flex justify-between pt-0.5">
+                                    <span class="text-slate-500">Mediana Operativa:</span>
+                                    <span id="kpiRelacionMediana" class="font-bold text-slate-800">1.25 min (75s)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-emerald-700 font-medium mt-3 pt-2 border-t border-emerald-100">
+                            ⚡ <strong>Inelástico al volumen:</strong> El operador tarda lo mismo independientemente del tamaño de la cola.
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 2: Tiempo de Espera en Buzón Central (Cola Servidor) -->
+                    <div class="bg-gradient-to-br from-amber-50 via-white to-amber-50/30 p-4 rounded-2xl border border-amber-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-amber-900 text-xs uppercase tracking-wider">Espera en Buzón Central</span>
+                                <span class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded text-[10px] font-mono font-bold">Cola Servidor</span>
+                            </div>
+                            <h4 id="kpiRelacionBuzonProm" class="text-2xl font-black text-amber-700 mt-1">~9.2 h <span class="text-xs font-normal text-amber-800">hábiles</span></h4>
+                            <div class="space-y-1 mt-2 text-[11px] text-slate-600">
+                                <div class="flex justify-between border-b border-amber-100 pb-1">
+                                    <span class="text-amber-800 font-semibold">Peso en Tiempo Total:</span>
+                                    <span class="font-bold text-amber-900">85% - 93%</span>
+                                </div>
+                                <div class="flex justify-between border-b border-amber-100 pb-1">
+                                    <span class="text-slate-600">Región Central (Mayor carga):</span>
+                                    <span class="font-bold text-rose-700">10.75 h</span>
+                                </div>
+                                <div class="flex justify-between pt-0.5">
+                                    <span class="text-slate-600">Región Nororiente:</span>
+                                    <span class="font-bold text-emerald-700">7.87 h</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-amber-700 font-medium mt-3 pt-2 border-t border-amber-100">
+                            ⚠️ <strong>Cuello de botella elástico:</strong> Aquí se acumula el impacto del volumen masivo de expedientes.
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 3: Tiempo Total hasta 1ra Atención -->
+                    <div class="bg-gradient-to-br from-indigo-50 via-white to-indigo-50/30 p-4 rounded-2xl border border-indigo-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-indigo-900 text-xs uppercase tracking-wider">Primera Respuesta al Usuario</span>
+                                <span class="bg-indigo-200 text-indigo-900 px-2 py-0.5 rounded text-[10px] font-mono font-bold">Creación → Revisión</span>
+                            </div>
+                            <h4 id="kpiRelacion1raAtenProm" class="text-2xl font-black text-indigo-700 mt-1">~9.5 h <span class="text-xs font-normal text-indigo-800">hábiles</span></h4>
+                            <div class="space-y-1 mt-2 text-[11px] text-slate-600">
+                                <div class="flex justify-between border-b border-indigo-100 pb-1">
+                                    <span class="text-indigo-800 font-semibold">Cumplimiento SLA ≤ 24h:</span>
+                                    <span class="font-bold text-emerald-700">81.31%</span>
+                                </div>
+                                <div class="flex justify-between border-b border-indigo-100 pb-1">
+                                    <span class="text-slate-600">Jornadas Hábiles Equivalentes:</span>
+                                    <span class="font-bold text-indigo-900">~1.2 días laborales</span>
+                                </div>
+                                <div class="flex justify-between pt-0.5">
+                                    <span class="text-slate-600">Ciclo Total (Fin - Crea):</span>
+                                    <span id="kpiRelacionCicloProm" class="font-bold text-purple-700">11.98 h</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-indigo-700 font-medium mt-3 pt-2 border-t border-indigo-100">
+                            🎯 <strong>Resolución oportuna:</strong> 4 de cada 5 trámites reciben respuesta en menos de 3 días hábiles.
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 4: Productividad y Capacidad Diaria -->
+                    <div class="bg-gradient-to-br from-purple-50 via-white to-purple-50/30 p-4 rounded-2xl border border-purple-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-purple-900 text-xs uppercase tracking-wider">Capacidad & Rendimiento</span>
+                                <span class="bg-purple-200 text-purple-900 px-2 py-0.5 rounded text-[10px] font-mono font-bold">Por Revisor</span>
+                            </div>
+                            <h4 id="kpiRelacionCasosDia" class="text-2xl font-black text-purple-700 mt-1">36.4 <span class="text-xs font-normal text-purple-800">casos / día</span></h4>
+                            <div class="space-y-1 mt-2 text-[11px] text-slate-600">
+                                <div class="flex justify-between border-b border-purple-100 pb-1">
+                                    <span class="text-purple-800 font-semibold">Récord Diario Máximo:</span>
+                                    <span class="font-bold text-purple-900">217 casos</span>
+                                </div>
+                                <div class="flex justify-between border-b border-purple-100 pb-1">
+                                    <span class="text-slate-600">Velocidad Ultra-Rápida (≤2s):</span>
+                                    <span class="font-bold text-blue-700">77.4% trámites</span>
+                                </div>
+                                <div class="flex justify-between pt-0.5">
+                                    <span class="text-slate-600">Revisión Exhaustiva (>5m):</span>
+                                    <span class="font-bold text-rose-700">15.2% trámites</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-purple-700 font-medium mt-3 pt-2 border-t border-purple-100">
+                            👥 <strong>Fuerza operativa:</strong> 172 revisores procesan más de 865k trámites humanos al año.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Distribución de Velocidad a Ancho Completo -->
+                <div class="bg-slate-50/60 p-5 rounded-2xl border border-slate-200 flex flex-col justify-between pt-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="gauge" class="w-4 h-4 text-emerald-600"></i> Distribución de Gestiones por Rango de Tiempo de Dictamen Humano (Pantalla Abierta)
+                            </h4>
+                            <p class="text-xs text-slate-500 mt-0.5">Desglose exacto de expedientes resueltos según los segundos/minutos que tarda el revisor en emitir dictamen</p>
+                        </div>
+                        <span class="text-[10px] font-mono bg-white border border-slate-200 px-2.5 py-1 rounded-lg text-slate-600 font-bold self-start sm:self-auto">6 Rangos Operativos</span>
+                    </div>
+                    <div class="relative h-64 sm:h-72"><canvas id="chartSpeedDistribution"></canvas></div>
+                    <div class="mt-3 p-3 bg-emerald-50/80 rounded-xl border border-emerald-200/80 text-[11px] text-emerald-950 leading-relaxed">
+                        <strong>🎯 Patrón de Decisión Humana:</strong> El <strong>77.4% de los trámites</strong> se dictaminan en <strong>≤ 2 segundos</strong> (aprobaciones limpias con DPI/video legibles o rechazos flash inmediatos). Únicamente el <strong>15.2% supera los 5 minutos</strong> debido a consultas manuales externas en RENAP.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================================= -->
+            <!-- BANNER DE PROMEDIOS GENERALES INSTITUCIONALES Y GLOSARIO DE ETAPAS        -->
+            <!-- ========================================================================= -->
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-3xl shadow-md border border-slate-800 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-white/10">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 bg-blue-600/30 text-blue-400 rounded-lg border border-blue-400/20"><i data-lucide="gauge" class="w-4 h-4"></i></span>
+                            <h3 class="text-base font-bold text-white tracking-tight">Promedios Generales Institucionales & Glosario de Etapas</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 mt-0.5">Valores normativos y tiempo promedio que toma cada etapa del ciclo de vida del expediente</p>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
+                        Criterio Oficial: Horas Hábiles (8h/día)
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    
+                    <!-- Paso 1: Cola -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-amber-300 text-xs">1. Espera en Cola (Buzón)</span>
+                                <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FechaAsignación - FechaCreación</span>
+                            </div>
+                            <h4 id="kpiPaso1Cola" class="text-2xl font-black text-white mt-1">3.85 h <span class="text-xs font-normal text-amber-200">hábiles</span></h4>
+                            <span id="lblPaso1ColaCal" class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 27.8 horas</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Tiempo que el trámite permanece en espera en el servidor central desde que el ciudadano realiza la creación de su solicitud hasta que el sistema la distribuye a la regional.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-amber-300 font-semibold">
+                            ⚠️ Representa el 93% del tiempo total de espera.
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Bandeja -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-cyan-300 text-xs">2. En Bandeja (Bolsón)</span>
+                                <span class="bg-cyan-400/20 text-cyan-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FechaRevisión - FechaAsignación</span>
+                            </div>
+                            <h4 id="kpiPaso2Bandeja" class="text-2xl font-black text-white mt-1">0.03 h <span class="text-xs font-normal text-cyan-200">(1.8 min)</span></h4>
+                            <span id="lblPaso2BandejaMed" class="text-[11px] text-slate-400 block mb-2 font-mono">Mediana: 0.02 h (1.2 min)</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Tiempo que transcurre desde que el operador recibe la solicitud en su lista de trabajo hasta que hace clic para abrirla en pantalla.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-cyan-300 font-semibold">
+                            ⚡ Atención casi inmediata al caer en bandeja.
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Revisión Activa -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-emerald-300 text-xs">3. Revisión en Pantalla</span>
+                                <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FechaFinaliza - FechaRevisión</span>
+                            </div>
+                            <h4 id="kpiPaso3Revision" class="text-2xl font-black text-white mt-1">0.0005 h <span class="text-xs font-normal text-emerald-200">(1.8 seg)</span></h4>
+                            <span id="lblPaso3RevisionRech" class="text-[11px] text-slate-400 block mb-2 font-mono">Rechazo: 0.0000 h (0.0s)</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Duración exacta en que el revisor humano audita el DPI y video en pantalla hasta emitir la aprobación o el dictamen de rechazo.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-emerald-300 font-semibold">
+                            🎯 95.86% de resoluciones toman ≤ 5 segundos.
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Ciclo Total -->
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="font-bold text-purple-300 text-xs">4. Ciclo Total de Respuesta</span>
+                                <span class="bg-purple-400/20 text-purple-200 px-2 py-0.5 rounded text-[10px] font-mono font-bold">FechaFinaliza - FechaCreación</span>
+                            </div>
+                            <h4 id="kpiPaso4Ciclo" class="text-2xl font-black text-white mt-1">4.12 h <span class="text-xs font-normal text-purple-200">hábiles</span></h4>
+                            <span id="lblPaso4CicloCal" class="text-[11px] text-slate-400 block mb-2 font-mono">Calendario: 28.5 horas</span>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                <strong>¿Qué es?</strong> Tiempo total transcurrido de punta a punta desde la creación original del trámite hasta su resolución final definitiva.
+                            </p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-white/10 text-[10px] text-purple-300 font-semibold">
+                            🏆 75.8% se resuelve en ≤ 1 jornada hábil (8h).
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tabla Ejecutiva de Tiempo hasta 1ª Atención por Gestión y Regional (A LA PAR: Total vs No Rechazadas) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="table" class="w-4 h-4 text-indigo-600"></i> Tabla Comparativa: Tiempo Promedio hasta 1ª Atención (Total vs. NO Rechazadas)
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Métrica individual por trámite: <span class="font-mono font-semibold text-indigo-700">Σ(FechaRevision - FechaCreacion) / N</span> comparando el universo general vs aquellas gestiones aprobadas</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> A la par: No Rechazadas
+                        </span>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900 text-white font-semibold">
+                                <th class="p-3 rounded-tl-xl" rowspan="2">Dirección Regional</th>
+                                <th class="p-2.5 text-center bg-slate-800 text-slate-200 border-x border-slate-700" colspan="3">
+                                    <div class="font-bold">📊 UNIVERSO TOTAL DE GESTIONES</div>
+                                    <div class="text-[10px] font-normal text-slate-300 font-mono">Todas las solicitudes dictaminadas</div>
+                                </th>
+                                <th class="p-2.5 text-center bg-emerald-950 text-emerald-200 border-r border-slate-800" colspan="3">
+                                    <div class="font-bold text-emerald-300">🟢 GESTIONES NO RECHAZADAS (APROBADAS)</div>
+                                    <div class="text-[10px] font-normal text-emerald-400 font-mono">Excluye rechazos y cancelaciones</div>
+                                </th>
+                                <th class="p-2.5 text-center bg-indigo-950 text-indigo-200 rounded-tr-xl" colspan="2">
+                                    <div class="font-bold">Desglose de Espera</div>
+                                    <div class="text-[10px] font-normal text-indigo-300">1. Buzón + 2. Bandeja</div>
+                                </th>
+                            </tr>
+                            <tr class="bg-slate-100 text-slate-700 font-medium text-[11px] border-b border-slate-200">
+                                <th class="p-2 text-right font-mono bg-slate-100 border-l border-slate-200">Activación</th>
+                                <th class="p-2 text-right font-mono bg-slate-100">Correo</th>
+                                <th class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/70 border-r border-slate-300">Total Global</th>
+                                <th class="p-2 text-right font-bold text-sky-800 bg-sky-50/60">Activación Aprob.</th>
+                                <th class="p-2 text-right font-bold text-violet-800 bg-violet-50/60">Correo Aprob.</th>
+                                <th class="p-2 text-right font-black text-emerald-900 bg-emerald-50 border-r border-slate-300">Global Aprobadas</th>
+                                <th class="p-2 text-right text-blue-700">1. Buzón Cola</th>
+                                <th class="p-2 text-right text-slate-700">2. En Bandeja</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableRegionalAtencion" class="divide-y divide-slate-100 text-slate-700">
+                        </tbody>
+                        <tfoot id="tableRegionalAtencionFoot" class="bg-slate-50 font-bold border-t-2 border-slate-300 text-slate-900">
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Gráficos de Barras Comparativos entre las 4 Regionales -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Gráfica de Barras 1: Volumen y Resoluciones por Regional -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-blue-600"></i> Volumen Comparativo por Regional
+                        </h4>
+                        <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Aprobadas vs Rechazadas</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Distribución de carga de trabajo y resoluciones entre las 4 direcciones regionales</p>
+                    <div class="relative h-72"><canvas id="chartBarRegVolumen"></canvas></div>
+                </div>
+
+                <!-- Gráfica de Barras 2: Tiempo de Primera Atención Σ(FechaRevision - FechaCreacion) / Total por Tipo de Gestión -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="timer" class="w-4 h-4 text-indigo-600"></i> Gráfico de Barras: Tiempo Promedio por Gestión
+                        </h4>
+                        <span class="text-[11px] font-mono text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 font-semibold">Σ(F.Revisión - F.Creación) / N</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Comparativa visual de horas hábiles por trámite individual (Activación vs Cambio de Correo vs Global)</p>
+                    <div class="relative h-72"><canvas id="chartBarRegTiempos"></canvas></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Gráfica 1: Espera en Cola por Regional -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-blue-600"></i> Espera en Cola de Servidor (Horas Hábiles) por Región
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Comparativa mensual de las 4 regionales a lo largo del tiempo</p>
+                    <div class="relative h-72"><canvas id="chartLineBuzonReg"></canvas></div>
+                </div>
+
+                <!-- Gráfica 2: Tiempo en Bandeja del Revisor por Regional -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i> Tiempo en Bandeja del Revisor (Minutos) por Región
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Minutos promedio asignado en bolsón del operador antes de abrirse</p>
+                    <div class="relative h-72"><canvas id="chartLineBolsonReg"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Gráfico Combinado Multieje: Demanda vs Tiempo -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-600"></i> Relación entre Volumen Mensual y Tiempo hasta Primera Atención (Total vs. NO Rechazadas)
+                </h4>
+                <p class="text-xs text-slate-500 mb-4">Comparativa temporal de volumen y horas hábiles de espera para el universo total frente a gestiones aprobadas</p>
+                <div class="relative h-72"><canvas id="chartComboTrend"></canvas></div>
+            </div>
+
+            <!-- Tabla Histórica por Fechas / Meses: A la par Total vs No Rechazadas -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="calendar-range" class="w-4 h-4 text-emerald-600"></i> Estadísticas por Fechas / Meses (A la Par: Total vs. NO Rechazadas)
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Evolución mensual comparando el tiempo hasta 1ª atención, espera en cola y ciclo total de resolución</p>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5 self-start sm:self-auto">
+                        <i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-600"></i> Análisis Temporal Detallado
+                    </span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900 text-white font-semibold">
+                                <th class="p-3 rounded-tl-xl" rowspan="2">Mes / Período</th>
+                                <th class="p-2.5 text-center bg-slate-800 text-slate-200 border-x border-slate-700" colspan="4">
+                                    <div class="font-bold">📊 UNIVERSO TOTAL DE GESTIONES</div>
+                                    <div class="text-[10px] font-normal text-slate-300 font-mono">Todas las solicitudes recibidas</div>
+                                </th>
+                                <th class="p-2.5 text-center bg-emerald-950 text-emerald-200 rounded-tr-xl border-l border-slate-800" colspan="4">
+                                    <div class="font-bold text-emerald-300">🟢 GESTIONES NO RECHAZADAS (APROBADAS)</div>
+                                    <div class="text-[10px] font-normal text-emerald-400 font-mono">Trámites finalizados exitosamente</div>
+                                </th>
+                            </tr>
+                            <tr class="bg-slate-100 text-slate-700 font-medium text-[11px] border-b border-slate-200">
+                                <th class="p-2 text-right font-mono bg-slate-100 border-l border-slate-200">Casos Totales</th>
+                                <th class="p-2 text-right font-mono text-blue-700">1. Cola Buzón</th>
+                                <th class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/60">1ª Atención (Rev - Crea)</th>
+                                <th class="p-2 text-right font-bold text-purple-900 bg-purple-50/60 border-r border-slate-300">Ciclo Total (Fin - Crea)</th>
+                                <th class="p-2 text-right font-mono text-emerald-700 font-bold bg-emerald-50/40">Casos Aprobados (% Éxito)</th>
+                                <th class="p-2 text-right font-mono text-blue-800 bg-blue-50/30">1. Cola Buzón</th>
+                                <th class="p-2 text-right font-black text-emerald-900 bg-emerald-50">1ª Atención Aprob.</th>
+                                <th class="p-2 text-right font-black text-purple-950 bg-purple-50/80">Ciclo Aprobadas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableFechasComparativa" class="divide-y divide-slate-100 text-slate-700">
+                        </tbody>
+                        <tfoot id="tableFechasComparativaFoot" class="bg-slate-50 font-bold border-t-2 border-slate-300 text-slate-900">
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Comparativa Integral entre Regionales -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                    <i data-lucide="map" class="w-4 h-4 text-blue-600"></i> Comparativa Integral entre Regionales (Filtrada en Tiempo Real)
+                </h4>
+                <p class="text-xs text-slate-500 mb-4">Desglose de cada paso operativo con unidades estandarizadas adaptativas</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-800 text-white font-semibold">
+                            <tr>
+                                <th class="p-3">Región</th>
+                                <th class="p-3 text-right">Expedientes</th>
+                                <th class="p-3 text-right font-bold text-emerald-300">% Aprobación</th>
+                                <th class="p-3 text-right font-bold text-cyan-300">% 1ª Directa (FTR)</th>
+                                <th class="p-3 text-right font-bold text-rose-300">% Rechazo</th>
+                                <th class="p-3 text-right font-semibold text-blue-300">Paso 1: Espera en Cola</th>
+                                <th class="p-3 text-right font-semibold text-slate-300">Paso 2: En Bandeja</th>
+                                <th class="p-3 text-right font-semibold text-slate-300">Paso 3: Revisión</th>
+                                <th class="p-3 text-right font-black text-purple-300">Paso 4: Tiempo Respuesta</th>
+                                <th class="p-3 text-right font-bold text-emerald-400">Resueltos ≤ 1 Día</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableRegionalDinamica" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: MATRIZ DE BALANCE DE CARGA & RATIO DE SOBRECARGA REGIONAL -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="scale" class="w-5 h-5 text-indigo-600"></i> Matriz de Balance de Carga & Ratio de Sobrecarga por Revisor
+                        </h4>
+                        <p class="text-xs text-slate-500">¿Por qué la Región Central tarda más? Comparativa visual entre % de Demanda Nacional vs % de Plantilla de Revisores Asignados</p>
+                    </div>
+                    <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="users" class="w-3.5 h-3.5 text-indigo-600"></i> Diagnóstico Estructural
+                    </span>
+                </div>
+
+                <!-- Gráfico de Barras Agrupadas: % Demanda Nacional vs % Plantilla de Revisores -->
+                <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                            <i data-lucide="bar-chart" class="w-4 h-4 text-indigo-600"></i> Comparativa de Carga: % Demanda vs. % Capacidad de Revisores
+                        </span>
+                        <span class="text-[10px] font-mono bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-semibold">Barras Agrupadas</span>
+                    </div>
+                    <div class="relative h-60"><canvas id="chartSobrecargaBar"></canvas></div>
+                </div>
+
+                <div class="overflow-x-auto text-xs">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-900 text-white font-semibold">
+                            <tr>
+                                <th class="p-3">Dirección Regional</th>
+                                <th class="p-3 text-right">Casos Asignados</th>
+                                <th class="p-3 text-right font-bold text-blue-300">% Demanda Nacional</th>
+                                <th class="p-3 text-center text-amber-300">Revisores Activos</th>
+                                <th class="p-3 text-right font-bold text-amber-200">Carga Media (Casos / Revisor)</th>
+                                <th class="p-3 text-right text-indigo-200">% Plantilla Total</th>
+                                <th class="p-3 text-center font-black text-white bg-slate-800">Ratio Sobrecarga (Demanda/Dotación)</th>
+                                <th class="p-3 text-center">Diagnóstico Operativo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableSobrecargaRegional" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                    </table>
+                </div>
+
+                <div class="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start gap-2.5">
+                    <i data-lucide="info" class="w-4 h-4 text-amber-700 shrink-0 mt-0.5"></i>
+                    <p class="leading-relaxed">
+                        <strong>Hallazgo Clave para Dirección:</strong> El mayor tiempo de respuesta en la Región Central (10.75h de cola) no es por lentitud individual de sus revisores (su tiempo de dictamen es idéntico a las demás regiones: ~2.5 min), sino por una <strong>desproporción estructural de demanda</strong> que supera la capacidad instalada asignada a esa jurisdicción.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PESTAÑA 3: JORNADA 8 HORAS & SLAS                            -->
+        <!-- ============================================================= -->
+        <section id="tab-tiempos" class="tab-content hidden space-y-8">
+            <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl">
+                <div class="flex items-start gap-3">
+                    <div class="p-2 bg-emerald-100 text-emerald-800 rounded-xl mt-0.5"><i data-lucide="calculator" class="w-5 h-5"></i></div>
+                    <div class="text-xs text-emerald-950 leading-relaxed">
+                        <h4 class="text-sm font-bold text-emerald-900 mb-1">Criterio Institucional: Jornada Laboral de 8 Horas Netas (L-V 08:00 a 16:00)</h4>
+                        <p>Descuenta fines de semana y noches. Se diferencian formalmente los tiempos de atención en rechazo (FRech - FR) de los de atención resolutiva (FF - FR).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: DIAGNÓSTICO DE HORAS CALENDARIO VS HORAS HÁBILES (NOCHES & FINES DE SEMANA) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="moon" class="w-5 h-5 text-indigo-600"></i> Desmitificación del Tiempo: ¿Dónde Ocurre la Espera del Contribuyente?
+                        </h4>
+                        <p class="text-xs text-slate-500">Comparación cuantitativa entre el tiempo percibido por el ciudadano (reloj corrido) vs tiempo de oficina hábil</p>
+                    </div>
+                    <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i> Análisis Inactividad
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <!-- Tarjeta 1: Calendario Total -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                        <span class="text-slate-500 font-bold uppercase text-[10px]">1. Tiempo Reloj Corrido (Calendario)</span>
+                        <h4 id="kpiCicloCalProm" class="text-2xl font-black text-slate-900 mt-1">28.5 horas</h4>
+                        <p class="text-[11px] text-slate-500 mt-2">
+                            Tiempo cronológico total de punta a punta que percibe el solicitante desde el botón enviar.
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 2: Horas Hábiles Efectivas -->
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                        <span class="text-emerald-800 font-bold uppercase text-[10px]">2. Horas Hábiles Efectivas SAT (8h/día)</span>
+                        <h4 id="kpiCicloHabProm" class="text-2xl font-black text-emerald-700 mt-1">4.12 horas</h4>
+                        <p class="text-[11px] text-emerald-800 mt-2">
+                            Tiempo real consumido dentro del horario oficial de atención (08:00 a 16:00, L-V).
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 3: Inactividad Fuera de Horario -->
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-2xl">
+                        <span class="text-purple-800 font-bold uppercase text-[10px]">3. Horas en Noches & Fines de Semana</span>
+                        <h4 id="kpiCicloFueraProm" class="text-2xl font-black text-purple-700 mt-1">24.38 h (85.5%)</h4>
+                        <p class="text-[11px] text-purple-800 mt-2">
+                            Tiempo en que la solicitud estuvo en espera mientras las oficinas y revisores estaban cerrados.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
+                    <strong>💡 Conclusión de Auditoría:</strong> El <strong>85.5% del tiempo de retraso</strong> acumulado por los trámites ocurre fuera del horario de oficina (ingresos viernes noche, sábados o domingos). En horas laborales netas, <strong>el 75.8% de las solicitudes se resuelven en menos de 1 jornada laboral de 8 horas</strong>.
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
+                    <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i> Cumplimiento Real de Tiempos de Respuesta (Jornada de 8 Horas Hábiles)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-500">Hasta 1 Día Laboral (8h)</span>
+                        <h4 id="kpiSLA1dPct" class="text-xl font-black text-emerald-600 mt-1">0.0%</h4>
+                        <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div id="barSLA1d" class="bg-emerald-500 h-full rounded-full" style="width: 0%"></div></div>
+                        <span id="kpiSLA1dCnt" class="text-[11px] text-slate-400 mt-1.5 block">0 expedientes</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-500">Hasta 2 Días Laborales (16h)</span>
+                        <h4 id="kpiSLA2dPct" class="text-xl font-black text-blue-600 mt-1">0.0%</h4>
+                        <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div id="barSLA2d" class="bg-blue-500 h-full rounded-full" style="width: 0%"></div></div>
+                        <span id="kpiSLA2dCnt" class="text-[11px] text-slate-400 mt-1.5 block">0 expedientes</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-500">Hasta 3 Días Laborales (24h)</span>
+                        <h4 id="kpiSLA3dPct" class="text-xl font-black text-indigo-600 mt-1">0.0%</h4>
+                        <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div id="barSLA3d" class="bg-indigo-500 h-full rounded-full" style="width: 0%"></div></div>
+                        <span id="kpiSLA3dCnt" class="text-[11px] text-slate-400 mt-1.5 block">0 expedientes</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-500">Hasta 1 Semana Laboral (40h)</span>
+                        <h4 id="kpiSLA5dPct" class="text-xl font-black text-purple-600 mt-1">0.0%</h4>
+                        <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div id="barSLA5d" class="bg-purple-500 h-full rounded-full" style="width: 0%"></div></div>
+                        <span id="kpiSLA5dCnt" class="text-[11px] text-slate-400 mt-1.5 block">0 expedientes</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-rose-200 bg-rose-50/40 shadow-sm">
+                        <span class="text-xs font-semibold text-rose-700">Más de 1 Semana (Rezagados)</span>
+                        <h4 id="kpiSLAFueraPct" class="text-xl font-black text-rose-600 mt-1">0.0%</h4>
+                        <div class="w-full bg-slate-200 h-2 rounded-full mt-2 overflow-hidden"><div id="barSLAFuera" class="bg-rose-500 h-full rounded-full" style="width: 0%"></div></div>
+                        <span id="kpiSLAFueraCnt" class="text-[11px] text-rose-700 mt-1.5 block font-semibold">0 rezagados</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: DESCOMPOSICIÓN DEL CUELLO DE BOTELLA: ESPERA PASIVA VS DICTAMEN ACTIVO -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="hourglass" class="w-5 h-5 text-indigo-600"></i> Descomposición del Cuello de Botella: Espera Pasiva en Cola vs. Dictamen Humano Activo
+                        </h4>
+                        <p class="text-xs text-slate-500">¿Cuánto tiempo pasa el expediente inactivo esperando asignación frente al tiempo real que le toma al revisor dictaminar?</p>
+                    </div>
+                    <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="split" class="w-3.5 h-3.5 text-indigo-600"></i> Anatomía del Ciclo
+                    </span>
+                </div>
+
+                <!-- Barra Bicolor Comparativa -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-bold">
+                        <span class="text-indigo-900 flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-md bg-indigo-600 inline-block"></span>
+                            <span>Espera Inactiva en Cola (Buzón + Bolsón): <strong id="kpiEsperaPasivaPct" class="text-indigo-700">98.2%</strong> (<span id="kpiEsperaPasivaHoras">4.08 horas</span>)</span>
+                        </span>
+                        <span class="text-emerald-900 flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-md bg-emerald-500 inline-block"></span>
+                            <span>Dictamen Humano Activo: <strong id="kpiDictamenActivoPct" class="text-emerald-700">1.8%</strong> (<span id="kpiDictamenActivoSeg">2.4 minutos</span>)</span>
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-6 rounded-xl overflow-hidden flex shadow-inner border border-slate-200">
+                        <div id="barEsperaPasiva" class="bg-indigo-600 h-full transition-all duration-500 flex items-center justify-center text-[10px] text-white font-bold tracking-wider" style="width: 98.2%">
+                            ESPERA EN COLA
+                        </div>
+                        <div id="barDictamenActivo" class="bg-emerald-500 h-full transition-all duration-500 flex items-center justify-center text-[10px] text-white font-bold" style="width: 1.8%">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
+                    <div class="p-4 bg-indigo-50/60 border border-indigo-200 rounded-2xl">
+                        <span class="text-indigo-900 font-bold uppercase text-[10px] flex items-center gap-1.5">
+                            <i data-lucide="inbox" class="w-3.5 h-3.5 text-indigo-700"></i> 1. Espera Pasiva en Cola
+                        </span>
+                        <h4 id="cardEsperaPasivaVal" class="text-xl font-black text-indigo-900 mt-1">4.08 horas (98.2%)</h4>
+                        <p class="text-[11px] text-indigo-800 mt-1.5 leading-relaxed">
+                            El expediente está en reposo en la base de datos de SAT esperando a que un revisor termine casos anteriores y se le auto-asigne.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-emerald-50/60 border border-emerald-200 rounded-2xl">
+                        <span class="text-emerald-900 font-bold uppercase text-[10px] flex items-center gap-1.5">
+                            <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-700"></i> 2. Tiempo de Dictamen Humano (Pantalla Abierta)
+                        </span>
+                        <h4 id="cardDictamenActivoVal" class="text-xl font-black text-emerald-800 mt-1">2.4 minutos (1.8%)</h4>
+                        <p class="text-[11px] text-emerald-800 mt-1.5 leading-relaxed">
+                            Tiempo real que el revisor tiene abierto el expediente, coteja fotos/DPI y emite la resolución. El revisor es ágil.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-xl text-xs text-emerald-950 leading-relaxed flex items-start gap-2.5">
+                    <i data-lucide="lightbulb" class="w-4 h-4 text-emerald-700 shrink-0 mt-0.5"></i>
+                    <p>
+                        <strong>Dictamen Ejecutivo:</strong> Los revisores de SAT <strong>no son lentos</strong>: su velocidad de dictamen es de apenas <strong>~2.4 minutos</strong> por solicitud. El <strong>98.2% del tiempo transcurrido</strong> corresponde a espera pasiva en cola generada por la concentración masiva de trámites en horarios pico.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tabla de Tiempos Filtrados con Separación de Atención vs Rechazo -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                    <i data-lucide="scale" class="w-4 h-4 text-blue-600"></i> Tiempos Promedio Estandarizados por Etapa en la Selección Actual
+                </h4>
+                <p class="text-xs text-slate-500 mb-4">Medición formal separando el tiempo de resolución aprobatoria (FF - FR) del tiempo de emisión de rechazo (FRech - FR)</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-800 text-white font-semibold">
+                            <tr>
+                                <th class="p-3">Etapa Operativa</th>
+                                <th class="p-3">Fórmula Transaccional</th>
+                                <th class="p-3 text-right">Casos Válidos</th>
+                                <th class="p-3 text-right font-black text-emerald-300">Promedio Hábil Real</th>
+                                <th class="p-3 text-right text-slate-400">Promedio Calendario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTiemposDinamicos" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PESTAÑA 4: CALIDAD, RECHAZOS & ABANDONO                       -->
+        <!-- ============================================================= -->
+        <section id="tab-calidad" class="tab-content hidden space-y-8">
+            
+            <!-- GUÍA / ALGORITMO DE DETECCIÓN DE RONDAS (1RA VS 2DA REVISIÓN) -->
+            <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-6 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-white/10 rounded-xl border border-white/20"><i data-lucide="git-branch" class="w-6 h-6 text-blue-300"></i></div>
+                    <div>
+                        <h3 class="text-base font-bold">Lógica de Identificación: ¿Cómo saber si un expediente está en 1ra o 2da Revisión?</h3>
+                        <p class="text-xs text-slate-300">Reglas matemáticas y cronológicas en las marcas de tiempo de la base de datos</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-white/10 p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="flex items-center gap-1.5 text-emerald-300 font-bold text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i> 1ra Revisión (Aprobación Limpia)
+                                </span>
+                                <span id="dynRonda1raAprobCnt" class="text-xs bg-emerald-500/20 text-emerald-300 font-mono font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">0</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                <strong>Condición en Base de Datos:</strong> Sin registro previo de rechazo (<code class="bg-black/30 px-1.5 py-0.5 rounded font-mono text-emerald-300">FechaRechazo es Nulo</code>) y Estado Final <code class="bg-black/30 px-1.5 py-0.5 rounded font-mono text-emerald-300">APROBADA</code>.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-emerald-200 font-medium">
+                            <span>✓ Primer intento sin fricciones</span>
+                            <span id="dynRonda1raAprobPct" class="font-bold text-emerald-300">0.0%</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="flex items-center gap-1.5 text-rose-300 font-bold text-sm">
+                                    <i data-lucide="x-circle" class="w-4 h-4"></i> 1ra Revisión (Rechazo Inicial)
+                                </span>
+                                <span id="dynRonda1raRechCnt" class="text-xs bg-rose-500/20 text-rose-300 font-mono font-bold px-2 py-0.5 rounded-full border border-rose-400/30">0</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                <strong>Condición en Base de Datos:</strong> Registra <code class="bg-black/30 px-1.5 py-0.5 rounded font-mono text-rose-300">FechaRechazo</code> coincidente con la primera apertura en pantalla (<code class="bg-black/30 px-1.5 py-0.5 rounded font-mono text-rose-300">FechaRevisión == FechaRechazo</code>).
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-rose-200 font-medium">
+                            <span>✗ Error en DPI / Video / Requisitos</span>
+                            <span id="dynRonda1raRechPct" class="font-bold text-rose-300">0.0%</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="flex items-center gap-1.5 text-cyan-300 font-bold text-sm">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> 2da Revisión (Subsanada)
+                                </span>
+                                <span id="dynRonda2daSubCnt" class="text-xs bg-cyan-500/20 text-cyan-300 font-mono font-bold px-2 py-0.5 rounded-full border border-cyan-400/30">0</span>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">
+                                <strong>Condición en Base de Datos:</strong> Registra un rechazo previo y la última apertura en pantalla es posterior al rechazo (<code class="bg-black/30 px-1.5 py-0.5 rounded font-mono text-cyan-300">Última FechaRevisión > FechaRechazo</code>).
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-cyan-200 font-medium">
+                            <span>↻ Corrigió y aprobó tras rechazo</span>
+                            <span id="dynRonda2daSubPct" class="font-bold text-cyan-300">0.0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scorecards de Conversión de Rechazos -->
+            <div>
+                <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-5 h-5 text-blue-600"></i> Embudo de Conversión de Expedientes Rechazados (Filtrado en Tiempo Real)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl">
+                        <span class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Subsanadas & Aprobadas (2da Rev)</span>
+                        <h4 id="kpiRecupAprobPct" class="text-3xl font-black text-emerald-700 mt-1">0.0%</h4>
+                        <span id="kpiRecupAprobCnt" class="text-xs text-emerald-900 font-bold mt-1 block">0 Trámites</span>
+                        <p class="text-[11px] text-emerald-700 mt-2">Corrigieron video/DPI y concluyeron con éxito.</p>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 p-5 rounded-2xl">
+                        <span class="text-xs font-semibold text-amber-800 uppercase tracking-wider">Abandono Post-Rechazo</span>
+                        <h4 id="kpiRecupAbandPct" class="text-3xl font-black text-amber-700 mt-1">0.0%</h4>
+                        <span id="kpiRecupAbandCnt" class="text-xs text-amber-900 font-bold mt-1 block">0 Trámites</span>
+                        <p class="text-[11px] text-amber-700 mt-2">Fuga por fricción o inactividad tras rechazo.</p>
+                    </div>
+
+                    <div class="bg-rose-50 border border-rose-200 p-5 rounded-2xl">
+                        <span class="text-xs font-semibold text-rose-800 uppercase tracking-wider">Bloqueadas por Límite (3ra+ Rev)</span>
+                        <h4 id="kpiRecupBloqPct" class="text-3xl font-black text-rose-700 mt-1">0.0%</h4>
+                        <span id="kpiRecupBloqCnt" class="text-xs text-rose-900 font-bold mt-1 block">0 Trámites</span>
+                        <p class="text-[11px] text-rose-700 mt-2">Agotaron intentos permitidos en el sistema.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Gráfica Dona Destino Rechazos -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i> Destino Final de Solicitudes Rechazadas
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Resultado final en la selección actual</p>
+                    <div class="relative h-64"><canvas id="chartDestinoRechazos"></canvas></div>
+                </div>
+
+                <!-- Anatomía de la Fuga -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-center">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="user-x" class="w-4 h-4 text-rose-600"></i> Fuga de Contribuyentes en el Filtro Actual
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Desglose de abandono inicial vs abandono por rechazo</p>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-slate-900 block text-sm">Abandono Inicial (Entrada)</span>
+                                <span class="text-slate-600">No confirmó el correo inicial</span>
+                            </div>
+                            <div class="text-right">
+                                <span id="lblFugaInicialCnt" class="text-lg font-black text-slate-900">0</span>
+                                <span id="lblFugaInicialPct" class="text-xs font-semibold text-slate-500 block">0.0%</span>
+                            </div>
+                        </div>
+                        <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-rose-950 block text-sm">Abandono Post-Rechazo (Fricción)</span>
+                                <span class="text-rose-700">Rechazado y no subsanó</span>
+                            </div>
+                            <div class="text-right">
+                                <span id="lblFugaRechCnt" class="text-lg font-black text-rose-700">0</span>
+                                <span id="lblFugaRechPct" class="text-xs font-bold text-rose-600 block">0.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓDULO COMPARATIVO: PERSONAS INDIVIDUALES VS SOCIEDADES Y ENTIDADES JURÍDICAS -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="scale" class="w-5 h-5 text-indigo-600"></i> Brecha de Calidad: Personas Individuales vs. Sociedades / Personas Jurídicas
+                        </h4>
+                        <p class="text-xs text-slate-500">Comparativa de fricción operativa y causas de rechazo según personería jurídica</p>
+                    </div>
+                    <span class="bg-sky-50 text-sky-800 border border-sky-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-sky-600"></i> Análisis por Personería
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <!-- Tarjeta Individuales -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+                                    <i data-lucide="user" class="w-4 h-4 text-blue-600"></i> 1. Personas Individuales (99.5% de la demanda)
+                                </span>
+                                <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[11px] font-mono font-bold">30.4% Rechazo</span>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed">
+                                <strong>861,654 gestiones humanas</strong>. Los errores se concentran en el canal móvil del usuario:
+                            </p>
+                            <ul class="mt-2 space-y-1 text-slate-700 list-disc list-inside text-[11px]">
+                                <li>Omisión verbal de fecha del día en video (SUB-02)</li>
+                                <li>Audio inaudible o sin sonido (SUB-01)</li>
+                                <li>DPI recortado o borroso (SUB-07 / SUB-09)</li>
+                            </ul>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-slate-200 text-[11px] text-blue-700 font-semibold">
+                            ✓ Tasa de recuperación alta (47.2% subsana con éxito).
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta Jurídicas -->
+                    <div class="p-4 bg-rose-50/50 border border-rose-200 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-rose-950 text-xs flex items-center gap-1.5">
+                                    <i data-lucide="building" class="w-4 h-4 text-rose-600"></i> 2. Sociedades y Entidades (0.5% de la demanda)
+                                </span>
+                                <span class="bg-rose-100 text-rose-900 px-2 py-0.5 rounded text-[11px] font-mono font-bold">47.5% Rechazo ⚠️</span>
+                            </div>
+                            <p class="text-rose-900 leading-relaxed">
+                                <strong>4,222 gestiones humanas</strong>. Fricción crítica en documentación legal y representación:
+                            </p>
+                            <ul class="mt-2 space-y-1 text-rose-800 list-disc list-inside text-[11px]">
+                                <li>Falta acta de nombramiento de representante legal (SUB-20)</li>
+                                <li>Nombramiento vencido o sin razón de Registro Mercantil (SUB-21)</li>
+                                <li>Video grabado por terceros/asistentes no autorizados (SUB-05)</li>
+                            </ul>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-rose-200 text-[11px] text-rose-800 font-semibold">
+                            ⚠️ Casi 1 de cada 2 trámites de empresas es rechazado por falta de nombramiento.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: COSTO OCULTO DE LA RE-ATENCIÓN (RE-TRABAJO POR RECHAZO) -->
+            <div class="bg-gradient-to-br from-slate-900 via-rose-950 to-slate-900 text-white p-6 rounded-3xl shadow-sm space-y-4 border border-rose-900/50">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-white/10">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 bg-rose-500/30 text-rose-300 rounded-lg border border-rose-400/20"><i data-lucide="rotate-cw" class="w-4 h-4"></i></span>
+                            <h4 class="text-base font-bold text-white tracking-tight">El Costo Oculto del Re-trabajo (Re-evaluación de Expedientes)</h4>
+                        </div>
+                        <p class="text-xs text-rose-200/80 mt-0.5">Impacto operativo y horas-hombre consumidas dictaminando 2da y 3ra vez expedientes rechazados</p>
+                    </div>
+                    <span class="bg-rose-500/20 text-rose-300 border border-rose-400/30 text-xs px-3 py-1 rounded-full font-bold">
+                        Cálculo de Capacidad Desperdiciada
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+                        <span class="text-rose-300 font-bold uppercase text-[10px]">Expedientes Re-dictaminados</span>
+                        <h4 id="kpiRetrabajoCasos" class="text-2xl font-black text-white mt-1">0 casos</h4>
+                        <p class="text-[11px] text-slate-300 mt-2">Casos que requirieron más de 1 apertura y revisión humana en el período.</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+                        <span class="text-amber-300 font-bold uppercase text-[10px]">Horas-Hombre Invertidas en Re-trabajo</span>
+                        <h4 id="kpiRetrabajoHoras" class="text-2xl font-black text-amber-300 mt-1">0 horas</h4>
+                        <p class="text-[11px] text-slate-300 mt-2">Tiempo neto de revisor consumido volviendo a auditar el mismo caso.</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+                        <span class="text-cyan-300 font-bold uppercase text-[10px]">Jornadas Laborales de 8h Equivalentes</span>
+                        <h4 id="kpiRetrabajoJornadas" class="text-2xl font-black text-cyan-300 mt-1">0 jornadas</h4>
+                        <p class="text-[11px] text-slate-300 mt-2">Días completos de trabajo ahorrables con validación previa de cámara e IA.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: MATRIZ DE RESCATE VS DESERCIÓN POR CAUSAL DE RECHAZO -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="crosshair" class="w-5 h-5 text-emerald-600"></i> Matriz de Rescate vs. Deserción por Tipo de Error (Causal)
+                        </h4>
+                        <p class="text-xs text-slate-500">¿Qué causales de rechazo logra corregir el contribuyente y cuáles causan abandono definitivo?</p>
+                    </div>
+                    <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-600"></i> Tasa de Resiliencia
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto text-xs">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-900 text-white font-semibold">
+                            <tr>
+                                <th class="p-3">Causal Primaria / Macro-Familia</th>
+                                <th class="p-3 text-right">Total Incidencias</th>
+                                <th class="p-3 text-right font-bold text-emerald-300">Subsanadas & Aprobadas</th>
+                                <th class="p-3 text-right font-black text-emerald-400 bg-slate-800">Tasa de Rescate (% Éxito)</th>
+                                <th class="p-3 text-right font-bold text-amber-300">Abandonadas (Fricción)</th>
+                                <th class="p-3 text-right font-bold text-rose-300">Bloqueadas (Límite)</th>
+                                <th class="p-3 text-center">Nivel de Fricción al Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableRescateCausal" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: ÍNDICE DE FRICCIÓN POR REINCIDENCIA (SINGLE-TOUCH VS MULTI-TOUCH BOUNCE) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="repeat" class="w-5 h-5 text-indigo-600"></i> Índice de Fricción por Reincidencia (Efectividad de la Subsanación)
+                        </h4>
+                        <p class="text-xs text-slate-500">¿Logra el contribuyente resolver el problema en su primer intento de corrección o cae en bucles de rechazos sucesivos?</p>
+                    </div>
+                    <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="refresh-ccw" class="w-3.5 h-3.5 text-indigo-600"></i> Multi-Touch Rate
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <!-- Tarjeta 1: Resueltos al 1er Reintento -->
+                    <div class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl">
+                        <div class="flex items-center justify-between">
+                            <span class="text-emerald-900 font-bold uppercase text-[10px]">1. Éxito al 1er Reintento (Single-Touch)</span>
+                            <span class="bg-emerald-200 text-emerald-900 text-[10px] font-bold px-2 py-0.5 rounded-full">Fricción Leve</span>
+                        </div>
+                        <h4 id="kpiSingleTouchPct" class="text-2xl font-black text-emerald-800 mt-1">73.5%</h4>
+                        <span id="kpiSingleTouchCasos" class="text-xs font-mono font-bold text-emerald-700 block mt-0.5">0 casos recuperados</span>
+                        <p class="text-[11px] text-emerald-800 mt-2 leading-relaxed">
+                            Contribuyentes que comprendieron el motivo de rechazo y corrigieron exitosamente su documento en el 1er intento.
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 2: Reincidencia Multi-Touch -->
+                    <div class="p-4 bg-rose-50/70 border border-rose-200 rounded-2xl">
+                        <div class="flex items-center justify-between">
+                            <span class="text-rose-900 font-bold uppercase text-[10px]">2. Reincidencia Crítica (2+ Rechazos)</span>
+                            <span class="bg-rose-200 text-rose-900 text-[10px] font-bold px-2 py-0.5 rounded-full">Fricción Severa</span>
+                        </div>
+                        <h4 id="kpiMultiTouchPct" class="text-2xl font-black text-rose-800 mt-1">26.5%</h4>
+                        <span id="kpiMultiTouchCasos" class="text-xs font-mono font-bold text-rose-700 block mt-0.5">0 casos reincidentes</span>
+                        <p class="text-[11px] text-rose-800 mt-2 leading-relaxed">
+                            Usuarios que volvieron a ser rechazados tras subsanar (cometieron el mismo error o uno nuevo por falta de guía clara).
+                        </p>
+                    </div>
+
+                    <!-- Tarjeta 3: Índice de Pérdida Potencial -->
+                    <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl">
+                        <div class="flex items-center justify-between">
+                            <span class="text-amber-900 font-bold uppercase text-[10px]">3. Tasa Global de Rebote</span>
+                            <span class="bg-amber-200 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded-full">Oportunidad TI</span>
+                        </div>
+                        <h4 id="kpiTasaReincidencia" class="text-2xl font-black text-amber-900 mt-1">26.5%</h4>
+                        <span class="text-xs font-semibold text-amber-800 block mt-0.5">Potencial Ahorro con IA</span>
+                        <p class="text-[11px] text-amber-800 mt-2 leading-relaxed">
+                            Un validador interactivo de calidad de fotos en el portal eliminaría este 26.5% de re-procesamientos innecesarios.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Macro Familias y Combos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="folder-tree" class="w-4 h-4 text-blue-600"></i> Macro-Familias de Rechazo (Filtradas)
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Causa primaria según el segmento seleccionado</p>
+                    <div class="relative h-72"><canvas id="chartMacro"></canvas></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="git-merge" class="w-4 h-4 text-indigo-600"></i> Multicausalidad (60.30% de los Casos)
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Top combinaciones más frecuentes</p>
+                    <div class="overflow-y-auto max-h-72 text-xs">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100 sticky top-0 text-slate-700 font-semibold">
+                                <tr>
+                                    <th class="p-2.5">Combinación Multicausal</th>
+                                    <th class="p-2.5 text-right">Casos</th>
+                                    <th class="p-2.5 text-right">% Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableCombos" class="divide-y divide-slate-100 text-slate-600"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taxonomía -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="list-tree" class="w-4 h-4 text-blue-600"></i> Catálogo Completo de Subcategorías (27 Subcategorías)
+                        </h4>
+                        <p class="text-xs text-slate-500">Métricas de casos filtrados por subcategoría</p>
+                    </div>
+                    <input type="text" id="filterSubcat" placeholder="Buscar subcategoría..." onkeyup="filterSubcatTable()" class="text-xs border border-slate-300 rounded-lg px-3 py-2 w-64 focus:outline-blue-500">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs" id="subcatTable">
+                        <thead class="bg-slate-800 text-white font-semibold">
+                            <tr>
+                                <th class="p-3">ID_Subcat</th>
+                                <th class="p-3">ID_Macro</th>
+                                <th class="p-3">Macro-Familia</th>
+                                <th class="p-3">Subcategoría Granular</th>
+                                <th class="p-3 text-right font-black text-blue-300">Casos Filtrados</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableTaxonomiaDinamica" class="divide-y divide-slate-100 text-slate-600"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- PESTAÑA 5: OPERADORES, RAPIDEZ & AUDITORÍA EN SEGUNDOS       -->
+        <!-- ============================================================= -->
+        <section id="tab-gestion" class="tab-content hidden space-y-8">
+            
+            <!-- Gráficos de Rapidez vs Calidad & Volumen -->
+            <div class="bg-indigo-50/60 border border-indigo-200 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 class="text-sm font-bold text-indigo-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="users" class="w-5 h-5 text-indigo-600"></i> Análisis de Desempeño y Capacidad de Revisores
+                    </h3>
+                    <p class="text-xs text-indigo-900 leading-relaxed">
+                        Evaluación del rendimiento individual, dispersión de criterio, velocidad en segundos y capacidad diaria por operador.
+                    </p>
+                </div>
+                <span class="bg-indigo-600 text-white shadow-xs text-xs px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-1.5 whitespace-nowrap shrink-0">
+                    <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-300"></i> Capacidad Humana: 172 Revisores Activos
+                </span>
+            </div>
+
+            <!-- Banner Ejecutivo: Tiempo de Dictamen Humano por Revisor -->
+            <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-indigo-950 text-white p-5 rounded-2xl border border-indigo-800/60 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="p-1 bg-indigo-500/20 text-indigo-300 rounded border border-indigo-400/30">
+                            <i data-lucide="timer" class="w-4 h-4"></i>
+                        </span>
+                        <h4 class="text-sm font-bold text-white">¿Cuánto se tardan en atender en promedio una gestión?</h4>
+                    </div>
+                    <p class="text-xs text-slate-300 max-w-3xl">
+                        El <strong>tiempo de intervención humana total</strong> (asignación a finalización, Paso 2+3) tiene una <strong class="text-emerald-400 font-mono">mediana de 1.25 minutos</strong> (promedio ~2.5 min). El <strong>tiempo en pantalla</strong> (solo el commit de decisión, Paso 3) es de <strong class="text-emerald-300 font-mono">1.8 segundos</strong> promedio. El tiempo de respuesta total al contribuyente es de <strong class="text-amber-300 font-mono">~9.5 horas hábiles</strong> debido a la acumulación de expedientes en el <strong class="text-amber-200">Buzón Central (cola de espera)</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Gráfico A: Tiempo de Revisión vs Probabilidad de Rechazo -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Tiempo de Revisión en Pantalla vs % de Rechazo
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Los trámites con problemas tardan minutos en auditarse y se rechazan masivamente</p>
+                    <div class="relative h-72"><canvas id="chartSpeedVsRechazo"></canvas></div>
+                </div>
+
+                <!-- Gráfico B: Volumen del Operador vs Velocidad de Atención -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 text-amber-600"></i> Curva de Aprendizaje: Volumen Total vs Segundos de Revisión
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Los operadores con mayor volumen acumulado (>8k casos) presentan tiempos de revisión significativamente menores (1.8 s promedio)</p>
+                    <div class="relative h-72"><canvas id="chartVolumeVsSpeed"></canvas></div>
+                </div>
+            </div>
+
+            <!-- CAPACIDAD DIARIA Y PRODUCTIVIDAD EN JORNADA HÁBIL (8 HORAS) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="award" class="w-5 h-5 text-amber-500"></i> Capacidad Diaria y Métricas de Productividad por Revisor (Jornada 8h)
+                        </h4>
+                        <p class="text-xs text-slate-500">Promedio diario, mediana, récords en 1 día y días activos en jornada laboral oficial (8:00 a 16:00)</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="lblCapacidadContexto" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 px-3 py-1 rounded-xl shadow-xs">
+                            Occidente • 2026
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Mini KPIs de Capacidad Diaria -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                        <span class="text-slate-500 text-[11px] font-medium">Revisores Activos</span>
+                        <h5 id="kpiCapRevisores" class="text-base font-black text-slate-900 mt-0.5">10 revisores</h5>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+                        <span class="text-emerald-700 text-[11px] font-medium">Promedio Diario (Top 1)</span>
+                        <h5 id="kpiCapTopProm" class="text-base font-black text-emerald-800 mt-0.5">66.6 / día</h5>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl">
+                        <span class="text-blue-700 text-[11px] font-medium">Mediana Global Grupo</span>
+                        <h5 id="kpiCapMediana" class="text-base font-black text-blue-800 mt-0.5">52.5 / día</h5>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-3 rounded-xl">
+                        <span class="text-purple-700 text-[11px] font-medium">Récord en 1 Solo Día</span>
+                        <h5 id="kpiCapMaxRecord" class="text-base font-black text-purple-800 mt-0.5">161 casos</h5>
+                    </div>
+                </div>
+
+                <!-- Tabla de Capacidad Diaria Exacta del Informe -->
+                <div class="overflow-x-auto text-xs border border-slate-200 rounded-xl">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200 text-[11px]">
+                            <tr>
+                                <th class="p-3">Revisor</th>
+                                <th class="p-3 text-center font-bold text-slate-900 bg-slate-200/50">Promedio Diario (8h)</th>
+                                <th class="p-3 text-center text-slate-600">Mediana Diaria</th>
+                                <th class="p-3 text-center font-black text-slate-900">Récord en 1 Día</th>
+                                <th class="p-3 text-center text-slate-600">Días Activos</th>
+                                <th class="p-3 text-right font-black text-slate-900">Total Resuelto (8h)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableProductividadDiaria" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: MATRIZ DE CUADRANTES DE REVISORES (VELOCIDAD VS RECHAZO) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="layout-grid" class="w-5 h-5 text-indigo-600"></i> Matriz de Cuadrantes de Rendimiento (Velocidad vs Tasa de Rechazo)
+                        </h4>
+                        <p class="text-xs text-slate-500">Segmentación de revisores según su tiempo de resolución en pantalla y su rigor de dictamen</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="selCuadranteOp" onchange="filterOperadoresCuadrante()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 focus:outline-blue-500 font-bold text-slate-700">
+                            <option value="TODOS">Todos los Cuadrantes</option>
+                            <option value="Q1">🟢 Cuadrante I: Ágiles & Asertivos (Alta Eficiencia)</option>
+                            <option value="Q2">🔵 Cuadrante II: Minuciosos (Casos Complejos)</option>
+                            <option value="Q3">⚠️ Cuadrante III: Foco Auditoría (Descarte Flash ≤2s)</option>
+                            <option value="Q4">🟡 Cuadrante IV: Rezagados / Cuello de Botella</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <!-- Cuadrante I -->
+                    <div onclick="selectCuadranteQuick('Q1')" class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl cursor-pointer hover:bg-emerald-100/70 transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-emerald-900 text-xs">Cuadrante I: Ágiles & Asertivos</span>
+                                <span id="badgeCountQ1" class="bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-mono font-bold text-[10px]">0</span>
+                            </div>
+                            <p class="text-[11px] text-emerald-800 leading-relaxed mt-1">
+                                <strong>Perfil:</strong> Rápida resolución (&lt; mediana) y baja tasa de rechazo (&lt; media). Estándar de oro institucional.
+                            </p>
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-semibold mt-3 block pt-1.5 border-t border-emerald-200">
+                            ✓ Benchmark de Productividad
+                        </span>
+                    </div>
+
+                    <!-- Cuadrante II -->
+                    <div onclick="selectCuadranteQuick('Q2')" class="p-4 bg-blue-50/70 border border-blue-200 rounded-2xl cursor-pointer hover:bg-blue-100/70 transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-blue-900 text-xs">Cuadrante II: Minuciosos</span>
+                                <span id="badgeCountQ2" class="bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full font-mono font-bold text-[10px]">0</span>
+                            </div>
+                            <p class="text-[11px] text-blue-800 leading-relaxed mt-1">
+                                <strong>Perfil:</strong> Mayor tiempo de pantalla (&gt; mediana) con aprobaciones seguras. Asignados a casos de alta complejidad.
+                            </p>
+                        </div>
+                        <span class="text-[10px] text-blue-700 font-semibold mt-3 block pt-1.5 border-t border-blue-200">
+                            🔍 Rigor & Cotejo RENAP
+                        </span>
+                    </div>
+
+                    <!-- Cuadrante III -->
+                    <div onclick="selectCuadranteQuick('Q3')" class="p-4 bg-rose-50/70 border border-rose-200 rounded-2xl cursor-pointer hover:bg-rose-100/70 transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-rose-900 text-xs">Cuadrante III: Foco de Auditoría</span>
+                                <span id="badgeCountQ3" class="bg-rose-200 text-rose-900 px-2 py-0.5 rounded-full font-mono font-bold text-[10px]">0</span>
+                            </div>
+                            <p class="text-[11px] text-rose-800 leading-relaxed mt-1">
+                                <strong>Perfil:</strong> Descarte ultra-rápido (≤ 2s) con tasa de rechazo atípica (&gt; media). Requiere muestreo de control de calidad.
+                            </p>
+                        </div>
+                        <span class="text-[10px] text-rose-700 font-semibold mt-3 block pt-1.5 border-t border-rose-200">
+                            ⚠️ Prioridad de Supervisión
+                        </span>
+                    </div>
+
+                    <!-- Cuadrante IV -->
+                    <div onclick="selectCuadranteQuick('Q4')" class="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl cursor-pointer hover:bg-amber-100/70 transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-amber-900 text-xs">Cuadrante IV: Rezagados</span>
+                                <span id="badgeCountQ4" class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-mono font-bold text-[10px]">0</span>
+                            </div>
+                            <p class="text-[11px] text-amber-800 leading-relaxed mt-1">
+                                <strong>Perfil:</strong> Tiempo de pantalla elevado y baja tasa resolutiva o bajo volumen mensual acumulado.
+                            </p>
+                        </div>
+                        <span class="text-[10px] text-amber-700 font-semibold mt-3 block pt-1.5 border-t border-amber-200">
+                            ⏳ Candidatos a Re-capacitación
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUEVO MÓDULO: ÍNDICE DE DISPERSIÓN Y SUBJETIVIDAD INTER-REVISORES -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="scale" class="w-5 h-5 text-indigo-600"></i> Consistencia de Criterio: Dispersión de Rechazo entre Revisores
+                        </h4>
+                        <p class="text-xs text-slate-500">Cuantificación de la disparidad de criterio al calificar expedientes de la misma naturaleza</p>
+                    </div>
+                    <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5">
+                        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-indigo-600"></i> Auditoría de Criterio
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <!-- Mínimo / Más Permisivo -->
+                    <div class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl">
+                        <span class="text-emerald-900 font-bold uppercase text-[10px]">Tasa Mínima (Revisor Permisivo)</span>
+                        <h4 id="kpiDispMin" class="text-xl font-black text-emerald-800 mt-1">7.4%</h4>
+                        <span id="kpiDispMinOp" class="text-[11px] text-emerald-700 font-medium mt-1 block">Operador con mayor tolerancia</span>
+                    </div>
+
+                    <!-- Máximo / Más Riguroso -->
+                    <div class="p-4 bg-rose-50/70 border border-rose-200 rounded-2xl">
+                        <span class="text-rose-900 font-bold uppercase text-[10px]">Tasa Máxima (Revisor Riguroso)</span>
+                        <h4 id="kpiDispMax" class="text-xl font-black text-rose-800 mt-1">45.8%</h4>
+                        <span id="kpiDispMaxOp" class="text-[11px] text-rose-700 font-medium mt-1 block">Operador con mayor severidad</span>
+                    </div>
+
+                    <!-- Brecha Extrema -->
+                    <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl">
+                        <span class="text-amber-900 font-bold uppercase text-[10px]">Brecha Extrema de Criterio</span>
+                        <h4 id="kpiDispRange" class="text-xl font-black text-amber-900 mt-1">38.4 pts</h4>
+                        <span class="text-[11px] text-amber-800 font-medium mt-1 block">Diferencia Max - Min</span>
+                    </div>
+
+                    <!-- Coeficiente de Variación -->
+                    <div class="p-4 bg-purple-50/70 border border-purple-200 rounded-2xl">
+                        <span class="text-purple-900 font-bold uppercase text-[10px]">Coeficiente de Variación (CV)</span>
+                        <h4 id="kpiDispCV" class="text-xl font-black text-purple-800 mt-1">41.2%</h4>
+                        <span class="text-[11px] text-purple-700 font-medium mt-1 block">Disparidad Moderada-Alta</span>
+                    </div>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 leading-relaxed flex items-start gap-2.5">
+                    <i data-lucide="info" class="w-4 h-4 text-indigo-600 shrink-0 mt-0.5"></i>
+                    <p>
+                        <strong>Hallazgo para Estandarización de Normas:</strong> La brecha de hasta <strong>~38 puntos porcentuales</strong> en la tasa de rechazo entre evaluadores con expedientes homogéneos demuestra que existe <strong>subjetividad humana en la interpretación de nitidez y selfies</strong>. Esto justifica la homologación de guías operativas o la incorporación de pre-validación biométrica automática.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tabla de Operadores con Cuadre Aritmético -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-2">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="user-check" class="w-4 h-4 text-indigo-600"></i> Rendimiento Individual por Operador (Cuadre Matemático 100%)
+                        </h4>
+                        <p class="text-xs text-slate-500">Desglose exacto entre aprobaciones directas, subsanadas y rechazos definitivos</p>
+                    </div>
+                </div>
+                
+                <div class="relative h-64 mb-6"><canvas id="chartOperadores"></canvas></div>
+
+                <div class="overflow-x-auto text-xs max-h-80">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-800 text-white font-semibold sticky top-0">
+                            <tr>
+                                <th class="p-2.5">Operador / Revisor</th>
+                                <th class="p-2.5 text-center text-indigo-200">Regional</th>
+                                <th class="p-2.5 text-right font-bold text-white">Total Atendidos</th>
+                                <th class="p-2.5 text-right font-bold text-emerald-300">Aprobados Finales</th>
+                                <th class="p-2.5 text-right text-emerald-100">Aprob. Directas</th>
+                                <th class="p-2.5 text-right text-amber-300">Aprob. Subsanadas</th>
+                                <th class="p-2.5 text-right font-bold text-rose-300">Rechazo Definitivo</th>
+                                <th class="p-2.5 text-right font-black text-rose-400">Total Incidencias</th>
+                                <th class="p-2.5 text-right font-black text-blue-300">% Incidencia</th>
+                                <th class="p-2.5 text-right font-bold text-amber-300 bg-slate-900">⏱️ Tiempo Prom.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableOperadoresDinamica" class="divide-y divide-slate-100 text-slate-600"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AUDITORÍA INDIVIDUAL DUAL (CON RONDA DE REVISIÓN) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="timer" class="w-5 h-5 text-blue-600"></i> Auditoría Individual: Rondas (1ra vs 2da Revisión) y Tiempos Exactos
+                        </h4>
+                        <p class="text-xs text-slate-500">Muestra exacta con identificación de ronda de revisión, tiempos en segundos y causales</p>
+                    </div>
+                    
+                    <!-- Filtros Rápidos de Ronda y Velocidad -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="selAuditSpeed" onchange="filterAuditTable()" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-blue-500 font-medium text-slate-700">
+                            <option value="TODOS">Todas las Rondas y Tiempos</option>
+                            <option value="RECHAZO_ASC">🔴 Ordenar: Tiempo Rechazo (Menor a Mayor ▲)</option>
+                            <option value="RECHAZO_DESC">🔴 Ordenar: Tiempo Rechazo (Mayor a Menor ▼)</option>
+                            <option value="ATENCION_ASC">🟢 Ordenar: Tiempo Atención (Menor a Mayor ▲)</option>
+                            <option value="ATENCION_DESC">🟢 Ordenar: Tiempo Atención (Mayor a Menor ▼)</option>
+                            <option value="1RA_DIRECTA">🟢 1ra Revisión: Aprobación Directa</option>
+                            <option value="1RA_RECHAZO">🔴 1ra Revisión: Dictamen de Rechazo</option>
+                            <option value="2DA_SUBSANADA">🔵 2da Revisión: Subsanación Aprobada</option>
+                            <option value="3RA_LIMITE">⚠️ 3ra+ Revisión: Límite Agotado</option>
+                            <option value="RECHAZO_RAPIDO">🚨 Rechazo en Segundos (≤ 2s)</option>
+                            <option value="APROBACION_RAPIDA">⚡ Aprobación en Segundos (≤ 2s)</option>
+                        </select>
+                        <input type="text" id="filterAudit" placeholder="Buscar NumeroGestion, NIT, Operador..." oninput="debounceFilterAudit()" class="text-xs border border-slate-300 rounded-lg px-3 py-1.5 w-64 focus:outline-blue-500">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto max-h-96">
+                    <table id="auditTableDT" class="display compact stripe hover w-full text-left text-xs">
+                        <thead class="bg-slate-800 text-white font-semibold sticky top-0">
+                            <tr>
+                                <th class="p-2.5">NumeroGestion</th>
+                                <th class="p-2.5">NIT</th>
+                                <th class="p-2.5">Operador</th>
+                                <th class="p-2.5">Trámite</th>
+                                <th class="p-2.5">Ronda Detectada</th>
+                                <th class="p-2.5 font-mono text-slate-300">FechaRevision (FR)</th>
+                                <th class="p-2.5 font-mono text-rose-300">FechaRechazo (FRech)</th>
+                                <th class="p-2.5 font-mono text-emerald-300">FechaFinaliza (FF)</th>
+                                <th class="p-2.5 text-right font-bold text-rose-300 bg-rose-950/50 hover:bg-rose-900 transition select-none">
+                                    <button type="button" onclick="setAuditSort('rechazo')" class="w-full text-right cursor-pointer bg-transparent border-0 text-inherit font-bold" title="Clic para ordenar Menor a Mayor / Mayor a Menor">
+                                        En Rechazar (Horas) ⇅
+                                    </button>
+                                </th>
+                                <th class="p-2.5 text-right font-black text-emerald-300 bg-emerald-950/50 hover:bg-emerald-900 transition select-none">
+                                    <button type="button" onclick="setAuditSort('atencion')" class="w-full text-right cursor-pointer bg-transparent border-0 text-inherit font-black" title="Clic para ordenar Menor a Mayor / Mayor a Menor">
+                                        En Atender (Horas) ⇅
+                                    </button>
+                                </th>
+                                <th class="p-2.5">Motivo Original Registrado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableAudit" class="divide-y divide-slate-100 text-slate-600"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    
+        <!-- ========================================== -->
+        
+        <!-- ========================================================================= -->
+        <!-- PESTAÑA 6: AUDITORÍA GRANULAR EN HORAS CON DATATABLES (NATIVO)             -->
+        <!-- ========================================================================= -->
+        <div id="tab-auditoria" class="tab-content hidden space-y-6">
+            
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white p-6 rounded-3xl shadow-lg border border-slate-700">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-emerald-600/30 text-emerald-400 rounded-2xl border border-emerald-400/20 shadow-md">
+                            <i data-lucide="table" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-lg font-bold text-white tracking-tight">Módulo de Auditoría Granular en Horas</h3>
+                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] px-2.5 py-0.5 rounded-full font-bold">
+                                    DataTables v1.13
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-0.5">Audite tiempos de atención y rechazo ordenables de menor a mayor (▲/▼) con filtros combinados</p>
+                        </div>
+                    </div>
+                    <a href="Auditoria_Detalle_Tiempos.html" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition shadow-lg shadow-emerald-600/20 border border-emerald-400/30">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> Abrir en Pestaña Completa ↗
+                    </a>
+                </div>
+
+                <!-- Resumen de Auditoría -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 text-xs">
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-2xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] font-medium">Expedientes Muestra</span>
+                        <h4 class="text-xl font-black text-white mt-1">500 <span class="text-xs font-normal text-slate-300">casos</span></h4>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-2xl border border-white/10">
+                        <span class="text-rose-300 text-[11px] font-medium">Tiempo Medio Rechazo</span>
+                        <h4 class="text-xl font-black text-rose-300 mt-1">0.0000 h <span class="text-xs font-normal text-rose-200">(0.0s)</span></h4>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-2xl border border-white/10">
+                        <span class="text-emerald-300 text-[11px] font-medium">Tiempo Medio Atención</span>
+                        <h4 class="text-xl font-black text-emerald-300 mt-1">0.0005 h <span class="text-xs font-normal text-emerald-200">(1.8s)</span></h4>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-2xl border border-white/10">
+                        <span class="text-purple-300 text-[11px] font-medium">Ciclo Medio Total</span>
+                        <h4 class="text-xl font-black text-purple-300 mt-1">4.12 h <span class="text-xs font-normal text-purple-200">hábiles</span></h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Auditoría DataTables Nativa -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-4">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="list-checks" class="w-4 h-4 text-blue-600"></i> Registros de Auditoría Muestral (Ordenamiento Numérico)
+                        </h4>
+                        <p class="text-xs text-slate-500">Haga clic en los encabezados de columna con flechas (▲/▼) para ordenar por tiempo exacto en horas</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="tableAuditDirect" class="display w-full text-left text-xs stripe hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID Expediente</th>
+                                <th>Operador</th>
+                                <th>Tipo Trámite</th>
+                                <th>Ronda</th>
+                                <th>Región</th>
+                                <th>Estado</th>
+                                <th>Causal de Rechazo</th>
+                                <th>Tiempo Atención</th>
+                                <th>Tiempo Rechazo</th>
+                                <th>Ciclo Hábil</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyAuditDirect">
+                            <!-- Inyectado por DataTables -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================================= -->
+        <!-- PESTAÑA 7: INFORME EJECUTIVO DE MÉTRICAS OPERATIVAS AV Y RTU 2026        -->
+        <!-- ========================================================================= -->
+        <div id="tab-informe2026" class="tab-content hidden space-y-8">
+            
+            <!-- Encabezado del Informe 2026 -->
+            <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-7 rounded-3xl shadow-xl border border-blue-800/40">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-blue-600 text-white rounded-2xl shadow-lg">
+                            <i data-lucide="file-check" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-white">Informe Ejecutivo de Métricas Operativas AV y RTU — 2026</h3>
+                            <p class="text-xs text-blue-200">Análisis Integral de Gestiones Humanas (308,046 Trámites • 172 Revisores • Jornadas 8h)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
+                            Corte Anual 2026
+                        </span>
+                        <span class="bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs px-3 py-1 rounded-full font-bold">
+                            100% Gestiones Humanas
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tarjetas de Resumen Ejecutivo -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-5 text-xs">
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] block">Universo Humano</span>
+                        <h4 class="text-xl font-black text-white mt-0.5">308,046</h4>
+                        <span class="text-[10px] text-blue-300">100% trámites 2026</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] block">Dictaminadas Revisor</span>
+                        <h4 class="text-xl font-black text-cyan-300 mt-0.5">253,712</h4>
+                        <span class="text-[10px] text-cyan-200">82.36% alcanzaron revisor</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] block">Capacidad Diaria (8h)</span>
+                        <h4 class="text-xl font-black text-amber-300 mt-0.5">1,166 / día</h4>
+                        <span class="text-[10px] text-amber-200">898.6 Aprob + 333.4 Rech</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] block">SLA 1ª Resp ≤ 3 Días</span>
+                        <h4 class="text-xl font-black text-emerald-300 mt-0.5">81.31%</h4>
+                        <span class="text-[10px] text-emerald-200">206,303 en ≤ 24h hábiles</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] block">Eficacia Dictamen</span>
+                        <h4 class="text-xl font-black text-purple-300 mt-0.5">71.95%</h4>
+                        <span class="text-[10px] text-purple-200">Aprobación en atendidas</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
+                        <span class="text-slate-300 text-[11px] block">Tiempo Mediano Revisor (Paso 2+3)</span>
+                        <h4 class="text-xl font-black text-white mt-0.5">1.25 min</h4>
+                        <span class="text-[10px] text-emerald-300">En pantalla: 2.0s mediana (solo Paso 3)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 1 & 2: Marco Dual de Medición y SLA de Primera Respuesta -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Marco Dual -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i data-lucide="scale" class="w-4 h-4 text-blue-600"></i> 1. Marco Dual de Medición (Velocidad vs Eficacia)
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Para evitar el <strong>sesgo de supervivencia</strong> (ignorar la carga operativa del 29.1% de rechazos), el rendimiento se estructura en dos dimensiones independientes:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl">
+                            <span class="font-bold text-blue-900 block text-xs">MÉTRICA 1: SLA 1ª Respuesta</span>
+                            <span class="text-[11px] text-blue-700 block mt-1">Velocidad y capacidad de atención</span>
+                            <span class="text-lg font-black text-blue-950 mt-1 block">253,712 casos</span>
+                            <span class="text-[10px] text-blue-600">Aprobados directos + 1ª Rechazos</span>
+                        </div>
+                        <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <span class="font-bold text-emerald-900 block text-xs">MÉTRICA 2: Eficacia y Conversión</span>
+                            <span class="text-[11px] text-emerald-700 block mt-1">Calidad, conversión y fuga</span>
+                            <span class="text-lg font-black text-emerald-950 mt-1 block">181,358 aprobadas</span>
+                            <span class="text-[10px] text-emerald-600">58.87% del total de entrada</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-700">
+                        <strong>Desenlace del Universo 2026:</strong> 181,358 Aprobadas (58.87%) • 70,696 Canceladas (22.95%) • 53,422 No Confirmadas (17.34%) • 2,570 En trámite (0.84%).
+                    </div>
+                </div>
+
+                <!-- SLA de Primera Respuesta en Horas Hábiles -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i data-lucide="clock-4" class="w-4 h-4 text-emerald-600"></i> 2. Cumplimiento de Primera Respuesta (Horas Hábiles)
+                    </h4>
+                    <p class="text-xs text-slate-500">Calculado sobre los 253,712 trámites que recibieron dictamen en jornada hábil (Lun-Vie 8:00-16:00)</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-800 text-white font-semibold">
+                                <tr>
+                                    <th class="p-2.5">Ventana de SLA Hábil</th>
+                                    <th class="p-2.5 text-right">Casos 2026</th>
+                                    <th class="p-2.5 text-right">% Acumulado</th>
+                                    <th class="p-2.5">Estándar Operativo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td class="p-2.5 font-bold text-emerald-700">≤ 1 Jornada Hábil (≤ 8h)</td>
+                                    <td class="p-2.5 text-right font-mono font-bold">121,784</td>
+                                    <td class="p-2.5 text-right font-bold text-emerald-600">48.00%</td>
+                                    <td class="p-2.5 text-slate-500 text-[11px]">Casi la mitad atendida el 1er día hábil</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold text-blue-700">≤ 2 Jornadas Hábiles (≤ 16h)</td>
+                                    <td class="p-2.5 text-right font-mono font-bold">179,914</td>
+                                    <td class="p-2.5 text-right font-bold text-blue-600">70.91%</td>
+                                    <td class="p-2.5 text-slate-500 text-[11px]">7 de cada 10 usuarios en ≤ 2 días</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold text-indigo-700">≤ 3 Días Hábiles (≤ 24h)</td>
+                                    <td class="p-2.5 text-right font-mono font-bold">206,303</td>
+                                    <td class="p-2.5 text-right font-bold text-indigo-600">81.31%</td>
+                                    <td class="p-2.5 text-slate-500 text-[11px]">Meta estándar institucional tri-diaria</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold text-purple-700">≤ 5 Días Hábiles (≤ 40h)</td>
+                                    <td class="p-2.5 text-right font-mono font-bold">235,868</td>
+                                    <td class="p-2.5 text-right font-bold text-purple-600">92.97%</td>
+                                    <td class="p-2.5 text-slate-500 text-[11px]">Semana hábil completa</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 3: Capacidad Multirregional y Rankings de las 4 Gerencias -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-slate-100">
+                    <div>
+                        <h4 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="map" class="w-5 h-5 text-blue-600"></i> 3. Balance Regional de Capacidad y Rankings por Región (Jornada 8h)
+                        </h4>
+                        <p class="text-xs text-slate-500">Distribución de 1,166 dictámenes finalizados por jornada efectiva entre las 4 Gerencias Regionales de SAT</p>
+                    </div>
+                </div>
+
+                <!-- Tabla Comparativa 4 Regionales -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-800 text-white font-semibold">
+                            <tr>
+                                <th class="p-3">Gerencia Regional</th>
+                                <th class="p-3 text-right">Total Resuelto (8h)</th>
+                                <th class="p-3 text-right font-bold text-blue-300">% Nacional</th>
+                                <th class="p-3 text-right font-bold text-emerald-300">Promedio Diario (8h)</th>
+                                <th class="p-3 text-right">Mediana Diaria</th>
+                                <th class="p-3 text-right font-bold text-amber-300">Pico Máx (1 Día)</th>
+                                <th class="p-3 text-right text-emerald-300">Aprob / Día</th>
+                                <th class="p-3 text-right text-rose-300">Rech / Día</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-blue-900">CENTRAL</td>
+                                <td class="p-3 text-right font-mono font-bold">67,756</td>
+                                <td class="p-3 text-right font-bold text-blue-600">35.00%</td>
+                                <td class="p-3 text-right font-mono font-bold text-emerald-600">408.2 / día</td>
+                                <td class="p-3 text-right font-mono">405.5 / día</td>
+                                <td class="p-3 text-right font-mono font-bold text-amber-600">1,173 casos</td>
+                                <td class="p-3 text-right font-mono text-emerald-600">273.4 / día</td>
+                                <td class="p-3 text-right font-mono text-rose-600">142.4 / día</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-indigo-900">OCCIDENTE</td>
+                                <td class="p-3 text-right font-mono font-bold">47,100</td>
+                                <td class="p-3 text-right font-bold text-indigo-600">24.33%</td>
+                                <td class="p-3 text-right font-mono font-bold text-emerald-600">283.7 / día</td>
+                                <td class="p-3 text-right font-mono">296.5 / día</td>
+                                <td class="p-3 text-right font-mono font-bold text-amber-600">750 casos</td>
+                                <td class="p-3 text-right font-mono text-emerald-600">236.1 / día</td>
+                                <td class="p-3 text-right font-mono text-rose-600">84.0 / día</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-teal-900">NORORIENTE</td>
+                                <td class="p-3 text-right font-mono font-bold">39,519</td>
+                                <td class="p-3 text-right font-bold text-teal-600">20.42%</td>
+                                <td class="p-3 text-right font-mono font-bold text-emerald-600">238.1 / día</td>
+                                <td class="p-3 text-right font-mono">255.0 / día</td>
+                                <td class="p-3 text-right font-mono font-bold text-amber-600">519 casos</td>
+                                <td class="p-3 text-right font-mono text-emerald-600">203.3 / día</td>
+                                <td class="p-3 text-right font-mono text-rose-600">58.6 / día</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-purple-900">SUR</td>
+                                <td class="p-3 text-right font-mono font-bold">39,188</td>
+                                <td class="p-3 text-right font-bold text-purple-600">20.25%</td>
+                                <td class="p-3 text-right font-mono font-bold text-emerald-600">237.5 / día</td>
+                                <td class="p-3 text-right font-mono">254.0 / día</td>
+                                <td class="p-3 text-right font-mono font-bold text-amber-600">576 casos</td>
+                                <td class="p-3 text-right font-mono text-emerald-600">198.6 / día</td>
+                                <td class="p-3 text-right font-mono text-rose-600">49.4 / día</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 4 Grillas de Revisores por Regional -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                    
+                    <!-- Central -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <h5 class="font-bold text-blue-900 text-xs mb-2 flex items-center justify-between">
+                            <span>🏛️ Región Central (67,756 en 8h)</span>
+                            <span class="text-[10px] text-blue-700 font-normal">Líder: ERCORZAN (80.1/día)</span>
+                        </h5>
+                        <table class="w-full text-[11px] text-left">
+                            <thead><tr class="border-b border-slate-200 text-slate-500 font-semibold"><th>Revisor</th><th class="text-right">Total 8h</th><th class="text-right">Prom/Día</th><th class="text-right">Pico</th><th class="text-right">% Aprob</th></tr></thead>
+                            <tbody class="divide-y divide-slate-200/60 font-mono">
+                                <tr><td class="font-bold text-slate-800">🥇 ERCORZAN</td><td class="text-right">11,213</td><td class="text-right font-bold text-emerald-700">80.1</td><td class="text-right">127</td><td class="text-right text-blue-700">98.3%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥈 AMHERNAN</td><td class="text-right">7,668</td><td class="text-right font-bold text-emerald-700">60.4</td><td class="text-right">104</td><td class="text-right text-blue-700">97.7%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥉 FACRUZRI</td><td class="text-right">5,884</td><td class="text-right font-bold text-emerald-700">57.1</td><td class="text-right">113</td><td class="text-right text-blue-700">97.7%</td></tr>
+                                <tr><td class="text-slate-700">JRSILVAR</td><td class="text-right">5,427</td><td class="text-right">53.2</td><td class="text-right">125</td><td class="text-right">97.8%</td></tr>
+                                <tr><td class="text-slate-700">KMDELEON</td><td class="text-right">2,404</td><td class="text-right">46.2</td><td class="text-right">106</td><td class="text-right">96.8%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Occidente -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <h5 class="font-bold text-indigo-900 text-xs mb-2 flex items-center justify-between">
+                            <span>🌄 Región Occidente (47,100 en 8h)</span>
+                            <span class="text-[10px] text-indigo-700 font-normal">Líder: PAPEREZT (66.6/día)</span>
+                        </h5>
+                        <table class="w-full text-[11px] text-left">
+                            <thead><tr class="border-b border-slate-200 text-slate-500 font-semibold"><th>Revisor</th><th class="text-right">Total 8h</th><th class="text-right">Prom/Día</th><th class="text-right">Pico</th><th class="text-right">% Aprob</th></tr></thead>
+                            <tbody class="divide-y divide-slate-200/60 font-mono">
+                                <tr><td class="font-bold text-slate-800">🥇 PAPEREZT</td><td class="text-right">6,265</td><td class="text-right font-bold text-emerald-700">66.6</td><td class="text-right">161</td><td class="text-right text-indigo-700">98.4%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥈 RAGUILAR</td><td class="text-right">4,463</td><td class="text-right font-bold text-emerald-700">63.8</td><td class="text-right">145</td><td class="text-right text-indigo-700">97.9%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥉 EENAVARR</td><td class="text-right">5,277</td><td class="text-right font-bold text-emerald-700">55.5</td><td class="text-right">132</td><td class="text-right text-indigo-700">95.8%</td></tr>
+                                <tr><td class="text-slate-700">MECABRER</td><td class="text-right">4,761</td><td class="text-right">55.4</td><td class="text-right">141</td><td class="text-right">98.6%</td></tr>
+                                <tr><td class="text-slate-700">CRAGUILA</td><td class="text-right">2,731</td><td class="text-right">46.3</td><td class="text-right">127</td><td class="text-right">99.4%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sur -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <h5 class="font-bold text-purple-900 text-xs mb-2 flex items-center justify-between">
+                            <span>🌊 Región Sur (39,188 en 8h)</span>
+                            <span class="text-[10px] text-purple-700 font-normal">Líder: MKNAJERA (111.5/día)</span>
+                        </h5>
+                        <table class="w-full text-[11px] text-left">
+                            <thead><tr class="border-b border-slate-200 text-slate-500 font-semibold"><th>Revisor</th><th class="text-right">Total 8h</th><th class="text-right">Prom/Día</th><th class="text-right">Pico</th><th class="text-right">% Aprob</th></tr></thead>
+                            <tbody class="divide-y divide-slate-200/60 font-mono">
+                                <tr><td class="font-bold text-slate-800">🥇 MKNAJERA</td><td class="text-right">12,266</td><td class="text-right font-bold text-emerald-700">111.5</td><td class="text-right">191</td><td class="text-right text-purple-700">99.3%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥈 EOVALIEN</td><td class="text-right">8,187</td><td class="text-right font-bold text-emerald-700">71.8</td><td class="text-right">166</td><td class="text-right text-purple-700">99.2%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥉 AMCALELA</td><td class="text-right">2,239</td><td class="text-right font-bold text-emerald-700">49.8</td><td class="text-right">106</td><td class="text-right text-purple-700">99.2%</td></tr>
+                                <tr><td class="text-slate-700">AAORELLR</td><td class="text-right">1,225</td><td class="text-right">31.4</td><td class="text-right">145</td><td class="text-right">99.0%</td></tr>
+                                <tr><td class="text-slate-700">KEDIAZPA</td><td class="text-right">1,213</td><td class="text-right">20.9</td><td class="text-right">56</td><td class="text-right">99.0%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Nororiente -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <h5 class="font-bold text-teal-900 text-xs mb-2 flex items-center justify-between">
+                            <span>🌿 Región Nororiente (39,519 en 8h)</span>
+                            <span class="text-[10px] text-teal-700 font-normal">Líder: AMVELIZM (94.3/día)</span>
+                        </h5>
+                        <table class="w-full text-[11px] text-left">
+                            <thead><tr class="border-b border-slate-200 text-slate-500 font-semibold"><th>Revisor</th><th class="text-right">Total 8h</th><th class="text-right">Prom/Día</th><th class="text-right">Pico</th><th class="text-right">% Aprob</th></tr></thead>
+                            <tbody class="divide-y divide-slate-200/60 font-mono">
+                                <tr><td class="font-bold text-slate-800">🥇 AMVELIZM</td><td class="text-right">12,169</td><td class="text-right font-bold text-emerald-700">94.3</td><td class="text-right">217</td><td class="text-right text-teal-700">98.0%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥈 FOMONZON</td><td class="text-right">10,457</td><td class="text-right font-bold text-emerald-700">75.8</td><td class="text-right">136</td><td class="text-right text-teal-700">97.8%</td></tr>
+                                <tr><td class="font-bold text-slate-800">🥉 RSISRODR</td><td class="text-right">3,238</td><td class="text-right font-bold text-emerald-700">42.6</td><td class="text-right">166</td><td class="text-right text-teal-700">98.7%</td></tr>
+                                <tr><td class="text-slate-700">BEORTEGA</td><td class="text-right">2,884</td><td class="text-right">35.6</td><td class="text-right">156</td><td class="text-right">98.9%</td></tr>
+                                <tr><td class="text-slate-700">LIBARRIE</td><td class="text-right">626</td><td class="text-right">25.0</td><td class="text-right">160</td><td class="text-right">99.7%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Sección 4: Tramos del Ciclo y Rechazos Huérfanos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Tramos del Ciclo -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i data-lucide="split" class="w-4 h-4 text-purple-600"></i> 4. Desglose de los 3 Tramos del Ciclo Operativo
+                    </h4>
+                    <p class="text-xs text-slate-500">Distribución porcentual del tiempo de ciclo total</p>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-slate-900">Tramo 1: Creación → Asignación (Cola Servidor)</span>
+                                <span class="font-mono font-bold text-amber-700">95.7% del tiempo (mediana)</span>
+                            </div>
+                            <p class="text-slate-600 text-[11px]">Mediana: <strong>28.77 horas naturales</strong> (Espera en cola general antes de caer a bandeja de revisor).</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-slate-900">Tramo 2: Asignación → Revisión (Bandeja + Revisión)</span>
+                                <span class="font-mono font-bold text-blue-700">4.2% del tiempo</span>
+                            </div>
+                            <p class="text-slate-600 text-[11px]">Mediana: <strong>1.25 minutos (75 segundos)</strong> en que el operador abre el expediente y lo valida.</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-slate-900">Tramo 3: Revisión → Finalización (Commit BD)</span>
+                                <span class="font-mono font-bold text-emerald-700">&lt; 0.1% del tiempo</span>
+                            </div>
+                            <p class="text-slate-600 text-[11px]">Mediana: <strong>2.00 segundos</strong> (Latencia de guardado transaccional en base de datos).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rechazos Huérfanos -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> 5. Auditoría de Rechazos Huérfanos (51.42%)
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        En 2026 se registraron <strong>46,064 rechazos sin causal de rechazo en texto</strong> (campo `MotivoRechazo` en blanco):
+                    </p>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <span class="font-bold text-emerald-950 block text-xs">Rechazos sin causal → Aprobados</span>
+                            <span class="text-xl font-black text-emerald-700 mt-1 block">42,287</span>
+                            <span class="text-[10px] text-emerald-800 font-bold block">91.80% culminaron en APROBADA</span>
+                            <span class="text-[10px] text-slate-500">Rechazos sin registro de motivo que posteriormente se aprobaron</span>
+                        </div>
+                        <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl">
+                            <span class="font-bold text-rose-950 block text-xs">Cancelación a Ciegas</span>
+                            <span class="text-xl font-black text-rose-700 mt-1 block">3,777</span>
+                            <span class="text-[10px] text-rose-800 font-bold block">8.20% Bajas definitivas</span>
+                            <span class="text-[10px] text-slate-500">Sin retroalimentación de la causal</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-900">
+                        📌 <strong>Recomendación Crítica de TI:</strong> Implementar validación obligatoria en la interfaz de usuario del revisor para que ningún rechazo pueda guardarse sin seleccionar una causal taxonómica normalizada.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- PESTAÑA 8: PRINCIPALES HALLAZGOS Y CONCLUSIONES EJECUTIVAS                -->
+        <!-- ========================================================================= -->
+        <div id="tab-hallazgos" class="tab-content hidden space-y-8">
+            <HallazgosPanel />
+        </div>
+
+    </main>
+</MainLayout>

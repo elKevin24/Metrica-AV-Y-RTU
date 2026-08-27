@@ -1,0 +1,48 @@
+{
+  "ultima_actualizacion": "2026-08-26 23:43:38",
+  "total_archivos": 6,
+  "fuentes": [
+    {
+      "archivo": "10000390411_AVjulio1.xlsx",
+      "tamano_mb": 6.88,
+      "filas": 84631,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-08-27 04:27:00"
+    },
+    {
+      "archivo": "10000390411_AVjulio2.xlsx",
+      "tamano_mb": 6.79,
+      "filas": 83117,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-08-27 04:27:00"
+    },
+    {
+      "archivo": "10000390411_AVjulio3.xlsx",
+      "tamano_mb": 6.35,
+      "filas": 77091,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-08-27 04:27:00"
+    },
+    {
+      "archivo": "10000390411_AVjulio4.xlsx",
+      "tamano_mb": 6.49,
+      "filas": 78982,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-08-27 04:27:00"
+    },
+    {
+      "archivo": "10000390411_AVjulio5.xlsx",
+      "tamano_mb": 6.35,
+      "filas": 76659,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-08-27 04:27:00"
+    },
+    {
+      "archivo": "10000390411_AVjulio6.xlsx",
+      "tamano_mb": 5.4,
+      "filas": 65526,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-08-27 04:27:00"
+    }
+  ]
+}
