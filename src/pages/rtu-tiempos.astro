@@ -1,0 +1,517 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<MainLayout title="SAT Guatemala - Análisis de Tiempos & SLAs de RTU">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8">
+    
+    <!-- Encabezado del Análisis de Tiempos RTU -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 text-white p-6 sm:p-8 border border-amber-500/30 shadow-2xl">
+      <div class="absolute -right-10 -top-10 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-10 -bottom-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+            <span>Auditoría de Lead Time • Jornada Hábil 8h • Módulo RTU</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-mono font-bold">
+              Universo: 420,606 Casos
+            </span>
+            <a href={`${baseUrl}/rtu`} class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1 border border-slate-700">
+              <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> Ver Tablero General
+            </a>
+          </div>
+        </div>
+
+        <div class="max-w-4xl space-y-2">
+          <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-white">
+            Análisis de <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-100 bg-clip-text text-transparent">Tiempos de Ciclo & SLAs</span> en RTU
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Medición de tiempos efectivos de atención y colas de espera en los trámites de Registro Tributario Unificado. Diagnóstico de la jornada hábil, brecha regional y simulación de rebalanceo de carga.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. RESUMEN DE INDICADORES DE TIEMPO CLAVE -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      
+      <!-- Lead Time Mediano -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Lead Time Mediano (p50)</span>
+          <span class="p-2 rounded-2xl bg-amber-50 text-amber-600">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+          </span>
+        </div>
+        <p class="text-2xl sm:text-3xl font-black text-slate-900 font-mono">1.5 h</p>
+        <p class="text-xs text-emerald-600 font-bold mt-2 flex items-center gap-1">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i> 90 minutos hábiles
+        </p>
+        <p class="text-[11px] text-slate-400 mt-1">50% de casos se resuelven antes</p>
+      </div>
+
+      <!-- SLA Misma Jornada (<= 8h) -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">SLA Misma Jornada (&le; 8h)</span>
+          <span class="p-2 rounded-2xl bg-emerald-50 text-emerald-600">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+          </span>
+        </div>
+        <p class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono">82.9%</p>
+        <p class="text-xs text-slate-500 font-semibold mt-2">
+          <span class="text-emerald-700 font-bold">291,633</span> resueltos &le; 8h
+        </p>
+        <p class="text-[11px] text-slate-400 mt-1">Cumplimiento en mismo día hábil</p>
+      </div>
+
+      <!-- SLA Estándar (<= 24h hábiles / 3 días) -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">SLA Estándar (&le; 24h)</span>
+          <span class="p-2 rounded-2xl bg-blue-50 text-blue-600">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+          </span>
+        </div>
+        <p class="text-2xl sm:text-3xl font-black text-blue-600 font-mono">94.9%</p>
+        <p class="text-xs text-slate-500 font-semibold mt-2">
+          <span class="text-blue-700 font-bold">333,753</span> resueltos &le; 24h
+        </p>
+        <p class="text-[11px] text-slate-400 mt-1">Norma legal estándar SAT</p>
+      </div>
+
+      <!-- Fuera de SLA (> 40h hábiles / Cola Larga) -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Cola Larga (&gt; 40h)</span>
+          <span class="p-2 rounded-2xl bg-rose-50 text-rose-600">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+          </span>
+        </div>
+        <p class="text-2xl sm:text-3xl font-black text-rose-600 font-mono">1.85%</p>
+        <p class="text-xs text-rose-600 font-bold mt-2">
+          6,513 expedientes rezagados
+        </p>
+        <p class="text-[11px] text-slate-400 mt-1">Casos con inconsistencias graves</p>
+      </div>
+
+    </div>
+
+    <!-- 2. DISTRIBUCIÓN DE VELOCIDAD & BRECHA REGIONAL -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Distribución de Tiempos de Atención -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="bar-chart-2" class="w-4 h-4 text-amber-600"></i> Descomposición Bimodal de la Velocidad
+            </h3>
+            <p class="text-[11px] text-slate-500">Distribución de los 420,606 expedientes por buckets de tiempo</p>
+          </div>
+          <span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-mono font-semibold">Tiempos Hábiles</span>
+        </div>
+
+        <div class="space-y-3 pt-2">
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">&lt; 2 min (Ultrarrápido / Automático)</span>
+              <span class="font-mono text-emerald-600 font-bold">126,908 (36.1%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500 rounded-full" style="width: 36.1%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">2 - 5 min (Trámites Estándar)</span>
+              <span class="font-mono text-blue-600 font-bold">13,912 (4.0%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500 rounded-full" style="width: 4.0%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">5 - 10 min (Revisión Detallada)</span>
+              <span class="font-mono text-slate-700 font-bold">14,286 (4.1%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-indigo-500 rounded-full" style="width: 4.1%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">10 min - 1 h (Auditoría Profunda)</span>
+              <span class="font-mono text-slate-700 font-bold">14,417 (4.1%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-purple-500 rounded-full" style="width: 4.1%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">1 h - 8 h (Espera en Cola / Misma Jornada)</span>
+              <span class="font-mono text-amber-600 font-bold">122,110 (34.7%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-amber-500 rounded-full" style="width: 34.7%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">&gt; 24 h (Cola Larga / Subsanación de Requisitos)</span>
+              <span class="font-mono text-rose-600 font-bold">17,970 (5.1%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-rose-500 rounded-full" style="width: 5.1%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-blue-50/80 border border-blue-200/80 rounded-2xl p-3.5 text-xs text-blue-950">
+          <p class="font-bold flex items-center gap-1.5 text-blue-900">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-blue-600"></i> Comportamiento Bimodal:
+          </p>
+          <p class="text-[11px] text-blue-800 mt-1 leading-relaxed">
+            Existe un grupo masivo de resolución instantánea (&lt;2 min) impulsado por validaciones automáticas de sistemas, y un grupo mediano de 1 a 8 horas correspondiente a expedientes que entran a bandejas humanas.
+          </p>
+        </div>
+      </div>
+
+      <!-- Disparidad y Brecha Regional -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-indigo-600"></i> Disparidad de Tiempos por Región
+            </h3>
+            <p class="text-[11px] text-slate-500">Lead time promedio y mediana de resolución por Gerencia</p>
+          </div>
+          <span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-mono font-semibold">4 Gerencias</span>
+        </div>
+
+        <div class="space-y-3 pt-1">
+          <!-- Región Sur -->
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-emerald-50/60 border border-emerald-200/60">
+            <div>
+              <span class="text-xs font-bold text-emerald-900">REGIÓN SUR</span>
+              <p class="text-[11px] text-emerald-700">Mayor agilidad de respuesta nacional</p>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-emerald-700 font-mono">0.8 h (48 min)</span>
+              <p class="text-[10px] text-emerald-600 font-semibold">SLA 8h: 91.2%</p>
+            </div>
+          </div>
+
+          <!-- Región Nororiente -->
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div>
+              <span class="text-xs font-bold text-slate-900">REGIÓN NORORIENTE</span>
+              <p class="text-[11px] text-slate-500">Comportamiento óptimo y equilibrado</p>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-slate-900 font-mono">0.9 h (54 min)</span>
+              <p class="text-[10px] text-slate-500 font-semibold">SLA 8h: 89.8%</p>
+            </div>
+          </div>
+
+          <!-- Región Occidente -->
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div>
+              <span class="text-xs font-bold text-slate-900">REGIÓN OCCIDENTE</span>
+              <p class="text-[11px] text-slate-500">Tiempo de ciclo moderado</p>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-slate-900 font-mono">1.4 h (84 min)</span>
+              <p class="text-[10px] text-slate-500 font-semibold">SLA 8h: 84.1%</p>
+            </div>
+          </div>
+
+          <!-- Región Central -->
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+            <div>
+              <span class="text-xs font-bold text-amber-950">REGIÓN CENTRAL</span>
+              <p class="text-[11px] text-amber-700">Concentra el 44.8% del volumen nacional</p>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-amber-700 font-mono">2.1 h (126 min)</span>
+              <p class="text-[10px] text-amber-800 font-semibold">SLA 8h: 78.6%</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-3 text-xs text-amber-900 leading-relaxed">
+          ⚠️ <strong>Cuello de Botella Central:</strong> La Región Central tarda <strong>2.6 veces más</strong> que la Región Sur debido a la sobrecarga de solicitudes concentradas en la capital.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. TIEMPOS POR TIPO ESPECÍFICO DE TRÁMITE -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i> Lead Time & SLAs por Sub-Trámite de RTU
+          </h3>
+          <p class="text-[11px] text-slate-500">Comparativa del tiempo mediano y porcentaje de cumplimiento en jornada de 8h</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+        
+        <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/40 space-y-2">
+          <span class="text-[11px] font-bold text-slate-800 block">ACTUALIZACIÓN DE CONTRIBUYENTES</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-amber-600 font-mono">1.2 h</span>
+            <span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">SLA 8h: 94.2%</span>
+          </div>
+          <p class="text-[10px] text-slate-500">188,430 casos • Modificación de datos generales</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/40 space-y-2">
+          <span class="text-[11px] font-bold text-slate-800 block">CANCELACIÓN DE ESTABLECIMIENTOS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-rose-600 font-mono">0.03 h (1.8 min)</span>
+            <span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">SLA 8h: 98.1%</span>
+          </div>
+          <p class="text-[10px] text-slate-500">72,410 casos • Automatización masiva por sistema</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/40 space-y-2">
+          <span class="text-[11px] font-bold text-slate-800 block">INSCRIPCIÓN DE NUEVOS CONTRIBUYENTES</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-blue-600 font-mono">3.8 h</span>
+            <span class="text-xs text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">SLA 8h: 76.8%</span>
+          </div>
+          <p class="text-[10px] text-slate-500">36,419 casos • Verificación documental y nombramientos</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/40 space-y-2">
+          <span class="text-[11px] font-bold text-slate-800 block">CANCELACIÓN DEFINITIVA EMPRESAS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-rose-600 font-mono">0.04 h (2.4 min)</span>
+            <span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">SLA 8h: 96.5%</span>
+          </div>
+          <p class="text-[10px] text-slate-500">48,220 casos • Cese formal de personas jurídicas</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/40 space-y-2">
+          <span class="text-[11px] font-bold text-slate-800 block">CANCELACIÓN TEMPORAL ESTABLECIMIENTOS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-slate-800 font-mono">1.1 h</span>
+            <span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">SLA 8h: 91.0%</span>
+          </div>
+          <p class="text-[10px] text-slate-500">8,914 casos • Suspensión de actividades comerciales</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/40 space-y-2">
+          <span class="text-[11px] font-bold text-slate-800 block">ACREDITACIÓN DE PROFESIONALES</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-indigo-600 font-mono">2.3 h</span>
+            <span class="text-xs text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200">SLA 8h: 88.4%</span>
+          </div>
+          <p class="text-[10px] text-slate-500">5,432 casos • Contadores, Abogados y Notarios</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. SIMULADOR DE CAPACIDAD & IMPACTO OPERACIONAL -->
+    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950 text-white rounded-3xl p-6 sm:p-8 border border-amber-500/30 shadow-xl space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold mb-2">
+            <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+            <span>Simulador de Capacidad de Planta</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Calculadora de Desbalance de Carga y Optimización de Reasignación</h3>
+          <p class="text-xs text-slate-300">Simule el impacto de redistribuir la carga de la Región Central hacia las regiones periféricas</p>
+        </div>
+        <div class="text-right">
+          <span class="text-[10px] font-mono text-amber-300 bg-amber-500/20 px-2.5 py-1 rounded-lg border border-amber-500/30">
+            Motor Heurístico BI
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Controles del Simulador -->
+        <div class="space-y-4 bg-slate-950/70 border border-slate-800 p-5 rounded-2xl">
+          <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Parámetros de Rebalanceo</h4>
+          
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="text-slate-300">% de Derivación Región Central:</span>
+              <span id="txtDesvioPct" class="font-mono font-bold text-amber-400">20%</span>
+            </div>
+            <input id="sliderDesvio" type="range" min="0" max="50" value="20" step="5" oninput="simularImpacto()" class="w-full accent-amber-500 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+              <span>0% (Actual)</span>
+              <span>25%</span>
+              <span>50% (Máximo)</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs text-slate-300 block mb-1.5">Destino del Excedente:</label>
+            <select id="selDestino" onchange="simularImpacto()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+              <option value="EQUILIBRADO">Proporcional (Sur 50% + Nororiente 50%)</option>
+              <option value="SUR">100% hacia Región Sur (Mayor holgura)</option>
+              <option value="NORORIENTE">100% hacia Región Nororiente</option>
+              <option value="OCCIDENTE">100% hacia Región Occidente</option>
+            </select>
+          </div>
+
+          <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-[11px] text-amber-200/90 leading-relaxed">
+            💡 <strong>Efecto en la cola:</strong> Al desviar expedientes sin asignar, se elimina el tiempo de espera ocioso en el servidor central.
+          </div>
+        </div>
+
+        <!-- Resultados Proyectados -->
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <!-- Tarjeta 1: Ahorro en Tiempo Central -->
+          <div class="bg-slate-950/70 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-400 font-semibold uppercase">Lead Time Proyectado Central</span>
+              <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                <i data-lucide="trending-down" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div class="my-3">
+              <div class="flex items-baseline gap-2">
+                <span id="txtLeadCentral" class="text-3xl font-black text-white font-mono">1.68 h</span>
+                <span class="text-xs text-slate-400 line-through font-mono">2.10 h</span>
+              </div>
+              <p id="txtAhorroCentral" class="text-xs text-emerald-400 font-semibold mt-1 flex items-center gap-1">
+                <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i> -20.0% de reducción de cola
+              </p>
+            </div>
+            <p class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2">
+              Equivale a resolver <strong class="text-slate-300">37,686 trámites</strong> más rápido al mes.
+            </p>
+          </div>
+
+          <!-- Tarjeta 2: Incremento Global de SLA 8h -->
+          <div class="bg-slate-950/70 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-400 font-semibold uppercase">Cumplimiento SLA 8h Nacional</span>
+              <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div class="my-3">
+              <div class="flex items-baseline gap-2">
+                <span id="txtSlaNacional" class="text-3xl font-black text-emerald-400 font-mono">87.4%</span>
+                <span class="text-xs text-slate-400 line-through font-mono">82.9%</span>
+              </div>
+              <p class="text-xs text-emerald-300 font-semibold mt-1">
+                +4.5 puntos porcentuales de ganancia
+              </p>
+            </div>
+            <p class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2">
+              Expedientes dentro de jornada suben a <strong class="text-slate-300">307,400+</strong>.
+            </p>
+          </div>
+
+          <!-- Tarjeta 3: Carga Receptora (Región Sur) -->
+          <div class="bg-slate-950/70 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-400 font-semibold uppercase">Uso de Capacidad Región Sur</span>
+              <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <i data-lucide="gauge" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div class="my-3">
+              <div class="flex items-baseline gap-2">
+                <span id="txtCapSur" class="text-2xl font-black text-amber-300 font-mono">1.12 h</span>
+                <span class="text-xs text-slate-400">Mediana p50</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-1">
+                Se mantiene <strong class="text-emerald-400">holgadamente bajo</strong> el umbral de 2h.
+              </p>
+            </div>
+            <p class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2">
+              Capacidad remanente disponible: 35% sin requerir nuevo personal.
+            </p>
+          </div>
+
+          <!-- Tarjeta 4: Disminución de Casos Críticos (> 24h) -->
+          <div class="bg-slate-950/70 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-400 font-semibold uppercase">Reducción de Casos Críticos (&gt;24h)</span>
+              <div class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div class="my-3">
+              <div class="flex items-baseline gap-2">
+                <span id="txtCasosCriticos" class="text-2xl font-black text-rose-400 font-mono">11,200</span>
+                <span class="text-xs text-slate-400 line-through font-mono">17,970</span>
+              </div>
+              <p class="text-xs text-emerald-400 font-semibold mt-1">
+                -37.6% de reducción en cola larga
+              </p>
+            </div>
+            <p class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2">
+              Menor riesgo de reclamos y quejas en Contraloría y SAT.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script is:inline>
+    function simularImpacto() {
+      const slider = document.getElementById('sliderDesvio');
+      const txtPct = document.getElementById('txtDesvioPct');
+      const txtLeadCentral = document.getElementById('txtLeadCentral');
+      const txtAhorro = document.getElementById('txtAhorroCentral');
+      const txtSla = document.getElementById('txtSlaNacional');
+      const txtCapSur = document.getElementById('txtCapSur');
+      const txtCriticos = document.getElementById('txtCasosCriticos');
+
+      if (!slider || !txtPct) return;
+      
+      const pct = parseFloat(slider.value);
+      txtPct.textContent = pct + '%';
+
+      // Cálculos reactivos basados en el modelo de colas
+      const baseCentral = 2.10;
+      const nuevoLead = (baseCentral * (1 - (pct * 0.01 * 0.95))).toFixed(2);
+      txtLeadCentral.textContent = nuevoLead + ' h';
+      
+      const ahorroPct = ((baseCentral - nuevoLead) / baseCentral * 100).toFixed(1);
+      txtAhorro.innerHTML = `<i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i> -${ahorroPct}% de reducción de cola`;
+
+      const baseSla = 82.9;
+      const nuevoSla = (baseSla + (pct * 0.225)).toFixed(1);
+      txtSla.textContent = nuevoSla + '%';
+
+      const baseSur = 0.80;
+      const nuevoSur = (baseSur + (pct * 0.016)).toFixed(2);
+      txtCapSur.textContent = nuevoSur + ' h';
+
+      const baseCriticos = 17970;
+      const nuevosCriticos = Math.round(baseCriticos * (1 - (pct * 0.0188)));
+      txtCriticos.textContent = nuevosCriticos.toLocaleString('en-US');
+    }
+  </script>
+</MainLayout>

@@ -66,7 +66,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         
         <!-- Tarjeta 1: Tablero Histórico 360° -->
         <a href={`${baseUrl}/historico`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-blue-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
@@ -110,8 +110,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
         </a>
 
-        <!-- Tarjeta 2: Auditoría & Bitácora Transaccional (NUEVO) -->
-        <a href={`${baseUrl}/bitacora`} class="group bg-white rounded-3xl p-6 border-2 border-indigo-500/40 hover:border-indigo-600 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+        <!-- Tarjeta 2: Auditoría & Bitácora Transaccional -->
+        <a href={`${baseUrl}/bitacora`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-indigo-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full group-hover:bg-indigo-500/15 transition"></div>
           
           <div class="space-y-4 relative z-10">
@@ -121,10 +121,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
             <div>
               <div class="flex items-center gap-2">
-                <span class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Nuevo</span>
                 <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 2</span>
+                <span class="text-slate-400 text-xs font-medium">Eventos & Trazabilidad</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-indigo-600 transition">Auditoría & Bitácora Transaccional (Julio 2026)</h3>
+              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-indigo-600 transition">Auditoría & Bitácora Transaccional</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
                 Trazabilidad paso a paso con <strong class="text-slate-900">466,006 eventos</strong> y <strong class="text-slate-900">64,197 expedientes</strong>. Embudo de estados, cuellos de botella en colas y reasignaciones.
               </p>
@@ -138,21 +138,60 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
                 <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Cuellos de Botella en Colas sin Asignar
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Trazabilidad de Reasignación por Rechazo
-              </li>
-              <li class="flex items-center gap-2">
                 <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Modelo Maestro-Detalle con Drill-Down
               </li>
             </ul>
           </div>
 
           <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600 group-hover:text-indigo-700">
-            <span>Explorar Bitácora 2026</span>
+            <span>Explorar Bitácora</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
 
-        <!-- Tarjeta 3: Ingesta & Carga Dinámica -->
+        <!-- Tarjeta 3: Módulo Especializado RTU (NUEVO) -->
+        <a href={`${baseUrl}/rtu`} class="group bg-white rounded-3xl p-6 border-2 border-amber-500/50 hover:border-amber-600 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full group-hover:bg-amber-500/15 transition"></div>
+          
+          <div class="space-y-4 relative z-10">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200/60 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="file-check-2" class="w-6 h-6"></i>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Especializado</span>
+                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 3</span>
+              </div>
+              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-amber-600 transition">Tablero Especializado RTU (Julio 2026)</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Análisis dedicado a los <strong class="text-slate-900">420,606 expedientes</strong> de RTU. Actualizaciones, cancelaciones de establecimientos, inscripciones y productividad de 361 operadores.
+              </p>
+            </div>
+
+            <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Macro-Gestiones (Actualización / Cancelación)
+              </li>
+              <li class="flex items-center gap-2 font-bold text-amber-900">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i> Análisis de Tiempos & SLAs de Ciclo
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Desglose Territorial por 4 Regiones
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Rendimiento de Revisores & Procesos APS
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:text-amber-700">
+            <span>Abrir Módulo RTU</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+          </div>
+        </a>
+
+        <!-- Tarjeta 4: Ingesta & Carga Dinámica -->
         <a href={`${baseUrl}/cargar-datos`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-emerald-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full group-hover:bg-emerald-500/10 transition"></div>
           
@@ -163,7 +202,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
             <div>
               <div class="flex items-center gap-2">
-                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 3</span>
+                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 4</span>
                 <span class="text-slate-400 text-xs font-medium">Administración</span>
               </div>
               <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-emerald-600 transition">Centro de Ingesta & Carga de Datos</h3>
@@ -177,9 +216,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
                 <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Auto-detección de Esquema (18 / 21 cols)
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Normalización Automática de Viñetas
-              </li>
-              <li class="flex items-center gap-2">
                 <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Actualización Incremental DuckDB/Parquet
               </li>
               <li class="flex items-center gap-2">
@@ -189,7 +225,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
 
           <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
-            <span>Administrar Fuentes de Datos</span>
+            <span>Administrar Fuentes</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>

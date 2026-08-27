@@ -6,10 +6,28 @@ import MetodologiaModal from '../components/executive/MetodologiaModal.astro';
 interface Props {
   title?: string;
   loadOlapScripts?: boolean;
+  activeModule?: 'MENU' | 'AV' | 'BITACORA' | 'RTU' | 'CARGA';
 }
 
-const { title = "SAT Guatemala - Tablero Ejecutivo BI 360°", loadOlapScripts = false } = Astro.props;
+const { title = "SAT Guatemala - Tablero Ejecutivo BI 360°", loadOlapScripts = false, activeModule: propModule } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// Auto-detectar módulo activo si no se especificó como prop
+const currentPath = Astro.url.pathname.replace(baseUrl, "").replace(/^\//, "");
+let activeModule = propModule;
+if (!activeModule) {
+  if (currentPath.startsWith("rtu")) {
+    activeModule = "RTU";
+  } else if (currentPath.startsWith("bitacora")) {
+    activeModule = "BITACORA";
+  } else if (currentPath.startsWith("historico")) {
+    activeModule = "AV";
+  } else if (currentPath.startsWith("cargar-datos")) {
+    activeModule = "CARGA";
+  } else {
+    activeModule = "MENU";
+  }
+}
 ---
 
 <!DOCTYPE html>
@@ -131,19 +149,48 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
         </a>
 
+        <!-- Selector de los 3 Módulos Analíticos Principales (AV, Bitácora, RTU) -->
+        <div class="hidden sm:flex items-center gap-1 bg-slate-900/90 border border-slate-700/80 p-1 rounded-xl text-xs font-semibold">
+          <span class="text-[10px] text-slate-400 px-1.5 uppercase tracking-wider font-mono">Módulo:</span>
+          
+          <!-- Botón Agencia Virtual -->
+          <a 
+            href={`${baseUrl}/historico`} 
+            id="btnCuboAV" 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'AV' ? 'bg-blue-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            title="Módulo 1: Agencia Virtual (Histórico 360°, Activaciones y Cambios de Correo)"
+          >
+            <i data-lucide="shield" class="w-3 h-3"></i> AV (Histórico)
+          </a>
+
+          <!-- Botón Bitácora Transaccional -->
+          <a 
+            href={`${baseUrl}/bitacora`} 
+            id="btnCuboBitacora" 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'BITACORA' ? 'bg-indigo-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            title="Módulo 2: Bitácora Transaccional (Trazabilidad Forense y Eventos)"
+          >
+            <i data-lucide="activity" class="w-3 h-3"></i> Bitácora
+          </a>
+
+          <!-- Botón RTU Digital -->
+          <a 
+            href={`${baseUrl}/rtu`} 
+            id="btnCuboRTU" 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'RTU' ? 'bg-amber-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            title="Módulo 3: RTU Digital (Inscripciones, Actualizaciones y Tiempos RTU)"
+          >
+            <i data-lucide="file-check-2" class="w-3 h-3"></i> RTU Digital
+          </a>
+        </div>
+
         <!-- Enlaces Rápidos de Módulos (Desktop) -->
-        <nav class="hidden lg:flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl text-xs font-semibold text-slate-300">
-          <a href={`${baseUrl}/`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
+        <nav class="hidden xl:flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl text-xs font-semibold text-slate-300">
+          <a href={`${baseUrl}/`} class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 ${activeModule === 'MENU' ? 'bg-slate-800 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}>
             <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400"></i> Menú
           </a>
-          <a href={`${baseUrl}/historico`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
-            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-indigo-400"></i> Histórico
-          </a>
-          <a href={`${baseUrl}/bitacora`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
-            <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> Bitácora 2026
-          </a>
-          <a href={`${baseUrl}/cargar-datos`} class="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition flex items-center gap-1.5">
-            <i data-lucide="database" class="w-3.5 h-3.5 text-amber-400"></i> Cargar Datos
+          <a href={`${baseUrl}/cargar-datos`} class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 ${activeModule === 'CARGA' ? 'bg-emerald-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}>
+            <i data-lucide="database" class="w-3.5 h-3.5 text-emerald-400"></i> Cargar Datos
           </a>
         </nav>
       </div>
@@ -177,56 +224,132 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         <!-- Indicador de Estado del Sistema en Vivo -->
         <div id="statusMotorPill" class="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-amber-300 bg-amber-950/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-amber-500/30 transition-all duration-300 shadow-sm whitespace-nowrap">
           <span id="statusMotorDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-          <span id="statusMotorTxt" class="font-medium tracking-tight">865.8k</span>
+          <span id="statusMotorTxt" class="font-medium tracking-tight">{activeModule === 'RTU' ? '420.6k RTU' : activeModule === 'BITACORA' ? '466.0k Eventos' : '865.8k AV'}</span>
         </div>
       </div>
     </div>
 
-    <!-- Fila Inferior: Barra de Pestañas (Visible en Desktop y Tablet, en móvil se utiliza el dock inferior y menú drawer) -->
+    <!-- Fila Inferior: Barra de Pestañas DINÁMICAS SEGÚN EL MÓDULO ACTIVO -->
     <div class="hidden md:block max-w-7xl mx-auto px-6 relative">
-      <div id="navTabsContainer" role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60 scroll-smooth">
-        
-        <button role="tab" aria-selected="true" aria-controls="tab-macro" onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>1. Diagnóstico & Balance</span>
-        </button>
+      
+      {/* 1. Sub-menú Dinámico para RTU DIGITAL */}
+      {activeModule === 'RTU' && (
+        <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-2 border-t border-slate-800/60 py-1.5 scroll-smooth">
+          <a 
+            href={`${baseUrl}/rtu`} 
+            class={`tab-link ${currentPath === 'rtu' || currentPath === 'rtu/' ? 'active' : ''}`}
+          >
+            <i data-lucide="layout-grid" class="w-4 h-4 text-amber-400"></i>
+            <span>1. Tablero General RTU</span>
+          </a>
+          <a 
+            href={`${baseUrl}/rtu-tiempos`} 
+            class={`tab-link ${currentPath === 'rtu-tiempos' || currentPath === 'rtu-tiempos/' ? 'active' : ''}`}
+          >
+            <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+            <span>2. Tiempos de Ciclo & SLAs (Lead Time)</span>
+          </a>
+          <a 
+            href={`${baseUrl}/historico`} 
+            class="tab-link text-slate-400 hover:text-white"
+          >
+            <i data-lucide="arrow-left-right" class="w-4 h-4 text-blue-400"></i>
+            <span>Cambiar a Agencia Virtual (AV)</span>
+          </a>
+        </div>
+      )}
 
-        <button role="tab" aria-selected="false" aria-controls="tab-operativo" onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-link">
-          <i data-lucide="map-pin" class="w-4 h-4"></i>
-          <span>2. Regionales & Sobrecarga</span>
-        </button>
+      {/* 2. Sub-menú Dinámico para BITÁCORA TRANSACCIONAL */}
+      {activeModule === 'BITACORA' && (
+        <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-2 border-t border-slate-800/60 py-1.5 scroll-smooth">
+          <a 
+            href={`${baseUrl}/bitacora`} 
+            class="tab-link active"
+          >
+            <i data-lucide="activity" class="w-4 h-4 text-indigo-400"></i>
+            <span>1. Auditoría de Eventos & Trazabilidad Forense</span>
+          </a>
+          <a 
+            href={`${baseUrl}/historico`} 
+            class="tab-link text-slate-400 hover:text-white"
+          >
+            <i data-lucide="shield" class="w-4 h-4 text-blue-400"></i>
+            <span>Tablero Histórico 360°</span>
+          </a>
+          <a 
+            href={`${baseUrl}/rtu`} 
+            class="tab-link text-slate-400 hover:text-white"
+          >
+            <i data-lucide="file-check-2" class="w-4 h-4 text-amber-400"></i>
+            <span>Módulo RTU Digital</span>
+          </a>
+        </div>
+      )}
 
-        <button role="tab" aria-selected="false" aria-controls="tab-tiempos" onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-link">
-          <i data-lucide="clock" class="w-4 h-4"></i>
-          <span>3. Jornada 8h & SLAs</span>
-        </button>
+      {/* 3. Sub-menú Dinámico para AGENCIA VIRTUAL (HISTÓRICO 360°) */}
+      {activeModule === 'AV' && (
+        <div id="navTabsContainer" role="tablist" aria-label="Secciones del Tablero" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60 scroll-smooth">
+          <button role="tab" aria-selected="true" aria-controls="tab-macro" onclick="switchTab('tab-macro')" id="btn-macro" class="tab-link active">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>1. Diagnóstico & Balance</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-operativo" onclick="switchTab('tab-operativo')" id="btn-operativo" class="tab-link">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+            <span>2. Regionales & Sobrecarga</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-tiempos" onclick="switchTab('tab-tiempos')" id="btn-tiempos" class="tab-link">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+            <span>3. Jornada 8h & SLAs</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-calidad" onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-link">
+            <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+            <span>4. Rechazos & Re-trabajo</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-gestion" onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span>5. Revisores & Cuadrantes</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-auditoria" onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
+            <i data-lucide="table" class="w-4 h-4"></i>
+            <span>6. Auditoría Forense</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-informe2026" onclick="switchTab('tab-informe2026')" id="btn-informe2026" class="tab-link text-blue-300 hover:text-blue-200">
+            <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
+            <span>7. Informe Ejecutivo 2026</span>
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-hallazgos" onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link text-amber-300 hover:text-amber-200">
+            <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+            <span>8. Hallazgos & Plan de Acción</span>
+          </button>
+        </div>
+      )}
 
-        <button role="tab" aria-selected="false" aria-controls="tab-calidad" onclick="switchTab('tab-calidad')" id="btn-calidad" class="tab-link">
-          <i data-lucide="alert-octagon" class="w-4 h-4"></i>
-          <span>4. Rechazos & Re-trabajo</span>
-        </button>
+      {/* 4. Sub-menú Dinámico para MENÚ PRINCIPAL o CARGA */}
+      {(activeModule === 'MENU' || activeModule === 'CARGA') && (
+        <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-2 border-t border-slate-800/60 py-1.5 scroll-smooth">
+          <a href={`${baseUrl}/`} class={`tab-link ${activeModule === 'MENU' ? 'active' : ''}`}>
+            <i data-lucide="home" class="w-4 h-4 text-blue-400"></i>
+            <span>Menú Principal Maestro</span>
+          </a>
+          <a href={`${baseUrl}/historico`} class="tab-link text-slate-400 hover:text-white">
+            <i data-lucide="shield" class="w-4 h-4 text-blue-400"></i>
+            <span>Módulo 1: Agencia Virtual (AV)</span>
+          </a>
+          <a href={`${baseUrl}/bitacora`} class="tab-link text-slate-400 hover:text-white">
+            <i data-lucide="activity" class="w-4 h-4 text-indigo-400"></i>
+            <span>Módulo 2: Bitácora Transaccional</span>
+          </a>
+          <a href={`${baseUrl}/rtu`} class="tab-link text-slate-400 hover:text-white">
+            <i data-lucide="file-check-2" class="w-4 h-4 text-amber-400"></i>
+            <span>Módulo 3: RTU Digital</span>
+          </a>
+          <a href={`${baseUrl}/cargar-datos`} class={`tab-link ${activeModule === 'CARGA' ? 'active' : ''}`}>
+            <i data-lucide="database" class="w-4 h-4 text-emerald-400"></i>
+            <span>Centro de Carga & Ingesta</span>
+          </a>
+        </div>
+      )}
 
-        <button role="tab" aria-selected="false" aria-controls="tab-gestion" onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
-          <i data-lucide="users" class="w-4 h-4"></i>
-          <span>5. Revisores & Cuadrantes</span>
-        </button>
-
-        <button role="tab" aria-selected="false" aria-controls="tab-auditoria" onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
-          <i data-lucide="table" class="w-4 h-4"></i>
-          <span>6. Auditoría Forense</span>
-        </button>
-
-        <button role="tab" aria-selected="false" aria-controls="tab-informe2026" onclick="switchTab('tab-informe2026')" id="btn-informe2026" class="tab-link text-blue-300 hover:text-blue-200">
-          <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
-          <span>7. Informe Ejecutivo 2026</span>
-        </button>
-
-        <button role="tab" aria-selected="false" aria-controls="tab-hallazgos" onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link text-amber-300 hover:text-amber-200">
-          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
-          <span>8. Hallazgos & Plan de Acción</span>
-        </button>
-
-      </div>
     </div>
   </header>
 
@@ -634,6 +757,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     });
 
     // Command Palette Elements
+    const baseUrl = window.BASE_URL || '';
     const SEARCH_ITEMS = [
       { id: 'tab-macro', title: '1. Diagnóstico & Balance General', desc: 'KPIs globales, First-Time Resolution (FTR), Tasa de Recuperación', icon: 'layout-dashboard', keywords: 'resumen kpi general universo aprobados ftr balance macro' },
       { id: 'tab-operativo', title: '2. Regionales & Sobrecarga', desc: 'Demanda vs Tiempo de atención, Índice de saturación por gerencia', icon: 'map-pin', keywords: 'regional central occidente sur nororiente sobrecarga volumen cuellos botella' },
@@ -642,7 +766,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       { id: 'tab-gestion', title: '5. Revisores & Cuadrantes', desc: 'Matriz de dispersión inter-revisores, Top operadores, Cuadrantes operativos', icon: 'users', keywords: 'revisores operadores dispersión subjetividad cuadrantes velocidad productividad' },
       { id: 'tab-auditoria', title: '6. Auditoría Forense', desc: 'Muestreo individual de expedientes, traza por NIT y rondas de dictamen', icon: 'table', keywords: 'auditoría expedientes muestra forense nit estado rondas detalle tabla' },
       { id: 'tab-informe2026', title: '7. Informe Ejecutivo 2026', desc: 'Dictamen directivo consolidado, metas y estadísticas 2026', icon: 'file-text', keywords: 'informe ejecutivo 2026 reporte directores gerencia' },
-      { id: 'tab-hallazgos', title: '8. Hallazgos & Plan de Acción', desc: 'Matriz de rescate, recomendaciones de TI, modelo dual de medición', icon: 'sparkles', keywords: 'hallazgos recomendaciones plan accion rescate oportunidades ia mejoras' }
+      { id: 'tab-hallazgos', title: '8. Hallazgos & Plan de Acción', desc: 'Matriz de rescate, recomendaciones de TI, modelo dual de medición', icon: 'sparkles', keywords: 'hallazgos recomendaciones plan accion rescate oportunidades ia mejoras' },
+      { id: 'page-rtu-tiempos', url: `${baseUrl}/rtu-tiempos`, title: '⏱️ RTU: Análisis de Tiempos & SLAs', desc: 'Mediana 1.5h, Brecha Regional y Simulador de Rebalanceo', icon: 'clock', keywords: 'rtu tiempos sla horas habiles simulador lead time cola' },
+      { id: 'page-rtu', url: `${baseUrl}/rtu`, title: '📋 RTU: Tablero General RTU (420.6k)', desc: 'Inscripciones, Actualizaciones y Cancelación de Establecimientos', icon: 'file-check-2', keywords: 'rtu digital inscripcion actualizacion cese negocios' },
+      { id: 'page-bitacora', url: `${baseUrl}/bitacora`, title: '🔍 Bitácora Transaccional & Auditoría', desc: '466.0k eventos, trazabilidad de estados y cuellos de botella', icon: 'activity', keywords: 'bitacora eventos trazabilidad auditoria logs' }
     ];
 
     function renderCommandPalette(items) {
@@ -687,7 +814,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     };
 
     window.selectCommandItem = function(tabId) {
-      window.switchTab(tabId);
+      const item = SEARCH_ITEMS.find(it => it.id === tabId);
+      if (item && item.url) {
+        window.location.href = item.url;
+        return;
+      }
+      if (typeof window.switchTab === 'function') {
+        window.switchTab(tabId);
+      }
       window.toggleCommandPalette();
     };
 
@@ -828,6 +962,30 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         }
       }
     });
+
+    // Control de Cambio Global de Cubos (AV, Bitácora, RTU)
+    window.selectCuboGlobal = function(cuboTipo) {
+      const btnAV = document.getElementById('btnCuboAV');
+      const btnBitacora = document.getElementById('btnCuboBitacora');
+      const btnRTU = document.getElementById('btnCuboRTU');
+
+      [btnAV, btnBitacora, btnRTU].forEach(btn => {
+        if (!btn) return;
+        btn.className = 'px-2.5 py-1 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-1';
+      });
+
+      if (cuboTipo === 'AV' && btnAV) {
+        btnAV.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white transition flex items-center gap-1 shadow-xs font-bold';
+      } else if (cuboTipo === 'BITACORA' && btnBitacora) {
+        btnBitacora.className = 'px-2.5 py-1 rounded-lg bg-emerald-600 text-white transition flex items-center gap-1 shadow-xs font-bold';
+      } else if (cuboTipo === 'RTU' && btnRTU) {
+        btnRTU.className = 'px-2.5 py-1 rounded-lg bg-amber-600 text-white transition flex items-center gap-1 shadow-xs font-bold';
+      }
+
+      if (typeof window.switchCubo === 'function') {
+        window.switchCubo(cuboTipo);
+      }
+    };
   </script>
 
 </body>
