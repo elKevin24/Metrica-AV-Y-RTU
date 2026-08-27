@@ -696,6 +696,40 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       </div>
     </div>
 
+    <!-- TABLA DE AUDITORIA MUESTRAL (500 EXPEDIENTES) -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+        <div>
+          <h2 class="text-sm font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="list-checks" class="w-4 h-4 text-blue-600"></i> Auditoría Muestral — 500 Expedientes (Bitácora)
+          </h2>
+          <p class="text-xs text-slate-500">Clic en los encabezados de columna para ordenar por tiempo, operador, ronda, etc.</p>
+        </div>
+        <span class="bg-blue-50 text-blue-800 border border-blue-200 text-xs px-3 py-1 rounded-xl font-bold">Muestra</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table id="tableBitacoraAudit" class="display w-full text-left text-xs stripe hover" style="width:100%">
+          <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase text-[10px] tracking-wider">
+            <tr>
+              <th>No. Gestión</th>
+              <th>Contribuyente</th>
+              <th>Tipo Trámite</th>
+              <th>Ronda</th>
+              <th>Región</th>
+              <th>Estado</th>
+              <th>Operador</th>
+              <th>Tiempo Atención</th>
+              <th>Tiempo Rechazo</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyBitacoraAudit">
+            <!-- Inyectado dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </main>
 
   <!-- Script Cliente para Carga y Filtrado Dinámico -->
@@ -709,6 +743,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         gBitacoraData = await res.json();
         if (gBitacoraData && gBitacoraData.operadores_productividad_8h) {
           renderProductividad(gBitacoraData.operadores_productividad_8h);
+        }
+        if (gBitacoraData && gBitacoraData.dataset_muestral_500) {
+          renderBitacoraAuditTable(gBitacoraData.dataset_muestral_500);
         }
       } catch (err) {
         console.error('Error cargando datos de bitácora:', err);
@@ -770,6 +807,81 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           const maxRec = displayCap.reduce((max, r) => Math.max(max, r.Record_Dia), 0);
           elMaxRec.innerText = `${maxRec} casos`;
         }
+      }
+    }
+
+    function renderBitacoraAuditTable(muestra) {
+      const tbody = document.getElementById('tbodyBitacoraAudit');
+      if (!tbody || !muestra || muestra.length === 0) return;
+
+      function fmtTime(sec) {
+        if (sec == null || isNaN(sec)) return '<span class="text-slate-300">-</span>';
+        const hrs = sec / 3600;
+        if (hrs < 0.001) return `<span class="font-mono font-bold text-emerald-700">${(sec).toFixed(1)}s</span>`;
+        if (hrs < 1) return `<span class="font-mono font-bold text-emerald-700">${(sec/60).toFixed(1)}m</span>`;
+        return `<span class="font-mono font-bold text-emerald-700">${hrs.toFixed(2)}h</span>`;
+      }
+
+      function fmtTimeRech(sec) {
+        if (sec == null || isNaN(sec) || sec <= 0) return '<span class="text-slate-300">-</span>';
+        const hrs = sec / 3600;
+        if (hrs < 0.001) return `<span class="font-mono font-bold text-rose-700">${(sec).toFixed(1)}s</span>`;
+        if (hrs < 1) return `<span class="font-mono font-bold text-rose-700">${(sec/60).toFixed(1)}m</span>`;
+        return `<span class="font-mono font-bold text-rose-700">${hrs.toFixed(2)}h</span>`;
+      }
+
+      let html = '';
+      muestra.forEach((row, idx) => {
+        const ng = row.NoGestion || '-';
+        const nit = row.NIT || '-';
+        const gest = row.Gestion || 'ACTIVACIÓN';
+        const ronda = row.Ronda_Revision || '-';
+        const reg = row.Region || '-';
+        const est = row.Estado || '-';
+        const op = row.U1 || 'AP_MS_SAT_EN_LINEA';
+
+        let badgeEst = '';
+        if (est === 'APROBADA') badgeEst = '<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">APROBADA</span>';
+        else if (est === 'RECHAZADA') badgeEst = '<span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-bold">RECHAZADA</span>';
+        else if (est === 'CANCELADA') badgeEst = '<span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">CANCELADA</span>';
+        else if (est === 'NO CONFIRMADA') badgeEst = '<span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-bold">NO CONFIRMADA</span>';
+        else badgeEst = `<span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">${est}</span>`;
+
+        let badgeRonda = '';
+        if (ronda === '1RA_DIRECTA') badgeRonda = '<span class="bg-emerald-50 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold border border-emerald-200">1RA DIRECTA</span>';
+        else if (ronda === '2DA_SUBSANADA') badgeRonda = '<span class="bg-blue-50 text-blue-800 text-[10px] px-2 py-0.5 rounded font-bold border border-blue-200">2DA SUBSANADA</span>';
+        else if (ronda === '3RA_MAS') badgeRonda = '<span class="bg-amber-50 text-amber-800 text-[10px] px-2 py-0.5 rounded font-bold border border-amber-200">3RA+</span>';
+        else badgeRonda = `<span class="bg-slate-50 text-slate-700 text-[10px] px-2 py-0.5 rounded font-bold border border-slate-200">${ronda}</span>`;
+
+        const secFinal = row.Atencion_Final_Sec;
+        const secRech = row.Atencion_Rechazo_Sec;
+
+        html += `<tr class="hover:bg-slate-50 transition border-b border-slate-100">
+          <td class="font-mono text-blue-700 font-bold text-[11px]">${ng}</td>
+          <td class="font-medium text-slate-900 text-[11px] max-w-[140px] truncate" title="${nit}">${nit}</td>
+          <td class="text-slate-600 text-[11px]">${gest}</td>
+          <td>${badgeRonda}</td>
+          <td><span class="font-semibold text-slate-700">${reg}</span></td>
+          <td>${badgeEst}</td>
+          <td class="text-slate-700 font-semibold text-[11px]">${op}</td>
+          <td data-order="${(secFinal || 0)/3600}" class="text-right">${fmtTime(secFinal)}</td>
+          <td data-order="${(secRech || 0)/3600}" class="text-right">${fmtTimeRech(secRech)}</td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
+
+      if (typeof jQuery !== 'undefined' && jQuery.fn.DataTable) {
+        jQuery('#tableBitacoraAudit').DataTable({
+          pageLength: 10,
+          deferRender: true,
+          order: [[7, 'asc']],
+          language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ por página",
+            info: "Mostrando _START_ a _END_ de _TOTAL_",
+            paginate: { next: "→", previous: "←" }
+          }
+        });
       }
     }
 
