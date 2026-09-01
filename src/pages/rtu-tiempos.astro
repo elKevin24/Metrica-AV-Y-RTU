@@ -39,6 +39,164 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       </div>
     </div>
 
+    <!-- SECCIÓN CLAVE: PROMEDIO DE ATENCIÓN GENERAL & DESCOMPOSICIÓN DE TIEMPOS -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold mb-1">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+            <span>Diagnóstico de Atención General y Humana</span>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900">Promedio de Atención General en RTU</h2>
+          <p class="text-xs text-slate-500">Desglose integral de los 3 niveles de tiempo: Atención Humana Activa, Espera en Cola y Lead Time Total</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] bg-slate-900 text-amber-400 px-3 py-1 rounded-lg font-mono font-bold">
+            420,606 Casos Analizados
+          </span>
+        </div>
+      </div>
+
+      <!-- Grid de 3 Niveles de Atención -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Nivel 1: Atención Humana Activa -->
+        <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-950 uppercase tracking-wider">1. Atención Humana Activa</span>
+            <span class="p-1.5 rounded-lg bg-emerald-100 text-emerald-700">
+              <i data-lucide="user-check" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <p class="text-xs text-emerald-900 leading-relaxed">
+            Tiempo neto en pantalla del operador dictaminando (<code>fecha_revisor &rarr; fecha_estado</code>).
+          </p>
+          <div class="pt-2 border-t border-emerald-200/60 space-y-1.5">
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-emerald-900 font-semibold">Promedio Ponderado:</span>
+              <span class="text-lg font-mono font-black text-emerald-700">2.34 min</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-emerald-900 font-semibold">Mediana (p50):</span>
+              <span class="text-base font-mono font-bold text-emerald-800">1.95 min (117 s)</span>
+            </div>
+            <div class="flex justify-between items-baseline text-[11px] text-emerald-700">
+              <span>Ritmo por Operador:</span>
+              <span class="font-mono font-bold">25.6 casos / hora</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-emerald-700 bg-emerald-100/60 p-2 rounded-lg">
+            Universo evaluado: <strong>224,813 expedientes</strong> con revisor asignado.
+          </p>
+        </div>
+
+        <!-- Nivel 2: Tiempo en Cola / Espera -->
+        <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-950 uppercase tracking-wider">2. Espera en Cola Central</span>
+            <span class="p-1.5 rounded-lg bg-amber-100 text-amber-700">
+              <i data-lucide="hourglass" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <p class="text-xs text-amber-900 leading-relaxed">
+            Tiempo flotando en bolsón hasta ser tomado por revisor (<code>fecha_creacion &rarr; fecha_revisor</code>).
+          </p>
+          <div class="pt-2 border-t border-amber-200/60 space-y-1.5">
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-amber-900 font-semibold">Promedio Hábil:</span>
+              <span class="text-lg font-mono font-black text-amber-700">1.35 horas</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-amber-900 font-semibold">Mediana (p50):</span>
+              <span class="text-base font-mono font-bold text-amber-800">1.10 h (66 min)</span>
+            </div>
+            <div class="flex justify-between items-baseline text-[11px] text-amber-700">
+              <span>Peso en el Proceso:</span>
+              <span class="font-mono font-bold text-rose-600">84.6% del tiempo</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-amber-800 bg-amber-100/60 p-2 rounded-lg">
+            Es el principal cuello de botella de la experiencia ciudadana.
+          </p>
+        </div>
+
+        <!-- Nivel 3: Lead Time Total Hábil -->
+        <div class="p-5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-950 uppercase tracking-wider">3. Lead Time Total Hábil</span>
+            <span class="p-1.5 rounded-lg bg-blue-100 text-blue-700">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <p class="text-xs text-blue-900 leading-relaxed">
+            Ciclo total hábil experimentado por el ciudadano (<code>fecha_creacion &rarr; fecha_estado</code>).
+          </p>
+          <div class="pt-2 border-t border-blue-200/60 space-y-1.5">
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-blue-900 font-semibold">Promedio General:</span>
+              <span class="text-lg font-mono font-black text-blue-700">2.18 horas</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-blue-900 font-semibold">Mediana (p50):</span>
+              <span class="text-base font-mono font-bold text-blue-800">1.50 h (90 min)</span>
+            </div>
+            <div class="flex justify-between items-baseline text-[11px] text-blue-700">
+              <span>SLA Misma Jornada (&le;8h):</span>
+              <span class="font-mono font-bold text-emerald-600">82.9% cumplimiento</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-blue-800 bg-blue-100/60 p-2 rounded-lg">
+            Promedio 24/7 continuo en horas calendario: <strong>6.45 horas</strong>.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Tabla Comparativa Ejecutiva de Medición -->
+      <div class="border border-slate-200 rounded-2xl overflow-hidden text-xs">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-slate-900 text-white font-mono text-[11px]">
+            <tr>
+              <th class="p-3">Dimensión de Atención</th>
+              <th class="p-3">Fórmula Aplicada</th>
+              <th class="p-3 text-center">Promedio</th>
+              <th class="p-3 text-center">Mediana (p50)</th>
+              <th class="p-3 text-right">Volumen Evaluado</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-sans">
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-emerald-950 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Atención Humana Activa
+              </td>
+              <td class="p-3 font-mono text-slate-600 text-[11px]">fecha_estado - fecha_revisor</td>
+              <td class="p-3 font-mono font-bold text-emerald-700 text-center">2.34 min</td>
+              <td class="p-3 font-mono font-bold text-emerald-800 text-center">1.95 min</td>
+              <td class="p-3 text-right font-mono font-semibold text-slate-700">224,813 casos</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-amber-950 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span> Espera en Cola Central
+              </td>
+              <td class="p-3 font-mono text-slate-600 text-[11px]">fecha_revisor - fecha_creacion</td>
+              <td class="p-3 font-mono font-bold text-amber-700 text-center">1.35 horas</td>
+              <td class="p-3 font-mono font-bold text-amber-800 text-center">1.10 horas</td>
+              <td class="p-3 text-right font-mono font-semibold text-slate-700">224,813 casos</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-slate-50/50">
+              <td class="p-3 font-bold text-blue-950 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span> Lead Time Total Hábil
+              </td>
+              <td class="p-3 font-mono text-slate-600 text-[11px]">fecha_estado - fecha_creacion</td>
+              <td class="p-3 font-mono font-bold text-blue-700 text-center">2.18 horas</td>
+              <td class="p-3 font-mono font-bold text-blue-800 text-center">1.50 horas</td>
+              <td class="p-3 text-right font-mono font-black text-slate-900">420,606 casos</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- 1. RESUMEN DE INDICADORES DE TIEMPO CLAVE -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
       

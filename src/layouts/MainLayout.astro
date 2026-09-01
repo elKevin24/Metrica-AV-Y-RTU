@@ -261,14 +261,27 @@ if (!activeModule) {
 
       {/* 2. Sub-menú Dinámico para BITÁCORA TRANSACCIONAL */}
       {activeModule === 'BITACORA' && (
-        <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-2 border-t border-slate-800/60 py-1.5 scroll-smooth">
-          <a 
-            href={`${baseUrl}/bitacora`} 
-            class="tab-link active"
-          >
-            <i data-lucide="activity" class="w-4 h-4 text-indigo-400"></i>
-            <span>1. Auditoría de Eventos & Trazabilidad Forense</span>
-          </a>
+        <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-1 border-t border-slate-800/60 py-1.5 scroll-smooth">
+          <button onclick="switchBitacoraTab('tab-bitacora-hallazgos')" id="btn-bitacora-hallazgos" class="tab-link active">
+            <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+            <span>1. Hallazgos & Modelo Predictivo 8h</span>
+          </button>
+          <button onclick="switchBitacoraTab('tab-bitacora-kpis')" id="btn-bitacora-kpis" class="tab-link">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-indigo-400"></i>
+            <span>2. Balance Operativo & Funnel</span>
+          </button>
+          <button onclick="switchBitacoraTab('tab-bitacora-buscador')" id="btn-bitacora-buscador" class="tab-link">
+            <i data-lucide="search" class="w-4 h-4 text-blue-400"></i>
+            <span>3. Buscador Forense de Expedientes</span>
+          </button>
+          <button onclick="switchBitacoraTab('tab-bitacora-tiempos')" id="btn-bitacora-tiempos" class="tab-link">
+            <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
+            <span>4. Desmitificación de Tiempos & SLAs</span>
+          </button>
+          <button onclick="switchBitacoraTab('tab-bitacora-analisis')" id="btn-bitacora-analisis" class="tab-link">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
+            <span>5. Gráficos & Distribución Territorial</span>
+          </button>
           <a 
             href={`${baseUrl}/historico`} 
             class="tab-link text-slate-400 hover:text-white"
@@ -725,6 +738,53 @@ if (!activeModule) {
       });
     };
 
+    // Enrutador de pestañas para Módulo de Bitácora
+    window.switchBitacoraTab = function(tabId) {
+      document.querySelectorAll('.bitacora-tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('#navTabsContainer .tab-link').forEach(el => {
+        el.classList.remove('active');
+        el.setAttribute('aria-selected', 'false');
+      });
+
+      const targetContent = document.getElementById(tabId);
+      if (targetContent) {
+        targetContent.classList.remove('hidden');
+      }
+
+      const btnMap = {
+        'tab-bitacora-hallazgos': 'btn-bitacora-hallazgos',
+        'tab-bitacora-kpis': 'btn-bitacora-kpis',
+        'tab-bitacora-buscador': 'btn-bitacora-buscador',
+        'tab-bitacora-tiempos': 'btn-bitacora-tiempos',
+        'tab-bitacora-analisis': 'btn-bitacora-analisis'
+      };
+
+      const btnId = btnMap[tabId];
+      if (btnId) {
+        const targetBtn = document.getElementById(btnId);
+        if (targetBtn) {
+          targetBtn.classList.add('active');
+          targetBtn.setAttribute('aria-selected', 'true');
+        }
+      }
+
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      try {
+        history.replaceState(null, '', '#' + tabId);
+      } catch(e) {}
+
+      if (window.lucide) lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        if (typeof window.resizeBitacoraCharts === 'function') {
+          window.resizeBitacoraCharts();
+        }
+      });
+    };
+
     // Navegar paso a paso (Anterior -1 / Siguiente +1)
     window.navigateTabStep = function(direction) {
       const activeBtn = document.querySelector('.tab-link.active');
@@ -881,11 +941,15 @@ if (!activeModule) {
       }
     };
 
-    // Soporte para deep-linking con URL hash (ej. /#tab-auditoria)
+    // Soporte para deep-linking con URL hash (ej. /#tab-auditoria o /bitacora#tab-bitacora-hallazgos)
     document.addEventListener('DOMContentLoaded', () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash && document.getElementById(hash)) {
-        window.switchTab(hash);
+      if (hash) {
+        if (hash.startsWith('tab-bitacora-') && typeof window.switchBitacoraTab === 'function') {
+          window.switchBitacoraTab(hash);
+        } else if (document.getElementById(hash) && typeof window.switchTab === 'function') {
+          window.switchTab(hash);
+        }
       }
     });
 
