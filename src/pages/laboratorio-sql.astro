@@ -22,7 +22,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           Laboratorio SQL & Explorador ROLAP
         </h1>
         <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-          Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> de <code class="text-cyan-300 font-mono">maestro_expedientes.parquet</code> mediante SQL columnar en memoria.
+          Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> de <code class="text-cyan-300 font-mono">maestro_expedientes.parquet</code> con visualización en tabla o gráfica.
         </p>
       </div>
 
@@ -134,33 +134,124 @@ ORDER BY Total_Expedientes DESC;</textarea>
           </div>
         </div>
 
-        <!-- Barra de Estado de la Consulta -->
-        <div class="flex items-center justify-between text-xs px-1">
+        <!-- Barra de Estado, Conmutador de Vistas y Exportación -->
+        <div class="flex items-center justify-between flex-wrap gap-3 text-xs px-1">
           <div class="flex items-center gap-3">
             <span id="queryLatencyBadge" class="text-slate-500 font-mono">Esperando ejecución...</span>
             <span id="queryRowCountBadge" class="text-slate-500 font-mono hidden">0 registros</span>
           </div>
 
-          <button id="btnExportCsv" onclick="exportResultsToCsv()" class="hidden text-xs text-slate-700 hover:text-blue-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Exportar a CSV
-          </button>
+          <!-- Selector de Vistas (Tabla / Gráfico) y Exportar -->
+          <div class="flex items-center gap-2">
+            <!-- Tabs Vista Tabla vs Vista Gráfico -->
+            <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200">
+              <button 
+                id="btnViewTable" 
+                onclick="switchResultView('table')" 
+                class="px-2.5 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-xs flex items-center gap-1 transition"
+              >
+                <i data-lucide="table" class="w-3.5 h-3.5 text-blue-600"></i> Tabla
+              </button>
+              <button 
+                id="btnViewChart" 
+                onclick="switchResultView('chart')" 
+                class="px-2.5 py-1 text-xs font-semibold rounded-md text-slate-600 hover:text-slate-900 flex items-center gap-1 transition"
+              >
+                <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-indigo-600"></i> Gráfico
+              </button>
+            </div>
+
+            <button id="btnExportCsv" onclick="exportResultsToCsv()" class="hidden text-xs text-slate-700 hover:text-blue-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
+            </button>
+          </div>
         </div>
 
-        <!-- Contenedor de Resultados -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden min-h-[320px] flex flex-col justify-between">
-          <div class="overflow-x-auto" id="resultsTableContainer">
-            <div class="p-12 text-center text-slate-400 space-y-2">
-              <i data-lucide="play-circle" class="w-10 h-10 mx-auto text-slate-300"></i>
-              <p class="text-sm font-medium">Presiona <strong class="text-slate-700">"Ejecutar Consulta"</strong> o <strong class="text-slate-700">Ctrl + Enter</strong> para procesar la consulta.</p>
-              <p class="text-xs text-slate-400">El motor ejecutará el SQL columnar directamente en tu navegador.</p>
+        <!-- Contenedor de Resultados (Dual: Tabla o Gráfico) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden min-h-[360px] flex flex-col justify-between">
+          
+          <!-- 1. VISTA TABLA -->
+          <div id="viewTableContainer" class="overflow-x-auto">
+            <div id="resultsTableContainer">
+              <div class="p-12 text-center text-slate-400 space-y-2">
+                <i data-lucide="play-circle" class="w-10 h-10 mx-auto text-slate-300"></i>
+                <p class="text-sm font-medium">Presiona <strong class="text-slate-700">"Ejecutar Consulta"</strong> o <strong class="text-slate-700">Ctrl + Enter</strong> para procesar la consulta.</p>
+                <p class="text-xs text-slate-400">El motor ejecutará el SQL columnar directamente en tu navegador.</p>
+              </div>
             </div>
           </div>
 
-          <!-- Paginador / Resumen Footer -->
-          <div id="resultsFooter" class="hidden bg-slate-50 px-4 py-2 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
-            <span id="resultsFooterInfo">Mostrando filas</span>
-            <span class="text-[10px] text-slate-400 font-mono">DuckDB-Wasm In-Memory Execution</span>
+          <!-- 2. VISTA GRÁFICO (Chart Builder) -->
+          <div id="viewChartContainer" class="hidden p-5 space-y-4">
+            <!-- Barra de Controles de la Gráfica -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+              <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center gap-1.5">
+                  <label for="chartTypeSelect" class="font-bold text-slate-700">Tipo:</label>
+                  <select id="chartTypeSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-medium focus:outline-blue-500">
+                    <option value="bar">Barras Verticales</option>
+                    <option value="line">Línea Temporal</option>
+                    <option value="doughnut">Dona / Circular</option>
+                    <option value="pie">Pastel</option>
+                  </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <label for="chartAxisXSelect" class="font-bold text-slate-700">Eje X (Categoría):</label>
+                  <select id="chartAxisXSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-mono focus:outline-blue-500">
+                    <!-- Rellenado dinámicamente -->
+                  </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <label for="chartAxisYSelect" class="font-bold text-slate-700">Eje Y (Métrica):</label>
+                  <select id="chartAxisYSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-mono focus:outline-blue-500">
+                    <!-- Rellenado dinámicamente -->
+                  </select>
+                </div>
+              </div>
+
+              <span class="text-[11px] text-slate-500 font-mono" id="chartRowCountInfo">0 puntos graficados</span>
+            </div>
+
+            <!-- Canvas de Chart.js -->
+            <div class="relative w-full h-80 flex items-center justify-center">
+              <canvas id="rolapChartCanvas"></canvas>
+            </div>
           </div>
+
+          <!-- Paginador Interactivo Footer (Mejora 3) -->
+          <div id="resultsFooter" class="hidden bg-slate-50 px-4 py-2.5 border-t border-slate-200 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span id="resultsFooterInfo">Mostrando 0 a 0 de 0</span>
+              <span class="text-slate-300">|</span>
+              <label for="pageSizeSelect" class="text-slate-500">Filas por página:</label>
+              <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="bg-white border border-slate-300 rounded px-1.5 py-0.5 text-slate-700 font-medium">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+
+            <!-- Botones de Navegación Paginador -->
+            <div class="flex items-center gap-1 font-medium" id="paginationControls">
+              <button onclick="goToPage(1)" id="btnPageFirst" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Primera página">
+                &laquo;
+              </button>
+              <button onclick="goToPrevPage()" id="btnPagePrev" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Página anterior">
+                &lsaquo; Ant
+              </button>
+              <span id="pageIndicator" class="px-2.5 py-1 font-mono text-slate-700">1 / 1</span>
+              <button onclick="goToNextPage()" id="btnPageNext" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Página siguiente">
+                Sig &rsaquo;
+              </button>
+              <button onclick="goToPage(totalPages)" id="btnPageLast" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Última página">
+                &raquo;
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -169,7 +260,7 @@ ORDER BY Total_Expedientes DESC;</textarea>
 
   </div>
 
-  <!-- SCRIPT DEL MOTOR DUCKDB-WASM Y CONTROLADOR DE LA CONSOLA -->
+  <!-- SCRIPT DEL MOTOR DUCKDB-WASM, CHART BUILDER Y PAGINADOR -->
   <script is:inline type="module" define:vars={{ baseUrl }}>
     import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
 
@@ -177,6 +268,15 @@ ORDER BY Total_Expedientes DESC;</textarea>
     let conn = null;
     let lastResultRows = [];
     let lastResultCols = [];
+    
+    // Estado de Paginación
+    let currentPage = 1;
+    let pageSize = 25;
+    let totalPages = 1;
+
+    // Estado del Gráfico
+    let currentChart = null;
+    let currentView = 'table'; // 'table' | 'chart'
 
     const TEMPLATES = [
       // 0. Cuello de Botella por Hora
@@ -308,22 +408,18 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
         statusEl.className = 'font-mono text-emerald-400 font-bold';
         dotEl.className = 'w-2 h-2 rounded-full bg-emerald-400';
 
-        // Renderizar diccionario de columnas
         renderColumnsList(COLUMNS_DICT);
-
-        // Ejecutar primera consulta de demostración
         executeCurrentQuery();
 
       } catch (err) {
         console.error('Error inicializando DuckDB-WASM:', err);
-        statusEl.textContent = 'Modo Local / Simulación';
+        statusEl.textContent = 'Modo Local / Error';
         statusEl.className = 'font-mono text-amber-400 font-bold';
         dotEl.className = 'w-2 h-2 rounded-full bg-amber-400';
         renderColumnsList(COLUMNS_DICT);
       }
     }
 
-    // Renderizar lista de columnas en el explorador
     function renderColumnsList(cols) {
       const container = document.getElementById('columnListContainer');
       if (!container) return;
@@ -364,6 +460,141 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       document.getElementById('sqlEditor').focus();
     };
 
+    // Alternar entre Vista Tabla y Vista Gráfico (Mejora 1)
+    window.switchResultView = function(view) {
+      currentView = view;
+      const btnTable = document.getElementById('btnViewTable');
+      const btnChart = document.getElementById('btnViewChart');
+      const viewTable = document.getElementById('viewTableContainer');
+      const viewChart = document.getElementById('viewChartContainer');
+
+      if (view === 'table') {
+        btnTable.className = 'px-2.5 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-xs flex items-center gap-1 transition';
+        btnChart.className = 'px-2.5 py-1 text-xs font-semibold rounded-md text-slate-600 hover:text-slate-900 flex items-center gap-1 transition';
+        viewTable.classList.remove('hidden');
+        viewChart.classList.add('hidden');
+      } else {
+        btnChart.className = 'px-2.5 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-xs flex items-center gap-1 transition';
+        btnTable.className = 'px-2.5 py-1 text-xs font-semibold rounded-md text-slate-600 hover:text-slate-900 flex items-center gap-1 transition';
+        viewChart.classList.remove('hidden');
+        viewTable.classList.add('hidden');
+        populateChartSelects();
+        updateRolapChart();
+      }
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    // Poblar selectores de ejes para el gráfico
+    function populateChartSelects() {
+      if (!lastResultCols || lastResultCols.length === 0) return;
+      const selectX = document.getElementById('chartAxisXSelect');
+      const selectY = document.getElementById('chartAxisYSelect');
+      if (!selectX || !selectY) return;
+
+      const currentX = selectX.value;
+      const currentY = selectY.value;
+
+      selectX.innerHTML = lastResultCols.map(c => `<option value="${c}">${c}</option>`).join('');
+      selectY.innerHTML = lastResultCols.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      // Auto-detección inteligente: X primera columna, Y segunda columna o primera numérica
+      if (currentX && lastResultCols.includes(currentX)) {
+        selectX.value = currentX;
+      } else {
+        selectX.value = lastResultCols[0];
+      }
+
+      if (currentY && lastResultCols.includes(currentY)) {
+        selectY.value = currentY;
+      } else if (lastResultCols.length > 1) {
+        // Buscar la primera columna numérica
+        const numCol = lastResultCols.slice(1).find(c => {
+          const sample = lastResultRows.find(r => r[c] !== null && r[c] !== undefined);
+          return sample && typeof sample[c] === 'number';
+        });
+        selectY.value = numCol || lastResultCols[1];
+      }
+    }
+
+    // Renderizar o actualizar la gráfica interactiva (Chart.js)
+    window.updateRolapChart = function() {
+      if (!lastResultRows || lastResultRows.length === 0) return;
+      const canvas = document.getElementById('rolapChartCanvas');
+      if (!canvas || typeof window.Chart === 'undefined') return;
+
+      const chartType = document.getElementById('chartTypeSelect')?.value || 'bar';
+      const colX = document.getElementById('chartAxisXSelect')?.value || lastResultCols[0];
+      const colY = document.getElementById('chartAxisYSelect')?.value || (lastResultCols[1] || lastResultCols[0]);
+
+      // Extraer labels y data
+      const labels = [];
+      const dataValues = [];
+
+      for (const row of lastResultRows.slice(0, 100)) { // Máximo 100 categorías para legibilidad
+        labels.push(String(row[colX] ?? 'N/A'));
+        const val = Number(row[colY]);
+        dataValues.push(isNaN(val) ? 0 : val);
+      }
+
+      document.getElementById('chartRowCountInfo').textContent = `${labels.length} puntos graficados`;
+
+      if (currentChart) {
+        currentChart.destroy();
+      }
+
+      // Paleta corporativa elegante
+      const baseColors = [
+        '#2563eb', '#6366f1', '#06b6d4', '#10b981', '#f59e0b',
+        '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'
+      ];
+      const bgColors = labels.map((_, i) => baseColors[i % baseColors.length]);
+
+      currentChart = new window.Chart(canvas, {
+        type: chartType,
+        data: {
+          labels: labels,
+          datasets: [{
+            label: colY,
+            data: dataValues,
+            backgroundColor: chartType === 'line' ? 'rgba(37, 99, 235, 0.15)' : bgColors,
+            borderColor: chartType === 'line' ? '#2563eb' : bgColors,
+            borderWidth: chartType === 'line' ? 2.5 : 1,
+            fill: chartType === 'line',
+            tension: 0.25
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: chartType === 'doughnut' || chartType === 'pie',
+              position: 'right',
+              labels: { boxWidth: 12, font: { size: 11, family: 'monospace' } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const val = ctx.parsed.y !== undefined ? ctx.parsed.y : ctx.parsed;
+                  return ` ${colY}: ${val.toLocaleString()}`;
+                }
+              }
+            }
+          },
+          scales: (chartType === 'doughnut' || chartType === 'pie') ? {} : {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 10, family: 'monospace' }, maxRotation: 45 }
+            },
+            y: {
+              grid: { color: 'rgba(226, 232, 240, 0.8)' },
+              ticks: { font: { size: 10, family: 'monospace' } }
+            }
+          }
+        }
+      });
+    };
+
     // Ejecutar consulta SQL en DuckDB
     window.executeCurrentQuery = async function() {
       const editor = document.getElementById('sqlEditor');
@@ -372,7 +603,6 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       const btn = document.getElementById('btnExecuteSql');
       const container = document.getElementById('resultsTableContainer');
       const footer = document.getElementById('resultsFooter');
-      const footerInfo = document.getElementById('resultsFooterInfo');
       const btnExport = document.getElementById('btnExportCsv');
 
       const sql = (editor.value || '').trim();
@@ -399,7 +629,7 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
         lastResultRows = table;
         lastResultCols = cols;
 
-        latencyBadge.innerHTML = `<span class="text-emerald-600 font-bold">⚡ ${durationMs} ms</span> (Latencia de Ejecución)`;
+        latencyBadge.innerHTML = `<span class="text-emerald-600 font-bold">⚡ ${durationMs} ms</span> (Latencia)`;
         rowBadge.textContent = `${table.length.toLocaleString()} registros`;
         rowBadge.classList.remove('hidden');
         btnExport.classList.remove('hidden');
@@ -416,38 +646,16 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
           return;
         }
 
-        // Construir tabla HTML
-        const thead = `
-          <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-black text-slate-700 uppercase tracking-wider sticky top-0 z-10">
-            <tr>
-              ${cols.map(c => `<th class="px-3 py-2.5 text-left">${c}</th>`).join('')}
-            </tr>
-          </thead>
-        `;
+        // Configurar Paginación (Mejora 3)
+        currentPage = 1;
+        totalPages = Math.max(1, Math.ceil(table.length / pageSize));
+        renderPaginatedTable();
 
-        const maxDisplay = 500;
-        const displayRows = table.slice(0, maxDisplay);
-        const tbody = `
-          <tbody class="divide-y divide-slate-100 text-xs font-mono">
-            ${displayRows.map(r => `
-              <tr class="hover:bg-blue-50/50 transition">
-                ${cols.map(c => {
-                  const val = r[c];
-                  const formatted = val === null || val === undefined ? '<span class="text-slate-300">NULL</span>' : 
-                                    typeof val === 'number' ? (Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2)) : 
-                                    String(val);
-                  return `<td class="px-3 py-2 whitespace-nowrap text-slate-800">${formatted}</td>`;
-                }).join('')}
-              </tr>
-            `).join('')}
-          </tbody>
-        `;
-
-        container.innerHTML = `<table class="w-full text-left border-collapse">${thead}${tbody}</table>`;
-        footer.classList.remove('hidden');
-        footerInfo.textContent = table.length > maxDisplay ? 
-          `Mostrando las primeras ${maxDisplay} de ${table.length.toLocaleString()} filas` : 
-          `Total: ${table.length.toLocaleString()} filas`;
+        // Actualizar selectores para la vista gráfica si está activa
+        populateChartSelects();
+        if (currentView === 'chart') {
+          updateRolapChart();
+        }
 
         if (window.lucide) window.lucide.createIcons();
 
@@ -472,6 +680,95 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
         btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Ejecutar Consulta`;
         if (window.lucide) window.lucide.createIcons();
       }
+    };
+
+    // Renderizado reactivo de la tabla con paginación (Mejora 3)
+    function renderPaginatedTable() {
+      const container = document.getElementById('resultsTableContainer');
+      const footer = document.getElementById('resultsFooter');
+      const footerInfo = document.getElementById('resultsFooterInfo');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const btnPrev = document.getElementById('btnPagePrev');
+      const btnNext = document.getElementById('btnPageNext');
+      const btnFirst = document.getElementById('btnPageFirst');
+      const btnLast = document.getElementById('btnPageLast');
+
+      if (!lastResultRows || lastResultRows.length === 0) return;
+
+      const cols = lastResultCols;
+      const totalRows = lastResultRows.length;
+      totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = Math.min(startIndex + pageSize, totalRows);
+      const displayRows = lastResultRows.slice(startIndex, endIndex);
+
+      // Cabecera de la tabla
+      const thead = `
+        <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-black text-slate-700 uppercase tracking-wider sticky top-0 z-10">
+          <tr>
+            <th class="px-3 py-2.5 text-center text-slate-400 w-12 font-mono">#</th>
+            ${cols.map(c => `<th class="px-3 py-2.5 text-left">${c}</th>`).join('')}
+          </tr>
+        </thead>
+      `;
+
+      // Cuerpo de la tabla
+      const tbody = `
+        <tbody class="divide-y divide-slate-100 text-xs font-mono">
+          ${displayRows.map((r, idx) => `
+            <tr class="hover:bg-blue-50/50 transition">
+              <td class="px-3 py-2 text-center text-slate-400 font-mono text-[10px]">${(startIndex + idx + 1).toLocaleString()}</td>
+              ${cols.map(c => {
+                const val = r[c];
+                const formatted = val === null || val === undefined ? '<span class="text-slate-300">NULL</span>' : 
+                                  typeof val === 'number' ? (Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2)) : 
+                                  String(val);
+                return `<td class="px-3 py-2 whitespace-nowrap text-slate-800">${formatted}</td>`;
+              }).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      container.innerHTML = `<table class="w-full text-left border-collapse">${thead}${tbody}</table>`;
+      footer.classList.remove('hidden');
+      footerInfo.textContent = `Mostrando ${(startIndex + 1).toLocaleString()} a ${endIndex.toLocaleString()} de ${totalRows.toLocaleString()} registros`;
+      pageIndicator.textContent = `${currentPage} / ${totalPages}`;
+
+      // Habilitar / deshabilitar botones de paginación
+      btnPrev.disabled = currentPage <= 1;
+      btnFirst.disabled = currentPage <= 1;
+      btnNext.disabled = currentPage >= totalPages;
+      btnLast.disabled = currentPage >= totalPages;
+    }
+
+    window.goToPage = function(page) {
+      currentPage = page;
+      renderPaginatedTable();
+    };
+
+    window.goToPrevPage = function() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPaginatedTable();
+      }
+    };
+
+    window.goToNextPage = function() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPaginatedTable();
+      }
+    };
+
+    window.changePageSize = function(newSize) {
+      pageSize = parseInt(newSize, 10) || 25;
+      currentPage = 1;
+      renderPaginatedTable();
     };
 
     // Exportar resultados actuales a CSV
