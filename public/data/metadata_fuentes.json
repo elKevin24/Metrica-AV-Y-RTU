@@ -1,48 +1,38 @@
 {
-  "ultima_actualizacion": "2026-08-26 23:43:38",
-  "total_archivos": 6,
-  "fuentes": [
+  "ultima_actualizacion": "2026-08-27 14:00:00",
+  "cubo_activo_defecto": "RTU JULIO 2026",
+  "total_archivos_rtu": 5,
+  "total_expedientes_rtu": 420606,
+  "fuentes_rtu_julio": [
     {
-      "archivo": "10000390411_AVjulio1.xlsx",
-      "tamano_mb": 6.88,
-      "filas": 84631,
-      "formato_detectado": "BITACORA",
-      "fecha_modificacion": "2026-08-27 04:27:00"
+      "archivo": "10000390411_reporteRTUjulio1.xlsx",
+      "filas": 106379,
+      "modulo": "RTU Digital",
+      "periodo": "2026-07"
     },
     {
-      "archivo": "10000390411_AVjulio2.xlsx",
-      "tamano_mb": 6.79,
-      "filas": 83117,
-      "formato_detectado": "BITACORA",
-      "fecha_modificacion": "2026-08-27 04:27:00"
+      "archivo": "10000390411_reporteRTUjulio2.xlsx",
+      "filas": 105076,
+      "modulo": "RTU Digital",
+      "periodo": "2026-07"
     },
     {
-      "archivo": "10000390411_AVjulio3.xlsx",
-      "tamano_mb": 6.35,
-      "filas": 77091,
-      "formato_detectado": "BITACORA",
-      "fecha_modificacion": "2026-08-27 04:27:00"
+      "archivo": "10000390411_reporteRTUjulio3.xlsx",
+      "filas": 103774,
+      "modulo": "RTU Digital",
+      "periodo": "2026-07"
     },
     {
-      "archivo": "10000390411_AVjulio4.xlsx",
-      "tamano_mb": 6.49,
-      "filas": 78982,
-      "formato_detectado": "BITACORA",
-      "fecha_modificacion": "2026-08-27 04:27:00"
+      "archivo": "10000390411_reporteRTUjulio4.xlsx",
+      "filas": 101946,
+      "modulo": "RTU Digital",
+      "periodo": "2026-07"
     },
     {
-      "archivo": "10000390411_AVjulio5.xlsx",
-      "tamano_mb": 6.35,
-      "filas": 76659,
-      "formato_detectado": "BITACORA",
-      "fecha_modificacion": "2026-08-27 04:27:00"
-    },
-    {
-      "archivo": "10000390411_AVjulio6.xlsx",
-      "tamano_mb": 5.4,
-      "filas": 65526,
-      "formato_detectado": "BITACORA",
-      "fecha_modificacion": "2026-08-27 04:27:00"
+      "archivo": "10000390411_reporteRTUjulio5.xlsx",
+      "filas": 3431,
+      "modulo": "RTU Digital",
+      "periodo": "2026-07"
     }
   ]
 }

@@ -1,0 +1,463 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<MainLayout title="SAT Guatemala - Módulo Especializado RTU Julio 2026">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8">
+    
+    <!-- Encabezado Ejecutivo del Módulo RTU -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 text-white p-6 sm:p-8 border border-amber-500/30 shadow-2xl">
+      <div class="absolute -right-10 -top-10 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-10 -bottom-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+            <i data-lucide="file-check-2" class="w-3.5 h-3.5"></i>
+            <span>Intendencia de Atención al Contribuyente • Registro Tributario Unificado Digital</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-mono font-bold">
+              Corte: Julio 2026
+            </span>
+            <span class="text-xs bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-lg font-mono">
+              420,606 Expedientes
+            </span>
+            <a href={`${baseUrl}/rtu-tiempos`} class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1 rounded-lg transition flex items-center gap-1 shadow-sm">
+              <i data-lucide="clock" class="w-3.5 h-3.5"></i> Análisis de Tiempos & SLAs
+            </a>
+          </div>
+        </div>
+
+        <div class="max-w-4xl space-y-2">
+          <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-white">
+            Tablero Analítico de <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-100 bg-clip-text text-transparent">RTU Digital</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Monitor analítico de inteligencia operacional para trámites de <strong class="text-white">Inscripción, Actualización y Cancelación / Cese</strong> en el Registro Tributario Unificado. Auditoría de tiempos de ciclo, dispersión de bandejas y productividad de 361 operadores.
+          </p>
+        </div>
+
+        <!-- Filtros Rápidos de Dimensión RTU -->
+        <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <!-- Filtro Región -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+            <label for="filterRtuRegion" class="text-[11px] font-semibold text-slate-400 block mb-1">Región Tributaria</label>
+            <select id="filterRtuRegion" onchange="applyRtuFilters()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+              <option value="TODAS">Todas las Regiones (Nacional)</option>
+              <option value="CENTRAL">Central</option>
+              <option value="OCCIDENTE">Occidente</option>
+              <option value="SUR">Sur</option>
+              <option value="NORORIENTE">Nororiente</option>
+            </select>
+          </div>
+
+          <!-- Filtro Macro Gestión -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+            <label for="filterRtuMacro" class="text-[11px] font-semibold text-slate-400 block mb-1">Macro-Familia de Trámite</label>
+            <select id="filterRtuMacro" onchange="applyRtuFilters()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+              <option value="TODAS">Todas las Macro-Familias</option>
+              <option value="ACTUALIZACIÓN">Actualización de RTU</option>
+              <option value="INSCRIPCIÓN">Inscripción de RTU</option>
+              <option value="CANCELACIÓN / CESE">Cancelación / Cese de Negocio</option>
+              <option value="ACTIVACIÓN / HABILITACIÓN">Activación / Habilitación</option>
+            </select>
+          </div>
+
+          <!-- Filtro Estado del Trámite -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+            <label for="filterRtuEstado" class="text-[11px] font-semibold text-slate-400 block mb-1">Estado de Expediente</label>
+            <select id="filterRtuEstado" onchange="applyRtuFilters()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+              <option value="TODOS">Todos los Estados</option>
+              <option value="TERMINADA">TERMINADA (Aprobada / Vigente)</option>
+              <option value="CANCELADA">CANCELADA (Anulada / Cese)</option>
+              <option value="INICIADA">INICIADA (En Proceso Preliminar)</option>
+              <option value="CON_REQUERIMIENTO">CON REQUERIMIENTO (Subsanación)</option>
+            </select>
+          </div>
+
+          <!-- Filtro Rango de Tiempo de Atención -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+            <label for="filterRtuRango" class="text-[11px] font-semibold text-slate-400 block mb-1">Rango de Atención Humana</label>
+            <select id="filterRtuRango" onchange="applyRtuFilters()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+              <option value="TODOS">Todos los Rangos</option>
+              <option value="< 2 min">&lt; 2 min (Ultrarrápido / Automático)</option>
+              <option value="2 - 5 min">2 - 5 min (Estándar)</option>
+              <option value="5 - 10 min">5 - 10 min (Complejidad Media)</option>
+              <option value="10 min - 1 h">10 min - 1 h (Auditoría Profunda)</option>
+              <option value="> 8 h">&gt; 8 h (Cola Larga / Requerimientos)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. BLOQUE DE KPIS DE IMPACTO OPERACIONAL RTU -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      
+      <!-- KPI 1: Volumen Total -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Universo Total RTU</span>
+          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <p id="kpiRtuTotal" class="text-2xl sm:text-3xl font-black text-slate-900">420,606</p>
+        <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+          <span class="text-emerald-600 font-bold">100%</span> del lote Julio 2026
+        </p>
+      </div>
+
+      <!-- KPI 2: Tasa de Terminadas (Éxito) -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Trámites Terminados</span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <p id="kpiRtuTerminadas" class="text-2xl sm:text-3xl font-black text-emerald-600">220,800</p>
+        <p id="kpiRtuTerminadasPct" class="text-[11px] text-slate-500 mt-1">
+          <span class="text-emerald-700 font-bold font-mono">52.5%</span> concluidos satisfactoriamente
+        </p>
+      </div>
+
+      <!-- KPI 3: Canceladas / Ceses -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Cancelaciones / Ceses</span>
+          <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+            <i data-lucide="x-circle" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <p id="kpiRtuCanceladas" class="text-2xl sm:text-3xl font-black text-rose-600">131,274</p>
+        <p id="kpiRtuCanceladasPct" class="text-[11px] text-slate-500 mt-1">
+          <span class="text-rose-700 font-bold font-mono">31.2%</span> bajas de establecimientos
+        </p>
+      </div>
+
+      <!-- KPI 4: Casos con Requerimiento / Bloqueados -->
+      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Con Requerimiento</span>
+          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <p id="kpiRtuRequerimiento" class="text-2xl sm:text-3xl font-black text-amber-600">7,397</p>
+        <p id="kpiRtuRequerimientoPct" class="text-[11px] text-slate-500 mt-1">
+          <span class="text-amber-700 font-bold font-mono">1.76%</span> a la espera del contribuyente
+        </p>
+      </div>
+
+    </div>
+
+    <!-- 2. ANÁLISIS DE DISTRIBUCIÓN: MACRO-GESTIONES Y ESTADOS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Gráfico 1: Macro-Familias de Trámite en RTU -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-amber-600"></i> Distribución por Macro-Familia de Trámite
+            </h3>
+            <p class="text-[11px] text-slate-500">Concentración de volumen por categoría de RTU</p>
+          </div>
+          <span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-mono font-semibold">Julio 2026</span>
+        </div>
+
+        <div class="space-y-3 pt-2" id="containerMacroGestiones">
+          <!-- Actualizaciones -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">Actualización de RTU</span>
+              <span class="font-mono text-slate-900">248,512 (59.1%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-amber-500 rounded-full" style="width: 59.1%"></div>
+            </div>
+          </div>
+
+          <!-- Cancelaciones / Ceses -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">Cancelación / Cese de Establecimientos</span>
+              <span class="font-mono text-slate-900">131,274 (31.2%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-rose-500 rounded-full" style="width: 31.2%"></div>
+            </div>
+          </div>
+
+          <!-- Inscripciones Nuevas -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">Inscripción Nueva en RTU</span>
+              <span class="font-mono text-slate-900">38,420 (9.1%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-600 rounded-full" style="width: 9.1%"></div>
+            </div>
+          </div>
+
+          <!-- Activaciones / Habilitaciones -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-800">Habilitación / Activación Temporal</span>
+              <span class="font-mono text-slate-900">2,400 (0.6%)</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500 rounded-full" style="width: 0.6%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-900">
+          <p class="font-semibold flex items-center gap-1.5">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-amber-600"></i> Insight Operativo:
+          </p>
+          <p class="text-[11px] text-amber-800/90 mt-1 leading-relaxed">
+            El <strong>90.3% del esfuerzo operativo</strong> en RTU se concentra en <em>Actualizaciones y Cancelaciones de Establecimientos</em>. Las inscripciones nuevas representan menos del 10% del flujo mensual.
+          </p>
+        </div>
+      </div>
+
+      <!-- Gráfico 2: Desglose por Región Tributaria -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="map" class="w-4 h-4 text-blue-600"></i> Demanda Territorial en RTU
+            </h3>
+            <p class="text-[11px] text-slate-500">Distribución de carga de expedientes por Gerencia Regional</p>
+          </div>
+          <span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-mono font-semibold">4 Regiones</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <!-- Región Central -->
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+            <div class="flex items-center justify-between text-slate-500 text-xs">
+              <span class="font-bold text-slate-900">CENTRAL</span>
+              <span class="text-[10px] font-mono bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">44.8%</span>
+            </div>
+            <p class="text-xl font-black text-slate-900 mt-1">188,432</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">Expedientes gestionados</p>
+          </div>
+
+          <!-- Región Occidente -->
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+            <div class="flex items-center justify-between text-slate-500 text-xs">
+              <span class="font-bold text-slate-900">OCCIDENTE</span>
+              <span class="text-[10px] font-mono bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded">24.2%</span>
+            </div>
+            <p class="text-xl font-black text-slate-900 mt-1">101,786</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">Expedientes gestionados</p>
+          </div>
+
+          <!-- Región Sur -->
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+            <div class="flex items-center justify-between text-slate-500 text-xs">
+              <span class="font-bold text-slate-900">SUR</span>
+              <span class="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">17.1%</span>
+            </div>
+            <p class="text-xl font-black text-slate-900 mt-1">71,924</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">Expedientes gestionados</p>
+          </div>
+
+          <!-- Región Nororiente -->
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+            <div class="flex items-center justify-between text-slate-500 text-xs">
+              <span class="font-bold text-slate-900">NORORIENTE</span>
+              <span class="text-[10px] font-mono bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">13.9%</span>
+            </div>
+            <p class="text-xl font-black text-slate-900 mt-1">58,464</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">Expedientes gestionados</p>
+          </div>
+        </div>
+
+        <div class="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-3.5 text-xs text-blue-900">
+          <p class="font-semibold flex items-center gap-1.5">
+            <i data-lucide="scale" class="w-3.5 h-3.5 text-blue-600"></i> Recomendación de Balanceo:
+          </p>
+          <p class="text-[11px] text-blue-800/90 mt-1 leading-relaxed">
+            La Región Central absorbe casi la mitad de las gestiones de RTU del país. Se aconseja habilitar reglas de <strong>despacho dinámico inter-regional</strong> hacia bandejas de Sur y Nororiente cuando la Central supere umbrales de 4 horas de espera en cola.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. TOP REVISORES Y OPERADORES DE RTU JULIO 2026 -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i> Productividad y Carga por Revisor de RTU
+          </h3>
+          <p class="text-[11px] text-slate-500">Ranking de operadores humanos y procesos automatizados (361 identificados)</p>
+        </div>
+        <div class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-xl font-mono">
+          Top 10 Operadores por Volumen
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left">
+          <thead class="bg-slate-50 text-slate-600 uppercase font-semibold border-b border-slate-200">
+            <tr>
+              <th class="px-4 py-2.5 rounded-l-xl">#</th>
+              <th class="px-4 py-2.5">Usuario / Operador</th>
+              <th class="px-4 py-2.5 text-right">Expedientes</th>
+              <th class="px-4 py-2.5 text-right">% del Total</th>
+              <th class="px-4 py-2.5">Perfil / Tipo de Procesamiento</th>
+              <th class="px-4 py-2.5 rounded-r-xl">Estado de Carga</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium">
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-4 py-2.5 font-bold text-slate-400">1</td>
+              <td class="px-4 py-2.5 font-mono font-bold text-amber-600 flex items-center gap-1.5">
+                <i data-lucide="cpu" class="w-3.5 h-3.5"></i> APS (Proceso Automático)
+              </td>
+              <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-900">44,115</td>
+              <td class="px-4 py-2.5 text-right font-mono text-slate-600">10.49%</td>
+              <td class="px-4 py-2.5 text-slate-600">Automatización de Sistema</td>
+              <td class="px-4 py-2.5"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Sin Cuello de Botella</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-4 py-2.5 font-bold text-slate-400">2</td>
+              <td class="px-4 py-2.5 font-mono font-bold text-amber-600 flex items-center gap-1.5">
+                <i data-lucide="cpu" class="w-3.5 h-3.5"></i> AP_MS_SAT_RTU (Microservicio)
+              </td>
+              <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-900">20,800</td>
+              <td class="px-4 py-2.5 text-right font-mono text-slate-600">4.95%</td>
+              <td class="px-4 py-2.5 text-slate-600">Inactivación Programada</td>
+              <td class="px-4 py-2.5"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Proceso Batch</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-4 py-2.5 font-bold text-slate-400">3</td>
+              <td class="px-4 py-2.5 font-mono font-bold text-blue-600">DAHERNAS</td>
+              <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-900">5,736</td>
+              <td class="px-4 py-2.5 text-right font-mono text-slate-600">1.36%</td>
+              <td class="px-4 py-2.5 text-slate-600">Revisor Tributario RTU</td>
+              <td class="px-4 py-2.5"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Alta Productividad</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-4 py-2.5 font-bold text-slate-400">4</td>
+              <td class="px-4 py-2.5 font-mono font-bold text-blue-600">LIBARRIE</td>
+              <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-900">3,885</td>
+              <td class="px-4 py-2.5 text-right font-mono text-slate-600">0.92%</td>
+              <td class="px-4 py-2.5 text-slate-600">Revisor Tributario RTU</td>
+              <td class="px-4 py-2.5"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Rendimiento Óptimo</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-4 py-2.5 font-bold text-slate-400">5</td>
+              <td class="px-4 py-2.5 font-mono font-bold text-blue-600">GNGONZAL</td>
+              <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-900">3,774</td>
+              <td class="px-4 py-2.5 text-right font-mono text-slate-600">0.90%</td>
+              <td class="px-4 py-2.5 text-slate-600">Revisor Tributario RTU</td>
+              <td class="px-4 py-2.5"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Rendimiento Óptimo</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-4 py-2.5 font-bold text-slate-400">6</td>
+              <td class="px-4 py-2.5 font-mono font-bold text-blue-600">MFSOLARES</td>
+              <td class="px-4 py-2.5 text-right font-mono font-bold text-slate-900">3,612</td>
+              <td class="px-4 py-2.5 text-right font-mono text-slate-600">0.86%</td>
+              <td class="px-4 py-2.5 text-slate-600">Revisor Tributario RTU</td>
+              <td class="px-4 py-2.5"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Rendimiento Óptimo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. CATÁLOGO COMPLETO DE TRÁMITES Y TRANSACCIONES RTU -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="list" class="w-4 h-4 text-amber-600"></i> Catálogo Completo de Trámites Identificados en RTU Julio 2026
+          </h3>
+          <p class="text-[11px] text-slate-500">Volumen y SLA de resolución por trámite individual</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+        
+        <div class="border border-slate-200/90 rounded-2xl p-3.5 bg-slate-50/50">
+          <p class="text-[11px] font-bold text-slate-800">ACTUALIZACIÓN DE CONTRIBUYENTES</p>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-lg font-black text-amber-600 font-mono">232,118</span>
+            <span class="text-[10px] text-slate-500">SLA 8h: 94.2%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Trámite más masivo del portal RTU</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-3.5 bg-slate-50/50">
+          <p class="text-[11px] font-bold text-slate-800">CANCELACIÓN DEFINITIVA PERSONA/NEGOCIO</p>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-lg font-black text-rose-600 font-mono">72,410</span>
+            <span class="text-[10px] text-slate-500">SLA 8h: 98.1%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Cese definitivo de actividades comerciales</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-3.5 bg-slate-50/50">
+          <p class="text-[11px] font-bold text-slate-800">CANCELACIÓN DEFINITIVA EMPRESA/ORGANIZACIÓN</p>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-lg font-black text-rose-600 font-mono">48,220</span>
+            <span class="text-[10px] text-slate-500">SLA 8h: 96.5%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Baja de establecimientos jurídicos</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-3.5 bg-slate-50/50">
+          <p class="text-[11px] font-bold text-slate-800">INSCRIPCIÓN DE CONTRIBUYENTES</p>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-lg font-black text-blue-600 font-mono">36,419</span>
+            <span class="text-[10px] text-slate-500">SLA 8h: 76.8%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Altas de nuevos NITs individuales y jurídicos</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-3.5 bg-slate-50/50">
+          <p class="text-[11px] font-bold text-slate-800">CANCELACIÓN TEMPORAL DE ESTABLECIMIENTOS</p>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-lg font-black text-slate-800 font-mono">8,914</span>
+            <span class="text-[10px] text-slate-500">SLA 8h: 91.0%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Suspensión temporal de operaciones</p>
+        </div>
+
+        <div class="border border-slate-200/90 rounded-2xl p-3.5 bg-slate-50/50">
+          <p class="text-[11px] font-bold text-slate-800">PROFESIONALES (CPA, ABOGADOS, NOTARIOS)</p>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-lg font-black text-indigo-600 font-mono">5,432</span>
+            <span class="text-[10px] text-slate-500">SLA 8h: 88.4%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Acreditaciones y registros profesionales</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script is:inline>
+    // Lógica de filtrado en cliente para el Cubo RTU Julio 2026
+    function applyRtuFilters() {
+      const reg = document.getElementById('filterRtuRegion')?.value || 'TODAS';
+      const macro = document.getElementById('filterRtuMacro')?.value || 'TODAS';
+      const est = document.getElementById('filterRtuEstado')?.value || 'TODOS';
+      const rng = document.getElementById('filterRtuRango')?.value || 'TODOS';
+      
+      console.log('Aplicando filtros RTU:', { reg, macro, est, rng });
+      // Aquí se puede conectar dinámicamente con olap_engine.js si se requiere recálculo sobre la marcha
+    }
+  </script>
+</MainLayout>

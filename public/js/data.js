@@ -1,10 +1,11 @@
-// Cargador Asíncrono de Datos con Visibilidad de Estado del Sistema
+// Cargador Asíncrono de Datos con Visibilidad de Estado del Sistema y Soporte Multi-Cubo (AV, Bitácora, RTU)
 window.DATA = {
     opciones: { meses: [], anios: [], gestiones: [], regiones: [], estados: [], macro_familias: [] },
     combos: [],
     taxonomia: [],
     muestra_expedientes: [],
     cubo: [],
+    tipo_cubo_activo: 'AV',
     loaded: false
 };
 
@@ -47,17 +48,21 @@ function getBaseUrl() {
     return "";
 }
 
-async function loadData() {
+async function loadData(cubeType = 'AV') {
     const errBanner = document.getElementById('dataErrorBanner');
     if (errBanner) errBanner.classList.add('hidden');
 
     try {
-        updateSystemStatus("Descargando 865.8k trámites humanos...", "loading");
+        window.DATA.tipo_cubo_activo = cubeType;
+        const cubeFileName = cubeType === 'RTU' ? 'cubo_rtu' : (cubeType === 'BITACORA' ? 'cubo_bitacora' : 'cubo_av');
+        const cubeLabel = cubeType === 'RTU' ? 'RTU Digital' : (cubeType === 'BITACORA' ? 'Maestro-Detalle Bitácora' : 'Agencia Virtual (AV)');
+
+        updateSystemStatus(`Cargando Cubo ${cubeLabel}...`, "loading");
         const baseUrl = getBaseUrl();
         let json;
 
         try {
-            const gzUrl = `${baseUrl}/data/cubo_compacto.json.gz`.replace(/\/\//g, "/");
+            const gzUrl = `${baseUrl}/data/${cubeFileName}.json.gz`.replace(/\/\//g, "/");
             const resGz = await fetch(gzUrl);
             if (resGz.ok && typeof DecompressionStream !== 'undefined') {
                 const ds = new DecompressionStream('gzip');
@@ -68,17 +73,30 @@ async function loadData() {
                 throw new Error("GZIP no disponible");
             }
         } catch (gzErr) {
-            const jsonUrl = `${baseUrl}/data/cubo_compacto.json`.replace(/\/\//g, "/");
+            const jsonUrl = `${baseUrl}/data/${cubeFileName}.json`.replace(/\/\//g, "/");
             const res = await fetch(jsonUrl);
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            json = await res.json();
+            if (!res.ok) {
+                // Fallback a cubo compacto general si no existiera
+                const fallbackRes = await fetch(`${baseUrl}/data/cubo_compacto.json.gz`);
+                if (fallbackRes.ok && typeof DecompressionStream !== 'undefined') {
+                    const ds = new DecompressionStream('gzip');
+                    const decompressedStream = fallbackRes.body.pipeThrough(ds);
+                    const resp = new Response(decompressedStream);
+                    json = await resp.json();
+                } else {
+                    const resFb = await fetch(`${baseUrl}/data/cubo_bitacora.json`);
+                    json = await resFb.json();
+                }
+            } else {
+                json = await res.json();
+            }
         }
 
         if (!json || !Array.isArray(json.rows) || json.rows.length === 0) {
             throw new Error("Dataset vacío o formato de cubo inválido.");
         }
         
-        updateSystemStatus("Procesando matriz analítica...", "loading");
+        updateSystemStatus(`Procesando matriz analítica (${cubeLabel})...`, "loading");
         
         window.DATA.opciones = json.opciones || {};
         window.DATA.meses_lista = json.opciones.meses || json.meses_lista || [];
@@ -116,6 +134,7 @@ async function loadData() {
             obj._isReinicio = gUpper.includes('REINICIO');
             obj._isActivacion = gUpper.includes('ACTIVAC');
             obj._isCorreo = gUpper.includes('CORREO');
+            obj._isRtu = gUpper.includes('RTU');
             
             const tp = (idxTipoPersona !== -1 ? r[idxTipoPersona] : obj.TipoPersona) || 'INDIVIDUAL';
             obj._isJuridica = (tp === 'JURIDICA');
@@ -147,6 +166,7 @@ async function loadData() {
                 e._isReinicio = g.includes('REINICIO');
                 e._isActivacion = g.includes('ACTIVAC');
                 e._isCorreo = g.includes('CORREO');
+                e._isRtu = g.includes('RTU');
                 e._isJuridica = (e.TipoPersona === 'JURIDICA');
                 if (e.FechaCreacion && e.FechaCreacion.length >= 7) {
                     const mNum = e.FechaCreacion.substring(5, 7);
@@ -158,7 +178,7 @@ async function loadData() {
         window.DATA.cubo = cubo;
         window.DATA.loaded = true;
         
-        updateSystemStatus("Motor OLAP Listo • 865.8k Trámites Humanos", "ready");
+        updateSystemStatus(`Cubo Activo: ${cubeLabel}`, "ready");
         
         document.querySelectorAll('[data-skeleton]').forEach(el => el.classList.remove('skeleton-text'));
         
@@ -178,5 +198,9 @@ async function loadData() {
     }
 }
 
+window.switchCubo = function(tipo) {
+    return loadData(tipo);
+};
+
 window.retryLoadData = loadData;
-window.DATA_READY = loadData();
+window.DATA_READY = loadData('AV');
