@@ -6,7 +6,7 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
 
 <MainLayout title="SAT Guatemala - Tablero Ejecutivo BI 360°" loadOlapScripts={true}>
 <!-- BARRA DE FILTROS DINÁMICOS EN VIVO (Ultra-Compacta, Plegable en Móvil) -->
-    <section class="bg-white border-b border-slate-200 shadow-xs relative md:sticky md:top-[98px] z-20 px-3 sm:px-6 py-2 sm:py-3">
+    <section class="bg-white/95 backdrop-blur-xs border-b border-slate-200 shadow-xs relative md:sticky md:top-[96px] z-30 px-3 sm:px-6 py-2 sm:py-3">
         <div class="max-w-7xl mx-auto">
             <!-- Barra Móvil de Resumen y Desplegable de Filtros -->
             <div class="flex md:hidden items-center justify-between gap-2">
@@ -23,21 +23,21 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
             <!-- Grilla de Filtros (Plegable en Móvil, Permanente en Desktop) -->
             <div id="filterGridContainer" class="hidden md:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3 text-xs pt-2 md:pt-0">
                 <!-- 1. Regional al Inicio -->
-                <div>
-                    <label for="selRegion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600"></i> Regional
+                <div class="min-w-0">
+                    <label for="selRegion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-600 shrink-0"></i> <span>Regional</span>
                     </label>
-                    <select id="selRegion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selRegion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="TODAS">Todas las Regionales</option>
                     </select>
                 </div>
 
                 <!-- 2. Tipo de Trámite -->
-                <div>
-                    <label for="selGestion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i> Tipo de Trámite
+                <div class="min-w-0">
+                    <label for="selGestion" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i> <span>Tipo de Trámite</span>
                     </label>
-                    <select id="selGestion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selGestion" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="HUMANAS" selected>Todas las Gestiones Humanas</option>
                         <option value="ACTIVACIÓN">Activación de Agencia Virtual</option>
                         <option value="CAMBIO DE CORREO ELECTRÓNICO">Actualización RTU / Cambio de Correo</option>
@@ -45,11 +45,11 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                 </div>
 
                 <!-- 3. Tipo de Personería (Empresas / Sociedades vs Personas Individuales) -->
-                <div>
-                    <label for="selTipoPersona" class="block font-bold text-slate-800 mb-1 flex items-center gap-1">
-                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-sky-600"></i> Empresa / Persona
+                <div class="min-w-0">
+                    <label for="selTipoPersona" class="block font-bold text-slate-800 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-sky-600 shrink-0"></i> <span>Empresa / Persona</span>
                     </label>
-                    <select id="selTipoPersona" onchange="applyFilters()" class="w-full bg-sky-50/40 border border-sky-300 rounded-lg px-2.5 py-1.5 focus:outline-sky-500 font-medium text-slate-800 shadow-xs">
+                    <select id="selTipoPersona" onchange="applyFilters()" class="w-full bg-sky-50/40 border border-sky-300 rounded-lg px-2.5 py-1.5 focus:outline-sky-500 font-medium text-slate-800 shadow-xs truncate min-w-0">
                         <option value="TODAS" selected>Todas (Personas y Empresas)</option>
                         <option value="INDIVIDUAL">👤 Personas Individuales</option>
                         <option value="JURIDICA">🏢 Empresas / Sociedades</option>
@@ -57,11 +57,11 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                 </div>
 
                 <!-- 4. Año -->
-                <div>
-                    <label for="selAnio" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-600"></i> Año
+                <div class="min-w-0">
+                    <label for="selAnio" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-600 shrink-0"></i> <span>Año</span>
                     </label>
-                    <select id="selAnio" onchange="onAnioChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selAnio" onchange="onAnioChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="TODOS">Todos los Años</option>
                         <option value="2025">2025</option>
                         <option value="2026">2026</option>
@@ -69,11 +69,11 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                 </div>
 
                 <!-- 4. Trimestre -->
-                <div>
-                    <label for="selTrimestre" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-indigo-600"></i> Trimestre
+                <div class="min-w-0">
+                    <label for="selTrimestre" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i> <span>Trimestre</span>
                     </label>
-                    <select id="selTrimestre" onchange="onTrimestreChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selTrimestre" onchange="onTrimestreChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="TODOS">Todos (Q1 - Q4)</option>
                         <option value="Q1">Q1 (Ene - Mar)</option>
                         <option value="Q2">Q2 (Abr - Jun)</option>
@@ -83,31 +83,31 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                 </div>
 
                 <!-- 5. Mes Específico (Coordinado con Año y Trimestre) -->
-                <div>
-                    <label for="selMes" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-600"></i> Mes
+                <div class="min-w-0">
+                    <label for="selMes" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-600 shrink-0"></i> <span>Mes</span>
                     </label>
-                    <select id="selMes" onchange="onMesChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selMes" onchange="onMesChange()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="TODOS">Todos los Meses</option>
                     </select>
                 </div>
 
                 <!-- 6. Estado del Trámite -->
-                <div>
-                    <label for="selEstado" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-600"></i> Estado del Trámite
+                <div class="min-w-0">
+                    <label for="selEstado" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i> <span>Estado</span>
                     </label>
-                    <select id="selEstado" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selEstado" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="TODOS">Todos los Estados</option>
                     </select>
                 </div>
 
                 <!-- 7. Macro-Familia Rechazo -->
-                <div>
-                    <label for="selMacro" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1">
-                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i> Causal de Rechazo
+                <div class="min-w-0">
+                    <label for="selMacro" class="block font-semibold text-slate-700 mb-1 flex items-center gap-1 truncate">
+                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600 shrink-0"></i> <span>Causal</span>
                     </label>
-                    <select id="selMacro" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800">
+                    <select id="selMacro" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-blue-500 font-medium text-slate-800 truncate min-w-0">
                         <option value="TODAS">Todas las Causas</option>
                     </select>
                 </div>
@@ -1256,7 +1256,7 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                     <p class="text-xs text-slate-500 mb-4">Top combinaciones más frecuentes</p>
                     <div class="overflow-y-auto max-h-72 text-xs">
                         <table class="w-full text-left">
-                            <thead class="bg-slate-100 sticky top-0 text-slate-700 font-semibold">
+                            <thead class="bg-slate-100 sticky top-0 z-10 text-slate-700 font-semibold shadow-xs">
                                 <tr>
                                     <th class="p-2.5">Combinación Multicausal</th>
                                     <th class="p-2.5 text-right">Casos</th>
@@ -1560,7 +1560,7 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
 
                 <div class="overflow-x-auto text-xs max-h-80">
                     <table class="w-full text-left">
-                        <thead class="bg-slate-800 text-white font-semibold sticky top-0">
+                        <thead class="bg-slate-800 text-white font-semibold sticky top-0 z-10 shadow-xs">
                             <tr>
                                 <th class="p-2.5">Operador / Revisor</th>
                                 <th class="p-2.5 text-center text-indigo-200">Regional</th>
@@ -1610,7 +1610,7 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
 
                 <div class="overflow-x-auto max-h-96">
                     <table id="auditTableDT" class="display compact stripe hover w-full text-left text-xs">
-                        <thead class="bg-slate-800 text-white font-semibold sticky top-0">
+                        <thead class="bg-slate-800 text-white font-semibold sticky top-0 z-10 shadow-xs">
                             <tr>
                                 <th class="p-2.5">NumeroGestion</th>
                                 <th class="p-2.5">NIT</th>
