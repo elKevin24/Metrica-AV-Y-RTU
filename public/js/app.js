@@ -176,13 +176,22 @@ function renderTabMacro(res) {
     const secCreacionAtenHab = res.nCreacionAtenHab > 0 ? (res.sumCreacionAtenHab / res.nCreacionAtenHab) : 0;
     const secCicloHab = res.nCicloHab > 0 ? (res.sumCicloHab / res.nCicloHab) : 0;
     const secCicloCal = res.nCicloCal > 0 ? (res.sumCicloCal / res.nCicloCal) : 0;
+    // Conversión a horas y días
+    const cicloTotalPromedioCalendario = secCicloCal / 3600; // horas calendario
+    const cicloTotalPromedioHab = secCicloHab / 3600; // horas hábiles (8h/día)
+    const cicloTotalDiasCalendario = cicloTotalPromedioCalendario / 24; // días calendario
+    const cicloTotalDiasHab = cicloTotalPromedioHab / 8; // días hábiles
     const kpiPayload = {
         totalCasos: res.totalCasos,
         totalAprobados: res.totalAprobados,
         totalRechazos: res.totalRechazos,
         secCreacionAtenHab,
         secCicloHab,
-        secCicloCal
+        secCicloCal,
+        cicloTotalPromedioCalendario,
+        cicloTotalPromedioHab,
+        cicloTotalDiasCalendario,
+        cicloTotalDiasHab
     };
     window.__lastKpi = kpiPayload;
     document.dispatchEvent(new CustomEvent('olap:kpi', { detail: kpiPayload }));

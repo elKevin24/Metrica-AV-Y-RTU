@@ -4,6 +4,11 @@ interface KpiData {
   totalCasos: number;
   totalAprobados: number;
   totalRechazos: number;
+  // New fields from OLAP payload
+  cicloTotalPromedioCalendario?: number;
+  cicloTotalPromedioHab?: number;
+  cicloTotalDiasCalendario?: number;
+  cicloTotalDiasHab?: number;
 }
 
 function getInitialKpi(): KpiData | null {
@@ -17,7 +22,12 @@ function getInitialKpi(): KpiData | null {
         totalCasos: r.totalCasos,
         totalAprobados: r.totalAprobados,
         totalRechazos: r.totalRechazos,
-      };
+        // fallback values (if OLAP does not provide them yet)
+        cicloTotalPromedioCalendario: r.cicloTotalPromedioCalendario,
+        cicloTotalPromedioHab: r.cicloTotalPromedioHab,
+        cicloTotalDiasCalendario: r.cicloTotalDiasCalendario,
+        cicloTotalDiasHab: r.cicloTotalDiasHab,
+      } as any;
     } catch { return null; }
   }
   return null;
@@ -84,6 +94,20 @@ export default function KpiSummary() {
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">4. En Proceso / Otras</span>
         <h3 className="text-2xl font-black text-slate-700 mt-1">{totalEnProceso.toLocaleString()}</h3>
         <span className="text-xs text-slate-500 font-semibold mt-1 inline-block">{tasaProc}% del universo</span>
+      </div>
+      {/* New card for Ciclo Total de Respuesta */}
+      <div className="bg-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-slate-200 col-span-2 lg:col-span-1">
+        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">5. Ciclo Total de Respuesta</span>
+        <h3 className="text-sm font-semibold text-slate-900 mt-1">
+          {kpi.cicloTotalPromedioCalendario !== undefined ? (
+            <>Horas calendario: {kpi.cicloTotalPromedioCalendario.toFixed(2)} h ≈ {kpi.cicloTotalDiasCalendario?.toFixed(2)} días</>
+          ) : '—'}
+        </h3>
+        <h3 className="text-sm font-semibold text-slate-900 mt-1">
+          {kpi.cicloTotalPromedioHab !== undefined ? (
+            <>Horas hábiles: {kpi.cicloTotalPromedioHab.toFixed(2)} h ≈ {kpi.cicloTotalDiasHab?.toFixed(2)} días</>
+          ) : '—'}
+        </h3>
       </div>
     </div>
   );
