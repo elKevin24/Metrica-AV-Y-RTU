@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "lint": "echo 'Lint check passed'",
-    "test": "vitest run"
+    "test": "vitest run && python -m unittest tests/test_rigorous_audit.py"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.0",
