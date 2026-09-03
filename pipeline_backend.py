@@ -244,6 +244,10 @@ def run_etl_bitacora_pipeline(files, data_dir, output_duckdb):
             # 2. Saneamiento de Campos Individuales
             raw_nit = r_aligned[0]
             nit = clean_nit(raw_nit)
+            # Filtro Anti-Derrame: descarta filas "viñeta" generadas cuando una celda
+            # larga de MotivoRechazo se derrama a filas extra (Nit no-numérico con texto).
+            if not nit.isdigit():
+                continue
             if isinstance(raw_nit, float) or str(raw_nit).endswith('.0'):
                 nit_cleaned_count += 1
                 
