@@ -66,171 +66,188 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
         
         <!-- Tarjeta 1: Tablero AV (Histórico 360°) -->
-        <a href={`${baseUrl}/historico`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-blue-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full group-hover:bg-blue-500/10 transition"></div>
-          
+        <a href={`${baseUrl}/historico`} class="group bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-blue-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="space-y-4 relative z-10">
-            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-200/60 shadow-xs group-hover:scale-110 transition">
-              <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+            <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-200/60 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
             </div>
 
             <div>
-              <div class="flex items-center gap-2">
-                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 1</span>
-                <span class="text-slate-400 text-xs font-medium">Analítica AV</span>
+              <div class="flex items-center gap-1.5">
+                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">MOLAP</span>
+                <span class="text-slate-400 text-xs font-medium">Módulo 1</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-blue-600 transition">Tablero de Gestión AV (2026)</h3>
+              <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-blue-600 transition">Tablero AV (2026)</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Análisis macroeconómico y operativo de los <strong class="text-slate-900">182,412 expedientes</strong> de Agencia Virtual (Activaciones y Cambios de Correo). Comparativa regional, estacionalidad y SLAs.
+                Análisis macro de <strong class="text-slate-900">182,412 casos</strong>. Comparativa regional, estacionalidad y SLAs en &lt;50ms.
               </p>
             </div>
 
-            <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Diagnóstico & Balance Global
+            <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Diagnóstico & Balance
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Regionales & Sobrecarga de Operadores
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Regionales & Sobrecarga
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Taxonomía de Rechazos & Re-trabajo
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Informe Ejecutivo y Hallazgos 2026
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Taxonomía de Rechazos
               </li>
             </ul>
           </div>
 
-          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 group-hover:text-blue-700">
+          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 group-hover:text-blue-700">
             <span>Abrir Tablero AV</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
 
         <!-- Tarjeta 2: Auditoría & Bitácora Transaccional -->
-        <a href={`${baseUrl}/bitacora`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-indigo-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full group-hover:bg-indigo-500/15 transition"></div>
-          
+        <a href={`${baseUrl}/bitacora`} class="group bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-indigo-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="space-y-4 relative z-10">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-200/60 shadow-xs group-hover:scale-110 transition">
-              <i data-lucide="activity" class="w-6 h-6"></i>
+            <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-200/60 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="activity" class="w-5 h-5"></i>
             </div>
 
             <div>
-              <div class="flex items-center gap-2">
-                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 2</span>
-                <span class="text-slate-400 text-xs font-medium">Eventos & Trazabilidad</span>
+              <div class="flex items-center gap-1.5">
+                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">MOLAP</span>
+                <span class="text-slate-400 text-xs font-medium">Módulo 2</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-indigo-600 transition">Auditoría & Bitácora Transaccional</h3>
+              <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-indigo-600 transition">Bitácora Transaccional</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Trazabilidad paso a paso con <strong class="text-slate-900">1,254,098 eventos</strong> deduplicados. Embudo de estados, cuellos de botella en colas, rondas y simulación operativa 8h.
+                Trazabilidad con <strong class="text-slate-900">1,254,098 eventos</strong>. Embudo de ciclo de vida y simulación operativa 8h.
               </p>
             </div>
 
-            <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Embudo de Ciclo de Vida (Funnel)
+            <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Embudo de Estados
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Cuellos de Botella en Colas sin Asignar
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Cuellos en Buzón
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Modelo Predictivo & Asignación 8h
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Ranking & Z-Score de Operadores
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Modelo Predictivo 8h
               </li>
             </ul>
           </div>
 
-          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600 group-hover:text-indigo-700">
+          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600 group-hover:text-indigo-700">
             <span>Explorar Bitácora</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
 
-        <!-- Tarjeta 3: Auditoría Forense de Expedientes -->
-        <a href={`${baseUrl}/auditoria`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-cyan-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-bl-full group-hover:bg-cyan-500/15 transition"></div>
-          
+        <!-- Tarjeta 3: Laboratorio SQL (ROLAP Studio) [NUEVO] -->
+        <a href={`${baseUrl}/laboratorio-sql`} class="group bg-gradient-to-b from-amber-500/5 via-white to-white rounded-3xl p-5 border-2 border-amber-500/40 hover:border-amber-500 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="space-y-4 relative z-10">
-            <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center border border-cyan-200/60 shadow-xs group-hover:scale-110 transition">
-              <i data-lucide="file-search" class="w-6 h-6"></i>
+            <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="terminal" class="w-5 h-5"></i>
             </div>
 
             <div>
-              <div class="flex items-center gap-2">
-                <span class="bg-cyan-100 text-cyan-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 3</span>
-                <span class="text-slate-400 text-xs font-medium">Búsqueda Directa</span>
+              <div class="flex items-center gap-1.5">
+                <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">ROLAP</span>
+                <span class="text-amber-700 text-xs font-semibold">DuckDB-Wasm</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-cyan-600 transition">Auditoría Forense de Casos</h3>
+              <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-amber-600 transition">Laboratorio SQL (ROLAP)</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Inspección expediente por expediente. Búsqueda instantánea por <strong class="text-slate-900">No. Gestión o NIT</strong> mediante 256 particiones hash estáticas.
+                Consultas ad-hoc libres sin límites de cubos. Corre SQL relacional sobre <strong class="text-slate-900">182k expedientes</strong> en memoria.
               </p>
             </div>
 
-            <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Historial Completo de Secuencias
+            <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
+              <li class="flex items-center gap-1.5 font-semibold text-slate-800">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Motor SQL en Navegador
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Tiempos en Bolsón y Operador
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> 56 Columnas Analíticas
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Motivos de Rechazo Textuales
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Particionamiento Hash Instantáneo
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Exportación Directa a CSV
               </li>
             </ul>
           </div>
 
-          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-cyan-600 group-hover:text-cyan-700">
+          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:text-amber-700">
+            <span>Abrir Laboratorio SQL</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+          </div>
+        </a>
+
+        <!-- Tarjeta 4: Auditoría Forense de Expedientes -->
+        <a href={`${baseUrl}/auditoria`} class="group bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-cyan-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+          <div class="space-y-4 relative z-10">
+            <div class="w-11 h-11 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center border border-cyan-200/60 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="file-search" class="w-5 h-5"></i>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="bg-cyan-100 text-cyan-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Drill-Down</span>
+                <span class="text-slate-400 text-xs font-medium">Módulo 3</span>
+              </div>
+              <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-cyan-600 transition">Auditoría Forense</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Inspección individual. Búsqueda instantánea por <strong class="text-slate-900">No. Gestión o NIT</strong> mediante 256 particiones hash.
+              </p>
+            </div>
+
+            <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Historial Cronológico
+              </li>
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Motivos de Rechazo
+              </li>
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Búsqueda en &lt;15ms
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-cyan-600 group-hover:text-cyan-700">
             <span>Auditar Casos</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
 
-        <!-- Tarjeta 4: Ingesta & Calidad de Datos -->
-        <a href={`${baseUrl}/cargar-datos`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-emerald-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full group-hover:bg-emerald-500/10 transition"></div>
-          
+        <!-- Tarjeta 5: Ingesta & Calidad de Datos -->
+        <a href={`${baseUrl}/cargar-datos`} class="group bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-emerald-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="space-y-4 relative z-10">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200/60 shadow-xs group-hover:scale-110 transition">
-              <i data-lucide="database" class="w-6 h-6"></i>
+            <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200/60 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="database" class="w-5 h-5"></i>
             </div>
 
             <div>
-              <div class="flex items-center gap-2">
-                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 4</span>
-                <span class="text-slate-400 text-xs font-medium">Administración</span>
+              <div class="flex items-center gap-1.5">
+                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">ETL</span>
+                <span class="text-slate-400 text-xs font-medium">Módulo 4</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-emerald-600 transition">Centro de Carga & Calidad</h3>
+              <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-emerald-600 transition">Carga & Calidad</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Inventario de las <strong class="text-slate-900">16 fuentes oficiales</strong> en Excel, reporte de saneamiento, detección de desbordes y consistencia referencial 100%.
+                Inventario de las <strong class="text-slate-900">16 fuentes oficiales</strong> en Excel, detección de desbordes y 100% integridad.
               </p>
             </div>
 
-            <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Auditoría de Calidad en Vivo
+            <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Auditoría de Calidad
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> 16 Libros Excel Verificados
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> 16 Libros Verificados
               </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Motor ETL DuckDB & Parquet
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Integridad Referencial 100%
+              <li class="flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Integridad 100%
               </li>
             </ul>
           </div>
 
-          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
+          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
             <span>Ver Fuentes & Calidad</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>

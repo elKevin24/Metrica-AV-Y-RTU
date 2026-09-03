@@ -1,0 +1,520 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<MainLayout title="Laboratorio SQL & ROLAP Studio - SAT" activeModule="ROLAP">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- Encabezado del Módulo ROLAP -->
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-cyan-500/30">
+            Motor ROLAP Columnar
+          </span>
+          <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-mono border border-indigo-500/30">
+            DuckDB-WASM v1.28
+          </span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2.5">
+          <i data-lucide="terminal" class="w-7 h-7 text-cyan-400"></i>
+          Laboratorio SQL & Explorador ROLAP
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+          Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> de <code class="text-cyan-300 font-mono">maestro_expedientes.parquet</code> mediante SQL columnar en memoria.
+        </p>
+      </div>
+
+      <!-- Estado del Motor DuckDB en el Cliente -->
+      <div class="bg-slate-800/80 backdrop-blur-xs border border-slate-700/80 rounded-2xl p-4 min-w-[240px] text-right space-y-1">
+        <div class="flex items-center justify-end gap-2 text-xs text-slate-400">
+          <span id="wasmEngineDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          <span id="wasmEngineStatus" class="font-mono text-amber-300">Inicializando DuckDB...</span>
+        </div>
+        <div class="text-lg font-black text-white font-mono" id="wasmRowsScanned">182,412 filas</div>
+        <div class="text-[10px] text-slate-400">Lectura columnar con HTTP Range Requests</div>
+      </div>
+    </div>
+
+    <!-- Área Principal de Trabajo: Editor y Esquema -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+      <!-- Panel Izquierdo: Catálogo de Consultas y Explorador de Columnas (1 Col) -->
+      <div class="lg:col-span-1 space-y-4">
+        
+        <!-- Tarjeta de Consultas Predeterminadas -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
+          <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="book-open" class="w-4 h-4 text-blue-600"></i> Consultas Predefinidas
+          </h3>
+          <p class="text-[11px] text-slate-500 leading-snug">Selecciona un template para cargar su SQL analítico:</p>
+          
+          <div class="space-y-1.5" id="templateList">
+            <button onclick="loadSqlTemplate(0)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>1. Cuello de Botella por Hora</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button onclick="loadSqlTemplate(1)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>2. Top FTR por Revisor (&gt;100)</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button onclick="loadSqlTemplate(2)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>3. Top 10 Causales de Rechazo</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button onclick="loadSqlTemplate(3)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>4. Horas Hábiles por Regional</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button onclick="loadSqlTemplate(4)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>5. Casos Fuera de SLA (&gt;40h)</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Diccionario Rápido de Columnas -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="database" class="w-4 h-4 text-indigo-600"></i> Columnas (56)
+            </h3>
+            <span class="text-[10px] text-slate-400 font-mono">Click para insertar</span>
+          </div>
+          <input type="text" id="columnFilterInput" oninput="filterColumnsList()" placeholder="Buscar columna..." class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-blue-500">
+          
+          <div class="max-h-60 overflow-y-auto space-y-1 font-mono text-[11px] pr-1" id="columnListContainer">
+            <!-- Rellenado dinámicamente -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Panel Derecho: Editor SQL y Resultados (3 Cols) -->
+      <div class="lg:col-span-3 space-y-4">
+
+        <!-- Editor SQL -->
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden flex flex-col">
+          <div class="bg-slate-800/80 px-4 py-2.5 border-b border-slate-700 flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2 text-xs font-mono text-slate-300">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+              <span>Consola SQL (DuckDB Dialect)</span>
+              <span class="text-slate-500">|</span>
+              <span class="text-[11px] text-slate-400">Atajo: <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Ctrl</kbd> + <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Enter</kbd></span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="clearEditor()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
+                Limpiar
+              </button>
+              <button id="btnExecuteSql" onclick="executeCurrentQuery()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5">
+                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Ejecutar Consulta
+              </button>
+            </div>
+          </div>
+
+          <div class="relative">
+            <textarea 
+              id="sqlEditor" 
+              rows="7" 
+              class="w-full bg-slate-950 text-cyan-300 font-mono text-xs sm:text-sm p-4 focus:outline-none resize-y border-0 leading-relaxed tracking-tight"
+              spellcheck="false"
+              placeholder="Escribe tu consulta SQL aquí..."
+            >SELECT 
+    Region,
+    COUNT(*) AS Total_Expedientes,
+    SUM(Es_Aprobada) AS Aprobadas,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_Buzon_Promedio,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 2) AS LeadTime_Horas_Promedio
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Total_Expedientes DESC;</textarea>
+          </div>
+        </div>
+
+        <!-- Barra de Estado de la Consulta -->
+        <div class="flex items-center justify-between text-xs px-1">
+          <div class="flex items-center gap-3">
+            <span id="queryLatencyBadge" class="text-slate-500 font-mono">Esperando ejecución...</span>
+            <span id="queryRowCountBadge" class="text-slate-500 font-mono hidden">0 registros</span>
+          </div>
+
+          <button id="btnExportCsv" onclick="exportResultsToCsv()" class="hidden text-xs text-slate-700 hover:text-blue-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> Exportar a CSV
+          </button>
+        </div>
+
+        <!-- Contenedor de Resultados -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden min-h-[320px] flex flex-col justify-between">
+          <div class="overflow-x-auto" id="resultsTableContainer">
+            <div class="p-12 text-center text-slate-400 space-y-2">
+              <i data-lucide="play-circle" class="w-10 h-10 mx-auto text-slate-300"></i>
+              <p class="text-sm font-medium">Presiona <strong class="text-slate-700">"Ejecutar Consulta"</strong> o <strong class="text-slate-700">Ctrl + Enter</strong> para procesar la consulta.</p>
+              <p class="text-xs text-slate-400">El motor ejecutará el SQL columnar directamente en tu navegador.</p>
+            </div>
+          </div>
+
+          <!-- Paginador / Resumen Footer -->
+          <div id="resultsFooter" class="hidden bg-slate-50 px-4 py-2 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
+            <span id="resultsFooterInfo">Mostrando filas</span>
+            <span class="text-[10px] text-slate-400 font-mono">DuckDB-Wasm In-Memory Execution</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SCRIPT DEL MOTOR DUCKDB-WASM Y CONTROLADOR DE LA CONSOLA -->
+  <script is:inline type="module" define:vars={{ baseUrl }}>
+    import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
+
+    let db = null;
+    let conn = null;
+    let lastResultRows = [];
+    let lastResultCols = [];
+
+    const TEMPLATES = [
+      // 0. Cuello de Botella por Hora
+      `SELECT 
+    HOUR(FechaCreacion) AS Hora_Creacion,
+    COUNT(*) AS Expedientes_Recibidos,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_En_Buzon_Promedio,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR
+FROM maestro_expedientes
+GROUP BY 1
+ORDER BY 1 ASC;`,
+
+      // 1. Top FTR por Revisor (>100 casos)
+      `SELECT 
+    U1 AS Operador_Revisor,
+    COUNT(*) AS Casos_Atendidos,
+    SUM(Aprobada_Directa) AS Aprobadas_FTR,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
+    ROUND(AVG(Atencion_Final_Sec) / 60.0, 2) AS Minutos_Dictamen_Promedio
+FROM maestro_expedientes
+WHERE U1 IS NOT NULL AND U1 != ''
+GROUP BY U1
+HAVING COUNT(*) >= 100
+ORDER BY Pct_FTR DESC
+LIMIT 15;`,
+
+      // 2. Top 10 Causales de Rechazo y Abandono
+      `SELECT 
+    ID_Subcategoria,
+    MacroFamilia,
+    COUNT(*) AS Casos_Rechazados,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 1) AS LeadTime_Horas_Promedio,
+    ROUND(SUM(Es_NoConfirmada) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_NoConfirmada
+FROM maestro_expedientes
+WHERE Es_Rechazo = 1
+GROUP BY ID_Subcategoria, MacroFamilia
+ORDER BY Casos_Rechazados DESC
+LIMIT 10;`,
+
+      // 3. Tiempos de Ciclo Hábiles por Región y Tipo de Persona
+      `SELECT 
+    Region,
+    TipoPersona,
+    COUNT(*) AS Total_Casos,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_Buzon,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 2) AS LeadTime_Horas,
+    ROUND(SUM(SLA_8h) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_Cumple_SLA_8h
+FROM maestro_expedientes
+GROUP BY Region, TipoPersona
+ORDER BY Region, Total_Casos DESC;`,
+
+      // 4. Casos Fuera de SLA (>40h) por Regional
+      `SELECT 
+    Region,
+    COUNT(*) AS Total_Casos,
+    SUM(Fuera_SLA_40h) AS Casos_Criticos_Fuera_SLA_40h,
+    ROUND(SUM(Fuera_SLA_40h) * 100.0 / NULLIF(COUNT(*), 0), 2) AS Pct_Critico_Fuera_SLA,
+    ROUND(MAX(Ciclo_Hab_Sec) / 3600.0, 1) AS LeadTime_Maximo_Horas
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
+    ];
+
+    const COLUMNS_DICT = [
+      { name: 'NoGestion', type: 'VARCHAR', desc: 'Número único de gestión del expediente' },
+      { name: 'NIT', type: 'VARCHAR', desc: 'Número de Identificación Tributaria del contribuyente' },
+      { name: 'Contribuyente', type: 'VARCHAR', desc: 'Nombre o razón social de la entidad' },
+      { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de gestión (Activación, Cambio Correo)' },
+      { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT (CENTRAL, SUR, OCCIDENTE, NORORIENTE)' },
+      { name: 'Agencia', type: 'VARCHAR', desc: 'Agencia u oficina tributaria asignada' },
+      { name: 'FechaCreacion', type: 'TIMESTAMP', desc: 'Fecha y hora de radicación del trámite' },
+      { name: 'FechaAsignacion', type: 'TIMESTAMP', desc: 'Fecha y hora de asignación a un revisor' },
+      { name: 'FechaRevision', type: 'TIMESTAMP', desc: 'Fecha y hora en que el revisor inicia atención' },
+      { name: 'FechaFinaliza', type: 'TIMESTAMP', desc: 'Fecha y hora de finalización/aprobación' },
+      { name: 'FechaRechazo', type: 'TIMESTAMP', desc: 'Fecha y hora del primer rechazo u observación' },
+      { name: 'Estado', type: 'VARCHAR', desc: 'Estado final del expediente' },
+      { name: 'U1', type: 'VARCHAR', desc: 'Usuario revisor que dictamina en 1ra ronda' },
+      { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' },
+      { name: 'MacroFamilia', type: 'VARCHAR', desc: 'Categoría taxonómica del motivo de rechazo' },
+      { name: 'ID_Subcategoria', type: 'VARCHAR', desc: 'Código estandarizado del rechazo (ej. SUB-02)' },
+      { name: 'Buzon_Hab_Sec', type: 'DOUBLE', desc: 'Tiempo en cola sin asignar en segundos hábiles 8h' },
+      { name: 'Ciclo_Hab_Sec', type: 'DOUBLE', desc: 'Lead Time total de ciclo en segundos hábiles 8h' },
+      { name: 'Creacion_Atencion_Hab_Sec', type: 'DOUBLE', desc: 'Tiempo desde creación hasta dictamen (8h)' },
+      { name: 'Atencion_Final_Sec', type: 'DOUBLE', desc: 'Tiempo activo de revisión humana en segundos' },
+      { name: 'Aprobada_Directa', type: 'INT', desc: '1 si fue aprobada en 1ra ronda (FTR), 0 en otro caso' },
+      { name: 'Aprobada_Subsanada', type: 'INT', desc: '1 si fue aprobada tras subsanación, 0 en otro caso' },
+      { name: 'Es_Rechazo', type: 'INT', desc: '1 si tuvo al menos un rechazo, 0 en otro caso' },
+      { name: 'Es_Aprobada', type: 'INT', desc: '1 si terminó aprobada, 0 en otro caso' },
+      { name: 'Es_NoConfirmada', type: 'INT', desc: '1 si caducó o no fue confirmada por el usuario' },
+      { name: 'SLA_8h', type: 'INT', desc: '1 si cumplió meta de ciclo <= 8 horas hábiles' },
+      { name: 'SLA_16h', type: 'INT', desc: '1 si ciclo entre 8h y 16h hábiles' },
+      { name: 'SLA_24h', type: 'INT', desc: '1 si ciclo entre 16h y 24h hábiles' },
+      { name: 'SLA_40h', type: 'INT', desc: '1 si ciclo entre 24h y 40h hábiles' },
+      { name: 'Fuera_SLA_40h', type: 'INT', desc: '1 si excedió las 40 horas hábiles (5 días laborales)' },
+      { name: 'RondasRechazo', type: 'BIGINT', desc: 'Cantidad de rondas de rechazo registradas' },
+      { name: 'TotalReasignaciones', type: 'BIGINT', desc: 'Número de reasignaciones entre operadores' }
+    ];
+
+    // Inicializar Motor DuckDB-WASM
+    async function initDuckDbWasm() {
+      const statusEl = document.getElementById('wasmEngineStatus');
+      const dotEl = document.getElementById('wasmEngineDot');
+
+      try {
+        statusEl.textContent = 'Cargando Wasm Bundle...';
+        const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+        const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+
+        const worker_url = URL.createObjectURL(
+          new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' })
+        );
+        const worker = new Worker(worker_url);
+        const logger = new duckdb.ConsoleLogger();
+        db = new duckdb.AsyncDuckDB(logger, worker);
+        await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+        URL.revokeObjectURL(worker_url);
+
+        statusEl.textContent = 'Registrando Parquet...';
+        conn = await db.connect();
+
+        // Registrar archivo Parquet mediante protocolo HTTP
+        const parquetUrl = `${baseUrl}/data/maestro_expedientes.parquet`.replace(/\/\//g, '/');
+        await db.registerFileURL('maestro_expedientes.parquet', parquetUrl, duckdb.DuckDBDataProtocol.HTTP, false);
+
+        // Crear Vista Relacional canónica
+        await conn.query(`CREATE VIEW IF NOT EXISTS maestro_expedientes AS SELECT * FROM read_parquet('maestro_expedientes.parquet');`);
+
+        statusEl.textContent = 'DuckDB Listo';
+        statusEl.className = 'font-mono text-emerald-400 font-bold';
+        dotEl.className = 'w-2 h-2 rounded-full bg-emerald-400';
+
+        // Renderizar diccionario de columnas
+        renderColumnsList(COLUMNS_DICT);
+
+        // Ejecutar primera consulta de demostración
+        executeCurrentQuery();
+
+      } catch (err) {
+        console.error('Error inicializando DuckDB-WASM:', err);
+        statusEl.textContent = 'Modo Local / Simulación';
+        statusEl.className = 'font-mono text-amber-400 font-bold';
+        dotEl.className = 'w-2 h-2 rounded-full bg-amber-400';
+        renderColumnsList(COLUMNS_DICT);
+      }
+    }
+
+    // Renderizar lista de columnas en el explorador
+    function renderColumnsList(cols) {
+      const container = document.getElementById('columnListContainer');
+      if (!container) return;
+      container.innerHTML = cols.map(c => `
+        <div onclick="insertColumn('${c.name}')" class="p-1.5 rounded hover:bg-slate-100 cursor-pointer flex items-center justify-between group transition">
+          <span class="text-slate-800 font-bold group-hover:text-blue-600">${c.name}</span>
+          <span class="text-[9px] text-slate-400 uppercase">${c.type}</span>
+        </div>
+      `).join('');
+    }
+
+    window.filterColumnsList = function() {
+      const q = (document.getElementById('columnFilterInput')?.value || '').toUpperCase();
+      const filtered = COLUMNS_DICT.filter(c => c.name.toUpperCase().includes(q) || c.desc.toUpperCase().includes(q));
+      renderColumnsList(filtered);
+    };
+
+    window.insertColumn = function(colName) {
+      const editor = document.getElementById('sqlEditor');
+      if (!editor) return;
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      const text = editor.value;
+      editor.value = text.substring(0, start) + colName + text.substring(end);
+      editor.focus();
+      editor.selectionStart = editor.selectionEnd = start + colName.length;
+    };
+
+    window.loadSqlTemplate = function(idx) {
+      if (TEMPLATES[idx]) {
+        document.getElementById('sqlEditor').value = TEMPLATES[idx];
+        executeCurrentQuery();
+      }
+    };
+
+    window.clearEditor = function() {
+      document.getElementById('sqlEditor').value = '';
+      document.getElementById('sqlEditor').focus();
+    };
+
+    // Ejecutar consulta SQL en DuckDB
+    window.executeCurrentQuery = async function() {
+      const editor = document.getElementById('sqlEditor');
+      const latencyBadge = document.getElementById('queryLatencyBadge');
+      const rowBadge = document.getElementById('queryRowCountBadge');
+      const btn = document.getElementById('btnExecuteSql');
+      const container = document.getElementById('resultsTableContainer');
+      const footer = document.getElementById('resultsFooter');
+      const footerInfo = document.getElementById('resultsFooterInfo');
+      const btnExport = document.getElementById('btnExportCsv');
+
+      const sql = (editor.value || '').trim();
+      if (!sql) return;
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Ejecutando...`;
+      latencyBadge.textContent = 'Procesando consulta...';
+      const t0 = performance.now();
+
+      try {
+        if (!conn) {
+          throw new Error('DuckDB-Wasm aún no ha completado su inicialización.');
+        }
+
+        const arrowResult = await conn.query(sql);
+        const t1 = performance.now();
+        const durationMs = Math.round(t1 - t0);
+
+        // Convertir resultados Arrow a formato JSON plano
+        const table = arrowResult.toArray().map(row => row.toJSON());
+        const cols = arrowResult.schema.fields.map(f => f.name);
+
+        lastResultRows = table;
+        lastResultCols = cols;
+
+        latencyBadge.innerHTML = `<span class="text-emerald-600 font-bold">⚡ ${durationMs} ms</span> (Latencia de Ejecución)`;
+        rowBadge.textContent = `${table.length.toLocaleString()} registros`;
+        rowBadge.classList.remove('hidden');
+        btnExport.classList.remove('hidden');
+        btnExport.classList.add('flex');
+
+        if (table.length === 0) {
+          container.innerHTML = `
+            <div class="p-12 text-center text-slate-500">
+              <i data-lucide="info" class="w-8 h-8 mx-auto text-blue-500 mb-2"></i>
+              <p class="font-bold text-sm">La consulta se ejecutó con éxito pero devolvió 0 filas.</p>
+            </div>
+          `;
+          footer.classList.add('hidden');
+          return;
+        }
+
+        // Construir tabla HTML
+        const thead = `
+          <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-black text-slate-700 uppercase tracking-wider sticky top-0 z-10">
+            <tr>
+              ${cols.map(c => `<th class="px-3 py-2.5 text-left">${c}</th>`).join('')}
+            </tr>
+          </thead>
+        `;
+
+        const maxDisplay = 500;
+        const displayRows = table.slice(0, maxDisplay);
+        const tbody = `
+          <tbody class="divide-y divide-slate-100 text-xs font-mono">
+            ${displayRows.map(r => `
+              <tr class="hover:bg-blue-50/50 transition">
+                ${cols.map(c => {
+                  const val = r[c];
+                  const formatted = val === null || val === undefined ? '<span class="text-slate-300">NULL</span>' : 
+                                    typeof val === 'number' ? (Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2)) : 
+                                    String(val);
+                  return `<td class="px-3 py-2 whitespace-nowrap text-slate-800">${formatted}</td>`;
+                }).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+
+        container.innerHTML = `<table class="w-full text-left border-collapse">${thead}${tbody}</table>`;
+        footer.classList.remove('hidden');
+        footerInfo.textContent = table.length > maxDisplay ? 
+          `Mostrando las primeras ${maxDisplay} de ${table.length.toLocaleString()} filas` : 
+          `Total: ${table.length.toLocaleString()} filas`;
+
+        if (window.lucide) window.lucide.createIcons();
+
+      } catch (err) {
+        console.error('Error en ejecución SQL:', err);
+        latencyBadge.textContent = 'Error en sintaxis SQL';
+        rowBadge.classList.add('hidden');
+        btnExport.classList.add('hidden');
+        footer.classList.add('hidden');
+
+        container.innerHTML = `
+          <div class="p-8 text-left bg-rose-50/70 border border-rose-200 rounded-xl m-4 space-y-2">
+            <div class="flex items-center gap-2 text-rose-800 font-bold text-sm">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Error en la Consulta SQL
+            </div>
+            <pre class="text-xs font-mono text-rose-700 whitespace-pre-wrap leading-relaxed">${err.message || String(err)}</pre>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Ejecutar Consulta`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    };
+
+    // Exportar resultados actuales a CSV
+    window.exportResultsToCsv = function() {
+      if (!lastResultRows || lastResultRows.length === 0) return;
+      
+      const cols = lastResultCols;
+      const csvLines = [];
+      csvLines.push(cols.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','));
+
+      for (const row of lastResultRows) {
+        const line = cols.map(c => {
+          const val = row[c];
+          if (val === null || val === undefined) return '""';
+          return `"${String(val).replace(/"/g, '""')}"`;
+        }).join(',');
+        csvLines.push(line);
+      }
+
+      const blob = new Blob([csvLines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `consulta_rolap_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // Atajo de teclado: Ctrl + Enter para ejecutar
+    document.getElementById('sqlEditor')?.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        window.executeCurrentQuery();
+      }
+    });
+
+    // Iniciar al cargar el documento
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDuckDbWasm);
+    } else {
+      initDuckDbWasm();
+    }
+  </script>
+</MainLayout>
