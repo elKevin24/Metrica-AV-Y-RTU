@@ -24,6 +24,7 @@ let chartVolumeVsSpeedInst = null;
 let chartBarRegVolumenInst = null;
 let chartBarRegTiemposInst = null;
 let chartSobrecargaBarInst = null;
+let chartDemandaResolucionLineInst = null;
 let chartSpeedDistributionInst = null;
 
 function initCharts() {
@@ -41,6 +42,7 @@ function initCharts() {
     if (chartBarRegVolumenInst) { chartBarRegVolumenInst.destroy(); chartBarRegVolumenInst = null; }
     if (chartBarRegTiemposInst) { chartBarRegTiemposInst.destroy(); chartBarRegTiemposInst = null; }
     if (chartSobrecargaBarInst) { chartSobrecargaBarInst.destroy(); chartSobrecargaBarInst = null; }
+    if (chartDemandaResolucionLineInst) { chartDemandaResolucionLineInst.destroy(); chartDemandaResolucionLineInst = null; }
     if (chartSpeedDistributionInst) { chartSpeedDistributionInst.destroy(); chartSpeedDistributionInst = null; }
 
     const cvBarVol = document.getElementById('chartBarRegVolumen');
@@ -243,8 +245,46 @@ function initCharts() {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } },
-                    tooltip: richTooltipOptions
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 10,
+                            padding: 8,
+                            font: { size: 10, weight: 'bold' },
+                            generateLabels: (chart) => {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    const ds = data.datasets[0];
+                                    const total = ds.data.reduce((acc, v) => acc + (Number(v) || 0), 0);
+                                    return data.labels.map((lbl, i) => {
+                                        const val = Number(ds.data[i]) || 0;
+                                        const pct = total > 0 ? ((val / total) * 100).toFixed(1) : '0.0';
+                                        return {
+                                            text: `${lbl}: ${val.toLocaleString()} (${pct}%)`,
+                                            fillStyle: ds.backgroundColor[i],
+                                            strokeStyle: ds.borderColor,
+                                            lineWidth: 1,
+                                            hidden: isNaN(ds.data[i]) || chart.getDatasetMeta(0).data[i]?.hidden,
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        ...richTooltipOptions,
+                        callbacks: {
+                            label: (ctx) => {
+                                const val = Number(ctx.raw) || 0;
+                                const ds = ctx.chart.data.datasets[0];
+                                const total = ds.data.reduce((acc, v) => acc + (Number(v) || 0), 0);
+                                const pct = total > 0 ? ((val / total) * 100).toFixed(1) : '0.0';
+                                return ` ${ctx.label}: ${val.toLocaleString()} expedientes (${pct}%)`;
+                            }
+                        }
+                    }
                 },
                 cutout: '65%'
             }
@@ -504,6 +544,7 @@ window.resizeAllCharts = function() {
         chartBarRegVolumenInst,
         chartBarRegTiemposInst,
         chartSobrecargaBarInst,
+        chartDemandaResolucionLineInst,
         chartSpeedDistributionInst,
         window._chartScatterInstance
     ];
@@ -516,4 +557,205 @@ window.resizeAllCharts = function() {
             } catch(e) {}
         }
     });
+};
+
+// =========================================================================
+// MÓDULO: GRÁFICO 2 - DEMANDA VS RESOLUCIÓN MULTINIVEL (MES, SEMANA, DÍA)
+// =========================================================================
+let currentNivelDemandaResolucion = 'mes';
+let currentMesFiltroDemandaResolucion = 'TODOS';
+
+window.setNivelDemandaResolucion = function(nivel) {
+    currentNivelDemandaResolucion = nivel;
+    
+    // Actualizar botones de estado activo/inactivo
+    const btnMes = document.getElementById('btnNivelMes');
+    const btnSem = document.getElementById('btnNivelSemana');
+    const btnDia = document.getElementById('btnNivelDia');
+    const selMes = document.getElementById('selectFiltroMesDemanda');
+
+    const activeClasses = 'bg-blue-600 text-white font-bold shadow-xs border-blue-600';
+    const inactiveClasses = 'bg-white text-slate-700 hover:bg-slate-100 font-medium border-slate-200';
+
+    if (btnMes) {
+        btnMes.className = `px-3 py-1.5 rounded-xl text-xs transition border flex items-center gap-1.5 ${nivel === 'mes' ? activeClasses : inactiveClasses}`;
+    }
+    if (btnSem) {
+        btnSem.className = `px-3 py-1.5 rounded-xl text-xs transition border flex items-center gap-1.5 ${nivel === 'semana' ? activeClasses : inactiveClasses}`;
+    }
+    if (btnDia) {
+        btnDia.className = `px-3 py-1.5 rounded-xl text-xs transition border flex items-center gap-1.5 ${nivel === 'dia' ? activeClasses : inactiveClasses}`;
+    }
+
+    if (selMes) {
+        if (nivel === 'mes') {
+            selMes.classList.add('opacity-40');
+            selMes.title = 'El filtro por mes se aplica en niveles Semana y Día';
+        } else {
+            selMes.classList.remove('opacity-40');
+            selMes.title = 'Filtrar período por mes';
+        }
+    }
+
+    window.renderDemandaResolucionChart();
+};
+
+window.onCambioMesDemandaResolucion = function(mes) {
+    currentMesFiltroDemandaResolucion = mes;
+    // Si se elige un mes específico estando en nivel 'mes', cambiar intuitivamente a nivel 'dia'
+    if (mes !== 'TODOS' && currentNivelDemandaResolucion === 'mes') {
+        window.setNivelDemandaResolucion('dia');
+        return;
+    }
+    window.renderDemandaResolucionChart();
+};
+
+window.renderDemandaResolucionChart = function() {
+    const cv = document.getElementById('chartDemandaResolucionLine');
+    if (!cv) return;
+
+    const dataObj = window.DATA && window.DATA.serieDemandaResolucion;
+    if (!dataObj) {
+        setTimeout(() => window.renderDemandaResolucionChart(), 250);
+        return;
+    }
+
+    const nivel = currentNivelDemandaResolucion;
+    const mesFiltro = currentMesFiltroDemandaResolucion;
+
+    let labels = [];
+    let dataDemanda = [];
+    let dataResolucion = [];
+
+    if (nivel === 'mes') {
+        labels = dataObj.meses.map(m => m.label.replace(' 2026', ''));
+        dataDemanda = dataObj.meses.map(m => m.demanda);
+        dataResolucion = dataObj.meses.map(m => m.resolucion);
+    } else if (nivel === 'semana') {
+        let semanas = dataObj.semanas;
+        if (mesFiltro !== 'TODOS') {
+            semanas = semanas.filter(s => s.mesKey === mesFiltro);
+        }
+        labels = semanas.map(s => s.label);
+        dataDemanda = semanas.map(s => s.demanda);
+        dataResolucion = semanas.map(s => s.resolucion);
+    } else if (nivel === 'dia') {
+        let dias = dataObj.dias;
+        if (mesFiltro !== 'TODOS') {
+            dias = dias.filter(d => d.mesKey === mesFiltro);
+        }
+        labels = dias.map(d => `${d.diaSemana} ${d.fecha.substring(8, 10)}/${d.fecha.substring(5, 7)}`);
+        dataDemanda = dias.map(d => d.demanda);
+        dataResolucion = dias.map(d => d.resolucion);
+    }
+
+    // Actualizar métricas KPI en la cabecera del gráfico
+    const totDem = dataDemanda.reduce((a, b) => a + b, 0);
+    const totRes = dataResolucion.reduce((a, b) => a + b, 0);
+    const brecha = totDem - totRes;
+    const eficacia = totDem > 0 ? ((totRes / totDem) * 100).toFixed(1) : '100.0';
+
+    const elDem = document.getElementById('kpiDemandaVal');
+    const elRes = document.getElementById('kpiResolucionVal');
+    const elBre = document.getElementById('kpiBrechaVal');
+    const elEfi = document.getElementById('kpiEficaciaVal');
+
+    if (elDem) elDem.innerText = totDem.toLocaleString();
+    if (elRes) elRes.innerText = totRes.toLocaleString();
+    if (elBre) elBre.innerText = `${brecha >= 0 ? '+' : ''}${brecha.toLocaleString()}`;
+    if (elEfi) elEfi.innerText = `${eficacia}%`;
+
+    const isDense = (nivel === 'dia' && mesFiltro === 'TODOS');
+
+    if (!chartDemandaResolucionLineInst) {
+        chartDemandaResolucionLineInst = new Chart(cv, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Demanda en Trámites (Ingresados)',
+                        data: dataDemanda,
+                        borderColor: '#2563EB',
+                        backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: isDense ? 0.8 : 3.5,
+                        pointHoverRadius: 6,
+                        borderWidth: 2.5
+                    },
+                    {
+                        label: 'Capacidad de Resolución (Dictaminados)',
+                        data: dataResolucion,
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: isDense ? 0.8 : 3.5,
+                        pointHoverRadius: 6,
+                        borderWidth: 2.5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } }
+                    },
+                    tooltip: {
+                        ...richTooltipOptions,
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString()} expedientes`;
+                            },
+                            afterBody: function(items) {
+                                const dem = items[0] ? items[0].raw : 0;
+                                const res = items[1] ? items[1].raw : 0;
+                                const diff = dem - res;
+                                const pct = dem > 0 ? ((res / dem) * 100).toFixed(1) : '100';
+                                return [
+                                    `--------------------------------`,
+                                    `⚖️ Brecha del período: ${diff >= 0 ? '+' : ''}${diff.toLocaleString()} expedientes ${diff > 0 ? '(acumulación en cola)' : '(superávit de atención)'}`,
+                                    `⚡ Cobertura resolutiva: ${pct}% de la demanda atendida`
+                                ];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#F8FAFC' },
+                        ticks: {
+                            font: { size: 10 },
+                            maxTicksLimit: isDense ? 18 : 31
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#F1F5F9' },
+                        title: { display: true, text: 'Volumen de Trámites', font: { size: 10, weight: 'bold' } },
+                        ticks: {
+                            callback: function(v) { return v.toLocaleString(); },
+                            font: { size: 10 }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        chartDemandaResolucionLineInst.data.labels = labels;
+        chartDemandaResolucionLineInst.data.datasets[0].data = dataDemanda;
+        chartDemandaResolucionLineInst.data.datasets[1].data = dataResolucion;
+        chartDemandaResolucionLineInst.data.datasets[0].pointRadius = isDense ? 0.8 : 3.5;
+        chartDemandaResolucionLineInst.data.datasets[1].pointRadius = isDense ? 0.8 : 3.5;
+        chartDemandaResolucionLineInst.options.scales.x.ticks.maxTicksLimit = isDense ? 18 : 31;
+        chartDemandaResolucionLineInst.update();
+    }
 };

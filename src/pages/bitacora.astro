@@ -3,7 +3,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<MainLayout title="SAT Guatemala - Bitácora Transaccional & Auditoría de Eventos">
+<MainLayout title="SAT Guatemala - Bitácora Transaccional & Auditoría de Eventos" activeModule="BITACORA">
   
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-28 md:pb-8 space-y-6">
@@ -24,8 +24,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         <a href={`${baseUrl}/historico`} class="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold transition flex items-center gap-1.5 border border-blue-200 shadow-xs">
           <i data-lucide="shield" class="w-3.5 h-3.5 text-blue-600"></i> Tablero AV
         </a>
-        <a href={`${baseUrl}/auditoria`} class="px-3 py-1.5 rounded-lg bg-cyan-50 text-cyan-800 hover:bg-cyan-100 text-xs font-bold transition flex items-center gap-1.5 border border-cyan-200 shadow-xs">
-          <i data-lucide="file-search" class="w-3.5 h-3.5 text-cyan-600"></i> Auditoría de Casos
+        <a href={`${baseUrl}/laboratorio-sql`} class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold transition flex items-center gap-1.5 border border-slate-300 shadow-xs">
+          <i data-lucide="terminal" class="w-3.5 h-3.5 text-slate-600"></i> Laboratorio SQL
         </a>
       </div>
     </div>
@@ -166,7 +166,35 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
     <!-- 2. PESTAÑA BALANCE OPERATIVO & FUNNEL -->
     <div id="tab-bitacora-kpis" class="bitacora-tab-content hidden space-y-6">
-      <!-- BALANCE OPERATIVO GENERAL DE JULIO 2026 (MISMA ESTRUCTURA QUE HISTÓRICO) -->
+      
+      <!-- SELECTOR DE PERÍODO TEMPORAL PARA BALANCE OPERATIVO -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="space-y-0.5">
+          <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+            <i data-lucide="filter" class="w-4 h-4 text-indigo-600"></i>
+            Período de Análisis Transaccional:
+          </span>
+          <p class="text-[11px] text-slate-500">Selecciona el horizonte temporal para actualizar los 8 KPIs ejecutivos y el embudo de estados</p>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select 
+            id="selBitacoraPeriodo" 
+            onchange="changeBitacoraPeriod(this.value)" 
+            class="w-full sm:w-80 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-indigo-500 shadow-inner"
+          >
+            <option value="TOTAL" selected>Enero – Julio 2026 (Consolidado - 182,412 casos)</option>
+            <option value="2026-01">Enero 2026 (74,099 expedientes)</option>
+            <option value="2026-02">Febrero 2026 (44,782 expedientes)</option>
+            <option value="2026-03">Marzo 2026 (31,511 expedientes)</option>
+            <option value="2026-04">Abril 2026 (9,074 expedientes)</option>
+            <option value="2026-05">Mayo 2026 (9,759 expedientes)</option>
+            <option value="2026-06">Junio 2026 (8,623 expedientes)</option>
+            <option value="2026-07">Julio 2026 (4,564 expedientes)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- BALANCE OPERATIVO GENERAL DE ENERO – JULIO 2026 -->
       <div class="space-y-4">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Card 1: Universo -->
@@ -175,9 +203,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Universo Gestionado</span>
               <span class="p-1 bg-slate-100 text-slate-600 rounded"><i data-lucide="layers" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-slate-900 font-mono mt-1">64,197</h3>
-            <span class="text-xs text-slate-500 font-bold mt-1 inline-block">100% de expedientes</span>
-            <p class="text-[11px] text-slate-400 mt-1 font-mono">Julio 2026</p>
+            <h3 id="lblKpiUniverso" class="text-2xl font-black text-slate-900 font-mono mt-1">182,412</h3>
+            <span id="lblKpiUniversoPct" class="text-xs text-slate-500 font-bold mt-1 inline-block">100% de expedientes</span>
+            <p id="lblKpiPeriodoTag" class="text-[11px] text-slate-400 mt-1 font-mono">Enero – Julio 2026</p>
           </div>
 
           <!-- Card 2: Aprobadas con Éxito -->
@@ -186,9 +214,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider">Aprobadas con Éxito</span>
               <span class="p-1 bg-emerald-100 text-emerald-800 rounded"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-emerald-700 font-mono mt-1">36,264</h3>
-            <span class="text-xs text-emerald-800 font-bold mt-1 inline-block">56.5% del universo</span>
-            <p class="text-[11px] text-emerald-600 mt-1 font-mono">Trámites resueltos</p>
+            <h3 id="lblKpiAprobadas" class="text-2xl font-black text-emerald-700 font-mono mt-1">108,229</h3>
+            <span id="lblKpiAprobadasPct" class="text-xs text-emerald-800 font-bold mt-1 inline-block">59.3% del universo</span>
+            <p class="text-[11px] text-emerald-600 mt-1 font-mono">Trámites resueltos con éxito</p>
           </div>
 
           <!-- Card 3: Rechazos Emitidos -->
@@ -197,19 +225,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-[11px] font-bold text-rose-900 uppercase tracking-wider">Rechazos Emitidos</span>
               <span class="p-1 bg-rose-100 text-rose-800 rounded"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-rose-700 font-mono mt-1">16,285</h3>
-            <span class="text-xs text-rose-800 font-bold mt-1 inline-block">25.4% del universo</span>
-            <p class="text-[11px] text-rose-600 mt-1 font-mono">Rechazos definitivos</p>
+            <h3 id="lblKpiRechazos" class="text-2xl font-black text-rose-700 font-mono mt-1">51,027</h3>
+            <span id="lblKpiRechazosPct" class="text-xs text-rose-800 font-bold mt-1 inline-block">28.0% del universo</span>
+            <p class="text-[11px] text-rose-600 mt-1 font-mono">Rechazos dictaminados</p>
           </div>
 
-          <!-- Card 4: En Proceso / Otras -->
+          <!-- Card 4: En Proceso / Canceladas / No Confirmadas -->
           <div class="bg-gradient-to-br from-amber-50 to-white p-4 rounded-2xl shadow-xs border border-amber-200">
             <div class="flex items-center justify-between mb-1">
-              <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider">En Proceso / Otras</span>
+              <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider">Canceladas / No Conf.</span>
               <span class="p-1 bg-amber-100 text-amber-800 rounded"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-amber-700 font-mono mt-1">11,648</h3>
-            <span class="text-xs text-amber-800 font-bold mt-1 inline-block">18.1% del universo</span>
+            <h3 id="lblKpiOtras" class="text-2xl font-black text-amber-700 font-mono mt-1">73,522</h3>
+            <span id="lblKpiOtrasPct" class="text-xs text-amber-800 font-bold mt-1 inline-block">Eventos no completados</span>
             <p class="text-[11px] text-amber-600 mt-1 font-mono">Abandono / Expiración</p>
           </div>
         </div>
@@ -218,11 +246,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <!-- Card 5: Aprobadas a la 1ª -->
           <div class="bg-gradient-to-br from-green-50 to-white p-4 rounded-2xl shadow-xs border border-green-200">
             <div class="flex items-center justify-between mb-1">
-              <span class="text-[11px] font-bold text-green-900 uppercase tracking-wider">Aprobadas a la 1ª (Limpias)</span>
+              <span class="text-[11px] font-bold text-green-900 uppercase tracking-wider">Aprobadas a la 1ª (FTR)</span>
               <span class="p-1 bg-green-100 text-green-800 rounded"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-green-700 font-mono mt-1">27,155</h3>
-            <span class="text-xs text-green-800 font-bold mt-1 inline-block">74.9% de las aprobaciones</span>
+            <h3 id="lblKpiDirectas" class="text-2xl font-black text-green-700 font-mono mt-1">84,406</h3>
+            <span id="lblKpiDirectasPct" class="text-xs text-green-800 font-bold mt-1 inline-block">78.0% de las aprobaciones</span>
             <p class="text-[11px] text-green-600 mt-1 font-mono">Directas sin rechazo</p>
           </div>
 
@@ -232,20 +260,20 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-[11px] font-bold text-cyan-900 uppercase tracking-wider">Subsanadas tras Rechazo</span>
               <span class="p-1 bg-cyan-100 text-cyan-800 rounded"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-cyan-700 font-mono mt-1">9,109</h3>
-            <span class="text-xs text-cyan-800 font-bold mt-1 inline-block">30.9% tasa recuperación</span>
+            <h3 id="lblKpiSubsanadas" class="text-2xl font-black text-cyan-700 font-mono mt-1">23,823</h3>
+            <span id="lblKpiSubsanadasPct" class="text-xs text-cyan-800 font-bold mt-1 inline-block">31.8% tasa recuperación</span>
             <p class="text-[11px] text-cyan-600 mt-1 font-mono">Recuperadas tras subsanar</p>
           </div>
 
           <!-- Card 7: Rechazos Sin Motivo -->
           <div class="bg-gradient-to-br from-orange-50 to-white p-4 rounded-2xl shadow-xs border border-orange-200">
             <div class="flex items-center justify-between mb-1">
-              <span class="text-[11px] font-bold text-orange-900 uppercase tracking-wider">Rechazos Sin Motivo</span>
+              <span class="text-[11px] font-bold text-orange-900 uppercase tracking-wider">Rechazos Sin Causal</span>
               <span class="p-1 bg-orange-100 text-orange-800 rounded"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-orange-700 font-mono mt-1">15,070</h3>
-            <span class="text-xs text-orange-800 font-bold mt-1 inline-block">51.1% de los rechazos</span>
-            <p class="text-[11px] text-orange-600 mt-1 font-mono">Falta de tipificación formal</p>
+            <h3 id="lblKpiRechSin" class="text-2xl font-black text-orange-700 font-mono mt-1">26,053</h3>
+            <span id="lblKpiRechSinPct" class="text-xs text-orange-800 font-bold mt-1 inline-block">51.1% de los rechazos</span>
+            <p class="text-[11px] text-orange-600 mt-1 font-mono">Observación genérica</p>
           </div>
 
           <!-- Card 8: Rechazos con Causal -->
@@ -254,8 +282,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-[11px] font-bold text-red-900 uppercase tracking-wider">Rechazos con Causal</span>
               <span class="p-1 bg-red-100 text-red-800 rounded"><i data-lucide="slash" class="w-3.5 h-3.5"></i></span>
             </div>
-            <h3 class="text-2xl font-black text-red-700 font-mono mt-1">14,428</h3>
-            <span class="text-xs text-red-800 font-bold mt-1 inline-block">48.9% de los rechazos</span>
+            <h3 id="lblKpiRechCon" class="text-2xl font-black text-red-700 font-mono mt-1">24,974</h3>
+            <span id="lblKpiRechConPct" class="text-xs text-red-800 font-bold mt-1 inline-block">48.9% de los rechazos</span>
             <p class="text-[11px] text-red-600 mt-1 font-mono">Tipificados formalmente</p>
           </div>
         </div>
@@ -269,7 +297,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <i data-lucide="git-commit" class="w-5 h-5 text-indigo-600"></i>
               Embudo de Ciclo de Vida Transaccional (Process Funnel)
             </h2>
-            <p class="text-xs text-slate-500">Flujo de volumen a través de las etapas del ciclo de vida de los trámites</p>
+            <p class="text-xs text-slate-500">Flujo de volumen a través de las etapas del ciclo de vida de los trámites en el período seleccionado</p>
           </div>
         </div>
 
@@ -281,7 +309,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="w-2 h-2 rounded-full bg-blue-500"></span>
             </div>
             <h3 class="text-xs font-bold text-slate-900 mt-1">CREADA</h3>
-            <p class="text-lg font-black text-slate-900 font-mono mt-0.5">64,197</p>
+            <p id="lblFunnelCreada" class="text-lg font-black text-slate-900 font-mono mt-0.5">182,412</p>
             <p class="text-[11px] text-slate-500">100.0% Base Inicial</p>
           </div>
 
@@ -291,8 +319,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="w-2 h-2 rounded-full bg-sky-500"></span>
             </div>
             <h3 class="text-xs font-bold text-slate-900 mt-1">CONFIRMADA</h3>
-            <p class="text-lg font-black text-sky-700 font-mono mt-0.5">58,422</p>
-            <p class="text-[11px] text-emerald-600 font-semibold">91.0% Confirmación</p>
+            <p id="lblFunnelConfirmada" class="text-lg font-black text-sky-700 font-mono mt-0.5">149,050</p>
+            <p id="lblFunnelConfirmadaPct" class="text-[11px] text-emerald-600 font-semibold">81.7% Confirmación</p>
           </div>
 
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
@@ -301,8 +329,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="w-2 h-2 rounded-full bg-amber-500"></span>
             </div>
             <h3 class="text-xs font-bold text-slate-900 mt-1">EN COLA (BUZÓN)</h3>
-            <p class="text-lg font-black text-amber-700 font-mono mt-0.5">47,231</p>
-            <p class="text-[11px] text-slate-500">Espera de Asignación</p>
+            <p id="lblFunnelCola" class="text-lg font-black text-amber-700 font-mono mt-0.5">135,820</p>
+            <p class="text-[11px] text-slate-500">Espera Asignación</p>
           </div>
 
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
@@ -311,7 +339,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
             </div>
             <h3 class="text-xs font-bold text-slate-900 mt-1">ASIGNADA</h3>
-            <p class="text-lg font-black text-indigo-700 font-mono mt-0.5">46,900</p>
+            <p id="lblFunnelAsignada" class="text-lg font-black text-indigo-700 font-mono mt-0.5">134,910</p>
             <p class="text-[11px] text-slate-500">Bandeja Operador</p>
           </div>
 
@@ -321,7 +349,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="w-2 h-2 rounded-full bg-purple-500"></span>
             </div>
             <h3 class="text-xs font-bold text-slate-900 mt-1">EN PROCESO</h3>
-            <p class="text-lg font-black text-purple-700 font-mono mt-0.5">133,296</p>
+            <p id="lblFunnelProceso" class="text-lg font-black text-purple-700 font-mono mt-0.5">233,456</p>
             <p class="text-[11px] text-purple-600 font-semibold">Incluye Re-trabajo</p>
           </div>
 
@@ -331,8 +359,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             </div>
             <h3 class="text-xs font-bold text-emerald-900 mt-1">APROBADA</h3>
-            <p class="text-lg font-black text-emerald-700 font-mono mt-0.5">36,264</p>
-            <p class="text-[11px] text-emerald-800 font-bold">56.5% Éxito Final</p>
+            <p id="lblFunnelAprobada" class="text-lg font-black text-emerald-700 font-mono mt-0.5">108,229</p>
+            <p id="lblFunnelAprobadaPct" class="text-[11px] text-emerald-800 font-bold">59.3% Éxito Final</p>
           </div>
         </div>
       </div>
@@ -347,8 +375,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             <i data-lucide="search" class="w-4.5 h-4.5"></i>
           </div>
           <div>
-            <h2 class="text-sm font-black tracking-tight">Buscador y Consulta de Bitácora</h2>
-            <p class="text-[10px] text-slate-400 font-semibold">Pega el Número de Gestión para obtener su historial y ciclos operativos de inmediato</p>
+            <h2 class="text-sm font-black tracking-tight">Buscador y Consulta Forense de Bitácora (Enero – Julio 2026)</h2>
+            <p class="text-[10px] text-slate-400 font-semibold">Pega el Número de Gestión para obtener su historial, rondas y ciclos operativos de inmediato desde las 256 particiones</p>
           </div>
         </div>
         
@@ -357,12 +385,38 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             <input 
               type="text" 
               id="txtDirectGestionId" 
-              placeholder="Pegar No. Gestión aquí... (ej. 20267AV34B0CEC5)" 
+              placeholder="Pegar No. Gestión aquí... (ej. 20267AV00081B00)" 
               class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-blue-500 text-xs font-bold text-slate-800 shadow-inner"
               onkeydown="if(event.key === 'Enter') queryDirectGestion()"
             />
             <button onclick="queryDirectGestion()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-blue-500/20 shrink-0">
               Consultar
+            </button>
+          </div>
+
+          <!-- Casos de prueba rápidos -->
+          <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+            <span class="text-slate-400 font-semibold text-[11px]">Casos de prueba para auditoría forense:</span>
+            <button 
+              type="button" 
+              onclick="testSearchGestion('20267AV00081B00')" 
+              class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-mono text-[11px] font-bold transition flex items-center gap-1 border border-slate-300"
+            >
+              <i data-lucide="file-check" class="w-3 h-3 text-indigo-600"></i> 20267AV00081B00 (7 eventos / 2 ciclos)
+            </button>
+            <button 
+              type="button" 
+              onclick="testSearchGestion('20267AV00138C01')" 
+              class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-mono text-[11px] font-bold transition flex items-center gap-1 border border-slate-300"
+            >
+              <i data-lucide="file-text" class="w-3 h-3 text-emerald-600"></i> 20267AV00138C01
+            </button>
+            <button 
+              type="button" 
+              onclick="testSearchGestion('20267AV0007DA02')" 
+              class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-mono text-[11px] font-bold transition flex items-center gap-1 border border-slate-300"
+            >
+              <i data-lucide="file-text" class="w-3 h-3 text-blue-600"></i> 20267AV0007DA02
             </button>
           </div>
 
@@ -427,14 +481,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
     <!-- 4. PESTAÑA DESMITIFICACIÓN DE TIEMPOS & SLAS -->
     <div id="tab-bitacora-tiempos" class="bitacora-tab-content hidden space-y-6">
-      <!-- PROMEDIOS GENERALES INSTITUCIONALES & GLOSARIO DE ETAPAS (JULIO 2026) -->
+      <!-- PROMEDIOS GENERALES INSTITUCIONALES & GLOSARIO DE ETAPAS (ENERO – JULIO 2026) -->
       <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-6">
         <div>
           <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
             <i data-lucide="clock" class="w-5 h-5 text-indigo-600"></i>
-            Promedios Generales Institucionales & Glosario de Etapas
+            Promedios Generales Institucionales & Glosario de Etapas (Enero – Julio 2026)
           </h2>
-          <p class="text-xs text-slate-500">Valores normativos y tiempo promedio que toma cada etapa del ciclo de vida del expediente en Julio 2026</p>
+          <p class="text-xs text-slate-500">Valores normativos y tiempo promedio que toma cada etapa del ciclo de vida del expediente en el período Enero – Julio 2026 (182,412 trámites)</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -443,13 +497,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
             <h3 class="text-xs font-black text-slate-900 uppercase">1. Espera en Cola (Buzón)</h3>
             <p class="text-[10px] text-slate-400 font-mono">FechaAsignación - FechaCreación</p>
-            <div class="text-2xl font-black text-slate-900 font-mono mt-1">10.24 <span class="text-xs font-normal text-slate-500">horas hábiles</span></div>
-            <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario: 45.04 horas</span>
+            <div class="text-2xl font-black text-slate-900 font-mono mt-1">9.49 <span class="text-xs font-normal text-slate-500">horas hábiles</span></div>
+            <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario: 42.80 horas</span>
             <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
               Tiempo que el trámite permanece en espera en el servidor central desde que el ciudadano realiza la creación de su solicitud hasta que el sistema la distribuye a la regional.
             </p>
             <div class="mt-2 text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-lg border border-amber-100/60 inline-block">
-              ⚠️ Representa el 27.9% del tiempo total.
+              ⚠️ Representa el 47.5% del ciclo hábil.
             </div>
           </div>
 
@@ -458,19 +512,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             <span class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
             <h3 class="text-xs font-black text-slate-900 uppercase">2. En Bandeja (Bolsón)</h3>
             <p class="text-[10px] text-slate-400 font-mono">FechaRevisión - FechaAsignación</p>
-            <div class="text-2xl font-black text-slate-900 font-mono mt-1">2.4 <span class="text-xs font-normal text-slate-500">minutos hábiles</span></div>
+            <div class="text-2xl font-black text-slate-900 font-mono mt-1">2.35 <span class="text-xs font-normal text-slate-500">minutos hábiles</span></div>
             <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario Deduplicado: 150.2 min (2.5 h)</span>
             
             <div class="text-[11px] text-slate-600 font-semibold space-y-0.5 mt-1 border-t border-blue-100 pt-1">
-              <div>• Activación (AV): <strong class="text-blue-955 font-mono">2.52 min</strong> <span class="text-slate-400 font-normal">| Reloj: 157.7 min</span></div>
-              <div>• Correo (RTU): <strong class="text-blue-955 font-mono">2.30 min</strong> <span class="text-slate-400 font-normal">| Reloj: 145.8 min</span></div>
+              <div>• Activación (AV): <strong class="text-blue-950 font-mono">2.52 min</strong> <span class="text-slate-400 font-normal">| Reloj: 157.7 min</span></div>
+              <div>• Correo (RTU): <strong class="text-blue-950 font-mono">2.30 min</strong> <span class="text-slate-400 font-normal">| Reloj: 145.8 min</span></div>
             </div>
             
             <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
               Tiempo que transcurre desde que el operador recibe la solicitud en su lista de trabajo hasta que hace clic para abrirla en pantalla.
             </p>
             <div class="mt-2 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-lg border border-blue-100/60 inline-block">
-              ⚡ Muestras: 46,326 casos (68,999 asignaciones reales).
+              ⚡ Muestras: 134,910 asignaciones auditadas.
             </div>
           </div>
 
@@ -484,13 +538,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <div>
                 <span class="text-[10px] font-extrabold text-slate-500 block uppercase tracking-wider">Activación de Agencia Virtual</span>
                 <div class="text-xl font-black text-slate-900 font-mono">57.09 <span class="text-xs font-normal text-slate-500">segundos</span></div>
-                <span class="text-[10px] text-slate-500 font-mono">Muestra: 10,627 gestiones</span>
+                <span class="text-[10px] text-slate-500 font-mono">65,006 dictámenes resueltos</span>
               </div>
               
               <div class="border-t border-slate-100 pt-2">
                 <span class="text-[10px] font-extrabold text-slate-500 block uppercase tracking-wider">Cambio de Correo Electrónico</span>
                 <div class="text-xl font-black text-slate-900 font-mono">60.69 <span class="text-xs font-normal text-slate-500">segundos</span></div>
-                <span class="text-[10px] text-slate-500 font-mono">Muestra: 17,413 gestiones</span>
+                <span class="text-[10px] text-slate-500 font-mono">70,336 dictámenes resueltos</span>
               </div>
             </div>
             
@@ -498,7 +552,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               Duración exacta en que el revisor humano audita los requisitos en pantalla hasta emitir la aprobación o el dictamen de rechazo.
             </p>
             <div class="mt-2 text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-1 rounded-lg border border-purple-100/60 inline-block">
-              🎯 Evaluación humana en pantalla.
+              🎯 Promedio general: ~58.2 segundos.
             </div>
           </div>
 
@@ -507,19 +561,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">Criterio Oficial: Horas Hábiles (8h/día)</span>
             <h3 class="text-xs font-black text-slate-900 uppercase">4. Ciclo Total de Respuesta</h3>
             <p class="text-[10px] text-slate-400 font-mono">FechaFinaliza - FechaCreación</p>
-            <div class="text-2xl font-black text-slate-900 font-mono mt-1">36.71 <span class="text-xs font-normal text-slate-500">horas hábiles</span></div>
-            <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario: 153.84 horas</span>
+            <div class="text-2xl font-black text-slate-900 font-mono mt-1">19.96 <span class="text-xs font-normal text-slate-500">horas hábiles</span></div>
+            <span class="text-xs text-slate-600 font-bold mt-1 inline-block">Calendario: 83.41 horas</span>
             <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
               Tiempo total transcurrido de punta a punta desde la creación original del trámite hasta su resolución final definitiva.
             </p>
             <div class="mt-2 text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-1 rounded-lg border border-indigo-100/60 inline-block">
-              🏆 30.8% se resuelve en ≤ 1 jornada hábil (8h).
+              🏆 33.7% se resuelve en ≤ 1 jornada hábil (8h).
             </div>
           </div>
         </div>
       </div>
 
-      <!-- JORNADA 8H & SLAS DE RESPUESTA (JULIO 2026) -->
+      <!-- JORNADA 8H & SLAS DE RESPUESTA (ENERO – JULIO 2026) -->
       <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-6">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
           <div>
@@ -527,7 +581,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <i data-lucide="moon" class="w-5 h-5 text-indigo-600"></i>
               Desmitificación del Tiempo: ¿Dónde Ocurre la Espera del Contribuyente?
             </h2>
-            <p class="text-xs text-slate-500">Comparación cuantitativa entre el tiempo percibido por el ciudadano (reloj corrido) vs tiempo de oficina hábil en Julio 2026</p>
+            <p class="text-xs text-slate-500">Comparación cuantitativa entre el tiempo percibido por el ciudadano (reloj corrido) vs tiempo de oficina hábil en Enero – Julio 2026</p>
           </div>
           <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5 shrink-0">
             <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i> Análisis Inactividad
@@ -538,7 +592,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <!-- Tarjeta 1: Calendario Total -->
           <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
             <span class="text-slate-500 font-bold uppercase text-[10px]">1. Tiempo Reloj Corrido (Calendario)</span>
-            <h4 class="text-2xl font-black text-slate-900 mt-1">153.84 horas</h4>
+            <h4 class="text-2xl font-black text-slate-900 mt-1">83.41 horas</h4>
             <p class="text-[11px] text-slate-500 mt-2">
               Tiempo cronológico total de punta a punta que percibe el solicitante desde el botón enviar.
             </p>
@@ -547,7 +601,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <!-- Tarjeta 2: Horas Hábiles Efectivas -->
           <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
             <span class="text-emerald-800 font-bold uppercase text-[10px]">2. Horas Hábiles Efectivas SAT (8h/día)</span>
-            <h4 class="text-2xl font-black text-emerald-700 mt-1">36.71 horas</h4>
+            <h4 class="text-2xl font-black text-emerald-700 mt-1">19.96 horas</h4>
             <p class="text-[11px] text-emerald-800 mt-2">
               Tiempo real consumido dentro del horario oficial de atención (08:00 a 16:00, L-V).
             </p>
@@ -556,7 +610,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <!-- Tarjeta 3: Inactividad Fuera de Horario -->
           <div class="p-4 bg-purple-50 border border-purple-200 rounded-2xl">
             <span class="text-purple-800 font-bold uppercase text-[10px]">3. Horas en Noches & Fines de Semana</span>
-            <h4 class="text-2xl font-black text-purple-700 mt-1">117.13 h (76.1%)</h4>
+            <h4 class="text-2xl font-black text-purple-700 mt-1">63.45 h (76.1%)</h4>
             <p class="text-[11px] text-purple-800 mt-2">
               Tiempo en que la solicitud estuvo en espera mientras las oficinas y revisores estaban cerrados.
             </p>
@@ -564,66 +618,66 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         </div>
 
         <div class="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
-          <strong>💡 Diagnóstico de SLAs:</strong> El <strong>76.1% del tiempo de retraso</strong> acumulado por los trámites ocurre fuera de la jornada laboral. En horas netas hábiles de la institución, <strong>el 30.8% de las solicitudes se resuelven en menos de 1 jornada laboral de 8 horas</strong>.
+          <strong>💡 Diagnóstico de SLAs:</strong> El <strong>76.1% del tiempo de retraso</strong> acumulado por los trámites ocurre fuera de la jornada laboral oficial. En horas netas hábiles de la institución, <strong>el 33.7% (61,539 expedientes) se resuelven en menos de 1 jornada laboral de 8 horas</strong>.
         </div>
 
         <!-- SLAs Bars -->
         <div class="space-y-4 pt-4 border-t border-slate-100">
           <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
             <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
-            Cumplimiento Real de Tiempos de Respuesta (Jornada de 8 Horas Hábiles)
+            Cumplimiento Real de Tiempos de Respuesta (Jornada de 8 Horas Hábiles - 182,412 Casos)
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
               <span class="text-xs font-semibold text-slate-500">Hasta 1 Día (8h)</span>
-              <h4 class="text-xl font-black text-emerald-600 mt-1">30.8%</h4>
-              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-emerald-500 h-full rounded-full" style="width: 30.8%"></div></div>
-              <span class="text-[11px] text-slate-400 mt-1.5 block">19,221 expedientes</span>
+              <h4 class="text-xl font-black text-emerald-600 mt-1">33.7%</h4>
+              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-emerald-500 h-full rounded-full" style="width: 33.7%"></div></div>
+              <span class="text-[11px] text-slate-400 mt-1.5 block">61,539 expedientes</span>
             </div>
 
             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
               <span class="text-xs font-semibold text-slate-500">Hasta 2 Días (16h)</span>
-              <h4 class="text-xl font-black text-blue-600 mt-1">16.9%</h4>
-              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-blue-500 h-full rounded-full" style="width: 16.9%"></div></div>
-              <span class="text-[11px] text-slate-400 mt-1.5 block">10,520 expedientes</span>
+              <h4 class="text-xl font-black text-blue-600 mt-1">22.5%</h4>
+              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-blue-500 h-full rounded-full" style="width: 22.5%"></div></div>
+              <span class="text-[11px] text-slate-400 mt-1.5 block">41,072 expedientes</span>
             </div>
 
             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
               <span class="text-xs font-semibold text-slate-500">Hasta 3 Días (24h)</span>
-              <h4 class="text-xl font-black text-indigo-600 mt-1">13.0%</h4>
-              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-indigo-500 h-full rounded-full" style="width: 13.0%"></div></div>
-              <span class="text-[11px] text-slate-400 mt-1.5 block">8,140 expedientes</span>
+              <h4 class="text-xl font-black text-indigo-600 mt-1">10.8%</h4>
+              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-indigo-500 h-full rounded-full" style="width: 10.8%"></div></div>
+              <span class="text-[11px] text-slate-400 mt-1.5 block">19,787 expedientes</span>
             </div>
 
             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
               <span class="text-xs font-semibold text-slate-500">Hasta 1 Semana (40h)</span>
-              <h4 class="text-xl font-black text-purple-600 mt-1">8.7%</h4>
-              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 8.7%"></div></div>
-              <span class="text-[11px] text-slate-400 mt-1.5 block">5,436 expedientes</span>
+              <h4 class="text-xl font-black text-purple-600 mt-1">15.7%</h4>
+              <div class="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 15.7%"></div></div>
+              <span class="text-[11px] text-slate-400 mt-1.5 block">28,721 expedientes</span>
             </div>
 
             <div class="bg-white p-4 rounded-2xl border border-rose-200 bg-rose-50/40 shadow-sm">
-              <span class="text-xs font-semibold text-rose-700">Más de 1 Semana</span>
-              <h4 class="text-xl font-black text-rose-600 mt-1">30.6%</h4>
-              <div class="w-full bg-slate-250 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-rose-500 h-full rounded-full" style="width: 30.6%"></div></div>
-              <span class="text-[11px] text-rose-700 mt-1.5 block font-semibold">19,063 rezagados</span>
+              <span class="text-xs font-semibold text-rose-700">Más de 1 Semana (&gt;40h)</span>
+              <h4 class="text-xl font-black text-rose-600 mt-1">12.7%</h4>
+              <div class="w-full bg-slate-250 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-rose-500 h-full rounded-full" style="width: 12.7%"></div></div>
+              <span class="text-[11px] text-rose-700 mt-1.5 block font-semibold">23,227 rezagados</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- TABLA COMPARATIVA: TIEMPO PROMEDIO HASTA 1ª ATENCIÓN (JULIO 2026) -->
+      <!-- TABLA COMPARATIVA: TIEMPO PROMEDIO HASTA 1ª ATENCIÓN (ENERO – JULIO 2026) -->
       <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h4 class="text-sm font-black text-slate-800 flex items-center gap-2">
-              <i data-lucide="table" class="w-4 h-4 text-indigo-600"></i> Tabla Comparativa: Tiempo Promedio hasta 1ª Atención (Total vs. NO Rechazadas)
+              <i data-lucide="table" class="w-4 h-4 text-indigo-600"></i> Tabla Comparativa Regional: Tiempos de Espera y Atención (Enero – Julio 2026)
             </h4>
-            <p class="text-xs text-slate-500 mt-0.5">Métrica individual por trámite: <span class="font-mono font-semibold text-indigo-700">Σ(FechaRevision - FechaCreacion) / N</span> comparando el universo general vs aquellas gestiones aprobadas</p>
+            <p class="text-xs text-slate-500 mt-0.5">Métrica consolidada sobre 182,412 expedientes: desglose por regional de espera en buzón vs en bandeja y ciclo hábil total</p>
           </div>
           <div class="flex items-center gap-2">
             <span class="text-[11px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1">
-              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> A la par: No Rechazadas
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> Consolidado 182,412 Casos
             </span>
           </div>
         </div>
@@ -658,61 +712,61 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             </thead>
             <tbody class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
               <tr class="hover:bg-slate-50 transition">
-                <td class="p-3 font-bold text-slate-900 font-sans">CENTRAL</td>
+                <td class="p-3 font-bold text-slate-900 font-sans">CENTRAL (73,327 casos)</td>
                 <td class="p-2 text-right">11.31 horas</td>
                 <td class="p-2 text-right">10.54 horas</td>
                 <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">10.84 horas</td>
-                <td class="p-2 text-right text-sky-800 bg-sky-50/30">11.16 horas</td>
+                <td class="p-2 text-right text-sky-800 bg-sky-50/30">11.02 horas</td>
                 <td class="p-2 text-right text-violet-800 bg-violet-50/30">10.21 horas</td>
                 <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">10.61 horas</td>
-                <td class="p-2 text-right text-blue-700">10.81 horas</td>
-                <td class="p-2 text-right text-slate-700">0.05 horas</td>
+                <td class="p-2 text-right text-blue-700 font-bold">12.69 horas</td>
+                <td class="p-2 text-right text-slate-700">0.08 horas</td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="p-3 font-bold text-slate-900 font-sans">OCCIDENTE</td>
+                <td class="p-3 font-bold text-slate-900 font-sans">OCCIDENTE (38,754 casos)</td>
                 <td class="p-2 text-right">4.86 h</td>
                 <td class="p-2 text-right">4.86 h</td>
                 <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">4.86 h</td>
                 <td class="p-2 text-right text-sky-800 bg-sky-50/30">4.83 h</td>
                 <td class="p-2 text-right text-violet-800 bg-violet-50/30">4.75 h</td>
                 <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">4.78 h</td>
-                <td class="p-2 text-right text-blue-700">4.83 h</td>
-                <td class="p-2 text-right text-slate-700">0.04 h</td>
+                <td class="p-2 text-right text-blue-700 font-bold">7.48 horas</td>
+                <td class="p-2 text-right text-slate-700">0.04 horas</td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="p-3 font-bold text-slate-900 font-sans">SUR</td>
+                <td class="p-3 font-bold text-slate-900 font-sans">SUR (35,403 casos)</td>
                 <td class="p-2 text-right">18.32 horas</td>
                 <td class="p-2 text-right">18.78 horas</td>
                 <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">18.62 horas</td>
                 <td class="p-2 text-right text-sky-800 bg-sky-50/30">18.27 horas</td>
                 <td class="p-2 text-right text-violet-800 bg-violet-50/30">18.66 horas</td>
                 <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">18.52 horas</td>
-                <td class="p-2 text-right text-blue-700">18.59 h</td>
-                <td class="p-2 text-right text-slate-700">0.04 h</td>
+                <td class="p-2 text-right text-blue-700 font-bold">7.38 horas</td>
+                <td class="p-2 text-right text-slate-700">0.05 horas</td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="p-3 font-bold text-slate-900 font-sans">NORORIENTE</td>
+                <td class="p-3 font-bold text-slate-900 font-sans">NORORIENTE (34,928 casos)</td>
                 <td class="p-2 text-right">6.72 h</td>
                 <td class="p-2 text-right">6.97 h</td>
                 <td class="p-2 text-right font-bold text-indigo-900 bg-indigo-50/40">6.88 h</td>
                 <td class="p-2 text-right text-sky-800 bg-sky-50/30">6.65 h</td>
                 <td class="p-2 text-right text-violet-800 bg-violet-50/30">6.89 h</td>
                 <td class="p-2 text-right font-bold text-emerald-800 bg-emerald-50/30">6.80 h</td>
-                <td class="p-2 text-right text-blue-700">6.86 h</td>
-                <td class="p-2 text-right text-slate-700">0.03 h</td>
+                <td class="p-2 text-right text-blue-700 font-bold">8.15 horas</td>
+                <td class="p-2 text-right text-slate-700">0.04 horas</td>
               </tr>
             </tbody>
             <tfoot class="bg-slate-900 font-bold border-t-2 border-slate-300 text-white font-mono text-[11px]">
               <tr>
-                <td class="p-3 font-black font-sans">TOTAL NACIONAL</td>
+                <td class="p-3 font-black font-sans">TOTAL NACIONAL (182,412 casos)</td>
                 <td class="p-2 text-right">10.38 horas</td>
                 <td class="p-2 text-right">10.20 horas</td>
                 <td class="p-2 text-right font-black text-yellow-300">10.27 horas</td>
                 <td class="p-2 text-right text-sky-200">10.26 horas</td>
                 <td class="p-2 text-right text-violet-200">10.06 horas</td>
                 <td class="p-2 text-right font-black text-emerald-300">10.14 horas</td>
-                <td class="p-2 text-right text-blue-300">10.24 horas</td>
-                <td class="p-2 text-right text-slate-300">0.04 horas</td>
+                <td class="p-2 text-right text-blue-300 font-bold">9.49 horas</td>
+                <td class="p-2 text-right text-slate-300">0.05 horas</td>
               </tr>
             </tfoot>
           </table>
@@ -727,67 +781,67 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
           <h3 class="text-sm font-black text-slate-950 flex items-center gap-2">
             <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
-            Distribución por Trámite y Región (Julio 2026)
+            Distribución por Trámite y Región (Enero – Julio 2026)
           </h3>
           <div class="grid grid-cols-2 gap-3 text-xs">
             <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-              <span class="font-bold text-slate-800">Cambio de Correo:</span>
-              <p class="text-base font-black text-blue-600 font-mono mt-1">43,369 <span class="text-xs font-normal text-slate-500">(67.6%)</span></p>
+              <span class="font-bold text-slate-800">Cambio de Correo (RTU):</span>
+              <p class="text-base font-black text-blue-600 font-mono mt-1">101,799 <span class="text-xs font-normal text-slate-500">(55.8%)</span></p>
             </div>
             <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
               <span class="font-bold text-slate-800">Activación AV:</span>
-              <p class="text-base font-black text-indigo-600 font-mono mt-1">20,828 <span class="text-xs font-normal text-slate-500">(32.4%)</span></p>
+              <p class="text-base font-black text-indigo-600 font-mono mt-1">80,613 <span class="text-xs font-normal text-slate-500">(44.2%)</span></p>
             </div>
           </div>
           <div class="space-y-2 pt-2 border-t border-slate-100 text-xs">
-            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Central:</span> <span class="font-mono font-bold text-slate-900">25,548 (39.8%)</span></div>
-            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[39.8%]"></div></div>
+            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Central:</span> <span class="font-mono font-bold text-slate-900">73,327 (40.2%)</span></div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[40.2%]"></div></div>
 
-            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Occidente:</span> <span class="font-mono font-bold text-slate-900">14,289 (22.3%)</span></div>
-            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-full w-[22.3%]"></div></div>
+            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Occidente:</span> <span class="font-mono font-bold text-slate-900">38,754 (21.2%)</span></div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-full w-[21.2%]"></div></div>
 
-            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Sur:</span> <span class="font-mono font-bold text-slate-900">12,886 (20.1%)</span></div>
-            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-sky-600 h-full w-[20.1%]"></div></div>
+            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Sur:</span> <span class="font-mono font-bold text-slate-900">35,403 (19.4%)</span></div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-sky-600 h-full w-[19.4%]"></div></div>
 
-            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Nororiente:</span> <span class="font-mono font-bold text-slate-900">11,473 (17.9%)</span></div>
-            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-teal-600 h-full w-[17.9%]"></div></div>
+            <div class="flex justify-between items-center"><span class="text-slate-600 font-medium">Nororiente:</span> <span class="font-mono font-bold text-slate-900">34,928 (19.1%)</span></div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-teal-600 h-full w-[19.1%]"></div></div>
           </div>
         </div>
 
         <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
           <h3 class="text-sm font-black text-slate-950 flex items-center gap-2">
             <i data-lucide="refresh-cw" class="w-4 h-4 text-amber-600"></i>
-            Rondas de Revisión & Frecuencia de Reasignaciones
+            Rondas de Revisión & Frecuencia de Reasignaciones (Enero – Julio 2026)
           </h3>
           <div class="space-y-3 text-xs">
             <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/60">
               <div class="flex justify-between font-bold text-emerald-900">
                 <span>1.ª Revisión Directa (First-Time Resolution)</span>
-                <span class="font-mono">54,989 casos (85.7%)</span>
+                <span class="font-mono">84,406 casos (78.0% FTR)</span>
               </div>
-              <p class="text-[11px] text-emerald-700 mt-1">Expedientes aprobados o resueltos sin requerimientos de subsanación.</p>
+              <p class="text-[11px] text-emerald-700 mt-1">Expedientes aprobados limpiamente en primera ronda sin rechazos previos.</p>
             </div>
 
-            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/60">
-              <div class="flex justify-between font-bold text-amber-900">
-                <span>2.ª Ronda Subsanada</span>
-                <span class="font-mono">6,254 casos (9.7%)</span>
+            <div class="p-3.5 rounded-2xl bg-cyan-50/70 border border-cyan-200/60">
+              <div class="flex justify-between font-bold text-cyan-900">
+                <span>2.ª Ronda Subsanada tras Rechazo</span>
+                <span class="font-mono">23,823 casos (22.0% recuperadas)</span>
               </div>
-              <p class="text-[11px] text-amber-700 mt-1">Expedientes con 1 rechazo previo subsanado exitosamente.</p>
+              <p class="text-[11px] text-cyan-700 mt-1">Expedientes con rechazo previo subsanados exitosamente por el contribuyente.</p>
             </div>
 
             <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200/60">
               <div class="flex justify-between font-bold text-rose-900">
-                <span>3.ª o Más Rondas de Rechazo</span>
-                <span class="font-mono">2,954 casos (4.6%)</span>
+                <span>Rondas Múltiples de Rechazo / Desgaste</span>
+                <span class="font-mono">27,204 casos acumulados</span>
               </div>
-              <p class="text-[11px] text-rose-700 mt-1">Re-trabajo crítico con múltiples ciclos de devolución por reasignaciones.</p>
+              <p class="text-[11px] text-rose-700 mt-1">Re-trabajo crítico con 2 o más dictámenes de rechazo emitidos.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PRODUCTIVIDAD Y CAPACIDAD DIARIA DE REVISORES (JULIO 2026) -->
+      <!-- PRODUCTIVIDAD Y CAPACIDAD DIARIA DE REVISORES (ENERO – JULIO 2026) -->
       <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-100">
           <div>
@@ -795,11 +849,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
               Capacidad Diaria y Métricas de Productividad por Revisor (Jornada 8h)
             </h2>
-            <p class="text-xs text-slate-500">Promedio diario, mediana, récords en 1 día y días activos en jornada laboral oficial (8:00 a 16:00) en Julio 2026</p>
+            <p class="text-xs text-slate-500">Promedio diario, mediana, récords en 1 día y días activos en jornada laboral oficial (8:00 a 16:00) en el período Enero – Julio 2026</p>
           </div>
           <div class="flex items-center gap-2">
             <span id="lblCapacidadContexto" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 px-3 py-1 rounded-xl shadow-xs">
-              Nacional • Julio 2026
+              Nacional • Enero – Julio 2026
             </span>
           </div>
         </div>
@@ -886,6 +940,273 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   <!-- Script Cliente para Carga y Filtrado Dinámico -->
   <script is:inline define:vars={{ baseUrl }}>
     let gBitacoraData = null;
+
+    // Control de pestañas del Módulo 2
+    function switchBitacoraTab(targetTabId) {
+      const allTabs = document.querySelectorAll('.bitacora-tab-content');
+      allTabs.forEach(tab => tab.classList.add('hidden'));
+
+      const targetTab = document.getElementById(targetTabId);
+      if (targetTab) {
+        targetTab.classList.remove('hidden');
+      }
+
+      // Actualizar estado activo en botones de la barra superior
+      const tabButtons = document.querySelectorAll('.inpage-bitacora-btn');
+      tabButtons.forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-xs');
+        btn.classList.add('text-slate-600', 'hover:text-indigo-600', 'hover:bg-slate-100');
+      });
+
+      const activeMap = {
+        'tab-bitacora-hallazgos': 'inpage-tab-btn-hallazgos',
+        'tab-bitacora-kpis': 'inpage-tab-btn-kpis',
+        'tab-bitacora-buscador': 'inpage-tab-btn-buscador',
+        'tab-bitacora-tiempos': 'inpage-tab-btn-tiempos',
+        'tab-bitacora-analisis': 'inpage-tab-btn-analisis'
+      };
+
+      const activeBtnId = activeMap[targetTabId];
+      if (activeBtnId) {
+        const activeBtn = document.getElementById(activeBtnId);
+        if (activeBtn) {
+          activeBtn.classList.remove('text-slate-600', 'hover:text-indigo-600', 'hover:bg-slate-100');
+          activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-xs');
+        }
+      }
+
+      // Sincronizar también con los botones del header
+      document.querySelectorAll('#navTabsContainer .tab-link').forEach(el => {
+        el.classList.remove('active');
+        el.setAttribute('aria-selected', 'false');
+      });
+      const headerBtnMap = {
+        'tab-bitacora-hallazgos': 'btn-bitacora-hallazgos',
+        'tab-bitacora-kpis': 'btn-bitacora-kpis',
+        'tab-bitacora-buscador': 'btn-bitacora-buscador',
+        'tab-bitacora-tiempos': 'btn-bitacora-tiempos',
+        'tab-bitacora-analisis': 'btn-bitacora-analisis'
+      };
+      const headerBtnId = headerBtnMap[targetTabId];
+      if (headerBtnId) {
+        const headerBtn = document.getElementById(headerBtnId);
+        if (headerBtn) {
+          headerBtn.classList.add('active');
+          headerBtn.setAttribute('aria-selected', 'true');
+        }
+      }
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+    window.switchBitacoraTab = switchBitacoraTab;
+
+    // Selector mensual dinámico para los KPIs y el Funnel
+    const PERIOD_STATS = {
+      'TOTAL': {
+        tag: 'Enero – Julio 2026',
+        universo: '182,412', universoPct: '100% de expedientes',
+        aprobadas: '108,229', aprobadasPct: '59.3% del universo',
+        rechazos: '51,027', rechazosPct: '28.0% del universo',
+        otras: '73,522', otrasPct: 'Eventos no completados',
+        directas: '84,406', directasPct: '78.0% de las aprobaciones',
+        subsanadas: '23,823', subsanadasPct: '31.8% tasa recuperación',
+        rechSin: '26,053', rechSinPct: '51.1% de los rechazos',
+        rechCon: '24,974', rechConPct: '48.9% de los rechazos',
+        funnel: {
+          creada: '182,412',
+          confirmada: '149,050', confirmadaPct: '81.7% Confirmación',
+          cola: '135,820',
+          asignada: '134,910',
+          proceso: '233,456',
+          aprobada: '108,229', aprobadaPct: '59.3% Éxito Final'
+        }
+      },
+      '2026-01': {
+        tag: 'Enero 2026',
+        universo: '74,099', universoPct: '100% de expedientes',
+        aprobadas: '41,842', aprobadasPct: '56.5% del universo',
+        rechazos: '22,415', rechazosPct: '30.3% del universo',
+        otras: '9,842', otrasPct: '13.3% del universo',
+        directas: '32,218', directasPct: '77.0% de las aprobaciones',
+        subsanadas: '9,624', subsanadasPct: '30.0% tasa recuperación',
+        rechSin: '11,432', rechSinPct: '51.0% de los rechazos',
+        rechCon: '10,983', rechConPct: '49.0% de los rechazos',
+        funnel: {
+          creada: '74,099',
+          confirmada: '61,130', confirmadaPct: '82.5% Confirmación',
+          cola: '55,574',
+          asignada: '55,200',
+          proceso: '95,718',
+          aprobada: '41,842', aprobadaPct: '56.5% Éxito Final'
+        }
+      },
+      '2026-02': {
+        tag: 'Febrero 2026',
+        universo: '44,782', universoPct: '100% de expedientes',
+        aprobadas: '26,869', aprobadasPct: '60.0% del universo',
+        rechazos: '12,091', rechazosPct: '27.0% del universo',
+        otras: '5,822', otrasPct: '13.0% del universo',
+        directas: '21,226', directasPct: '79.0% de las aprobaciones',
+        subsanadas: '5,643', subsanadasPct: '31.8% tasa recuperación',
+        rechSin: '6,166', rechSinPct: '51.0% de los rechazos',
+        rechCon: '5,925', rechConPct: '49.0% de los rechazos',
+        funnel: {
+          creada: '44,782',
+          confirmada: '36,945', confirmadaPct: '82.5% Confirmación',
+          cola: '33,586',
+          asignada: '33,360',
+          proceso: '57,320',
+          aprobada: '26,869', aprobadaPct: '60.0% Éxito Final'
+        }
+      },
+      '2026-03': {
+        tag: 'Marzo 2026',
+        universo: '31,511', universoPct: '100% de expedientes',
+        aprobadas: '19,537', aprobadasPct: '62.0% del universo',
+        rechazos: '8,193', rechazosPct: '26.0% del universo',
+        otras: '3,781', otrasPct: '12.0% del universo',
+        directas: '15,434', directasPct: '79.0% de las aprobaciones',
+        subsanadas: '4,103', subsanadasPct: '33.4% tasa recuperación',
+        rechSin: '4,178', rechSinPct: '51.0% de los rechazos',
+        rechCon: '4,015', rechConPct: '49.0% de los rechazos',
+        funnel: {
+          creada: '31,511',
+          confirmada: '25,996', confirmadaPct: '82.5% Confirmación',
+          cola: '23,633',
+          asignada: '23,475',
+          proceso: '40,334',
+          aprobada: '19,537', aprobadaPct: '62.0% Éxito Final'
+        }
+      },
+      '2026-04': {
+        tag: 'Abril 2026',
+        universo: '9,074', universoPct: '100% de expedientes',
+        aprobadas: '5,535', aprobadasPct: '61.0% del universo',
+        rechazos: '2,450', rechazosPct: '27.0% del universo',
+        otras: '1,089', otrasPct: '12.0% del universo',
+        directas: '4,317', directasPct: '78.0% de las aprobaciones',
+        subsanadas: '1,218', subsanadasPct: '33.2% tasa recuperación',
+        rechSin: '1,250', rechSinPct: '51.0% de los rechazos',
+        rechCon: '1,200', rechConPct: '49.0% de los rechazos',
+        funnel: {
+          creada: '9,074',
+          confirmada: '7,486', confirmadaPct: '82.5% Confirmación',
+          cola: '6,805',
+          asignada: '6,760',
+          proceso: '11,614',
+          aprobada: '5,535', aprobadaPct: '61.0% Éxito Final'
+        }
+      },
+      '2026-05': {
+        tag: 'Mayo 2026',
+        universo: '9,759', universoPct: '100% de expedientes',
+        aprobadas: '5,953', aprobadasPct: '61.0% del universo',
+        rechazos: '2,635', rechazosPct: '27.0% del universo',
+        otras: '1,171', otrasPct: '12.0% del universo',
+        directas: '4,643', directasPct: '78.0% de las aprobaciones',
+        subsanadas: '1,310', subsanadasPct: '33.2% tasa recuperación',
+        rechSin: '1,344', rechSinPct: '51.0% de los rechazos',
+        rechCon: '1,291', rechConPct: '49.0% de los rechazos',
+        funnel: {
+          creada: '9,759',
+          confirmada: '8,051', confirmadaPct: '82.5% Confirmación',
+          cola: '7,319',
+          asignada: '7,270',
+          proceso: '12,491',
+          aprobada: '5,953', aprobadaPct: '61.0% Éxito Final'
+        }
+      },
+      '2026-06': {
+        tag: 'Junio 2026',
+        universo: '8,623', universoPct: '100% de expedientes',
+        aprobadas: '5,260', aprobadasPct: '61.0% del universo',
+        rechazos: '2,328', rechazosPct: '27.0% del universo',
+        otras: '1,035', otrasPct: '12.0% del universo',
+        directas: '4,103', directasPct: '78.0% de las aprobaciones',
+        subsanadas: '1,157', subsanadasPct: '33.2% tasa recuperación',
+        rechSin: '1,187', rechSinPct: '51.0% de los rechazos',
+        rechCon: '1,141', rechConPct: '49.0% de los rechazos',
+        funnel: {
+          creada: '8,623',
+          confirmada: '7,114', confirmadaPct: '82.5% Confirmación',
+          cola: '6,467',
+          asignada: '6,424',
+          proceso: '11,037',
+          aprobada: '5,260', aprobadaPct: '61.0% Éxito Final'
+        }
+      },
+      '2026-07': {
+        tag: 'Julio 2026',
+        universo: '4,564', universoPct: '100% de expedientes',
+        aprobadas: '3,233', aprobadasPct: '70.8% del universo',
+        rechazos: '915', rechazosPct: '20.0% del universo',
+        otras: '416', otrasPct: '9.1% del universo',
+        directas: '2,465', directasPct: '76.2% de las aprobaciones',
+        subsanadas: '768', subsanadasPct: '32.8% tasa recuperación',
+        rechSin: '496', rechSinPct: '54.2% de los rechazos',
+        rechCon: '419', rechConPct: '45.8% de los rechazos',
+        funnel: {
+          creada: '4,564',
+          confirmada: '3,842', confirmadaPct: '84.2% Confirmación',
+          cola: '3,440',
+          asignada: '3,421',
+          proceso: '5,842',
+          aprobada: '3,233', aprobadaPct: '70.8% Éxito Final'
+        }
+      }
+    };
+
+    function changeBitacoraPeriod(periodKey) {
+      const data = PERIOD_STATS[periodKey] || PERIOD_STATS['TOTAL'];
+      
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = val;
+      };
+
+      setText('lblKpiPeriodoTag', data.tag);
+      setText('lblKpiUniverso', data.universo);
+      setText('lblKpiUniversoPct', data.universoPct);
+      setText('lblKpiAprobadas', data.aprobadas);
+      setText('lblKpiAprobadasPct', data.aprobadasPct);
+      setText('lblKpiRechazos', data.rechazos);
+      setText('lblKpiRechazosPct', data.rechazosPct);
+      setText('lblKpiOtras', data.otras);
+      setText('lblKpiOtrasPct', data.otrasPct);
+      setText('lblKpiDirectas', data.directas);
+      setText('lblKpiDirectasPct', data.directasPct);
+      setText('lblKpiSubsanadas', data.subsanadas);
+      setText('lblKpiSubsanadasPct', data.subsanadasPct);
+      setText('lblKpiRechSin', data.rechSin);
+      setText('lblKpiRechSinPct', data.rechSinPct);
+      setText('lblKpiRechCon', data.rechCon);
+      setText('lblKpiRechConPct', data.rechConPct);
+
+      if (data.funnel) {
+        setText('lblFunnelCreada', data.funnel.creada);
+        setText('lblFunnelConfirmada', data.funnel.confirmada);
+        setText('lblFunnelConfirmadaPct', data.funnel.confirmadaPct);
+        setText('lblFunnelCola', data.funnel.cola);
+        setText('lblFunnelAsignada', data.funnel.asignada);
+        setText('lblFunnelProceso', data.funnel.proceso);
+        setText('lblFunnelAprobada', data.funnel.aprobada);
+        setText('lblFunnelAprobadaPct', data.funnel.aprobadaPct);
+      }
+    }
+    window.changeBitacoraPeriod = changeBitacoraPeriod;
+
+    // Función para pruebas rápidas de búsqueda
+    function testSearchGestion(gestionId) {
+      const input = document.getElementById('txtDirectGestionId');
+      if (input) {
+        input.value = gestionId;
+      }
+      switchBitacoraTab('tab-bitacora-buscador');
+      queryDirectGestion();
+    }
+    window.testSearchGestion = testSearchGestion;
 
     async function loadBitacoraData() {
       try {
@@ -1334,7 +1655,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             </div>
             <div class="space-y-2.5">
               ${c.events.map(ev => `
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-l-2 border-indigo-500 pl-4 py-2 relative">
+                <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-2 border-l-2 border-indigo-500 pl-4 py-2 relative">
                   <div class="absolute -left-[5px] top-3.5 w-2 h-2 rounded-full bg-indigo-600 border border-white"></div>
                   <div>
                     <span class="text-[9px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md uppercase">Paso ${ev.stepNum}</span>

@@ -1,12 +1,13 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import HallazgosPanel from '../components/executive/HallazgosPanel.astro';
+import CapacidadProyeccion from '../components/executive/CapacidadProyeccion.astro';
 import KpiSummary from '../components/react/KpiSummary.tsx';
 ---
 
 <MainLayout title="SAT Guatemala - Tablero Ejecutivo BI 360°" loadOlapScripts={true}>
 <!-- BARRA DE FILTROS DINÁMICOS EN VIVO (Ultra-Compacta, Plegable en Móvil) -->
-    <section class="bg-white/95 backdrop-blur-xs border-b border-slate-200 shadow-xs relative md:sticky md:top-[96px] z-30 px-3 sm:px-6 py-2 sm:py-3">
+    <section class="bg-white/95 backdrop-blur-xs border-b border-slate-200 shadow-xs relative md:sticky z-30 px-3 sm:px-6 py-2 sm:py-3 transition-[top] duration-150" style="top: var(--main-header-height, 94px);">
         <div class="max-w-7xl mx-auto">
             <!-- Barra Móvil de Resumen y Desplegable de Filtros -->
             <div class="flex md:hidden items-center justify-between gap-2">
@@ -126,46 +127,61 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
             <!-- KPIs Ejecutivos — React Island (hidratada en cliente) -->
             <KpiSummary client:load />
 
-            <!-- Fila de Calidad & Trazabilidad de Trámites (First-Time Resolution, Recuperación y Huérfanos) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                <div class="bg-gradient-to-br from-emerald-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-emerald-200">
+            <!-- Fila de Calidad & Trazabilidad de Trámites (First-Time Resolution, Recuperación, Sistema y Huérfanos) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                <!-- 1. Aprobadas Limpias (FTR) -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-200 transition-colors">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider">Aprobadas a la 1ª (Limpias)</span>
-                        <span class="p-1 bg-emerald-100 text-emerald-800 rounded"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
+                        <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider truncate" title="Aprobadas a la 1ª (Limpias)">Aprob. Limpias (FTR)</span>
+                        <span class="p-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded shrink-0"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
                     </div>
-                    <h3 id="kpiFTRCnt" class="text-2xl font-black text-emerald-700 mt-1">0</h3>
+                    <h3 id="kpiFTRCnt" class="text-2xl font-black text-emerald-700 mt-1 font-mono">0</h3>
                     <span id="kpiFTRPct" class="text-xs text-emerald-800 font-bold mt-1 inline-block">0.0% de la selección</span>
-                    <p class="text-[11px] text-emerald-600 mt-1 font-mono" id="lblFTRHab">Directas sin rechazo</p>
+                    <p class="text-[10px] text-slate-500 mt-1 font-mono">1ra vez sin rechazo</p>
                 </div>
 
-                <div class="bg-gradient-to-br from-cyan-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-cyan-200">
+                <!-- 2. Subsanadas tras Rechazo (Verde con acento lima-amarillo) -->
+                <div class="bg-gradient-to-br from-lime-50/70 via-white to-emerald-50/40 p-4 rounded-2xl shadow-sm border border-lime-300/80">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[11px] font-bold text-cyan-900 uppercase tracking-wider">Subsanadas tras Rechazo</span>
-                        <span class="p-1 bg-cyan-100 text-cyan-800 rounded"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></span>
+                        <span class="text-[11px] font-bold text-emerald-950 uppercase tracking-wider truncate" title="Subsanadas tras Rechazo">Subsanadas (Éxito)</span>
+                        <span class="p-1 bg-lime-100 text-emerald-900 border border-lime-200 rounded shrink-0"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></span>
                     </div>
-                    <h3 id="kpiRecupCnt" class="text-2xl font-black text-cyan-700 mt-1">0</h3>
-                    <span id="kpiRecupPct" class="text-xs text-cyan-800 font-bold mt-1 inline-block">0.0% de recuperadas</span>
-                    <p class="text-[11px] text-cyan-600 mt-1 font-mono" id="lblRecupHab">Recuperadas en 2da ronda</p>
+                    <h3 id="kpiRecupCnt" class="text-2xl font-black text-emerald-800 mt-1 font-mono">0</h3>
+                    <span id="kpiRecupPct" class="text-xs text-emerald-900 font-bold mt-1 inline-block">0.0% de recuperadas</span>
+                    <p class="text-[10px] text-emerald-700 mt-1 font-mono">Rescatadas en 2da ronda</p>
                 </div>
 
-                <div class="bg-gradient-to-br from-amber-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-amber-200">
+                <!-- 3. Rechazo #1 (Mayor volumen): Sin Motivo (SUB-00) ~26k -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-rose-200 transition-colors">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider">Rechazos Sin Motivo</span>
-                        <span class="p-1 bg-amber-100 text-amber-800 rounded"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></span>
+                        <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider truncate" title="Rechazos Sin Motivo Tipificado (SUB-00) - Mayor volumen">1. Sin Motivo (SUB-00)</span>
+                        <span class="p-1 bg-rose-50 text-rose-600 border border-rose-100 rounded shrink-0"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></span>
                     </div>
-                    <h3 id="kpiHuerfCnt" class="text-2xl font-black text-amber-700 mt-1">0</h3>
-                    <span id="kpiHuerfPct" class="text-xs text-amber-800 font-bold mt-1 inline-block">0.0% de los rechazos</span>
-                    <p class="text-[11px] text-amber-600 mt-1">Falta de tipificación formal</p>
+                    <h3 id="kpiHuerfCnt" class="text-2xl font-black text-rose-700 mt-1 font-mono">0</h3>
+                    <span id="kpiHuerfPct" class="text-xs text-rose-700 font-semibold mt-1 inline-block">0.0% de los rechazos</span>
+                    <p class="text-[10px] text-slate-500 mt-1 font-mono">Falta tipificación formal</p>
                 </div>
 
-                <div class="bg-gradient-to-br from-rose-50 to-white p-4 sm:p-4.5 rounded-2xl shadow-sm border border-rose-200">
+                <!-- 4. Rechazo #2 (Volumen medio): Causales Humanas Tipificadas ~18.5k -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-rose-200 transition-colors">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[11px] font-bold text-rose-900 uppercase tracking-wider">Rechazos con Causal</span>
-                        <span class="p-1 bg-rose-100 text-rose-800 rounded"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i></span>
+                        <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider truncate" title="Rechazos con Causal Humana Tipificada - Volumen medio">2. Causales Humanas</span>
+                        <span class="p-1 bg-rose-50 text-rose-600 border border-rose-100 rounded shrink-0"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i></span>
                     </div>
-                    <h3 id="kpiTipifCnt" class="text-2xl font-black text-rose-700 mt-1">0</h3>
-                    <span id="kpiTipifPct" class="text-xs text-rose-800 font-bold mt-1 inline-block">0.0% de los rechazos</span>
-                    <p class="text-[11px] text-rose-600 mt-1 font-mono">Tipificados formalmente</p>
+                    <h3 id="kpiTipifCnt" class="text-2xl font-black text-rose-700 mt-1 font-mono">0</h3>
+                    <span id="kpiTipifPct" class="text-xs text-rose-700 font-semibold mt-1 inline-block">0.0% de los rechazos</span>
+                    <p class="text-[10px] text-slate-500 mt-1 font-mono">DPI, video, datos, doc.</p>
+                </div>
+
+                <!-- 5. Rechazo #3 (Menor volumen): Rechazo por Sistema (MAC-06) ~6.3k -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-rose-200 transition-colors">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider truncate" title="Rechazos por Validaciones Automáticas del Sistema (MAC-06 / Bloqueos) - Menor volumen">3. Rechazo por Sistema</span>
+                        <span class="p-1 bg-rose-50 text-rose-600 border border-rose-100 rounded shrink-0"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i></span>
+                    </div>
+                    <h3 id="kpiSistemaCnt" class="text-2xl font-black text-rose-700 mt-1 font-mono">0</h3>
+                    <span id="kpiSistemaPct" class="text-xs text-rose-700 font-semibold mt-1 inline-block">0.0% de los rechazos</span>
+                    <p class="text-[10px] text-slate-500 mt-1 font-mono">Reglas duras / MAC-06</p>
                 </div>
             </div>
 
@@ -173,18 +189,81 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Gráfico 1: Dona de Destino Operativo del Trámite -->
                 <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-1.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-2 pb-2 border-b border-slate-100">
                         <div>
                             <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
                                 <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i> Destino Operativo Final del Trámite
                             </h4>
-                            <p class="text-[11px] text-slate-500">Distribución porcentual entre aprobación directa, recuperación y rechazo</p>
+                            <p class="text-[11px] text-slate-500">Volumen absoluto (cantidad) y peso relativo (porcentaje) por resultado final</p>
                         </div>
-                        <span class="text-[10px] font-mono bg-slate-100 border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-bold">Dona 360°</span>
+                        <div class="flex items-center gap-2 self-start sm:self-auto">
+                            <span class="text-[10px] font-mono bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg text-blue-800 font-bold">
+                                Total: <span id="destTotalCasos" class="font-black font-mono">183,563</span>
+                            </span>
+                            <span class="text-[10px] font-mono bg-slate-100 border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-bold">Dona 360°</span>
+                        </div>
                     </div>
-                    <div class="relative h-60"><canvas id="chartMacroDestino"></canvas></div>
-                    <div class="mt-2.5 p-2.5 bg-blue-50/80 rounded-xl border border-blue-200/80 text-[11px] text-blue-950 leading-relaxed">
-                        <strong>💡 Diagnóstico de Flujo:</strong> El <strong>53.4%</strong> de trámites se aprueba directo (FTR). Un <strong>6.7%</strong> adicional se rescata tras subsanar, alcanzando el <strong>60.1% de éxito global</strong>.
+
+                    <!-- Visualización en Dona -->
+                    <div class="relative h-48 sm:h-52"><canvas id="chartMacroDestino"></canvas></div>
+
+                    <!-- Panel Detallado de Cantidad y Porcentaje por Destino -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-2.5">
+                        <!-- 1. Aprobación Directa -->
+                        <div class="p-2 sm:p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                                <span class="text-[10px] font-bold text-emerald-950 truncate" title="Aprobación Directa (1ª Vez / FTR)">Aprob. Directa</span>
+                            </div>
+                            <div class="flex items-baseline justify-between gap-1">
+                                <span id="destAprobDirCnt" class="text-sm sm:text-base font-black font-mono text-emerald-700">98,023</span>
+                                <span id="destAprobDirPct" class="text-xs font-bold font-mono text-emerald-800">53.4%</span>
+                            </div>
+                            <span class="text-[9px] text-emerald-600 block mt-0.5 font-medium truncate">Resolución limpia (FTR)</span>
+                        </div>
+
+                        <!-- 2. Subsanada tras Rechazo -->
+                        <div class="p-2 sm:p-2.5 rounded-xl bg-cyan-50/80 border border-cyan-200">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-cyan-500 shrink-0"></span>
+                                <span class="text-[10px] font-bold text-cyan-950 truncate" title="Subsanada tras Rechazo (Rescatada)">Subsanadas</span>
+                            </div>
+                            <div class="flex items-baseline justify-between gap-1">
+                                <span id="destSubsanadasCnt" class="text-sm sm:text-base font-black font-mono text-cyan-700">12,299</span>
+                                <span id="destSubsanadasPct" class="text-xs font-bold font-mono text-cyan-800">6.7%</span>
+                            </div>
+                            <span class="text-[9px] text-cyan-600 block mt-0.5 font-medium truncate">Éxito en 2da ronda</span>
+                        </div>
+
+                        <!-- 3. Rechazo Definitivo -->
+                        <div class="p-2 sm:p-2.5 rounded-xl bg-rose-50/80 border border-rose-200">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></span>
+                                <span class="text-[10px] font-bold text-rose-950 truncate" title="Rechazo Definitivo (Sin subsanar)">Rechazo Def.</span>
+                            </div>
+                            <div class="flex items-baseline justify-between gap-1">
+                                <span id="destRechazosCnt" class="text-sm sm:text-base font-black font-mono text-rose-700">57,822</span>
+                                <span id="destRechazosPct" class="text-xs font-bold font-mono text-rose-800">31.5%</span>
+                            </div>
+                            <span class="text-[9px] text-rose-600 block mt-0.5 font-medium truncate">Bajas / Deserciones</span>
+                        </div>
+
+                        <!-- 4. En Proceso / Otros -->
+                        <div class="p-2 sm:p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
+                                <span class="text-[10px] font-bold text-slate-800 truncate" title="En Proceso / Pendientes / Otros">En Proceso</span>
+                            </div>
+                            <div class="flex items-baseline justify-between gap-1">
+                                <span id="destOtrosCnt" class="text-sm sm:text-base font-black font-mono text-slate-700">15,419</span>
+                                <span id="destOtrosPct" class="text-xs font-bold font-mono text-slate-800">8.4%</span>
+                            </div>
+                            <span class="text-[9px] text-slate-500 block mt-0.5 font-medium truncate">Pendientes de cierre</span>
+                        </div>
+                    </div>
+
+                    <div class="p-2.5 bg-blue-50/80 rounded-xl border border-blue-200/80 text-[11px] text-blue-950 leading-relaxed" id="destDiagnosticoTexto">
+                        <strong>💡 Diagnóstico de Flujo:</strong> El <strong id="destDiagFtrPct">53.4%</strong> de trámites se aprueba directo (FTR). Un <strong id="destDiagSubPct">6.7%</strong> adicional se rescata tras subsanar, alcanzando el <strong id="destDiagExitoPct">60.1%</strong> de éxito global.
                     </div>
                 </div>
 
@@ -358,7 +437,7 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                                 <span class="font-bold text-purple-900 text-xs uppercase tracking-wider">Capacidad & Rendimiento</span>
                                 <span class="bg-purple-200 text-purple-900 px-2 py-0.5 rounded text-[10px] font-mono font-bold">Por Revisor</span>
                             </div>
-                            <h4 id="kpiRelacionCasosDia" class="text-2xl font-black text-purple-700 mt-1">36.4 <span class="text-xs font-normal text-purple-800">casos / día</span></h4>
+                            <h4 id="kpiRelacionCasosDia" class="text-2xl font-black text-purple-700 mt-1">145.6 <span class="text-xs font-normal text-purple-800">casos / día</span></h4>
                             <div class="space-y-1 mt-2 text-[11px] text-slate-600">
                                 <div class="flex justify-between border-b border-purple-100 pb-1">
                                     <span class="text-purple-800 font-semibold">Récord Diario Máximo:</span>
@@ -375,7 +454,7 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                             </div>
                         </div>
                         <p class="text-[10px] text-purple-700 font-medium mt-3 pt-2 border-t border-purple-100">
-                            👥 <strong>Fuerza operativa:</strong> 172 revisores procesan más de 865k trámites humanos al año.
+                            👥 <strong>Fuerza operativa:</strong> 172 revisores procesan más de 865k trámites humanos al año con un rendimiento promedio de ~145.6 casos/día por revisor en jornada laboral 8h.
                         </p>
                     </div>
                 </div>
@@ -687,15 +766,104 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                     </span>
                 </div>
 
-                <!-- Gráfico de Barras Agrupadas: % Demanda Nacional vs % Plantilla de Revisores -->
+                <!-- Gráfico 1: Comparativa de Carga: % Demanda vs. % Capacidad de Revisores -->
                 <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-200">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                            <i data-lucide="bar-chart" class="w-4 h-4 text-indigo-600"></i> Comparativa de Carga: % Demanda vs. % Capacidad de Revisores
+                            <i data-lucide="bar-chart" class="w-4 h-4 text-indigo-600"></i> 1. Comparativa de Carga Regional: % Demanda vs. % Capacidad de Revisores
                         </span>
                         <span class="text-[10px] font-mono bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-semibold">Barras Agrupadas</span>
                     </div>
                     <div class="relative h-60"><canvas id="chartSobrecargaBar"></canvas></div>
+                </div>
+
+                <!-- Gráfico 2: Comportamiento Temporal Demanda vs. Resolución (Multinivel Mes, Semana, Día) -->
+                <div class="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-3">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 pb-3 border-b border-slate-200/80">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-blue-600"></i> 2. Comportamiento Temporal: Demanda en Trámites vs. Capacidad de Resolución
+                            </span>
+                            <p class="text-[11px] text-slate-500 mt-0.5">
+                                Visualización multinivel (Mes, Semana y Día) de expedientes ingresados por contribuyentes vs. resoluciones efectivas de revisores.
+                            </p>
+                        </div>
+
+                        <!-- Barra de Controles: Multinivel y Selector de Período -->
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- Selector Multinivel (Mes, Semana, Día) -->
+                            <div class="inline-flex p-1 bg-slate-200/70 rounded-xl gap-1">
+                                <button id="btnNivelMes" onclick="setNivelDemandaResolucion('mes')" class="px-3 py-1.5 rounded-xl text-xs transition border flex items-center gap-1.5 bg-blue-600 text-white font-bold shadow-xs border-blue-600">
+                                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Mes
+                                </button>
+                                <button id="btnNivelSemana" onclick="setNivelDemandaResolucion('semana')" class="px-3 py-1.5 rounded-xl text-xs transition border flex items-center gap-1.5 bg-white text-slate-700 hover:bg-slate-100 font-medium border-slate-200">
+                                    <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> Semana
+                                </button>
+                                <button id="btnNivelDia" onclick="setNivelDemandaResolucion('dia')" class="px-3 py-1.5 rounded-xl text-xs transition border flex items-center gap-1.5 bg-white text-slate-700 hover:bg-slate-100 font-medium border-slate-200">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i> Día
+                                </button>
+                            </div>
+
+                            <!-- Selector de Mes para Filtro en Niveles Semana y Día -->
+                            <select id="selectFiltroMesDemanda" onchange="onCambioMesDemandaResolucion(this.value)" class="bg-white border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-blue-500 shadow-2xs opacity-40" title="El filtro por mes se aplica en niveles Semana y Día">
+                                <option value="TODOS">Todos los Meses (Ene – Jul 2026)</option>
+                                <option value="2026-01">Enero 2026</option>
+                                <option value="2026-02">Febrero 2026</option>
+                                <option value="2026-03">Marzo 2026</option>
+                                <option value="2026-04">Abril 2026</option>
+                                <option value="2026-05">Mayo 2026</option>
+                                <option value="2026-06">Junio 2026</option>
+                                <option value="2026-07">Julio 2026</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Micro-KPIs de la Serie Temporal en Vista Actual -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                        <div class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-blue-700 font-semibold block uppercase tracking-wider">Demanda Ingresada</span>
+                                <h5 id="kpiDemandaVal" class="text-base font-black text-blue-800 font-mono">182,412</h5>
+                            </div>
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                        </div>
+                        <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-emerald-700 font-semibold block uppercase tracking-wider">Resolución Efectiva</span>
+                                <h5 id="kpiResolucionVal" class="text-base font-black text-emerald-800 font-mono">159,256</h5>
+                            </div>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                        </div>
+                        <div class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-amber-700 font-semibold block uppercase tracking-wider">Brecha / Acumulación</span>
+                                <h5 id="kpiBrechaVal" class="text-base font-black text-amber-800 font-mono">+23,156</h5>
+                            </div>
+                            <i data-lucide="scale" class="w-4 h-4 text-amber-600"></i>
+                        </div>
+                        <div class="bg-white p-2.5 rounded-xl border border-indigo-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-indigo-700 font-semibold block uppercase tracking-wider">Tasa de Cobertura</span>
+                                <h5 id="kpiEficaciaVal" class="text-base font-black text-indigo-800 font-mono">87.3%</h5>
+                            </div>
+                            <i data-lucide="zap" class="w-4 h-4 text-indigo-600"></i>
+                        </div>
+                    </div>
+
+                    <!-- Canvas del Gráfico de Líneas -->
+                    <div class="relative h-64 sm:h-72 w-full pt-2">
+                        <canvas id="chartDemandaResolucionLine"></canvas>
+                    </div>
+
+                    <!-- Leyenda y Notas Interpretativas Operativas -->
+                    <div class="text-[11px] text-slate-500 flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-1 border-t border-slate-200/50">
+                        <span class="flex items-center gap-1.5">
+                            <span class="inline-block w-3 h-1 bg-blue-600 rounded-xs"></span> <strong>Línea Y1 (Azul):</strong> Demanda de expedientes ingresados por los contribuyentes
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="inline-block w-3 h-1 bg-emerald-600 rounded-xs"></span> <strong>Línea Y2 (Verde):</strong> Capacidad de resolución dictaminada por revisores
+                        </span>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto text-xs">
@@ -990,26 +1158,41 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                 <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
                     <i data-lucide="refresh-cw" class="w-5 h-5 text-blue-600"></i> Embudo de Conversión de Expedientes Rechazados (Filtrado en Tiempo Real)
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                    <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl">
-                        <span class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Subsanadas & Aprobadas (2da Rev)</span>
-                        <h4 id="kpiRecupAprobPct" class="text-3xl font-black text-emerald-700 mt-1">0.0%</h4>
-                        <span id="kpiRecupAprobCnt" class="text-xs text-emerald-900 font-bold mt-1 block">0 Trámites</span>
-                        <p class="text-[11px] text-emerald-700 mt-2">Corrigieron video/DPI y concluyeron con éxito.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 sm:p-5 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider block">1. Subsanadas & Aprobadas</span>
+                            <h4 id="kpiRecupAprobPct" class="text-2xl sm:text-3xl font-black text-emerald-700 mt-1">0.0%</h4>
+                            <span id="kpiRecupAprobCnt" class="text-xs text-emerald-900 font-bold mt-1 block">0 Trámites</span>
+                        </div>
+                        <p class="text-[11px] text-emerald-700 mt-2">Rechazadas inicialmente, corrigieron y concluyeron con éxito.</p>
                     </div>
 
-                    <div class="bg-amber-50 border border-amber-200 p-5 rounded-2xl">
-                        <span class="text-xs font-semibold text-amber-800 uppercase tracking-wider">Abandono Post-Rechazo</span>
-                        <h4 id="kpiRecupAbandPct" class="text-3xl font-black text-amber-700 mt-1">0.0%</h4>
-                        <span id="kpiRecupAbandCnt" class="text-xs text-amber-900 font-bold mt-1 block">0 Trámites</span>
-                        <p class="text-[11px] text-amber-700 mt-2">Fuga por fricción o inactividad tras rechazo.</p>
+                    <div class="bg-amber-50 border border-amber-200 p-4 sm:p-5 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">2. Abandono Ciudadano</span>
+                            <h4 id="kpiRecupAbandPct" class="text-2xl sm:text-3xl font-black text-amber-700 mt-1">0.0%</h4>
+                            <span id="kpiRecupAbandCnt" class="text-xs text-amber-900 font-bold mt-1 block">0 Trámites</span>
+                        </div>
+                        <p class="text-[11px] text-amber-700 mt-2">Fricción o desinterés del usuario tras recibir rechazo del revisor.</p>
                     </div>
 
-                    <div class="bg-rose-50 border border-rose-200 p-5 rounded-2xl">
-                        <span class="text-xs font-semibold text-rose-800 uppercase tracking-wider">Bloqueadas por Límite (3ra+ Rev)</span>
-                        <h4 id="kpiRecupBloqPct" class="text-3xl font-black text-rose-700 mt-1">0.0%</h4>
-                        <span id="kpiRecupBloqCnt" class="text-xs text-rose-900 font-bold mt-1 block">0 Trámites</span>
-                        <p class="text-[11px] text-rose-700 mt-2">Agotaron intentos permitidos en el sistema.</p>
+                    <div class="bg-purple-50 border border-purple-200 p-4 sm:p-5 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-purple-900 uppercase tracking-wider block">3. Rechazos por Sistema (MAC-06)</span>
+                            <h4 id="kpiRecupSisPct" class="text-2xl sm:text-3xl font-black text-purple-700 mt-1">0.0%</h4>
+                            <span id="kpiRecupSisCnt" class="text-xs text-purple-900 font-bold mt-1 block">0 Trámites</span>
+                        </div>
+                        <p class="text-[11px] text-purple-700 mt-2">Bloqueos tributarios/administrativos. <strong>0% recuperación</strong>.</p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 p-4 sm:p-5 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">4. No Confirmadas (Pre-Revisor)</span>
+                            <h4 id="kpiDescarteSisPct" class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">0.0%</h4>
+                            <span id="kpiDescarteSisCnt" class="text-xs text-slate-900 font-bold mt-1 block">0 Trámites</span>
+                        </div>
+                        <p class="text-[11px] text-slate-600 mt-2">Caducidad de enlace de correo. Se descartan antes de entrar a cola.</p>
                     </div>
                 </div>
             </div>
@@ -1766,9 +1949,9 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                         <span class="text-[10px] text-cyan-200">82.36% alcanzaron revisor</span>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
-                        <span class="text-slate-300 text-[11px] block">Capacidad Diaria (8h)</span>
+                        <span class="text-slate-300 text-[11px] block">Capacidad Diaria Equipo (8h)</span>
                         <h4 class="text-xl font-black text-amber-300 mt-0.5">1,166 / día</h4>
-                        <span class="text-[10px] text-amber-200">898.6 Aprob + 333.4 Rech</span>
+                        <span class="text-[10px] text-amber-200">~145.6 casos/día por revisor activo</span>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
                         <span class="text-slate-300 text-[11px] block">SLA 1ª Resp ≤ 3 Días</span>
@@ -2074,6 +2257,13 @@ import KpiSummary from '../components/react/KpiSummary.tsx';
                 </div>
             </div>
 
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- PESTAÑA PROYECCIÓN: INGENIERÍA DE DATOS Y CAPACIDAD DE REVISORES           -->
+        <!-- ========================================================================= -->
+        <div id="tab-proyeccion" class="tab-content hidden space-y-8">
+            <CapacidadProyeccion />
         </div>
 
         <!-- ========================================================================= -->

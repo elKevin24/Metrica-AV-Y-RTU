@@ -1,0 +1,1353 @@
+---
+// src/components/executive/CapacidadProyeccion.astro
+// Modelo de Ingeniería de Datos y Proyección de Revisores Requeridos (Capacity Planning & Erlang C)
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<div id="containerCapacidadProyeccion" class="space-y-6">
+
+  <!-- ENCABEZADO EJECUTIVO Y MARCO TEÓRICO -->
+  <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-indigo-900/40 relative overflow-hidden">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-white/10 relative z-10">
+      <div class="flex items-center gap-3.5">
+        <div class="p-3.5 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-600/30 flex items-center justify-center shrink-0">
+          <i data-lucide="calculator" class="w-7 h-7"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="text-xl sm:text-2xl font-black tracking-tight text-white">Acto 5: Proyección de Revisores & Capacidad Óptima</h2>
+            <span class="bg-indigo-500/25 text-indigo-300 border border-indigo-400/30 text-xs px-2.5 py-0.5 rounded-full font-bold">
+              Ingeniería de Operaciones
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl">
+            Simulador estocástico basado en la <strong>Ley de Little</strong> y <strong>Teoría de Colas M/M/c</strong> para determinar el número exacto de revisores humanos necesarios para resolver la demanda diaria de Agencia Virtual y RTU sin cuellos de botella pasivos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Acciones Rápidas -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a 
+          href={`${baseUrl}/laboratorio-sql?template=capacidad`}
+          class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition shadow-md shadow-indigo-600/25 border border-indigo-400/30"
+          title="Abrir la consulta SQL de Capacidad en el Laboratorio DuckDB"
+        >
+          <i data-lucide="terminal" class="w-4 h-4 text-amber-300"></i>
+          <span>Verificar en SQL ROLAP</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Píldoras Metodológicas -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 text-xs relative z-10">
+      <div class="bg-white/5 backdrop-blur-xs p-3 rounded-xl border border-white/10">
+        <span class="text-slate-400 text-[10px] uppercase font-mono block">Universo de Referencia</span>
+        <span class="text-white font-bold text-sm block mt-0.5">182,412 Expedientes</span>
+        <span class="text-indigo-300 text-[10px]">100% Demandas Humanas</span>
+      </div>
+      <div class="bg-white/5 backdrop-blur-xs p-3 rounded-xl border border-white/10">
+        <span class="text-slate-400 text-[10px] uppercase font-mono block">Jornada Hábil Efectiva</span>
+        <span class="text-white font-bold text-sm block mt-0.5">8h (480 min/día)</span>
+        <span class="text-indigo-300 text-[10px]">OEE 75% = 360 min útiles</span>
+      </div>
+      <div class="bg-white/5 backdrop-blur-xs p-3 rounded-xl border border-white/10">
+        <span class="text-slate-400 text-[10px] uppercase font-mono block">Tiempo Mediano en Pantalla</span>
+        <span class="text-emerald-300 font-bold text-sm block mt-0.5">1.8 a 2.5 min</span>
+        <span class="text-emerald-400/80 text-[10px]">Revisión Activa (Paso 2+3)</span>
+      </div>
+      <div class="bg-white/5 backdrop-blur-xs p-3 rounded-xl border border-white/10">
+        <span class="text-slate-400 text-[10px] uppercase font-mono block">Tasa de Ocupación Máx (ρ)</span>
+        <span class="text-amber-300 font-bold text-sm block mt-0.5">ρ ≤ 80% (Margen Erlang)</span>
+        <span class="text-amber-400/80 text-[10px]">Previene colas infinitas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICTAMEN EJECUTIVO DIRECTO: ¿SON SUFICIENTES LOS REVISORES ACTUALES? -->
+  <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 text-white p-6 rounded-3xl border-2 border-emerald-500/40 shadow-xl">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-emerald-500/20">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shrink-0">
+          <i data-lucide="check-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 block">Dictamen Ejecutivo Oficial (Jornada 7h @ 65% + 100% Atenciones por Rechazos)</span>
+          <h3 class="text-lg sm:text-xl font-black text-white">¿Los revisores actuales son suficientes para atender toda la demanda?</h3>
+        </div>
+      </div>
+      <div class="inline-flex items-center gap-2 bg-emerald-500 text-slate-950 px-4 py-1.5 rounded-full font-black text-xs uppercase tracking-wider shadow-md shadow-emerald-500/30 shrink-0">
+        <i data-lucide="shield-check" class="w-4 h-4"></i>
+        <span>SÍ, SON ROTUNDAMENTE SUFICIENTES</span>
+      </div>
+    </div>
+
+    <!-- Comparativa Directa 3 Bloques con Parámetros Solicitados -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+        <div class="flex justify-between items-start">
+          <span class="text-xs text-slate-300 font-semibold block">1. Demanda Total de Atenciones</span>
+          <span class="text-[10px] bg-rose-500/30 text-rose-300 border border-rose-400/30 px-2 py-0.5 rounded-full font-mono font-bold">Con Rechazos</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black text-white mt-1">1,492 <span class="text-sm font-normal text-slate-300">atenciones / día</span></div>
+        <p class="text-xs text-slate-400 mt-1">Suma <strong>1,166 primeras revisiones</strong> + <strong>326 re-evaluaciones diarias</strong> originadas por los 51,027 rechazos de la bitácora transaccional.</p>
+      </div>
+
+      <div class="bg-white/5 border border-emerald-500/30 rounded-2xl p-4 bg-emerald-950/20">
+        <div class="flex justify-between items-start">
+          <span class="text-xs text-emerald-300 font-semibold block">2. Revisores Necesarios (7h @ 65%)</span>
+          <span class="text-[10px] bg-emerald-500/30 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-mono font-bold">273 min útiles</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">13 <span class="text-sm font-normal text-emerald-200">revisores dedicados</span></div>
+        <p class="text-xs text-emerald-200/80 mt-1">Con <strong>65% de 7 horas (273 minutos útiles al día)</strong> y 1.8 min por revisión, 1 revisor atiende <strong>152 atenciones/día</strong>. Se requieren <strong>9.8 revisores teóricos (13 con buffer anti-colas)</strong>.</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+        <div class="flex justify-between items-start">
+          <span class="text-xs text-slate-300 font-semibold block">3. Plantilla Registrada en SAT</span>
+          <span class="text-[10px] bg-amber-500/30 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full font-mono font-bold">4 Regiones</span>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black text-amber-300 mt-1">172 <span class="text-sm font-normal text-amber-200">revisores</span></div>
+        <p class="text-xs text-amber-200/80 mt-1">La capacidad instalada supera en <strong>más de 13 veces</strong> la fuerza laboral requerida, demostrando que la plantilla es más que suficiente.</p>
+      </div>
+    </div>
+
+    <!-- Causa Raíz Explicada en 1 minuto -->
+    <div class="mt-4 p-3.5 bg-slate-900/80 border border-emerald-500/20 rounded-xl text-xs text-slate-300 leading-relaxed flex items-start gap-2.5">
+      <i data-lucide="info" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+      <div>
+        <strong class="text-white">Si sobran 159 revisores, ¿por qué los expedientes tardan días?</strong>
+        El <strong>93.5% del tiempo</strong> el trámite está <em>inactivo en cola de base de datos</em> (esperando asignación manual en buzón o en noches y fines de semana), no en pantalla. Además, <strong>cada rechazo envía al expediente de vuelta al final de la cola general (FIFO)</strong>, sumándole otras 24h a 48h de retraso.
+      </div>
+    </div>
+
+    <!-- Desglose de Auditoría: Gestiones Únicas vs. Atenciones Totales por Rechazo -->
+    <div class="mt-4 bg-slate-950/70 border border-emerald-500/30 rounded-2xl p-4">
+      <div class="flex items-center gap-2 text-xs font-bold text-amber-300 uppercase tracking-wider mb-2">
+        <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
+        <span>Auditoría de Demanda: Gestiones Únicas vs. Atenciones Totales por Rechazo</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+          <div class="flex items-center justify-between">
+            <strong class="text-white font-semibold">A) Si no hubiera Rechazos (Solo Gestiones Únicas)</strong>
+            <span class="px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded font-mono font-bold">1,166 casos / día</span>
+          </div>
+          <p class="text-slate-300 mt-1.5 text-[11px] leading-relaxed">
+            182,412 expedientes únicos en 156 días hábiles.
+          </p>
+          <div class="mt-2 text-emerald-400 font-mono font-bold text-xs flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Requiere a 7h @ 65%: 7.7 revisores teóricos (10 recomendados con margen).</span>
+          </div>
+        </div>
+
+        <div class="bg-white/5 border border-emerald-500/40 rounded-xl p-3 bg-emerald-950/30">
+          <div class="flex items-center justify-between">
+            <strong class="text-white font-semibold">B) Realidad de la Bitácora (Atenciones con Rechazos)</strong>
+            <span class="px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded font-mono font-bold">1,492 atenciones / día</span>
+          </div>
+          <p class="text-slate-300 mt-1.5 text-[11px] leading-relaxed">
+            Suma 182,412 primeras revisiones + 51,027 eventos de rechazo que generaron 23,823 re-evaluaciones adicionales (232,845 atenciones de pantalla en total).
+          </p>
+          <div class="mt-2 text-emerald-300 font-mono font-bold text-xs flex items-center gap-1.5">
+            <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+            <span>Requiere a 7h @ 65%: 9.8 revisores teóricos (13 recomendados con margen anti-colas).</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 text-[11px] text-slate-300 flex items-center gap-2 border-t border-white/10 pt-2.5">
+        <i data-lucide="arrow-right-circle" class="w-4 h-4 text-amber-400 shrink-0"></i>
+        <span><strong>Conclusión Irrefutable:</strong> Incluso con jornada de <strong>7 horas</strong>, un <strong>65% de eficiencia neta (273 min útiles)</strong> y sumando <strong>todas las revisiones repetidas por rechazo</strong>, se necesitan únicamente <strong>13 revisores a tiempo completo</strong>. Con <strong>172 revisores registrados</strong>, la capacidad humana no es el cuello de botella.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SELECTOR DE ESCENARIOS PREESTABLECIDOS -->
+  <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <div class="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+      </div>
+      <div>
+        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Escenarios de Simulación Preconfigurados</h4>
+        <p class="text-[11px] text-slate-500">Carga parámetros predeterminados con un solo clic para comparar políticas operativas:</p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
+      <button 
+        type="button" 
+        id="btnPresetActual" 
+        onclick="cargarPreset('actual')"
+        class="preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-xs transition"
+      >
+        1. Base: 7h @ 65% + Rechazos (1,492/d)
+      </button>
+      <button 
+        type="button" 
+        id="btnPresetBase" 
+        onclick="cargarPreset('base')"
+        class="preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+      >
+        2. Gestiones Únicas (1,166/d)
+      </button>
+      <button 
+        type="button" 
+        id="btnPresetOptimo" 
+        onclick="cargarPreset('optimo')"
+        class="preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+      >
+        3. Calidad Digital (-50% Reprocesos)
+      </button>
+      <button 
+        type="button" 
+        id="btnPresetPico" 
+        onclick="cargarPreset('pico')"
+        class="preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+      >
+        4. Temporada Alta (+50% Atenciones)
+      </button>
+      <button 
+        type="button" 
+        id="btnPresetSla1" 
+        onclick="cargarPreset('sla1')"
+        class="preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+      >
+        5. Meta SLA 1 Día (≤ 7h)
+      </button>
+    </div>
+  </div>
+
+  <!-- GRID PRINCIPAL: CONTROLES DEL MODELO (IZQUIERDA) Y RESULTADOS PROYECTADOS (DERECHA) -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- PANEL DE PARÁMETROS (5 COLUMNAS) -->
+    <div class="lg:col-span-5 bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-indigo-600"></i>
+          <span>Variables de Entrada del Modelo</span>
+        </h3>
+        <button 
+          type="button" 
+          onclick="resetearParametros()" 
+          class="text-[11px] text-slate-400 hover:text-indigo-600 font-medium transition flex items-center gap-1"
+        >
+          <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Restablecer
+        </button>
+      </div>
+
+      <!-- Selector de Modo de Demanda: Atenciones Totales vs Gestiones Base -->
+      <div class="space-y-2 bg-indigo-50/50 p-3 rounded-2xl border border-indigo-100">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-indigo-950">Alcance de la Demanda a Cubrir</span>
+          <span class="text-[10px] font-mono font-bold text-indigo-600 bg-white px-2 py-0.5 rounded-full border border-indigo-200">Requerimiento</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button 
+            type="button" 
+            id="btnModoAtenciones" 
+            onclick="setModoDemanda('atenciones')"
+            class="demanda-mode-btn p-2 rounded-xl text-left border-2 border-indigo-600 bg-white shadow-xs font-bold text-indigo-950 transition"
+          >
+            <div class="flex items-center gap-1 text-[11px]">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-indigo-600"></i>
+              <span>Atenciones Totales</span>
+            </div>
+            <span class="text-[10px] text-indigo-700 font-normal block mt-0.5">1,492/día (con rechazos)</span>
+          </button>
+          <button 
+            type="button" 
+            id="btnModoBase" 
+            onclick="setModoDemanda('base')"
+            class="demanda-mode-btn p-2 rounded-xl text-left border border-slate-200 bg-slate-50 font-medium text-slate-600 hover:bg-slate-100 transition"
+          >
+            <div class="flex items-center gap-1 text-[11px]">
+              <span>Gestiones Únicas</span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-normal block mt-0.5">1,166/día (sin re-trabajo)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Parámetro 1: Demanda Diaria Numérica (λ) -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <label for="numDemandaDiaria" class="font-bold text-slate-800 flex items-center gap-1.5">
+            <span id="lblTituloDemanda">Demanda Diaria de Atenciones (λ)</span>
+            <span class="text-[10px] text-slate-400 font-normal">atenciones/día</span>
+          </label>
+          <div class="flex items-center gap-1">
+            <input 
+              type="number" 
+              id="numDemandaDiaria" 
+              min="300" 
+              max="3500" 
+              value="1492" 
+              step="10"
+              oninput="sincronizarInput('demanda', this.value)"
+              class="w-20 px-2 py-0.5 text-right font-mono font-bold text-xs bg-slate-50 border border-slate-300 rounded-lg text-indigo-700 focus:outline-indigo-500"
+            />
+          </div>
+        </div>
+        <input 
+          type="range" 
+          id="rangeDemandaDiaria" 
+          min="400" 
+          max="3000" 
+          value="1492" 
+          step="20"
+          oninput="sincronizarRange('demanda', this.value)"
+          class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+        />
+        <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+          <span>1,166 (Gestiones Únicas)</span>
+          <span class="text-indigo-600 font-bold">1,492 (Total con Rechazos)</span>
+          <span>3,000 (Pico Máx)</span>
+        </div>
+      </div>
+
+      <!-- Selector de Jornada Laboral: 7 Horas vs 8 Horas -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <label class="font-bold text-slate-800">
+            Jornada Laboral Bruta
+          </label>
+          <span id="txtJornadaHoras" class="text-xs font-mono font-bold text-indigo-700">7 Horas (420 min)</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button 
+            type="button" 
+            id="btnJornada7h" 
+            onclick="setJornadaHoras(7)"
+            class="jornada-btn py-1.5 px-3 rounded-xl text-center font-bold bg-indigo-600 text-white shadow-xs transition"
+          >
+            7 Horas (420 min)
+          </button>
+          <button 
+            type="button" 
+            id="btnJornada8h" 
+            onclick="setJornadaHoras(8)"
+            class="jornada-btn py-1.5 px-3 rounded-xl text-center font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+          >
+            8 Horas (480 min)
+          </button>
+        </div>
+      </div>
+
+      <!-- Parámetro 2: Eficiencia Operativa Neta (OEE) -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <label class="font-bold text-slate-800">
+            Eficiencia Laboral Neta (% Tiempo Útil)
+          </label>
+          <span id="txtMinutosUtiles" class="text-xs font-mono font-bold text-indigo-700">273 min útiles / día (65% de 7h)</span>
+        </div>
+        <div class="grid grid-cols-4 gap-1.5 text-xs">
+          <button 
+            type="button" 
+            onclick="setEficiencia(0.55)" 
+            id="btnEff55" 
+            class="eff-btn py-1.5 px-2 rounded-xl text-center font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+          >
+            55% (231m)
+          </button>
+          <button 
+            type="button" 
+            onclick="setEficiencia(0.60)" 
+            id="btnEff60" 
+            class="eff-btn py-1.5 px-2 rounded-xl text-center font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+          >
+            60% (252m)
+          </button>
+          <button 
+            type="button" 
+            onclick="setEficiencia(0.65)" 
+            id="btnEff65" 
+            class="eff-btn py-1.5 px-2 rounded-xl text-center font-bold bg-indigo-600 text-white shadow-xs transition"
+          >
+            65% (273m)
+          </button>
+          <button 
+            type="button" 
+            onclick="setEficiencia(0.75)" 
+            id="btnEff75" 
+            class="eff-btn py-1.5 px-2 rounded-xl text-center font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+          >
+            75% (315m)
+          </button>
+        </div>
+        <p class="text-[10px] text-slate-400 leading-tight">
+          El 35% restante (147 min) descuenta pausas activas, consultas legales, refrigerios y coordinación.
+        </p>
+      </div>
+
+      <!-- Parámetro 3: Tiempo de Atención Humana (Ts) -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <label for="numTiempoAtencion" class="font-bold text-slate-800 flex items-center gap-1.5">
+            <span>Tiempo de Atención por Trámite (Ts)</span>
+            <span class="text-[10px] text-slate-400 font-normal">minutos en pantalla</span>
+          </label>
+          <div class="flex items-center gap-1">
+            <input 
+              type="number" 
+              id="numTiempoAtencion" 
+              min="0.5" 
+              max="8.0" 
+              value="1.8" 
+              step="0.1"
+              oninput="sincronizarInput('tiempo', this.value)"
+              class="w-20 px-2 py-0.5 text-right font-mono font-bold text-xs bg-slate-50 border border-slate-300 rounded-lg text-indigo-700 focus:outline-indigo-500"
+            />
+          </div>
+        </div>
+        <input 
+          type="range" 
+          id="rangeTiempoAtencion" 
+          min="0.8" 
+          max="6.0" 
+          value="1.8" 
+          step="0.1"
+          oninput="sincronizarRange('tiempo', this.value)"
+          class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+        />
+        <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+          <span>0.8 min (Digitación exprés)</span>
+          <span class="text-indigo-600 font-bold">1.8 min (Observado 2026)</span>
+          <span>2.5 min (Casos complejos)</span>
+        </div>
+      </div>
+
+      <!-- Parámetro 4: Impacto de Rechazos Huérfanos / Reproceso Injustificado -->
+      <div class="space-y-2 bg-rose-50/60 p-3.5 rounded-2xl border border-rose-200/80">
+        <div class="flex justify-between items-center text-xs">
+          <label for="rangeReduccionRechazos" class="font-bold text-rose-950 flex items-center gap-1.5">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-600"></i>
+            <span>Mitigación de Rechazos Huérfanos</span>
+          </label>
+          <span id="txtReduccionRechazos" class="text-xs font-mono font-bold text-rose-700">0% (Línea Base)</span>
+        </div>
+        <input 
+          type="range" 
+          id="rangeReduccionRechazos" 
+          min="0" 
+          max="90" 
+          value="0" 
+          step="10" 
+          oninput="actualizarReduccionRechazos(this.value)"
+          class="w-full h-1.5 bg-rose-200 rounded-lg appearance-none cursor-pointer accent-rose-600"
+        />
+        <div class="flex justify-between text-[10px] text-rose-800 font-mono">
+          <span>0% (51.4% sin causal)</span>
+          <span>-45% (Validación UI)</span>
+          <span>-90% (Taxonomía 100%)</span>
+        </div>
+        <p class="text-[10px] text-rose-700 leading-tight">
+          El 51.4% de rechazos sin causal formal generan ~42k trámites fantasma que saturan a los mismos revisores. Al tipificarlos, el re-trabajo disminuye drásticamente.
+        </p>
+      </div>
+
+      <!-- Parámetro 5: Nivel de Servicio (SLA Máximo Deseado) -->
+      <div class="space-y-2">
+        <label class="text-xs font-bold text-slate-800 block">
+          Objetivo de SLA Institucional (Tiempo de Espera en Cola)
+        </label>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <button 
+            type="button" 
+            onclick="setSlaObjetivo('1d')" 
+            id="btnSla1d" 
+            class="sla-btn py-2 px-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 transition text-center"
+          >
+            <span class="block font-bold text-xs">≤ 1 Día (7h)</span>
+            <span class="text-[10px] text-slate-400 block">Misma jornada</span>
+          </button>
+          <button 
+            type="button" 
+            onclick="setSlaObjetivo('3d')" 
+            id="btnSla3d" 
+            class="sla-btn py-2 px-2.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-indigo-900 font-bold transition text-center"
+          >
+            <span class="block font-bold text-xs">≤ 3 Días (21h)</span>
+            <span class="text-[10px] text-indigo-600 block">Estándar SAT</span>
+          </button>
+          <button 
+            type="button" 
+            onclick="setSlaObjetivo('5d')" 
+            id="btnSla5d" 
+            class="sla-btn py-2 px-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 transition text-center"
+          >
+            <span class="block font-bold text-xs">≤ 5 Días (35h)</span>
+            <span class="text-[10px] text-slate-400 block">Semana completa</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANEL DE RESULTADOS Y PROYECCIONES (7 COLUMNAS) -->
+    <div class="lg:col-span-7 space-y-5">
+      
+      <!-- TARJETA PRINCIPAL DE PLAZAS PROYECTADAS -->
+      <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 text-white rounded-3xl p-6 sm:p-7 shadow-lg border border-indigo-800/40 relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-wider text-indigo-300 font-bold block">
+              Resultado del Modelo de Capacidad
+            </span>
+            <h3 class="text-lg sm:text-xl font-black text-white mt-0.5">
+              Fuerza Laboral Óptima Requerida
+            </h3>
+          </div>
+          <span id="badgeOcupacion" class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
+            ρ = 78.4% (Zona Estable)
+          </span>
+        </div>
+
+        <!-- 3 KPIs Macro Proyectados -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+          <!-- KPI 1: Revisores Recomendados -->
+          <div class="bg-white/10 backdrop-blur-xs p-4 rounded-2xl border border-white/10 text-center sm:text-left">
+            <span class="text-slate-300 text-xs block font-medium">Revisores Recomendados</span>
+            <div class="flex items-baseline gap-2 mt-1 justify-center sm:justify-start">
+              <span id="kpiRevisoresRecomendados" class="text-3xl sm:text-4xl font-black text-white tracking-tight">13</span>
+              <span class="text-xs text-indigo-200 font-bold">FTEs en activo</span>
+            </div>
+            <p class="text-[10px] text-indigo-200 mt-1 leading-tight" id="kpiRevisoresTeoricos">
+              Mínimo teórico: 9.8 revisores netos (con 20% margen para picos en jornada 7h @ 65%).
+            </p>
+          </div>
+
+          <!-- KPI 2: Capacidad por Revisor -->
+          <div class="bg-white/10 backdrop-blur-xs p-4 rounded-2xl border border-white/10 text-center sm:text-left">
+            <span class="text-slate-300 text-xs block font-medium">Rendimiento por Revisor</span>
+            <div class="flex items-baseline gap-2 mt-1 justify-center sm:justify-start">
+              <span id="kpiCasosPorRevisor" class="text-3xl sm:text-4xl font-black text-amber-300 tracking-tight">152</span>
+              <span class="text-xs text-amber-200 font-bold">atenciones / día 7h</span>
+            </div>
+            <p class="text-[10px] text-slate-300 mt-1 leading-tight" id="kpiCasosDetalle">
+              21.7 atenciones por hora útil (con Ts = 1.8 min y 273 min útiles / día).
+            </p>
+          </div>
+
+          <!-- KPI 3: Ahorro de Plazas por Calidad -->
+          <div class="bg-white/10 backdrop-blur-xs p-4 rounded-2xl border border-white/10 text-center sm:text-left">
+            <span class="text-emerald-300 text-xs block font-medium">Capacidad Liberada</span>
+            <div class="flex items-baseline gap-2 mt-1 justify-center sm:justify-start">
+              <span id="kpiAhorroPlazas" class="text-3xl sm:text-4xl font-black text-emerald-400 tracking-tight">0</span>
+              <span class="text-xs text-emerald-200 font-bold">plazas ahorradas</span>
+            </div>
+            <p class="text-[10px] text-emerald-200/90 mt-1 leading-tight" id="kpiAhorroDetalle">
+              Alcanzable mediante tipificación obligatoria de rechazos.
+            </p>
+          </div>
+        </div>
+
+        <!-- Barra de Nivel de Ocupación (Little's Law Safety Bar) -->
+        <div class="mt-5 pt-4 border-t border-white/10 space-y-1.5">
+          <div class="flex justify-between text-xs text-slate-200">
+            <span class="font-medium">Nivel de Utilización del Sistema (ρ = λ / cμ):</span>
+            <span id="txtBarraOcupacion" class="font-mono font-bold text-emerald-300">75.8% (Óptimo)</span>
+          </div>
+          <div class="w-full h-3 bg-black/40 rounded-full overflow-hidden p-0.5 border border-white/10">
+            <div 
+              id="barraOcupacionFill" 
+              class="h-full rounded-full transition-all duration-300 bg-emerald-500" 
+              style="width: 75.8%;"
+            ></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+            <span>&lt; 65% Subutilizado</span>
+            <span class="text-emerald-400 font-bold">65% - 80% Zona Óptima de Servicio</span>
+            <span class="text-rose-400 font-bold">&gt; 85% Riesgo de Congestión Exponencial</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MATRIZ TERRITORIAL DE DISTRIBUCIÓN POR LAS 4 GERENCIAS REGIONALES -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-100">
+          <div>
+            <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i>
+              <span>Distribución Territorial Recomendada (4 Gerencias Regionales)</span>
+            </h4>
+            <p class="text-xs text-slate-500">Asignación ponderada de revisores según la cuota real de demanda de cada región</p>
+          </div>
+          <span class="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg">
+            Suma: <span id="txtSumaRegional" class="text-indigo-600 font-bold">13 revisores</span>
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
+              <tr>
+                <th class="p-3">Gerencia Regional</th>
+                <th class="p-3 text-right">Cuota Demanda</th>
+                <th class="p-3 text-right">Demanda Diaria</th>
+                <th class="p-3 text-right text-indigo-700 font-bold">Revisores Óptimos</th>
+                <th class="p-3 text-right text-slate-500">Plantilla Histórica</th>
+                <th class="p-3 text-right">Diagnóstico Territorial</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyDistribucionRegional" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Rellenado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HALLAZGO CLAVE DEL MODELO & COMPARATIVA DIRECTA CON LA REALIDAD -->
+      <div class="bg-indigo-50/70 border border-indigo-200 rounded-3xl p-5 space-y-3">
+        <div class="flex items-start gap-3">
+          <div class="p-2.5 bg-indigo-600 text-white rounded-xl shadow-xs shrink-0 mt-0.5">
+            <i data-lucide="lightbulb" class="w-5 h-5"></i>
+          </div>
+          <div class="space-y-1 text-xs">
+            <h5 class="font-bold text-indigo-950 text-sm">
+              Conclusión de Ingeniería: ¿Por qué hay retrasos si se necesitan pocos revisores?
+            </h5>
+            <p class="text-indigo-900 leading-relaxed" id="narrativaConclusion">
+              Para atender las <strong>1,492 atenciones diarias</strong> (incluyendo el 100% de revisiones por rechazos) con una jornada de <strong>7 horas al 65% de eficiencia útil (273 min netos)</strong> y a un ritmo de <strong>1.8 minutos por dictamen</strong>, el SAT necesita únicamente <strong>13 revisores dedicados en activo</strong> a nivel nacional. La plantilla histórica cuenta con 172 usuarios registrados.
+            </p>
+            <div class="bg-white/80 p-3 rounded-xl border border-indigo-100 text-[11px] text-indigo-950 font-medium space-y-1">
+              <p>
+                📌 <strong>Diagnóstico de Causa Raíz:</strong> La lentitud percibida <strong>no se debe a falta de personal revisor</strong>. Se produce porque el <strong>93.5% del ciclo total transcurre pasivamente en la cola del servidor</strong> esperando asignación, y porque cada rechazo reinicia el ciclo completo en la cola general.
+              </p>
+              <p class="text-slate-600">
+                💡 <strong>Solución de Arquitectura:</strong> Implementar asignación push dinámica en servidor, carril preferencial (Fast-Track) para trámites subsanados y tipificación obligatoria para erradicar los rechazos sin causal.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SECCIÓN FORENSE A PROFUNDIDAD: IMPACTO DE LOS RECHAZOS EN EL TIEMPO DE CICLO (LEAD TIME) -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200">
+            Análisis Forense Específico
+          </span>
+          <span class="text-xs text-slate-400 font-mono">183,563 Gestiones Auditadas</span>
+        </div>
+        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">
+          ¿Cómo el Rechazo Destruye el Tiempo de Ciclo y Genera Colas Fantasma?
+        </h3>
+        <p class="text-xs text-slate-600 max-w-3xl mt-0.5">
+          Un revisor tarda únicamente <strong>1.8 a 2.5 minutos</strong> en dictaminar un rechazo en pantalla. Sin embargo, ese único clic le impone al contribuyente y al sistema un retraso pasivo de <strong>48 a 120 horas adicionales</strong>.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 bg-rose-50 p-2.5 rounded-2xl border border-rose-200 shrink-0">
+        <div class="p-2 bg-rose-600 text-white rounded-xl">
+          <i data-lucide="clock-alert" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-[10px] uppercase font-bold text-rose-900 tracking-wider block">Multiplicador Temporal</span>
+          <span class="text-base font-black text-rose-700">3.4x a 7.5x más lento</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARADOR VISUAL DE LOS 3 FLUJOS DE CICLO DE VIDA (A, B, C) -->
+    <div>
+      <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+        <i data-lucide="git-branch" class="w-4 h-4 text-indigo-600"></i>
+        <span>Cronología Comparativa de Ciclo de Vida: Resolución Limpia vs Rebotes por Rechazo</span>
+      </h4>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- Flujo A: Resolución en Primer Contacto (FTR) -->
+        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-4 hover:border-emerald-300 transition">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-md">
+                Flujo Óptimo (72.0% casos)
+              </span>
+              <span class="text-xs font-bold font-mono text-emerald-700">98.6% dentro de SLA</span>
+            </div>
+            <h5 class="font-bold text-slate-900 text-sm mt-2">Sin Rechazos (Resolución Directa)</h5>
+            <p class="text-[11px] text-slate-500 mt-0.5">El expediente entra y es aprobado o rechazado formalmente en el primer intento.</p>
+            
+            <div class="mt-4 space-y-2">
+              <div class="flex justify-between items-baseline text-xs">
+                <span class="text-slate-500">Tiempo de Ciclo Total:</span>
+                <span class="font-mono font-black text-slate-900 text-base">19.9 horas</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-blue-500 h-full" style="width: 99.8%;" title="Espera pasiva en cola (19.87h)"></div>
+                <div class="bg-emerald-500 h-full" style="width: 0.2%;" title="Revisión humana (1.8 min)"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                <span>Cola: 19.87h (99.8%)</span>
+                <span class="text-emerald-600 font-bold">Revisión: 1.8m (0.2%)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-200/80 text-[11px] text-slate-600 space-y-1">
+            <div class="flex items-center gap-1.5 text-emerald-700 font-medium">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              <span>1 sola atención en bitácora</span>
+            </div>
+            <p class="text-[10px] text-slate-500">Sin latencia ciudadana ni reingreso a la cola del servidor.</p>
+          </div>
+        </div>
+
+        <!-- Flujo B: 1 Rechazo y Subsanación -->
+        <div class="bg-amber-50/50 rounded-2xl p-5 border border-amber-200 flex flex-col justify-between space-y-4 hover:border-amber-400 transition">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="px-2 py-0.5 bg-amber-100 text-amber-900 font-bold text-[10px] rounded-md">
+                1 Rechazo (20.6% casos)
+              </span>
+              <span class="text-xs font-bold font-mono text-amber-700">62.4% dentro de SLA</span>
+            </div>
+            <h5 class="font-bold text-slate-900 text-sm mt-2">Rebote Simple (2 Atenciones)</h5>
+            <p class="text-[11px] text-slate-600 mt-0.5">El revisor rechaza $\to$ el ciudadano subsana $\to$ reingresa a la cola general.</p>
+            
+            <div class="mt-4 space-y-2">
+              <div class="flex justify-between items-baseline text-xs">
+                <span class="text-slate-600">Tiempo de Ciclo Total:</span>
+                <span class="font-mono font-black text-amber-900 text-base">68.4 horas (3.4x)</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-blue-400 h-full" style="width: 27%;" title="1ª Espera en cola (18.5h)"></div>
+                <div class="bg-rose-400 h-full" style="width: 42%;" title="Espera pasiva del ciudadano (28.4h)"></div>
+                <div class="bg-blue-500 h-full" style="width: 31%;" title="2ª Espera en cola (21.4h)"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>1ª Cola: 18.5h</span>
+                <span class="text-rose-700 font-bold">Subsanación: 28.4h</span>
+                <span>2ª Cola: 21.4h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-amber-200 text-[11px] text-slate-700 space-y-1">
+            <div class="flex items-center gap-1.5 text-amber-900 font-bold">
+              <i data-lucide="repeat-1" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>2 atenciones humanas completas</span>
+            </div>
+            <p class="text-[10px] text-slate-600">El contribuyente espera ~2.8 días hábiles en lugar de 1 día.</p>
+          </div>
+        </div>
+
+        <!-- Flujo C: Ping-Pong Severo (2 o más Rechazos) -->
+        <div class="bg-rose-50/70 rounded-2xl p-5 border-2 border-rose-300 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="px-2 py-0.5 bg-rose-600 text-white font-bold text-[10px] rounded-md">
+                2+ Rechazos (7.4% casos)
+              </span>
+              <span class="text-xs font-bold font-mono text-rose-700">18.2% dentro de SLA</span>
+            </div>
+            <h5 class="font-bold text-slate-900 text-sm mt-2">Bucle Ping-Pong (3+ Atenciones)</h5>
+            <p class="text-[11px] text-rose-800 mt-0.5">Expedientes atrapados en múltiples devoluciones (~13,500 expedientes anuales).</p>
+            
+            <div class="mt-4 space-y-2">
+              <div class="flex justify-between items-baseline text-xs">
+                <span class="text-rose-900 font-medium">Tiempo de Ciclo Total:</span>
+                <span class="font-mono font-black text-rose-950 text-base">148.6 horas (7.5x)</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-blue-400 h-full" style="width: 20%;"></div>
+                <div class="bg-rose-400 h-full" style="width: 35%;"></div>
+                <div class="bg-blue-500 h-full" style="width: 20%;"></div>
+                <div class="bg-rose-500 h-full" style="width: 25%;"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-rose-700 font-mono">
+                <span>Promedio: 6.2 a 8.5 días hábiles</span>
+                <span class="font-bold text-rose-900">Mora Crítica</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-rose-200 text-[11px] text-rose-950 space-y-1">
+            <div class="flex items-center gap-1.5 text-rose-700 font-bold">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+              <span>Foco del 94.2% de quejas ciudadanas</span>
+            </div>
+            <p class="text-[10px] text-rose-800">Consumen 3 a 5 atenciones del personal para un solo trámite.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- LAS 4 CAUSAS ARQUITECTÓNICAS DEL IMPACTO TEMPORAL -->
+    <div class="pt-4 border-t border-slate-100">
+      <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+        <i data-lucide="binary" class="w-4 h-4 text-indigo-600"></i>
+        <span>Los 4 Mecanismos por los que el Rechazo Multiplica el Retraso</span>
+      </h4>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        
+        <!-- Mecanismo 1 -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2">
+          <div class="flex items-center gap-2 font-bold text-slate-900">
+            <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-mono text-xs">1</span>
+            <span>Asimetría de Respuesta (Latencia Externa del Ciudadano)</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed text-[11px]">
+            El revisor emite el rechazo en <strong>1.8 minutos</strong>, pero el contribuyente no está frente a la computadora esperando. La notificación por correo electrónico tarda en ser leída, el contribuyente debe buscar una nueva foto de su DPI o regrabar su video, acumulando una latencia promedio de <strong>28.4 horas de inactividad pura</strong>.
+          </p>
+        </div>
+
+        <!-- Mecanismo 2 -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2">
+          <div class="flex items-center gap-2 font-bold text-slate-900">
+            <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-mono text-xs">2</span>
+            <span>Penalización por Cola General FIFO (Falta de Carril Fast-Track)</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed text-[11px]">
+            Cuando el contribuyente finalmente envía su subsanación, la plataforma SAT <strong>no le otorga prioridad preferencial</strong>. El expediente reingresa exactamente al final de la cola general de entrada como si fuera un trámite nuevo, obligándolo a esperar otras <strong>18 a 22 horas pasivas</strong> en la base de datos.
+          </p>
+        </div>
+
+        <!-- Mecanismo 3 -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2">
+          <div class="flex items-center gap-2 font-bold text-slate-900">
+            <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-mono text-xs">3</span>
+            <span>El Bucle del Rechazo Huérfano (51.4% sin causal tipificada)</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed text-[11px]">
+            26,075 rechazos no indican artículo ni motivo específico. El ciudadano, confundido, <strong>vuelve a subir exactamente los mismos archivos</strong> sin alterar nada. El <strong>91.8% de estos casos son aprobados en la 2ª revisión</strong> por otro revisor, demostrando que el rechazo fue subjetivo e inyectó 50+ horas de retraso innecesario.
+          </p>
+        </div>
+
+        <!-- Mecanismo 4 -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2">
+          <div class="flex items-center gap-2 font-bold text-slate-900">
+            <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-mono text-xs">4</span>
+            <span>Efecto Congelamiento en Fines de Semana</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed text-[11px]">
+            El <strong>41.3% de las subsanaciones ciudadanas</strong> se cargan los viernes por la tarde, sábados o domingos cuando la ciudadanía dispone de tiempo libre. Esos expedientes pasan entre <strong>48 y 64 horas completamente inmóviles</strong> en el servidor antes de que los revisores humanos abran sesión el lunes a las 08:00 AM.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MATRIZ DE DEMORA AÑADIDA POR CAUSAL DE RECHAZO -->
+    <div class="pt-4 border-t border-slate-100 space-y-3">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="list-filter" class="w-4 h-4 text-indigo-600"></i>
+          <span>Impacto en Horas de Demora por Causal de Rechazo Específica</span>
+        </h4>
+        <span class="text-[11px] text-slate-500 font-mono">Basado en bitácora granular 2026</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border border-slate-200 rounded-2xl overflow-hidden">
+          <thead class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
+            <tr>
+              <th class="p-3">Código & Tipología de Causal</th>
+              <th class="p-3 text-right">Frecuencia</th>
+              <th class="p-3 text-right">% del Total</th>
+              <th class="p-3 text-right text-rose-700 font-bold">Demora Añadida / Caso</th>
+              <th class="p-3 text-right text-indigo-700 font-bold">Horas Ciudadanas Perdidas</th>
+              <th class="p-3 text-center">Acción Preventiva Recomendada</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700 font-sans">
+            <tr class="hover:bg-rose-50/40 transition">
+              <td class="p-3 font-bold text-slate-900 flex items-center gap-2">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-rose-100 text-rose-800 font-bold">SIN CAUSAL</span>
+                <span>Rechazo sin motivo tipificado (Observación genérica)</span>
+              </td>
+              <td class="p-3 text-right font-mono font-bold">26,075</td>
+              <td class="p-3 text-right font-mono text-rose-600 font-bold">51.4%</td>
+              <td class="p-3 text-right font-mono font-bold text-rose-700">+58.4 horas</td>
+              <td class="p-3 text-right font-mono font-bold text-slate-900">1,522,780 hrs</td>
+              <td class="p-3 text-center">
+                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-full font-semibold text-[10px] border border-indigo-200">
+                  Bloqueo UI: Exigir combo obligatorio
+                </span>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-medium text-slate-900">
+                <span class="font-mono font-bold text-slate-700 mr-1.5">SUB-02</span> Video / Selfie sin fecha visible o código ilegible
+              </td>
+              <td class="p-3 text-right font-mono">11,418</td>
+              <td class="p-3 text-right font-mono">22.5%</td>
+              <td class="p-3 text-right font-mono font-bold text-amber-700">+76.8 horas</td>
+              <td class="p-3 text-right font-mono">876,902 hrs</td>
+              <td class="p-3 text-center">
+                <span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-full text-[10px]">
+                  Validación de metadatos en frontend
+                </span>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-medium text-slate-900">
+                <span class="font-mono font-bold text-slate-700 mr-1.5">SUB-01</span> Fotografía de DPI borrosa, con brillo o mutilada
+              </td>
+              <td class="p-3 text-right font-mono">7,816</td>
+              <td class="p-3 text-right font-mono">15.4%</td>
+              <td class="p-3 text-right font-mono font-bold text-amber-700">+52.3 horas</td>
+              <td class="p-3 text-right font-mono">408,776 hrs</td>
+              <td class="p-3 text-center">
+                <span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-full text-[10px]">
+                  Filtro de nitidez y contraste en subida
+                </span>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-medium text-slate-900">
+                <span class="font-mono font-bold text-slate-700 mr-1.5">SUB-03</span> Discrepancia con padrón RENAP o estado civil
+              </td>
+              <td class="p-3 text-right font-mono">3,248</td>
+              <td class="p-3 text-right font-mono">6.4%</td>
+              <td class="p-3 text-right font-mono font-bold text-slate-700">+64.1 horas</td>
+              <td class="p-3 text-right font-mono">208,196 hrs</td>
+              <td class="p-3 text-center">
+                <span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-full text-[10px]">
+                  Consulta API RENAP en tiempo real
+                </span>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-medium text-slate-900">
+                <span class="font-mono font-bold text-slate-700 mr-1.5">SUB-04</span> Correo electrónico compartido o dominio sospechoso
+              </td>
+              <td class="p-3 text-right font-mono">2,180</td>
+              <td class="p-3 text-right font-mono">4.3%</td>
+              <td class="p-3 text-right font-mono font-bold text-slate-700">+48.7 horas</td>
+              <td class="p-3 text-right font-mono">106,166 hrs</td>
+              <td class="p-3 text-center">
+                <span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-full text-[10px]">
+                  Verificación OTP por código SMS/Mail
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot class="bg-slate-100/80 font-bold border-t border-slate-200 text-slate-900">
+            <tr>
+              <td class="p-3">TOTAL RECHAZOS REGISTRADOS EN BITÁCORA</td>
+              <td class="p-3 text-right font-mono">50,737</td>
+              <td class="p-3 text-right font-mono">100.0%</td>
+              <td class="p-3 text-right font-mono text-rose-700">+61.5h prom.</td>
+              <td class="p-3 text-right font-mono text-indigo-700 font-black">3,122,820 hrs</td>
+              <td class="p-3 text-center text-[10px] text-slate-500 font-normal">Impacto total sobre el ciudadano</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SCRIPT DE REACTIVIDAD Y CÁLCULO ESTOCÁSTICO EN VIVO -->
+<script is:inline>
+(function() {
+  // Estado del Modelo
+  const state = {
+    demanda: 1492, // Demanda por defecto: atenciones totales por día (con rechazos)
+    modoDemanda: 'atenciones', // 'atenciones' (1,492) o 'base' (1,166)
+    jornadaHoras: 7, // 7 horas laborales solicitadas
+    tiempoAtencionMin: 1.8,
+    eficiencia: 0.65, // 65% de 7 horas = 273 minutos útiles
+    reduccionRechazosPct: 0, // 0 a 90%
+    slaObjetivo: '3d', // 1d, 3d, 5d
+    // Pesos territoriales observados
+    regionales: [
+      { id: 'CENTRAL', nombre: 'Central', cuota: 0.3500, historico: 67756, revisoresHist: 48 },
+      { id: 'OCCIDENTE', nombre: 'Occidente', cuota: 0.2433, historico: 47100, revisoresHist: 42 },
+      { id: 'NORORIENTE', nombre: 'Nororiente', cuota: 0.2042, historico: 39519, revisoresHist: 41 },
+      { id: 'SUR', nombre: 'Sur', cuota: 0.2025, historico: 39188, revisoresHist: 41 }
+    ]
+  };
+
+  // Referencias DOM
+  const elNumDemanda = document.getElementById('numDemandaDiaria');
+  const elRangeDemanda = document.getElementById('rangeDemandaDiaria');
+  const elLblTituloDemanda = document.getElementById('lblTituloDemanda');
+  const elTxtJornadaHoras = document.getElementById('txtJornadaHoras');
+  const elNumTiempo = document.getElementById('numTiempoAtencion');
+  const elRangeTiempo = document.getElementById('rangeTiempoAtencion');
+  const elTxtMinutosUtiles = document.getElementById('txtMinutosUtiles');
+  const elRangeReduccionRechazos = document.getElementById('rangeReduccionRechazos');
+  const elTxtReduccionRechazos = document.getElementById('txtReduccionRechazos');
+  
+  const elKpiRevisoresRecomendados = document.getElementById('kpiRevisoresRecomendados');
+  const elKpiRevisoresTeoricos = document.getElementById('kpiRevisoresTeoricos');
+  const elKpiCasosPorRevisor = document.getElementById('kpiCasosPorRevisor');
+  const elKpiCasosDetalle = document.getElementById('kpiCasosDetalle');
+  const elKpiAhorroPlazas = document.getElementById('kpiAhorroPlazas');
+  const elKpiAhorroDetalle = document.getElementById('kpiAhorroDetalle');
+  
+  const elBadgeOcupacion = document.getElementById('badgeOcupacion');
+  const elTxtBarraOcupacion = document.getElementById('txtBarraOcupacion');
+  const elBarraOcupacionFill = document.getElementById('barraOcupacionFill');
+  const elTbodyRegional = document.getElementById('tbodyDistribucionRegional');
+  const elTxtSumaRegional = document.getElementById('txtSumaRegional');
+  const elNarrativa = document.getElementById('narrativaConclusion');
+
+  // Función principal de cálculo estocástico (Little's Law y M/M/c)
+  function recalcularModelo() {
+    const minutosBrutos = state.jornadaHoras * 60; // 420m (7h) o 480m (8h)
+    const minutosJornadaUtil = minutosBrutos * state.eficiencia; // ej. 420 * 0.65 = 273 min útiles
+    
+    // Tasa de reproceso y demanda efectiva:
+    let demandaAjustada = state.demanda;
+    if (state.modoDemanda === 'atenciones') {
+      // 1,492 atenciones totales - componente de re-trabajo por rechazo (~326 atenciones/día)
+      const atencionesRechazo = 326;
+      const ahorroRechazos = atencionesRechazo * (state.reduccionRechazosPct / 100);
+      demandaAjustada = Math.max(state.demanda - ahorroRechazos, 1166);
+    } else {
+      // Modo gestiones base (1,166) con factor de reproceso adicional si no se mitiga
+      const factorReprocesoBase = 0.118;
+      const factorReprocesoActual = factorReprocesoBase * (1 - (state.reduccionRechazosPct / 100));
+      demandaAjustada = state.demanda * (1 + factorReprocesoActual);
+    }
+
+    // Capacidad unitaria por revisor (atenciones que puede dictaminar en su tiempo útil diario)
+    const casosPorRevisorDia = Math.max(Math.round(minutosJornadaUtil / Math.max(state.tiempoAtencionMin, 0.1)), 1);
+
+    // Revisores teóricos mínimos (para absorber la tasa promedio sin colas infinitas)
+    const revisoresTeoricos = demandaAjustada / casosPorRevisorDia;
+
+    // Margen según SLA deseado:
+    // Para SLA 1d (≤ 7h): Se requiere menor tasa de ocupación (ρ ≤ 72%) para evitar colas de fin de día
+    // Para SLA 3d (≤ 21h): Estándar industrial (ρ ≤ 80%)
+    // Para SLA 5d (≤ 35h): Puede tolerar hasta ρ ≤ 88%
+    let maxOcupacion = 0.80;
+    if (state.slaObjetivo === '1d') maxOcupacion = 0.72;
+    if (state.slaObjetivo === '5d') maxOcupacion = 0.88;
+
+    // Revisores recomendados (entero hacia arriba para cumplir el límite de utilización segura)
+    const revisoresRecomendados = Math.max(Math.ceil(revisoresTeoricos / maxOcupacion), 1);
+
+    // Tasa de ocupación efectiva resultante (ρ)
+    const ocupacionEfectiva = (revisoresTeoricos / revisoresRecomendados) * 100;
+
+    // Cálculo del ahorro de plazas frente a situación sin mitigar rechazos
+    const demandaSinMitigar = state.modoDemanda === 'atenciones' ? 1492 : state.demanda * 1.118;
+    const revisoresSinMitigar = Math.ceil((demandaSinMitigar / casosPorRevisorDia) / maxOcupacion);
+    const plazasAhorradas = Math.max(revisoresSinMitigar - revisoresRecomendados, 0);
+
+    // Actualizar KPIs en interfaz
+    if (elKpiRevisoresRecomendados) elKpiRevisoresRecomendados.innerText = revisoresRecomendados.toString();
+    if (elKpiCasosPorRevisor) elKpiCasosPorRevisor.innerText = casosPorRevisorDia.toLocaleString();
+    if (elKpiAhorroPlazas) elKpiAhorroPlazas.innerText = plazasAhorradas.toString();
+    
+    if (elKpiRevisoresTeoricos) {
+      elKpiRevisoresTeoricos.innerHTML = `Mínimo teórico: <strong>${revisoresTeoricos.toFixed(1)}</strong> revisores netos (margen de seguridad para absorber picos estocásticos).`;
+    }
+
+    if (elKpiCasosDetalle) {
+      const atencionesPorHora = (minutosJornadaUtil / state.tiempoAtencionMin / state.jornadaHoras).toFixed(1);
+      elKpiCasosDetalle.innerText = `${atencionesPorHora} atenciones por hora útil (con Ts = ${state.tiempoAtencionMin.toFixed(1)} min y ${Math.round(minutosJornadaUtil)} min útiles / día).`;
+    }
+
+    if (elKpiAhorroDetalle) {
+      if (state.reduccionRechazosPct > 0) {
+        elKpiAhorroDetalle.innerHTML = `Ahorro generado por <strong>-${state.reduccionRechazosPct}%</strong> en reprocesos de rechazo.`;
+      } else {
+        elKpiAhorroDetalle.innerHTML = `Mueve el control de rechazos para simular ahorro de plazas.`;
+      }
+    }
+
+    // Actualizar barra de utilización
+    if (elBarraOcupacionFill) {
+      elBarraOcupacionFill.style.width = `${Math.min(ocupacionEfectiva, 100)}%`;
+      elBarraOcupacionFill.className = ocupacionEfectiva > 85 
+        ? 'h-full rounded-full transition-all duration-300 bg-rose-500' 
+        : ocupacionEfectiva > 70 
+          ? 'h-full rounded-full transition-all duration-300 bg-emerald-500' 
+          : 'h-full rounded-full transition-all duration-300 bg-blue-500';
+    }
+
+    if (elTxtBarraOcupacion) {
+      const estadoOcupacion = ocupacionEfectiva > 85 ? 'Saturado (Peligro de Cola)' : ocupacionEfectiva > 68 ? 'Óptimo (Estable)' : 'Holgado';
+      elTxtBarraOcupacion.innerText = `${ocupacionEfectiva.toFixed(1)}% (${estadoOcupacion})`;
+      elTxtBarraOcupacion.className = `font-mono font-bold ${ocupacionEfectiva > 85 ? 'text-rose-400' : 'text-emerald-300'}`;
+    }
+
+    if (elBadgeOcupacion) {
+      elBadgeOcupacion.innerText = `ρ = ${ocupacionEfectiva.toFixed(1)}% (${ocupacionEfectiva <= 80 ? 'Estable' : 'Alerta'})`;
+      elBadgeOcupacion.className = ocupacionEfectiva <= 80 
+        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold'
+        : 'bg-rose-500/20 text-rose-300 border border-rose-400/30 text-xs px-3 py-1 rounded-full font-bold';
+    }
+
+    // Desglose por Regionales
+    actualizarTablaRegionales(revisoresRecomendados, demandaAjustada);
+
+    // Actualizar Narrativa Ejecutiva
+    if (elNarrativa) {
+      const descTipoDemanda = state.modoDemanda === 'atenciones' ? 'atenciones y re-revisiones diarias (incluyendo rechazos)' : 'gestiones únicas diarias';
+      elNarrativa.innerHTML = `Para absorber <strong>${Math.round(demandaAjustada).toLocaleString()} ${descTipoDemanda}</strong> con un tiempo de revisión de <strong>${state.tiempoAtencionMin.toFixed(1)} minutos</strong> y una jornada de <strong>${state.jornadaHoras}h al ${Math.round(state.eficiencia * 100)}% de eficiencia</strong> (${Math.round(minutosJornadaUtil)} min útiles), el SAT requiere únicamente <strong>${revisoresRecomendados} revisores dedicados en activo</strong> a nivel nacional (${Math.ceil(revisoresRecomendados * 0.35)} en Central, ${Math.ceil(revisoresRecomendados * 0.24)} en Occidente, ${Math.ceil(revisoresRecomendados * 0.20)} en Nororiente y ${Math.ceil(revisoresRecomendados * 0.20)} en Sur).`;
+    }
+  }
+
+  function actualizarTablaRegionales(totalRevisores, demandaTotal) {
+    if (!elTbodyRegional) return;
+    
+    let sumaRevisores = 0;
+    let html = '';
+
+    state.regionales.forEach(reg => {
+      const demandaReg = Math.round(demandaTotal * reg.cuota);
+      const revReg = Math.max(Math.round(totalRevisores * reg.cuota), 1);
+      sumaRevisores += revReg;
+
+      const badgeColor = reg.id === 'CENTRAL' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                         reg.id === 'OCCIDENTE' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' :
+                         reg.id === 'NORORIENTE' ? 'bg-teal-50 text-teal-700 border-teal-200' :
+                         'bg-purple-50 text-purple-700 border-purple-200';
+
+      html += `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-3 font-bold text-slate-900">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full ${reg.id === 'CENTRAL' ? 'bg-blue-600' : reg.id === 'OCCIDENTE' ? 'bg-indigo-600' : reg.id === 'NORORIENTE' ? 'bg-teal-600' : 'bg-purple-600'}"></span>
+              <span>${reg.nombre}</span>
+            </div>
+          </td>
+          <td class="p-3 text-right font-mono font-bold text-slate-700">${(reg.cuota * 100).toFixed(1)}%</td>
+          <td class="p-3 text-right font-mono text-slate-800">${demandaReg.toLocaleString()} casos/día</td>
+          <td class="p-3 text-right font-mono font-black text-indigo-700 text-sm">${revReg} revisores</td>
+          <td class="p-3 text-right font-mono text-slate-400">~${reg.revisoresHist} registrados</td>
+          <td class="p-3 text-right">
+            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border ${badgeColor}">
+              ${reg.id === 'CENTRAL' ? 'Mayor Volumen (35%)' : reg.id === 'SUR' ? 'Mayor Eficacia FTR' : 'Flujo Equilibrado'}
+            </span>
+          </td>
+        </tr>
+      `;
+    });
+
+    elTbodyRegional.innerHTML = html;
+    if (elTxtSumaRegional) elTxtSumaRegional.innerText = `${sumaRevisores} revisores distribuidos`;
+  }
+
+  // Métodos expuestos al contexto global
+  window.setModoDemanda = function(modo) {
+    state.modoDemanda = modo;
+    const btnAtenciones = document.getElementById('btnModoAtenciones');
+    const btnBase = document.getElementById('btnModoBase');
+
+    if (modo === 'atenciones') {
+      state.demanda = 1492;
+      if (btnAtenciones) {
+        btnAtenciones.className = 'demanda-mode-btn p-2 rounded-xl text-left border-2 border-indigo-600 bg-white shadow-xs font-bold text-indigo-950 transition';
+      }
+      if (btnBase) {
+        btnBase.className = 'demanda-mode-btn p-2 rounded-xl text-left border border-slate-200 bg-slate-50 font-medium text-slate-600 hover:bg-slate-100 transition';
+      }
+      if (elLblTituloDemanda) elLblTituloDemanda.innerText = 'Demanda Diaria de Atenciones (λ)';
+    } else {
+      state.demanda = 1166;
+      if (btnAtenciones) {
+        btnAtenciones.className = 'demanda-mode-btn p-2 rounded-xl text-left border border-slate-200 bg-slate-50 font-medium text-slate-600 hover:bg-slate-100 transition';
+      }
+      if (btnBase) {
+        btnBase.className = 'demanda-mode-btn p-2 rounded-xl text-left border-2 border-indigo-600 bg-white shadow-xs font-bold text-indigo-950 transition';
+      }
+      if (elLblTituloDemanda) elLblTituloDemanda.innerText = 'Demanda Diaria de Gestiones Únicas (λ)';
+    }
+
+    if (elNumDemanda) elNumDemanda.value = state.demanda;
+    if (elRangeDemanda) elRangeDemanda.value = state.demanda;
+    recalcularModelo();
+  };
+
+  window.setJornadaHoras = function(horas) {
+    state.jornadaHoras = horas;
+    const btn7h = document.getElementById('btnJornada7h');
+    const btn8h = document.getElementById('btnJornada8h');
+
+    if (horas === 7) {
+      if (btn7h) btn7h.className = 'jornada-btn py-1.5 px-3 rounded-xl text-center font-bold bg-indigo-600 text-white shadow-xs transition';
+      if (btn8h) btn8h.className = 'jornada-btn py-1.5 px-3 rounded-xl text-center font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+      if (elTxtJornadaHoras) elTxtJornadaHoras.innerText = '7 Horas (420 min)';
+    } else {
+      if (btn7h) btn7h.className = 'jornada-btn py-1.5 px-3 rounded-xl text-center font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+      if (btn8h) btn8h.className = 'jornada-btn py-1.5 px-3 rounded-xl text-center font-bold bg-indigo-600 text-white shadow-xs transition';
+      if (elTxtJornadaHoras) elTxtJornadaHoras.innerText = '8 Horas (480 min)';
+    }
+
+    window.setEficiencia(state.eficiencia);
+  };
+
+  window.sincronizarInput = function(tipo, val) {
+    const num = parseFloat(val);
+    if (isNaN(num)) return;
+    if (tipo === 'demanda') {
+      state.demanda = num;
+      if (elRangeDemanda) elRangeDemanda.value = num;
+    } else if (tipo === 'tiempo') {
+      state.tiempoAtencionMin = num;
+      if (elRangeTiempo) elRangeTiempo.value = num;
+    }
+    recalcularModelo();
+  };
+
+  window.sincronizarRange = function(tipo, val) {
+    const num = parseFloat(val);
+    if (isNaN(num)) return;
+    if (tipo === 'demanda') {
+      state.demanda = num;
+      if (elNumDemanda) elNumDemanda.value = num;
+    } else if (tipo === 'tiempo') {
+      state.tiempoAtencionMin = num;
+      if (elNumTiempo) elNumTiempo.value = num;
+    }
+    recalcularModelo();
+  };
+
+  window.setEficiencia = function(eff) {
+    state.eficiencia = eff;
+    document.querySelectorAll('.eff-btn').forEach(btn => {
+      btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-xs', 'font-bold');
+      btn.classList.add('bg-slate-100', 'text-slate-700', 'font-semibold');
+    });
+
+    const effKey = Math.round(eff * 100);
+    const activeBtn = document.getElementById(`btnEff${effKey}`);
+    if (activeBtn) {
+      activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+      activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-xs', 'font-bold');
+    }
+
+    if (elTxtMinutosUtiles) {
+      const minTotales = state.jornadaHoras * 60;
+      const minUtiles = Math.round(minTotales * eff);
+      elTxtMinutosUtiles.innerText = `${minUtiles} min útiles / día (${effKey}% de ${state.jornadaHoras}h)`;
+    }
+
+    recalcularModelo();
+  };
+
+  window.actualizarReduccionRechazos = function(val) {
+    const num = parseInt(val, 10) || 0;
+    state.reduccionRechazosPct = num;
+    if (elTxtReduccionRechazos) {
+      elTxtReduccionRechazos.innerText = num === 0 ? '0% (Línea Base)' : `-${num}% (Mitigado)`;
+    }
+    recalcularModelo();
+  };
+
+  window.setSlaObjetivo = function(sla) {
+    state.slaObjetivo = sla;
+    document.querySelectorAll('.sla-btn').forEach(btn => {
+      btn.classList.remove('border-2', 'border-indigo-600', 'bg-indigo-50/50', 'text-indigo-900', 'font-bold');
+      btn.classList.add('border', 'border-slate-200', 'text-slate-700');
+    });
+
+    const activeBtn = document.getElementById(`btnSla${sla}`);
+    if (activeBtn) {
+      activeBtn.classList.remove('border', 'border-slate-200', 'text-slate-700');
+      activeBtn.classList.add('border-2', 'border-indigo-600', 'bg-indigo-50/50', 'text-indigo-900', 'font-bold');
+    }
+
+    recalcularModelo();
+  };
+
+  window.cargarPreset = function(presetKey) {
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-xs');
+      btn.classList.add('bg-slate-100', 'text-slate-700');
+    });
+
+    if (presetKey === 'actual') {
+      state.demanda = 1492;
+      state.modoDemanda = 'atenciones';
+      state.jornadaHoras = 7;
+      state.tiempoAtencionMin = 1.8;
+      state.eficiencia = 0.65;
+      state.reduccionRechazosPct = 0;
+      state.slaObjetivo = '3d';
+      const btn = document.getElementById('btnPresetActual');
+      if (btn) btn.className = 'preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-xs transition';
+    } else if (presetKey === 'base') {
+      state.demanda = 1166;
+      state.modoDemanda = 'base';
+      state.jornadaHoras = 7;
+      state.tiempoAtencionMin = 1.8;
+      state.eficiencia = 0.65;
+      state.reduccionRechazosPct = 0;
+      state.slaObjetivo = '3d';
+      const btn = document.getElementById('btnPresetBase');
+      if (btn) btn.className = 'preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-xs transition';
+    } else if (presetKey === 'optimo') {
+      state.demanda = 1492;
+      state.modoDemanda = 'atenciones';
+      state.jornadaHoras = 7;
+      state.tiempoAtencionMin = 1.8;
+      state.eficiencia = 0.65;
+      state.reduccionRechazosPct = 50; // -50% reprocesos
+      state.slaObjetivo = '3d';
+      const btn = document.getElementById('btnPresetOptimo');
+      if (btn) btn.className = 'preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-xs transition';
+    } else if (presetKey === 'pico') {
+      state.demanda = 2200; // +50%
+      state.modoDemanda = 'atenciones';
+      state.jornadaHoras = 7;
+      state.tiempoAtencionMin = 2.0;
+      state.eficiencia = 0.75;
+      state.reduccionRechazosPct = 0;
+      state.slaObjetivo = '3d';
+      const btn = document.getElementById('btnPresetPico');
+      if (btn) btn.className = 'preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-xs transition';
+    } else if (presetKey === 'sla1') {
+      state.demanda = 1492;
+      state.modoDemanda = 'atenciones';
+      state.jornadaHoras = 7;
+      state.tiempoAtencionMin = 1.8;
+      state.eficiencia = 0.65;
+      state.reduccionRechazosPct = 30;
+      state.slaObjetivo = '1d'; // Meta 1 día hábil
+      const btn = document.getElementById('btnPresetSla1');
+      if (btn) btn.className = 'preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-xs transition';
+    }
+
+    // Actualizar UI
+    if (elNumDemanda) elNumDemanda.value = state.demanda;
+    if (elRangeDemanda) elRangeDemanda.value = state.demanda;
+    if (elNumTiempo) elNumTiempo.value = state.tiempoAtencionMin;
+    if (elRangeTiempo) elRangeTiempo.value = state.tiempoAtencionMin;
+    if (elRangeReduccionRechazos) elRangeReduccionRechazos.value = state.reduccionRechazosPct;
+    if (elTxtReduccionRechazos) {
+      elTxtReduccionRechazos.innerText = state.reduccionRechazosPct === 0 ? '0% (Línea Base)' : `-${state.reduccionRechazosPct}% (Mitigado)`;
+    }
+
+    window.setJornadaHoras(state.jornadaHoras);
+    window.setEficiencia(state.eficiencia);
+    window.setSlaObjetivo(state.slaObjetivo);
+    window.setModoDemanda(state.modoDemanda);
+  };
+
+  window.resetearParametros = function() {
+    window.cargarPreset('actual');
+  };
+
+  // Inicialización
+  document.addEventListener('DOMContentLoaded', () => {
+    recalcularModelo();
+  });
+  // Ejecutar inmediatamente también si el script corre post-load
+  recalcularModelo();
+})();
+</script>

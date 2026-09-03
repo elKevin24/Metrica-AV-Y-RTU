@@ -6,7 +6,7 @@ import MetodologiaModal from '../components/executive/MetodologiaModal.astro';
 interface Props {
   title?: string;
   loadOlapScripts?: boolean;
-  activeModule?: 'MENU' | 'AV' | 'BITACORA' | 'AUDITORIA' | 'ROLAP' | 'CARGA';
+  activeModule?: 'MENU' | 'AV' | 'BITACORA' | 'AUDITORIA' | 'ROLAP';
 }
 
 const { title = "SAT Guatemala - Tablero Ejecutivo BI 360°", loadOlapScripts = false, activeModule: propModule } = Astro.props;
@@ -24,8 +24,6 @@ if (!activeModule) {
     activeModule = "AV";
   } else if (currentPath.startsWith("auditoria")) {
     activeModule = "AUDITORIA";
-  } else if (currentPath.startsWith("cargar-datos")) {
-    activeModule = "CARGA";
   } else {
     activeModule = "MENU";
   }
@@ -135,64 +133,70 @@ if (!activeModule) {
     <!-- Fila Superior: Marca, Búsqueda Rápida y Controles -->
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
       <!-- Marca SAT y Selector de Módulos -->
-      <div class="flex items-center gap-3 sm:gap-6 min-w-0">
-        <a href={`${baseUrl}/`} class="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0 text-left hover:opacity-90 transition" title="Ir al Menú Principal">
+      <div class="flex items-center gap-2 sm:gap-4 md:gap-6 min-w-0">
+        <a 
+          href={`${baseUrl}/`} 
+          id="mainHeaderBrandLink"
+          class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0 text-left hover:opacity-90 transition select-none z-10" 
+          title="Ir al Menú Principal"
+        >
           <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group hover:scale-105 transition shrink-0">
             <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
           </div>
-          <div class="min-w-0">
-            <div class="flex items-center gap-1.5">
-              <h1 class="text-xs sm:text-base font-bold tracking-tight text-white hover:text-blue-300 transition truncate">SAT GUATEMALA</h1>
-              <span class="hidden sm:inline-block bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium">
+          <div class="flex flex-col justify-center min-w-0">
+            <div class="flex items-center gap-1.5 whitespace-nowrap">
+              <h1 class="text-xs sm:text-base font-bold tracking-tight text-white hover:text-blue-300 transition whitespace-nowrap">SAT GUATEMALA</h1>
+              <span class="hidden lg:inline-flex items-center bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium whitespace-nowrap">
                 BI & Auditoría
               </span>
             </div>
-            <p class="hidden md:block text-[10px] text-slate-400">Arquitectura Maestro-Detalle • Jornada Hábil 8h</p>
+            <p class="hidden xl:block text-[10px] text-slate-400 whitespace-nowrap truncate max-w-[280px] leading-tight">Jornada 8h = 24h Cal. • SLA ≤ 3 Días (82.4%)</p>
+            <p class="hidden md:block xl:hidden text-[10px] text-slate-400 whitespace-nowrap truncate max-w-[150px] leading-tight">SLA ≤ 3 Días (82.4%)</p>
           </div>
         </a>
 
-        <!-- Selector de Módulos Analíticos Principales (AV y Bitácora) -->
-        <div class="hidden sm:flex items-center gap-1 bg-slate-900/90 border border-slate-700/80 p-1 rounded-xl text-xs font-semibold">
-          <span class="text-[10px] text-slate-400 px-1.5 uppercase tracking-wider font-mono">Módulo:</span>
+        <!-- Selector de Módulos Analíticos Principales (Desktop / Pantallas Grandes) -->
+        <div class="hidden lg:flex items-center gap-1 bg-slate-900/90 border border-slate-700/80 p-1 rounded-xl text-xs font-semibold shrink-0">
+          <span class="text-[10px] text-slate-400 px-1.5 uppercase tracking-wider font-mono hidden xl:inline">Módulo:</span>
           
           <!-- Botón Agencia Virtual -->
           <a 
             href={`${baseUrl}/historico`} 
             id="btnCuboAV" 
-            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'AV' ? 'bg-blue-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap ${activeModule === 'AV' ? 'bg-blue-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
             title="Módulo 1: Agencia Virtual (Tablero Histórico 360°, Activaciones y Cambios de Correo)"
           >
-            <i data-lucide="shield" class="w-3 h-3"></i> AV (Histórico)
+            <i data-lucide="shield" class="w-3 h-3"></i> <span>AV<span class="hidden xl:inline"> (Histórico)</span></span>
           </a>
 
           <!-- Botón Bitácora Transaccional -->
           <a 
             href={`${baseUrl}/bitacora`} 
             id="btnCuboBitacora" 
-            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'BITACORA' ? 'bg-indigo-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap ${activeModule === 'BITACORA' ? 'bg-indigo-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
             title="Módulo 2: Bitácora Transaccional (Trazabilidad Forense y Eventos 2026)"
           >
-            <i data-lucide="activity" class="w-3 h-3"></i> Bitácora
+            <i data-lucide="activity" class="w-3 h-3"></i> <span>Bitácora</span>
           </a>
 
           <!-- Botón Auditoría Forense -->
           <a 
             href={`${baseUrl}/auditoria`} 
             id="btnCuboAuditoria" 
-            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'AUDITORIA' ? 'bg-cyan-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap ${activeModule === 'AUDITORIA' ? 'bg-cyan-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
             title="Auditoría de Casos y Expedientes"
           >
-            <i data-lucide="file-search" class="w-3 h-3"></i> Auditoría
+            <i data-lucide="file-search" class="w-3 h-3"></i> <span>Auditoría</span>
           </a>
 
           <!-- Botón Laboratorio SQL (ROLAP) -->
           <a 
             href={`${baseUrl}/laboratorio-sql`} 
             id="btnCuboROLAP" 
-            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs ${activeModule === 'ROLAP' ? 'bg-amber-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
+            class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap ${activeModule === 'ROLAP' ? 'bg-amber-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`} 
             title="Laboratorio SQL ad-hoc sobre Parquet (ROLAP DuckDB-WASM)"
           >
-            <i data-lucide="terminal" class="w-3 h-3 text-amber-400"></i> SQL (ROLAP)
+            <i data-lucide="terminal" class="w-3 h-3 text-amber-400"></i> <span>SQL<span class="hidden xl:inline"> (ROLAP)</span></span>
           </a>
         </div>
 
@@ -200,9 +204,6 @@ if (!activeModule) {
         <nav class="hidden xl:flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl text-xs font-semibold text-slate-300">
           <a href={`${baseUrl}/`} class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 ${activeModule === 'MENU' ? 'bg-slate-800 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}>
             <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400"></i> Menú
-          </a>
-          <a href={`${baseUrl}/cargar-datos`} class={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 ${activeModule === 'CARGA' ? 'bg-emerald-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}>
-            <i data-lucide="database" class="w-3.5 h-3.5 text-emerald-400"></i> Cargar Datos
           </a>
         </nav>
       </div>
@@ -234,7 +235,7 @@ if (!activeModule) {
         </button>
 
         <!-- Indicador de Estado del Sistema en Vivo -->
-        <div id="statusMotorPill" class="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-amber-300 bg-amber-950/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-amber-500/30 transition-all duration-300 shadow-sm whitespace-nowrap">
+        <div id="statusMotorPill" class="hidden sm:flex items-center gap-1.5 text-[10px] sm:text-[11px] text-amber-300 bg-amber-950/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-amber-500/30 transition-all duration-300 shadow-sm whitespace-nowrap shrink-0">
           <span id="statusMotorDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
           <span id="statusMotorTxt" class="font-medium tracking-tight">{activeModule === 'ROLAP' ? 'DuckDB-Wasm ROLAP' : activeModule === 'BITACORA' ? '1.25M Eventos' : '182.4k Gestiones'}</span>
         </div>
@@ -303,27 +304,31 @@ if (!activeModule) {
             <i data-lucide="alert-octagon" class="w-4 h-4"></i>
             <span>4. Rechazos & Re-trabajo</span>
           </button>
+          <button role="tab" aria-selected="false" aria-controls="tab-proyeccion" onclick="switchTab('tab-proyeccion')" id="btn-proyeccion" class="tab-link text-indigo-300 hover:text-indigo-100">
+            <i data-lucide="calculator" class="w-4 h-4 text-indigo-400"></i>
+            <span>5. Proyección Revisores</span>
+          </button>
           <button role="tab" aria-selected="false" aria-controls="tab-gestion" onclick="switchTab('tab-gestion')" id="btn-gestion" class="tab-link">
             <i data-lucide="users" class="w-4 h-4"></i>
-            <span>5. Revisores & Cuadrantes</span>
+            <span>6. Rendimiento Operadores</span>
           </button>
           <button role="tab" aria-selected="false" aria-controls="tab-auditoria" onclick="switchTab('tab-auditoria')" id="btn-auditoria" class="tab-link">
             <i data-lucide="table" class="w-4 h-4"></i>
-            <span>6. Auditoría Forense</span>
+            <span>7. Muestra Granular (DataTables)</span>
           </button>
           <button role="tab" aria-selected="false" aria-controls="tab-informe2026" onclick="switchTab('tab-informe2026')" id="btn-informe2026" class="tab-link text-blue-300 hover:text-blue-200">
             <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
-            <span>7. Informe Ejecutivo 2026</span>
+            <span>8. Informe Ejecutivo 2026</span>
           </button>
           <button role="tab" aria-selected="false" aria-controls="tab-hallazgos" onclick="switchTab('tab-hallazgos')" id="btn-hallazgos" class="tab-link text-amber-300 hover:text-amber-200">
             <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
-            <span>8. Hallazgos & Plan de Acción</span>
+            <span>9. Hallazgos & Plan de Acción</span>
           </button>
         </div>
       )}
 
-      {/* 3. Sub-menú Dinámico para MENÚ PRINCIPAL, CARGA, AUDITORIA o ROLAP */}
-      {(activeModule === 'MENU' || activeModule === 'CARGA' || activeModule === 'AUDITORIA' || activeModule === 'ROLAP') && (
+      {/* 3. Sub-menú Dinámico para MENÚ PRINCIPAL, AUDITORIA o ROLAP */}
+      {(activeModule === 'MENU' || activeModule === 'AUDITORIA' || activeModule === 'ROLAP') && (
         <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-2 border-t border-slate-800/60 py-1.5 scroll-smooth">
           <a href={`${baseUrl}/`} class={`tab-link ${activeModule === 'MENU' ? 'active' : ''}`}>
             <i data-lucide="home" class="w-4 h-4 text-blue-400"></i>
@@ -344,10 +349,6 @@ if (!activeModule) {
           <a href={`${baseUrl}/auditoria`} class={`tab-link ${activeModule === 'AUDITORIA' ? 'active' : 'text-slate-400 hover:text-white'}`}>
             <i data-lucide="file-search" class="w-4 h-4 text-cyan-400"></i>
             <span>Auditoría de Casos</span>
-          </a>
-          <a href={`${baseUrl}/cargar-datos`} class={`tab-link ${activeModule === 'CARGA' ? 'active' : 'text-slate-400 hover:text-white'}`}>
-            <i data-lucide="database" class="w-4 h-4 text-emerald-400"></i>
-            <span>Centro de Carga & Calidad</span>
           </a>
         </div>
       )}
@@ -433,32 +434,86 @@ if (!activeModule) {
   <!-- Modal de Metodología y Trazabilidad -->
   <MetodologiaModal />
 
-  <!-- Barra de Navegación Inferior Móvil (Mobile Quick Dock) -->
+  <!-- Barra de Navegación Inferior Móvil (Mobile Quick Dock Contextual) -->
   <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.4)]" style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom));">
-    <button onclick="switchTab('tab-macro')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95 text-blue-400 font-bold" data-tab="tab-macro">
-      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-      <span class="text-[10px] leading-tight">Inicio</span>
-    </button>
-    <button onclick="switchTab('tab-operativo')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-operativo">
-      <i data-lucide="map-pin" class="w-5 h-5"></i>
-      <span class="text-[10px] leading-tight">Regional</span>
-    </button>
-    <button onclick="switchTab('tab-tiempos')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-tiempos">
-      <i data-lucide="clock" class="w-5 h-5"></i>
-      <span class="text-[10px] leading-tight">Tiempos</span>
-    </button>
-    <button onclick="switchTab('tab-calidad')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-calidad">
-      <i data-lucide="alert-octagon" class="w-5 h-5"></i>
-      <span class="text-[10px] leading-tight">Rechazos</span>
-    </button>
-    <button onclick="switchTab('tab-gestion')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-gestion">
-      <i data-lucide="users" class="w-5 h-5"></i>
-      <span class="text-[10px] leading-tight">Revisores</span>
-    </button>
-    <button onclick="toggleMobileMenuDrawer()" class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-white p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
-      <i data-lucide="grid" class="w-5 h-5 text-indigo-400"></i>
-      <span class="text-[10px] leading-tight text-indigo-400 font-semibold">Más (8)</span>
-    </button>
+    {activeModule === 'BITACORA' ? (
+      <>
+        <button onclick="switchBitacoraTab('tab-bitacora-hallazgos')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95 text-blue-400 font-bold" data-tab="tab-bitacora-hallazgos">
+          <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+          <span class="text-[10px] leading-tight">Hallazgos</span>
+        </button>
+        <button onclick="switchBitacoraTab('tab-bitacora-kpis')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-bitacora-kpis">
+          <i data-lucide="scale" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Balance</span>
+        </button>
+        <button onclick="switchBitacoraTab('tab-bitacora-buscador')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-bitacora-buscador">
+          <i data-lucide="search" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Buscador</span>
+        </button>
+        <button onclick="switchBitacoraTab('tab-bitacora-tiempos')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-bitacora-tiempos">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Tiempos</span>
+        </button>
+        <button onclick="switchBitacoraTab('tab-bitacora-analisis')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-bitacora-analisis">
+          <i data-lucide="pie-chart" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Territorio</span>
+        </button>
+        <button onclick="toggleMobileMenuDrawer()" class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-white p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="grid" class="w-5 h-5 text-indigo-400"></i>
+          <span class="text-[10px] leading-tight text-indigo-400 font-semibold">Menú</span>
+        </button>
+      </>
+    ) : activeModule === 'MENU' ? (
+      <>
+        <a href={`${baseUrl}/`} class="flex flex-col items-center justify-center gap-0.5 text-blue-400 font-bold p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Menú</span>
+        </a>
+        <a href={`${baseUrl}/historico`} class="flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Tablero AV</span>
+        </a>
+        <a href={`${baseUrl}/bitacora`} class="flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="activity" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Bitácora</span>
+        </a>
+        <a href={`${baseUrl}/laboratorio-sql`} class="flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="database" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">SQL Studio</span>
+        </a>
+        <button onclick="toggleMobileMenuDrawer()" class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-white p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="grid" class="w-5 h-5 text-indigo-400"></i>
+          <span class="text-[10px] leading-tight text-indigo-400 font-semibold">Más</span>
+        </button>
+      </>
+    ) : (
+      <>
+        <button onclick="switchTab('tab-macro')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95 text-blue-400 font-bold" data-tab="tab-macro">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Inicio</span>
+        </button>
+        <button onclick="switchTab('tab-operativo')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-operativo">
+          <i data-lucide="map-pin" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Regional</span>
+        </button>
+        <button onclick="switchTab('tab-tiempos')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-tiempos">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Tiempos</span>
+        </button>
+        <button onclick="switchTab('tab-calidad')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-calidad">
+          <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Rechazos</span>
+        </button>
+        <button onclick="switchTab('tab-gestion')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-gestion">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          <span class="text-[10px] leading-tight">Revisores</span>
+        </button>
+        <button onclick="toggleMobileMenuDrawer()" class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-white p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95">
+          <i data-lucide="grid" class="w-5 h-5 text-indigo-400"></i>
+          <span class="text-[10px] leading-tight text-indigo-400 font-semibold">Más (8)</span>
+        </button>
+      </>
+    )}
   </nav>
 
   <!-- Drawer / Menú Completo Móvil (Bottom Sheet) -->
@@ -603,6 +658,7 @@ if (!activeModule) {
   <script is:inline src={`${baseUrl}/vendor/jquery.min.js`} defer></script>
   <script is:inline src={`${baseUrl}/vendor/jquery.dataTables.min.js`} defer></script>
   <script is:inline src={`${baseUrl}/vendor/chart.umd.js`} defer></script>
+  <script is:inline src={`${baseUrl}/vendor/alasql.min.js`} defer></script>
   <script is:inline src={`${baseUrl}/vendor/lucide.min.js`} defer></script>
   <script is:inline define:vars={{ baseUrl }}>window.BASE_URL = baseUrl;</script>
   {loadOlapScripts && (
@@ -624,10 +680,11 @@ if (!activeModule) {
       'tab-operativo': '2. Regionales & Sobrecarga',
       'tab-tiempos': '3. Jornada 8h & SLAs',
       'tab-calidad': '4. Rechazos & Re-trabajo',
-      'tab-gestion': '5. Revisores & Cuadrantes',
-      'tab-auditoria': '6. Auditoría Forense',
-      'tab-informe2026': '7. Informe Ejecutivo 2026',
-      'tab-hallazgos': '8. Hallazgos & Plan de Acción'
+      'tab-proyeccion': '5. Proyección de Revisores (Ingeniería de Capacidad)',
+      'tab-gestion': '6. Rendimiento Operadores',
+      'tab-auditoria': '7. Muestra Granular (DataTables)',
+      'tab-informe2026': '8. Informe Ejecutivo 2026',
+      'tab-hallazgos': '9. Hallazgos & Plan de Acción'
     };
 
     const TAB_ORDER = [
@@ -635,31 +692,47 @@ if (!activeModule) {
       'tab-operativo',
       'tab-tiempos',
       'tab-calidad',
+      'tab-proyeccion',
       'tab-gestion',
       'tab-auditoria',
       'tab-informe2026',
       'tab-hallazgos'
     ];
 
+    // Ajuste dinámico de variable de altura del header para evitar solapamientos
+    function updateHeaderHeightVar() {
+      const header = document.getElementById('mainHeader');
+      if (header) {
+        document.documentElement.style.setProperty('--main-header-height', `${header.offsetHeight}px`);
+      }
+    }
+    updateHeaderHeightVar();
+    window.addEventListener('resize', updateHeaderHeightVar);
+    window.addEventListener('load', updateHeaderHeightVar);
+
     // Enrutador Canónico Único
     window.switchTab = function(rawTabId) {
       const tabId = rawTabId.startsWith('tab-') ? rawTabId : `tab-${rawTabId}`;
+      const targetContent = document.getElementById(tabId);
+      if (!targetContent) {
+        window.location.href = `${(window as any).BASE_URL || ''}/historico#${tabId}`;
+        return;
+      }
+
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-link').forEach(el => {
         el.classList.remove('active');
         el.setAttribute('aria-selected', 'false');
       });
 
-      const targetContent = document.getElementById(tabId);
-      if (targetContent) {
-        targetContent.classList.remove('hidden');
-      }
+      targetContent.classList.remove('hidden');
 
       const btnMap = {
         'tab-macro': 'btn-macro',
         'tab-operativo': 'btn-operativo',
         'tab-tiempos': 'btn-tiempos',
         'tab-calidad': 'btn-calidad',
+        'tab-proyeccion': 'btn-proyeccion',
         'tab-gestion': 'btn-gestion',
         'tab-auditoria': 'btn-auditoria',
         'tab-informe2026': 'btn-informe2026',
@@ -729,16 +802,19 @@ if (!activeModule) {
 
     // Enrutador de pestañas para Módulo de Bitácora
     window.switchBitacoraTab = function(tabId) {
+      const targetContent = document.getElementById(tabId);
+      if (!targetContent) {
+        window.location.href = `${(window as any).BASE_URL || ''}/bitacora#${tabId}`;
+        return;
+      }
+
       document.querySelectorAll('.bitacora-tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('#navTabsContainer .tab-link').forEach(el => {
         el.classList.remove('active');
         el.setAttribute('aria-selected', 'false');
       });
 
-      const targetContent = document.getElementById(tabId);
-      if (targetContent) {
-        targetContent.classList.remove('hidden');
-      }
+      targetContent.classList.remove('hidden');
 
       const btnMap = {
         'tab-bitacora-hallazgos': 'btn-bitacora-hallazgos',
@@ -748,7 +824,7 @@ if (!activeModule) {
         'tab-bitacora-analisis': 'btn-bitacora-analisis'
       };
 
-      const btnId = btnMap[tabId];
+      const btnId = (btnMap as any)[tabId];
       if (btnId) {
         const targetBtn = document.getElementById(btnId);
         if (targetBtn) {
@@ -756,6 +832,30 @@ if (!activeModule) {
           targetBtn.setAttribute('aria-selected', 'true');
         }
       }
+
+      // Actualizar breadcrumb si existe
+      const BITACORA_TAB_NAMES: Record<string, string> = {
+        'tab-bitacora-hallazgos': '1. Hallazgos & Modelo Predictivo 8h',
+        'tab-bitacora-kpis': '2. Balance Operativo & Funnel',
+        'tab-bitacora-buscador': '3. Buscador Forense de Expedientes',
+        'tab-bitacora-tiempos': '4. Desmitificación de Tiempos & SLAs',
+        'tab-bitacora-analisis': '5. Gráficos & Distribución Territorial'
+      };
+      const elBreadcrumb = document.getElementById('breadcrumbCurrentTab');
+      if (elBreadcrumb && BITACORA_TAB_NAMES[tabId]) {
+        elBreadcrumb.innerText = BITACORA_TAB_NAMES[tabId];
+      }
+
+      // Actualizar dock móvil si está en bitácora
+      document.querySelectorAll('#mobileBottomNav .mobile-nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.classList.add('text-blue-400', 'font-bold');
+          btn.classList.remove('text-slate-400');
+        } else {
+          btn.classList.remove('text-blue-400', 'font-bold');
+          btn.classList.add('text-slate-400');
+        }
+      });
 
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       document.documentElement.scrollTop = 0;

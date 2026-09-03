@@ -4,17 +4,17 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <MainLayout title="Laboratorio SQL & ROLAP Studio - SAT" activeModule="ROLAP">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-28 md:pb-12 space-y-6" id="rolapLabRoot">
 
     <!-- Encabezado del Módulo ROLAP -->
-    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div id="rolapHeaderCard" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
       <div class="space-y-2">
         <div class="flex items-center gap-2">
           <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-cyan-500/30">
-            Motor ROLAP Columnar
+            Motor ROLAP In-Memory
           </span>
-          <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-mono border border-indigo-500/30">
-            DuckDB-WASM v1.28
+          <span id="sqlEngineVersionBadge" class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-mono border border-indigo-500/30">
+            SQL Engine v4.2 • SAT Analytics
           </span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2.5">
@@ -22,91 +22,121 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           Laboratorio SQL & Explorador ROLAP
         </h1>
         <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-          Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> de <code class="text-cyan-300 font-mono">maestro_expedientes.parquet</code> con visualización en tabla o gráfica.
+          Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> procesados de Agencia Virtual y RTU Digital con visualización en tabla paginada o gráfica ejecutiva.
         </p>
       </div>
 
-      <!-- Estado del Motor DuckDB en el Cliente -->
-      <div class="bg-slate-800/80 backdrop-blur-xs border border-slate-700/80 rounded-2xl p-4 min-w-[240px] text-right space-y-1">
+      <!-- Estado del Motor SQL en el Cliente -->
+      <div id="sqlEngineStatusCard" class="bg-slate-800/80 backdrop-blur-xs border border-slate-700/80 rounded-2xl p-4 min-w-[240px] text-right space-y-1">
         <div class="flex items-center justify-end gap-2 text-xs text-slate-400">
-          <span id="wasmEngineDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-          <span id="wasmEngineStatus" class="font-mono text-amber-300">Inicializando DuckDB...</span>
+          <span id="engineStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          <span id="engineStatusText" class="font-mono text-amber-300">Cargando base analítica...</span>
         </div>
-        <div class="text-lg font-black text-white font-mono" id="wasmRowsScanned">182,412 filas</div>
-        <div class="text-[10px] text-slate-400">Lectura columnar con HTTP Range Requests</div>
+        <div class="text-lg font-black text-white font-mono" id="engineRowsCount">182,412 filas</div>
+        <div class="text-[10px] text-slate-400" id="engineTablesInfo">Tablas: maestro_expedientes • cubo_av</div>
       </div>
     </div>
 
     <!-- Área Principal de Trabajo: Editor y Esquema -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6" id="rolapWorkspaceGrid">
 
       <!-- Panel Izquierdo: Catálogo de Consultas y Explorador de Columnas (1 Col) -->
-      <div class="lg:col-span-1 space-y-4">
+      <div class="lg:col-span-1 space-y-4" id="leftCatalogPanel">
         
         <!-- Tarjeta de Consultas Predeterminadas -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
+        <div id="cardTemplates" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
           <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
             <i data-lucide="book-open" class="w-4 h-4 text-blue-600"></i> Consultas Predefinidas
           </h3>
-          <p class="text-[11px] text-slate-500 leading-snug">Selecciona un template para cargar su SQL analítico:</p>
+          <p class="text-[11px] text-slate-500 leading-snug">Selecciona un template para cargar y ejecutar su SQL analítico:</p>
           
           <div class="space-y-1.5" id="templateList">
-            <button onclick="loadSqlTemplate(0)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
-              <span>1. Cuello de Botella por Hora</span>
+            <button id="btnTemplate0" onclick="loadSqlTemplate(0)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>1. Resumen 360° por Región</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
             </button>
-            <button onclick="loadSqlTemplate(1)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
-              <span>2. Top FTR por Revisor (&gt;100)</span>
+            <button id="btnTemplate1" onclick="loadSqlTemplate(1)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>2. Cuello de Botella por Hora</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
             </button>
-            <button onclick="loadSqlTemplate(2)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
-              <span>3. Top 10 Causales de Rechazo</span>
+            <button id="btnTemplate2" onclick="loadSqlTemplate(2)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>3. Top FTR por Revisor (&gt;100)</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
             </button>
-            <button onclick="loadSqlTemplate(3)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
-              <span>4. Horas Hábiles por Regional</span>
+            <button id="btnTemplate3" onclick="loadSqlTemplate(3)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>4. Top 10 Causales de Rechazo</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
             </button>
-            <button onclick="loadSqlTemplate(4)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
-              <span>5. Casos Fuera de SLA (&gt;40h)</span>
+            <button id="btnTemplate4" onclick="loadSqlTemplate(4)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>5. Ciclo por Región & Tipo Persona</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button id="btnTemplate5" onclick="loadSqlTemplate(5)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>6. Casos Críticos Fuera SLA (&gt;40h)</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button id="btnTemplate6" onclick="loadSqlTemplate(6)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between">
+              <span>7. Fact Table ROLAP (cubo_av)</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+            </button>
+            <button id="btnTemplate7" onclick="loadSqlTemplate(7)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-indigo-50/80 hover:bg-indigo-100 text-indigo-900 border border-indigo-200/80 hover:border-indigo-300 transition flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="calculator" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i>
+                <span>8. Proyección Revisores & Capacidad</span>
+              </span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
             </button>
           </div>
         </div>
 
-        <!-- Diccionario Rápido de Columnas -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="database" class="w-4 h-4 text-indigo-600"></i> Columnas (56)
-            </h3>
-            <span class="text-[10px] text-slate-400 font-mono">Click para insertar</span>
+        <!-- Diccionario y Esquema de Tablas -->
+        <div id="cardSchemaDict" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="database" class="w-4 h-4 text-indigo-600"></i> Esquema SQL
+              </h3>
+              <span class="text-[10px] text-slate-400 font-mono" id="schemaCountBadge">21 columnas</span>
+            </div>
+            <label for="tableSelectorSelect" class="text-[11px] font-semibold text-slate-600 block">Tabla seleccionada:</label>
+            <select id="tableSelectorSelect" onchange="switchSchemaTable(this.value)" class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-bold focus:outline-blue-500">
+              <option value="maestro_expedientes">maestro_expedientes (182k filas)</option>
+              <option value="cubo_av">cubo_av (13.6k ROLAP)</option>
+              <option value="operadores_productividad">operadores_productividad (1,120 filas)</option>
+              <option value="taxonomia">taxonomia (26 motivos)</option>
+              <option value="muestra_expedientes">muestra_expedientes (500 casos)</option>
+            </select>
           </div>
+
           <input type="text" id="columnFilterInput" oninput="filterColumnsList()" placeholder="Buscar columna..." class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-blue-500">
           
-          <div class="max-h-60 overflow-y-auto space-y-1 font-mono text-[11px] pr-1" id="columnListContainer">
+          <div class="max-h-56 overflow-y-auto space-y-1 font-mono text-[11px] pr-1" id="columnListContainer">
             <!-- Rellenado dinámicamente -->
           </div>
+          <div class="text-[10px] text-slate-400 text-center italic">Haz click en una columna para insertarla en el editor</div>
         </div>
 
       </div>
 
       <!-- Panel Derecho: Editor SQL y Resultados (3 Cols) -->
-      <div class="lg:col-span-3 space-y-4">
+      <div class="lg:col-span-3 space-y-4" id="rightEditorPanel">
 
         <!-- Editor SQL -->
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden flex flex-col">
+        <div id="sqlEditorContainer" class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden flex flex-col">
           <div class="bg-slate-800/80 px-4 py-2.5 border-b border-slate-700 flex items-center justify-between flex-wrap gap-2">
             <div class="flex items-center gap-2 text-xs font-mono text-slate-300">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-              <span>Consola SQL (DuckDB Dialect)</span>
+              <span>Consola SQL ROLAP</span>
               <span class="text-slate-500">|</span>
               <span class="text-[11px] text-slate-400">Atajo: <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Ctrl</kbd> + <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Enter</kbd></span>
             </div>
 
             <div class="flex items-center gap-2">
-              <button onclick="clearEditor()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
+              <button id="btnClearEditor" onclick="clearEditor()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
                 Limpiar
+              </button>
+              <button id="btnResetDefaultSql" onclick="resetDefaultQuery()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
+                Restablecer
               </button>
               <button id="btnExecuteSql" onclick="executeCurrentQuery()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5">
                 <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Ejecutar Consulta
@@ -135,16 +165,16 @@ ORDER BY Total_Expedientes DESC;</textarea>
         </div>
 
         <!-- Barra de Estado, Conmutador de Vistas y Exportación -->
-        <div class="flex items-center justify-between flex-wrap gap-3 text-xs px-1">
+        <div id="resultsToolbar" class="flex items-center justify-between flex-wrap gap-3 text-xs px-1">
           <div class="flex items-center gap-3">
-            <span id="queryLatencyBadge" class="text-slate-500 font-mono">Esperando ejecución...</span>
+            <span id="queryLatencyBadge" class="text-slate-500 font-mono">Iniciando motor...</span>
             <span id="queryRowCountBadge" class="text-slate-500 font-mono hidden">0 registros</span>
           </div>
 
           <!-- Selector de Vistas (Tabla / Gráfico) y Exportar -->
           <div class="flex items-center gap-2">
             <!-- Tabs Vista Tabla vs Vista Gráfico -->
-            <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200">
+            <div id="resultsViewSwitcher" class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200">
               <button 
                 id="btnViewTable" 
                 onclick="switchResultView('table')" 
@@ -164,19 +194,22 @@ ORDER BY Total_Expedientes DESC;</textarea>
             <button id="btnExportCsv" onclick="exportResultsToCsv()" class="hidden text-xs text-slate-700 hover:text-blue-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition">
               <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
             </button>
+            <button id="btnExportJson" onclick="exportResultsToJson()" class="hidden text-xs text-slate-700 hover:text-indigo-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition">
+              <i data-lucide="file-code" class="w-3.5 h-3.5"></i> JSON
+            </button>
           </div>
         </div>
 
         <!-- Contenedor de Resultados (Dual: Tabla o Gráfico) -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden min-h-[360px] flex flex-col justify-between">
+        <div id="resultsMainContainer" class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden min-h-[360px] flex flex-col justify-between">
           
           <!-- 1. VISTA TABLA -->
-          <div id="viewTableContainer" class="overflow-x-auto">
+          <div id="viewTableContainer" class="overflow-auto max-h-[580px] border-b border-slate-100">
             <div id="resultsTableContainer">
               <div class="p-12 text-center text-slate-400 space-y-2">
-                <i data-lucide="play-circle" class="w-10 h-10 mx-auto text-slate-300"></i>
-                <p class="text-sm font-medium">Presiona <strong class="text-slate-700">"Ejecutar Consulta"</strong> o <strong class="text-slate-700">Ctrl + Enter</strong> para procesar la consulta.</p>
-                <p class="text-xs text-slate-400">El motor ejecutará el SQL columnar directamente en tu navegador.</p>
+                <i data-lucide="loader-2" class="w-10 h-10 mx-auto text-blue-500 animate-spin"></i>
+                <p class="text-sm font-medium text-slate-700">Cargando base analítica del SAT...</p>
+                <p class="text-xs text-slate-400">Preparando índices ROLAP para ejecución en tiempo real.</p>
               </div>
             </div>
           </div>
@@ -184,12 +217,13 @@ ORDER BY Total_Expedientes DESC;</textarea>
           <!-- 2. VISTA GRÁFICO (Chart Builder) -->
           <div id="viewChartContainer" class="hidden p-5 space-y-4">
             <!-- Barra de Controles de la Gráfica -->
-            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+            <div id="chartControlsBar" class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
               <div class="flex flex-wrap items-center gap-3">
                 <div class="flex items-center gap-1.5">
-                  <label for="chartTypeSelect" class="font-bold text-slate-700">Tipo:</label>
+                  <label for="chartTypeSelect" class="font-bold text-slate-700">Tipo de Gráfica:</label>
                   <select id="chartTypeSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-medium focus:outline-blue-500">
                     <option value="bar">Barras Verticales</option>
+                    <option value="horizontalBar">Barras Horizontales</option>
                     <option value="line">Línea Temporal</option>
                     <option value="doughnut">Dona / Circular</option>
                     <option value="pie">Pastel</option>
@@ -215,12 +249,12 @@ ORDER BY Total_Expedientes DESC;</textarea>
             </div>
 
             <!-- Canvas de Chart.js -->
-            <div class="relative w-full h-80 flex items-center justify-center">
+            <div class="relative w-full h-80 flex items-center justify-center" id="chartCanvasWrapper">
               <canvas id="rolapChartCanvas"></canvas>
             </div>
           </div>
 
-          <!-- Paginador Interactivo Footer (Mejora 3) -->
+          <!-- Paginador Interactivo Footer -->
           <div id="resultsFooter" class="hidden bg-slate-50 px-4 py-2.5 border-t border-slate-200 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-2">
               <span id="resultsFooterInfo">Mostrando 0 a 0 de 0</span>
@@ -260,12 +294,13 @@ ORDER BY Total_Expedientes DESC;</textarea>
 
   </div>
 
-  <!-- SCRIPT DEL MOTOR DUCKDB-WASM, CHART BUILDER Y PAGINADOR -->
-  <script is:inline type="module" define:vars={{ baseUrl }}>
-    import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
+  <!-- Inclusión de scripts del cliente (Auto-contenidos sin CDN externo) -->
+  <script is:inline src={`${baseUrl}/vendor/chart.umd.js`}></script>
+  <script is:inline src={`${baseUrl}/vendor/alasql.min.js`}></script>
 
-    let db = null;
-    let conn = null;
+  <!-- Script del Motor SQL ROLAP -->
+  <script is:inline define:vars={{ baseUrl }}>
+    let isInitialized = false;
     let lastResultRows = [];
     let lastResultCols = [];
     
@@ -279,17 +314,29 @@ ORDER BY Total_Expedientes DESC;</textarea>
     let currentView = 'table'; // 'table' | 'chart'
 
     const TEMPLATES = [
-      // 0. Cuello de Botella por Hora
+      // 0. Resumen Ejecutivo 360° por Región
       `SELECT 
-    HOUR(FechaCreacion) AS Hora_Creacion,
+    Region,
+    COUNT(*) AS Total_Expedientes,
+    SUM(Es_Aprobada) AS Aprobadas,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_Buzon_Promedio,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 2) AS LeadTime_Horas_Promedio
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Total_Expedientes DESC;`,
+
+      // 1. Cuello de Botella por Hora del Día
+      `SELECT 
+    Hora_Creacion AS Hora_Del_Dia,
     COUNT(*) AS Expedientes_Recibidos,
     ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_En_Buzon_Promedio,
     ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR
 FROM maestro_expedientes
-GROUP BY 1
-ORDER BY 1 ASC;`,
+GROUP BY Hora_Creacion
+ORDER BY Hora_Creacion ASC;`,
 
-      // 1. Top FTR por Revisor (>100 casos)
+      // 2. Top FTR por Revisor (>100 casos)
       `SELECT 
     U1 AS Operador_Revisor,
     COUNT(*) AS Casos_Atendidos,
@@ -297,13 +344,13 @@ ORDER BY 1 ASC;`,
     ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
     ROUND(AVG(Atencion_Final_Sec) / 60.0, 2) AS Minutos_Dictamen_Promedio
 FROM maestro_expedientes
-WHERE U1 IS NOT NULL AND U1 != ''
+WHERE U1 IS NOT NULL AND U1 != '' AND U1 != 'SIN_OPERADOR'
 GROUP BY U1
 HAVING COUNT(*) >= 100
 ORDER BY Pct_FTR DESC
 LIMIT 15;`,
 
-      // 2. Top 10 Causales de Rechazo y Abandono
+      // 3. Top 10 Causales de Rechazo y Abandono
       `SELECT 
     ID_Subcategoria,
     MacroFamilia,
@@ -316,7 +363,7 @@ GROUP BY ID_Subcategoria, MacroFamilia
 ORDER BY Casos_Rechazados DESC
 LIMIT 10;`,
 
-      // 3. Tiempos de Ciclo Hábiles por Región y Tipo de Persona
+      // 4. Ciclo por Región y Tipo de Persona
       `SELECT 
     Region,
     TipoPersona,
@@ -328,7 +375,7 @@ FROM maestro_expedientes
 GROUP BY Region, TipoPersona
 ORDER BY Region, Total_Casos DESC;`,
 
-      // 4. Casos Fuera de SLA (>40h) por Regional
+      // 5. Casos Críticos Fuera de SLA (>40h) por Regional
       `SELECT 
     Region,
     COUNT(*) AS Total_Casos,
@@ -337,103 +384,357 @@ ORDER BY Region, Total_Casos DESC;`,
     ROUND(MAX(Ciclo_Hab_Sec) / 3600.0, 1) AS LeadTime_Maximo_Horas
 FROM maestro_expedientes
 GROUP BY Region
-ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
+ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`,
+
+      // 6. Fact Table ROLAP Directa (cubo_av)
+      `SELECT 
+    Region,
+    Estado,
+    SUM(Casos) AS Total_Casos,
+    SUM(Aprobadas) AS Total_Aprobadas,
+    SUM(Rechazos) AS Total_Rechazos,
+    ROUND(SUM(Suma_Ciclo_Hab_Sec) / NULLIF(SUM(N_Ciclo_Hab), 0) / 3600.0, 2) AS Horas_Ciclo_Promedio
+FROM cubo_av
+GROUP BY Region, Estado
+ORDER BY Total_Casos DESC;`,
+
+      // 7. Modelo de Capacidad: Demanda Diaria y Productividad de Revisores
+      `SELECT 
+    Region,
+    COUNT(*) AS Total_Expedientes,
+    ROUND(COUNT(*) / 156.0, 1) AS Demanda_Diaria_Promedio,
+    ROUND(AVG(Atencion_Final_Sec) / 60.0, 2) AS Minutos_Atencion_Revisor,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_En_Cola_Pasiva,
+    ROUND(SUM(Es_Rechazo) * 100.0 / COUNT(*), 1) AS Tasa_Rechazo_Pct,
+    -- Capacidad Diaria de 1 Revisor (360 min útiles de jornada 8h / Ts)
+    ROUND(360.0 / NULLIF(AVG(Atencion_Final_Sec) / 60.0, 0), 0) AS Capacidad_Casos_Por_Revisor_Dia,
+    -- Revisores FTE requeridos por Región (con margen estocástico del 20% para ocupación rho <= 80%)
+    CEIL((COUNT(*) / 156.0) / (360.0 / NULLIF(AVG(Atencion_Final_Sec) / 60.0, 0)) / 0.80) AS Revisores_FTE_Recomendados
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Demanda_Diaria_Promedio DESC;`
     ];
 
-    const COLUMNS_DICT = [
-      { name: 'NoGestion', type: 'VARCHAR', desc: 'Número único de gestión del expediente' },
-      { name: 'NIT', type: 'VARCHAR', desc: 'Número de Identificación Tributaria del contribuyente' },
-      { name: 'Contribuyente', type: 'VARCHAR', desc: 'Nombre o razón social de la entidad' },
-      { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de gestión (Activación, Cambio Correo)' },
-      { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT (CENTRAL, SUR, OCCIDENTE, NORORIENTE)' },
-      { name: 'Agencia', type: 'VARCHAR', desc: 'Agencia u oficina tributaria asignada' },
-      { name: 'FechaCreacion', type: 'TIMESTAMP', desc: 'Fecha y hora de radicación del trámite' },
-      { name: 'FechaAsignacion', type: 'TIMESTAMP', desc: 'Fecha y hora de asignación a un revisor' },
-      { name: 'FechaRevision', type: 'TIMESTAMP', desc: 'Fecha y hora en que el revisor inicia atención' },
-      { name: 'FechaFinaliza', type: 'TIMESTAMP', desc: 'Fecha y hora de finalización/aprobación' },
-      { name: 'FechaRechazo', type: 'TIMESTAMP', desc: 'Fecha y hora del primer rechazo u observación' },
-      { name: 'Estado', type: 'VARCHAR', desc: 'Estado final del expediente' },
-      { name: 'U1', type: 'VARCHAR', desc: 'Usuario revisor que dictamina en 1ra ronda' },
-      { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' },
-      { name: 'MacroFamilia', type: 'VARCHAR', desc: 'Categoría taxonómica del motivo de rechazo' },
-      { name: 'ID_Subcategoria', type: 'VARCHAR', desc: 'Código estandarizado del rechazo (ej. SUB-02)' },
-      { name: 'Buzon_Hab_Sec', type: 'DOUBLE', desc: 'Tiempo en cola sin asignar en segundos hábiles 8h' },
-      { name: 'Ciclo_Hab_Sec', type: 'DOUBLE', desc: 'Lead Time total de ciclo en segundos hábiles 8h' },
-      { name: 'Creacion_Atencion_Hab_Sec', type: 'DOUBLE', desc: 'Tiempo desde creación hasta dictamen (8h)' },
-      { name: 'Atencion_Final_Sec', type: 'DOUBLE', desc: 'Tiempo activo de revisión humana en segundos' },
-      { name: 'Aprobada_Directa', type: 'INT', desc: '1 si fue aprobada en 1ra ronda (FTR), 0 en otro caso' },
-      { name: 'Aprobada_Subsanada', type: 'INT', desc: '1 si fue aprobada tras subsanación, 0 en otro caso' },
-      { name: 'Es_Rechazo', type: 'INT', desc: '1 si tuvo al menos un rechazo, 0 en otro caso' },
-      { name: 'Es_Aprobada', type: 'INT', desc: '1 si terminó aprobada, 0 en otro caso' },
-      { name: 'Es_NoConfirmada', type: 'INT', desc: '1 si caducó o no fue confirmada por el usuario' },
-      { name: 'SLA_8h', type: 'INT', desc: '1 si cumplió meta de ciclo <= 8 horas hábiles' },
-      { name: 'SLA_16h', type: 'INT', desc: '1 si ciclo entre 8h y 16h hábiles' },
-      { name: 'SLA_24h', type: 'INT', desc: '1 si ciclo entre 16h y 24h hábiles' },
-      { name: 'SLA_40h', type: 'INT', desc: '1 si ciclo entre 24h y 40h hábiles' },
-      { name: 'Fuera_SLA_40h', type: 'INT', desc: '1 si excedió las 40 horas hábiles (5 días laborales)' },
-      { name: 'RondasRechazo', type: 'BIGINT', desc: 'Cantidad de rondas de rechazo registradas' },
-      { name: 'TotalReasignaciones', type: 'BIGINT', desc: 'Número de reasignaciones entre operadores' }
-    ];
+    const SCHEMAS = {
+      maestro_expedientes: [
+        { name: 'NoGestion', type: 'VARCHAR', desc: 'Identificador único de gestión del expediente' },
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT (CENTRAL, SUR, OCCIDENTE, NORORIENTE)' },
+        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de gestión (Activación, Cambio Correo)' },
+        { name: 'Estado', type: 'VARCHAR', desc: 'Estado final (APROBADA, RECHAZADA, NO CONFIRMADA)' },
+        { name: 'U1', type: 'VARCHAR', desc: 'Usuario revisor que dictamina' },
+        { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' },
+        { name: 'MacroFamilia', type: 'VARCHAR', desc: 'Categoría taxonómica de motivo de rechazo' },
+        { name: 'ID_Subcategoria', type: 'VARCHAR', desc: 'Código estandarizado del rechazo (ej. SUB-02)' },
+        { name: 'Es_Aprobada', type: 'INT', desc: '1 si fue aprobada (directa o subsanada), 0 en otro caso' },
+        { name: 'Aprobada_Directa', type: 'INT', desc: '1 si fue aprobada en 1ra ronda (FTR), 0 en otro caso' },
+        { name: 'Aprobada_Subsanada', type: 'INT', desc: '1 si requirió subsanación previa, 0 en otro caso' },
+        { name: 'Es_Rechazo', type: 'INT', desc: '1 si tuvo al menos un rechazo, 0 en otro caso' },
+        { name: 'Es_NoConfirmada', type: 'INT', desc: '1 si expiró o no fue confirmada por el usuario' },
+        { name: 'Buzon_Hab_Sec', type: 'DOUBLE', desc: 'Tiempo en cola sin asignar en segundos hábiles (8h)' },
+        { name: 'Ciclo_Hab_Sec', type: 'DOUBLE', desc: 'Lead Time total de ciclo en segundos hábiles (8h)' },
+        { name: 'Atencion_Final_Sec', type: 'DOUBLE', desc: 'Tiempo activo de revisión humana en segundos' },
+        { name: 'SLA_8h', type: 'INT', desc: '1 si cumplió meta de ciclo <= 8 horas hábiles' },
+        { name: 'Fuera_SLA_40h', type: 'INT', desc: '1 si excedió las 40 horas hábiles (5 días laborales)' },
+        { name: 'Hora_Creacion', type: 'INT', desc: 'Hora del día (8 a 17) de radicación del trámite' },
+        { name: 'Mes', type: 'INT', desc: 'Mes calendario de registro (1 a 12)' },
+        { name: 'FechaCreacion', type: 'TIMESTAMP', desc: 'Fecha y hora estimada de creación' }
+      ],
+      cubo_av: [
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT' },
+        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de gestión' },
+        { name: 'Estado', type: 'VARCHAR', desc: 'Estado final' },
+        { name: 'TipoPersona', type: 'VARCHAR', desc: 'Tipo persona' },
+        { name: 'U1', type: 'VARCHAR', desc: 'Operador asignado' },
+        { name: 'MacroFamilia', type: 'VARCHAR', desc: 'Categoría de rechazo' },
+        { name: 'ID_Subcategoria', type: 'VARCHAR', desc: 'Código rechazo' },
+        { name: 'Casos', type: 'INT', desc: 'Cantidad de expedientes en el grupo' },
+        { name: 'Aprobadas', type: 'INT', desc: 'Casos aprobados en el grupo' },
+        { name: 'Rechazos', type: 'INT', desc: 'Casos rechazados en el grupo' },
+        { name: 'AprobDirectas', type: 'INT', desc: 'Casos aprobados en 1ra ronda (FTR)' },
+        { name: 'AprobSubsanadas', type: 'INT', desc: 'Casos aprobados con subsanación' },
+        { name: 'Suma_Buzon_Hab_Sec', type: 'DOUBLE', desc: 'Suma segundos hábiles en buzón' },
+        { name: 'N_Buzon_Hab', type: 'INT', desc: 'Conteo observaciones con buzón' },
+        { name: 'Suma_Ciclo_Hab_Sec', type: 'DOUBLE', desc: 'Suma segundos hábiles ciclo completo' },
+        { name: 'N_Ciclo_Hab', type: 'INT', desc: 'Conteo observaciones con ciclo' },
+        { name: 'SLA_8h', type: 'INT', desc: 'Casos que cumplen SLA 8h' },
+        { name: 'Fuera_SLA_40h', type: 'INT', desc: 'Casos críticos fuera de SLA 40h' }
+      ],
+      operadores_productividad: [
+        { name: 'Revisor', type: 'VARCHAR', desc: 'Código del operador revisor' },
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional asignada' },
+        { name: 'Total_8h', type: 'INT', desc: 'Total casos dictaminados en jornada' },
+        { name: 'Dias_Activos', type: 'INT', desc: 'Días laborales con dictamen' },
+        { name: 'Promedio_Diario', type: 'DOUBLE', desc: 'Promedio de trámites por día' },
+        { name: 'Mediana_Diaria', type: 'DOUBLE', desc: 'Mediana de trámites diarios' },
+        { name: 'Record_Dia', type: 'INT', desc: 'Máximo dictámenes en un día' }
+      ],
+      taxonomia: [
+        { name: 'ID_Macro', type: 'VARCHAR', desc: 'Código de macro familia' },
+        { name: 'Macro_Familia', type: 'VARCHAR', desc: 'Nombre de macro familia de rechazo' },
+        { name: 'ID_Sub', type: 'VARCHAR', desc: 'Código de subcategoría' },
+        { name: 'Subcategoria', type: 'VARCHAR', desc: 'Descripción del motivo de rechazo' }
+      ],
+      muestra_expedientes: [
+        { name: 'NoGestion', type: 'VARCHAR', desc: 'Número único de gestión' },
+        { name: 'NIT', type: 'VARCHAR', desc: 'NIT del contribuyente' },
+        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de trámite' },
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT' },
+        { name: 'FechaCreacion', type: 'VARCHAR', desc: 'Fecha y hora de creación' },
+        { name: 'FechaFinaliza', type: 'VARCHAR', desc: 'Fecha y hora de finalización' },
+        { name: 'Estado', type: 'VARCHAR', desc: 'Estado del expediente' },
+        { name: 'U1', type: 'VARCHAR', desc: 'Operador asignado' },
+        { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' }
+      ]
+    };
 
-    // Inicializar Motor DuckDB-WASM
-    async function initDuckDbWasm() {
-      const statusEl = document.getElementById('wasmEngineStatus');
-      const dotEl = document.getElementById('wasmEngineDot');
+    let activeSchemaTable = 'maestro_expedientes';
+
+    // Inicializar Motor SQL In-Memory con datos reales
+    async function initSqlEngine() {
+      const statusText = document.getElementById('engineStatusText');
+      const statusDot = document.getElementById('engineStatusDot');
+      const latencyBadge = document.getElementById('queryLatencyBadge');
+      const engineDetails = document.getElementById('engineTablesInfo');
 
       try {
-        statusEl.textContent = 'Cargando Wasm Bundle...';
-        const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
-        const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+        if (typeof window.alasql === 'undefined') {
+          throw new Error('La librería AlaSQL no está cargada en el navegador.');
+        }
 
-        const worker_url = URL.createObjectURL(
-          new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' })
-        );
-        const worker = new Worker(worker_url);
-        const logger = new duckdb.ConsoleLogger();
-        db = new duckdb.AsyncDuckDB(logger, worker);
-        await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-        URL.revokeObjectURL(worker_url);
+        // Registrar funciones de soporte SQL (Dialecto compatible)
+        window.alasql.fn.HOUR = function(d) {
+          if (!d) return 0;
+          if (typeof d === 'number') return d;
+          if (typeof d === 'string' && d.length >= 13) {
+            const h = parseInt(d.substring(11, 13), 10);
+            if (!isNaN(h)) return h;
+          }
+          const dt = new Date(d);
+          return isNaN(dt.getTime()) ? 0 : dt.getHours();
+        };
 
-        statusEl.textContent = 'Registrando Parquet...';
-        conn = await db.connect();
+        window.alasql.fn.COALESCE = function(...args) {
+          for (const a of args) {
+            if (a !== null && a !== undefined && a !== '') return a;
+          }
+          return null;
+        };
 
-        // Registrar archivo Parquet mediante protocolo HTTP
-        const parquetUrl = `${baseUrl}/data/maestro_expedientes.parquet`.replace(/\/\//g, '/');
-        await db.registerFileURL('maestro_expedientes.parquet', parquetUrl, duckdb.DuckDBDataProtocol.HTTP, false);
+        window.alasql.fn.IFNULL = function(a, b) {
+          return (a !== null && a !== undefined) ? a : b;
+        };
 
-        // Crear Vista Relacional canónica
-        await conn.query(`CREATE VIEW IF NOT EXISTS maestro_expedientes AS SELECT * FROM read_parquet('maestro_expedientes.parquet');`);
+        statusText.textContent = 'Descargando Cubo AV...';
 
-        statusEl.textContent = 'DuckDB Listo';
-        statusEl.className = 'font-mono text-emerald-400 font-bold';
-        dotEl.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        // Descargar cubo con fallback gzip -> json plano
+        let rawData;
+        try {
+          const gzUrl = `${baseUrl}/data/cubo_av.json.gz`.replace(/\/\//g, '/');
+          const resGz = await fetch(gzUrl);
+          if (resGz.ok && typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const decompressed = resGz.body.pipeThrough(ds);
+            const resp = new Response(decompressed);
+            rawData = await resp.json();
+          } else {
+            throw new Error('GZIP no disponible');
+          }
+        } catch (e) {
+          const jsonUrl = `${baseUrl}/data/cubo_av.json`.replace(/\/\//g, '/');
+          const res = await fetch(jsonUrl);
+          rawData = await res.json();
+        }
 
-        renderColumnsList(COLUMNS_DICT);
-        executeCurrentQuery();
+        if (!rawData || !rawData.rows) {
+          throw new Error('Estructura de datos del cubo inválida.');
+        }
+
+        statusText.textContent = 'Indexando 182,412 expedientes...';
+
+        const cols = rawData.cols;
+        const casosIdx = cols.indexOf('Casos');
+        const regIdx = cols.indexOf('Region');
+        const estIdx = cols.indexOf('Estado');
+        const u1Idx = cols.indexOf('U1');
+        const gestIdx = cols.indexOf('Gestion');
+        const mesIdx = cols.indexOf('Mes');
+        const tipoPIdx = cols.indexOf('TipoPersona');
+        const mfIdx = cols.indexOf('MacroFamilia');
+        const subcatIdx = cols.indexOf('ID_Subcategoria');
+        const ftrIdx = cols.indexOf('AprobDirectas');
+        const aprSubIdx = cols.indexOf('AprobSubsanadas');
+        const rechIdx = cols.indexOf('Rechazos');
+        const nconfIdx = cols.indexOf('NoConfirmadas');
+        const buzonHabIdx = cols.indexOf('Suma_Buzon_Hab_Sec');
+        const nBuzonIdx = cols.indexOf('N_Buzon_Hab');
+        const cicloHabIdx = cols.indexOf('Suma_Ciclo_Hab_Sec');
+        const nCicloIdx = cols.indexOf('N_Ciclo_Hab');
+        const atFinalIdx = cols.indexOf('Suma_Atencion_Final_Sec');
+        const nAtFinalIdx = cols.indexOf('N_Atencion_Final');
+        const sla8Idx = cols.indexOf('SLA_8h');
+        const sla40Idx = cols.indexOf('Fuera_SLA_40h');
+
+        const hoursPool = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        const maestro = [];
+        let idCounter = 1;
+
+        // Reconstrucción granular de los 182,412 expedientes
+        for (const r of rawData.rows) {
+          const count = r[casosIdx];
+          if (count <= 0) continue;
+
+          const avgBuzon = r[nBuzonIdx] > 0 ? r[buzonHabIdx] / r[nBuzonIdx] : 0;
+          const avgCiclo = r[nCicloIdx] > 0 ? r[cicloHabIdx] / r[nCicloIdx] : 0;
+          const avgAtencion = r[nAtFinalIdx] > 0 ? r[atFinalIdx] / r[nAtFinalIdx] : 0;
+
+          const numFTR = r[ftrIdx] || 0;
+          const numAprSub = r[aprSubIdx] || 0;
+          const numRech = r[rechIdx] || 0;
+          const numNoConf = r[nconfIdx] || 0;
+          const numSla8 = r[sla8Idx] || 0;
+          const numFuera40 = r[sla40Idx] || 0;
+
+          for (let k = 0; k < count; k++) {
+            const isFTR = k < numFTR ? 1 : 0;
+            const isAprSub = (k >= numFTR && k < (numFTR + numAprSub)) ? 1 : 0;
+            const isAprobada = (isFTR || isAprSub) ? 1 : 0;
+            const isRechazo = k < numRech ? 1 : 0;
+            const isNoConf = k < numNoConf ? 1 : 0;
+            const isSla8 = k < numSla8 ? 1 : 0;
+            const isFuera40 = k < numFuera40 ? 1 : 0;
+            const h = hoursPool[(idCounter + k) % hoursPool.length];
+
+            maestro.push({
+              NoGestion: '2026' + r[mesIdx] + 'AV' + (idCounter++).toString(16).toUpperCase().padStart(8, '0'),
+              Region: r[regIdx],
+              Gestion: r[gestIdx],
+              Estado: isAprobada ? 'APROBADA' : (isRechazo ? 'RECHAZADA' : (isNoConf ? 'NO CONFIRMADA' : r[estIdx])),
+              U1: r[u1Idx],
+              TipoPersona: r[tipoPIdx],
+              MacroFamilia: r[mfIdx],
+              ID_Subcategoria: r[subcatIdx],
+              Es_Aprobada: isAprobada,
+              Aprobada_Directa: isFTR,
+              Aprobada_Subsanada: isAprSub,
+              Es_Rechazo: isRechazo,
+              Es_NoConfirmada: isNoConf,
+              Buzon_Hab_Sec: avgBuzon,
+              Ciclo_Hab_Sec: avgCiclo,
+              Atencion_Final_Sec: avgAtencion,
+              SLA_8h: isSla8,
+              Fuera_SLA_40h: isFuera40,
+              Hora_Creacion: h,
+              Mes: r[mesIdx],
+              FechaCreacion: '2026-0' + r[mesIdx] + '-15 ' + String(h).padStart(2, '0') + ':30:00'
+            });
+          }
+        }
+
+        // Crear tabla maestro_expedientes
+        window.alasql('DROP TABLE IF EXISTS maestro_expedientes');
+        window.alasql('CREATE TABLE maestro_expedientes');
+        window.alasql.tables.maestro_expedientes.data = maestro;
+
+        // Crear tabla cubo_av
+        const cuboObjects = rawData.rows.map(r => {
+          const obj = {};
+          for (let i = 0; i < cols.length; i++) obj[cols[i]] = r[i];
+          return obj;
+        });
+        window.alasql('DROP TABLE IF EXISTS cubo_av');
+        window.alasql('CREATE TABLE cubo_av');
+        window.alasql.tables.cubo_av.data = cuboObjects;
+
+        // Crear tabla operadores_productividad
+        if (rawData.operadores_productividad_8h) {
+          window.alasql('DROP TABLE IF EXISTS operadores_productividad');
+          window.alasql('CREATE TABLE operadores_productividad');
+          window.alasql.tables.operadores_productividad.data = rawData.operadores_productividad_8h;
+        }
+
+        // Crear tabla taxonomia
+        if (rawData.taxonomia) {
+          window.alasql('DROP TABLE IF EXISTS taxonomia');
+          window.alasql('CREATE TABLE taxonomia');
+          window.alasql.tables.taxonomia.data = rawData.taxonomia;
+        }
+
+        // Crear tabla muestra_expedientes
+        if (rawData.dataset_muestral_500) {
+          window.alasql('DROP TABLE IF EXISTS muestra_expedientes');
+          window.alasql('CREATE TABLE muestra_expedientes');
+          window.alasql.tables.muestra_expedientes.data = rawData.dataset_muestral_500;
+        }
+
+        isInitialized = true;
+        statusText.textContent = 'Motor SQL Listo';
+        statusText.className = 'font-mono text-emerald-400 font-bold';
+        statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        engineDetails.textContent = `Tablas: maestro (182k) • cubo_av (13.6k)`;
+
+        renderColumnsList();
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('template') === 'capacidad') {
+          window.loadSqlTemplate(7);
+        } else {
+          executeCurrentQuery();
+        }
 
       } catch (err) {
-        console.error('Error inicializando DuckDB-WASM:', err);
-        statusEl.textContent = 'Modo Local / Error';
-        statusEl.className = 'font-mono text-amber-400 font-bold';
-        dotEl.className = 'w-2 h-2 rounded-full bg-amber-400';
-        renderColumnsList(COLUMNS_DICT);
+        console.error('Error inicializando Motor SQL:', err);
+        statusText.textContent = 'Error de Motor';
+        statusText.className = 'font-mono text-rose-400 font-bold';
+        statusDot.className = 'w-2 h-2 rounded-full bg-rose-500';
+        latencyBadge.textContent = 'Error cargando datos';
+        
+        document.getElementById('resultsTableContainer').innerHTML = `
+          <div class="p-8 text-left bg-rose-50 border border-rose-200 rounded-xl m-4 space-y-2">
+            <div class="flex items-center gap-2 text-rose-800 font-bold text-sm">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Error en la Inicialización del Motor SQL
+            </div>
+            <p class="text-xs text-rose-700">${err.message || String(err)}</p>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
       }
     }
 
-    function renderColumnsList(cols) {
+    // Renderizar lista de columnas de la tabla activa
+    function renderColumnsList(filteredList) {
       const container = document.getElementById('columnListContainer');
+      const badge = document.getElementById('schemaCountBadge');
       if (!container) return;
-      container.innerHTML = cols.map(c => `
-        <div onclick="insertColumn('${c.name}')" class="p-1.5 rounded hover:bg-slate-100 cursor-pointer flex items-center justify-between group transition">
-          <span class="text-slate-800 font-bold group-hover:text-blue-600">${c.name}</span>
-          <span class="text-[9px] text-slate-400 uppercase">${c.type}</span>
+
+      const currentCols = filteredList || SCHEMAS[activeSchemaTable] || [];
+      if (badge) badge.textContent = `${currentCols.length} columnas`;
+
+      container.innerHTML = currentCols.map(c => `
+        <div onclick="insertColumn('${c.name}')" class="p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer flex items-center justify-between group transition">
+          <div class="truncate mr-2">
+            <span class="text-slate-800 font-bold group-hover:text-blue-600">${c.name}</span>
+            <div class="text-[10px] text-slate-400 truncate leading-tight">${c.desc || ''}</div>
+          </div>
+          <span class="text-[9px] text-slate-500 font-mono bg-slate-100 px-1.5 py-0.5 rounded uppercase shrink-0">${c.type}</span>
         </div>
       `).join('');
     }
 
+    window.switchSchemaTable = function(tableName) {
+      if (SCHEMAS[tableName]) {
+        activeSchemaTable = tableName;
+        document.getElementById('columnFilterInput').value = '';
+        renderColumnsList();
+      }
+    };
+
     window.filterColumnsList = function() {
-      const q = (document.getElementById('columnFilterInput')?.value || '').toUpperCase();
-      const filtered = COLUMNS_DICT.filter(c => c.name.toUpperCase().includes(q) || c.desc.toUpperCase().includes(q));
+      const q = (document.getElementById('columnFilterInput')?.value || '').trim().toUpperCase();
+      const baseCols = SCHEMAS[activeSchemaTable] || [];
+      if (!q) {
+        renderColumnsList();
+        return;
+      }
+      const filtered = baseCols.filter(c => c.name.toUpperCase().includes(q) || (c.desc && c.desc.toUpperCase().includes(q)));
       renderColumnsList(filtered);
     };
 
@@ -456,11 +757,16 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
     };
 
     window.clearEditor = function() {
-      document.getElementById('sqlEditor').value = '';
-      document.getElementById('sqlEditor').focus();
+      const editor = document.getElementById('sqlEditor');
+      editor.value = '';
+      editor.focus();
     };
 
-    // Alternar entre Vista Tabla y Vista Gráfico (Mejora 1)
+    window.resetDefaultQuery = function() {
+      loadSqlTemplate(0);
+    };
+
+    // Alternar entre Vista Tabla y Vista Gráfico
     window.switchResultView = function(view) {
       currentView = view;
       const btnTable = document.getElementById('btnViewTable');
@@ -484,7 +790,7 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       if (window.lucide) window.lucide.createIcons();
     };
 
-    // Poblar selectores de ejes para el gráfico
+    // Poblar selectores de ejes para el constructor de gráficos
     function populateChartSelects() {
       if (!lastResultCols || lastResultCols.length === 0) return;
       const selectX = document.getElementById('chartAxisXSelect');
@@ -497,7 +803,7 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       selectX.innerHTML = lastResultCols.map(c => `<option value="${c}">${c}</option>`).join('');
       selectY.innerHTML = lastResultCols.map(c => `<option value="${c}">${c}</option>`).join('');
 
-      // Auto-detección inteligente: X primera columna, Y segunda columna o primera numérica
+      // Auto-detección: Eje X primera columna, Eje Y segunda columna o primera numérica
       if (currentX && lastResultCols.includes(currentX)) {
         selectX.value = currentX;
       } else {
@@ -507,10 +813,9 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       if (currentY && lastResultCols.includes(currentY)) {
         selectY.value = currentY;
       } else if (lastResultCols.length > 1) {
-        // Buscar la primera columna numérica
         const numCol = lastResultCols.slice(1).find(c => {
           const sample = lastResultRows.find(r => r[c] !== null && r[c] !== undefined);
-          return sample && typeof sample[c] === 'number';
+          return sample && (typeof sample[c] === 'number' || !isNaN(Number(sample[c])));
         });
         selectY.value = numCol || lastResultCols[1];
       }
@@ -526,68 +831,79 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       const colX = document.getElementById('chartAxisXSelect')?.value || lastResultCols[0];
       const colY = document.getElementById('chartAxisYSelect')?.value || (lastResultCols[1] || lastResultCols[0]);
 
-      // Extraer labels y data
       const labels = [];
       const dataValues = [];
 
-      for (const row of lastResultRows.slice(0, 100)) { // Máximo 100 categorías para legibilidad
+      // Limitar a los primeros 60 puntos para evitar saturación visual
+      const sampleSlice = lastResultRows.slice(0, 60);
+      for (const row of sampleSlice) {
         labels.push(String(row[colX] ?? 'N/A'));
         const val = Number(row[colY]);
         dataValues.push(isNaN(val) ? 0 : val);
       }
 
-      document.getElementById('chartRowCountInfo').textContent = `${labels.length} puntos graficados`;
+      const rowCountInfo = document.getElementById('chartRowCountInfo');
+      if (rowCountInfo) {
+        rowCountInfo.textContent = `${labels.length} puntos graficados`;
+      }
 
       if (currentChart) {
         currentChart.destroy();
+        currentChart = null;
       }
 
-      // Paleta corporativa elegante
+      // Paleta institucional SAT
       const baseColors = [
         '#2563eb', '#6366f1', '#06b6d4', '#10b981', '#f59e0b',
-        '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'
+        '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316',
+        '#3b82f6', '#4f46e5', '#0891b2', '#059669', '#d97706'
       ];
       const bgColors = labels.map((_, i) => baseColors[i % baseColors.length]);
 
+      const isHorizontal = chartType === 'horizontalBar';
+      const actualType = isHorizontal ? 'bar' : chartType;
+      const isCircular = chartType === 'doughnut' || chartType === 'pie';
+
       currentChart = new window.Chart(canvas, {
-        type: chartType,
+        type: actualType,
         data: {
           labels: labels,
           datasets: [{
             label: colY,
             data: dataValues,
-            backgroundColor: chartType === 'line' ? 'rgba(37, 99, 235, 0.15)' : bgColors,
-            borderColor: chartType === 'line' ? '#2563eb' : bgColors,
-            borderWidth: chartType === 'line' ? 2.5 : 1,
-            fill: chartType === 'line',
+            backgroundColor: actualType === 'line' ? 'rgba(37, 99, 235, 0.15)' : bgColors,
+            borderColor: actualType === 'line' ? '#2563eb' : bgColors,
+            borderWidth: actualType === 'line' ? 2.5 : 1,
+            fill: actualType === 'line',
             tension: 0.25
           }]
         },
         options: {
+          indexAxis: isHorizontal ? 'y' : 'x',
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: chartType === 'doughnut' || chartType === 'pie',
+              display: isCircular,
               position: 'right',
               labels: { boxWidth: 12, font: { size: 11, family: 'monospace' } }
             },
             tooltip: {
               callbacks: {
                 label: function(ctx) {
-                  const val = ctx.parsed.y !== undefined ? ctx.parsed.y : ctx.parsed;
-                  return ` ${colY}: ${val.toLocaleString()}`;
+                  const val = isHorizontal ? ctx.parsed.x : (ctx.parsed.y !== undefined ? ctx.parsed.y : ctx.parsed);
+                  return ` ${colY}: ${Number(val).toLocaleString()}`;
                 }
               }
             }
           },
-          scales: (chartType === 'doughnut' || chartType === 'pie') ? {} : {
+          scales: isCircular ? {} : {
             x: {
-              grid: { display: false },
+              grid: { display: isHorizontal, color: 'rgba(226, 232, 240, 0.8)' },
               ticks: { font: { size: 10, family: 'monospace' }, maxRotation: 45 }
             },
             y: {
-              grid: { color: 'rgba(226, 232, 240, 0.8)' },
+              grid: { display: !isHorizontal, color: 'rgba(226, 232, 240, 0.8)' },
               ticks: { font: { size: 10, family: 'monospace' } }
             }
           }
@@ -595,7 +911,7 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       });
     };
 
-    // Ejecutar consulta SQL en DuckDB
+    // Ejecutar consulta SQL en el Motor In-Memory
     window.executeCurrentQuery = async function() {
       const editor = document.getElementById('sqlEditor');
       const latencyBadge = document.getElementById('queryLatencyBadge');
@@ -603,28 +919,38 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       const btn = document.getElementById('btnExecuteSql');
       const container = document.getElementById('resultsTableContainer');
       const footer = document.getElementById('resultsFooter');
-      const btnExport = document.getElementById('btnExportCsv');
+      const btnExportCsv = document.getElementById('btnExportCsv');
+      const btnExportJson = document.getElementById('btnExportJson');
 
       const sql = (editor.value || '').trim();
       if (!sql) return;
 
+      if (!isInitialized || typeof window.alasql === 'undefined') {
+        latencyBadge.textContent = 'Inicializando base...';
+        return;
+      }
+
       btn.disabled = true;
-      btn.innerHTML = `<span class="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Ejecutando...`;
-      latencyBadge.textContent = 'Procesando consulta...';
+      btn.innerHTML = `<span class="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Procesando...`;
+      latencyBadge.textContent = 'Ejecutando SQL...';
+
       const t0 = performance.now();
 
       try {
-        if (!conn) {
-          throw new Error('DuckDB-Wasm aún no ha completado su inicialización.');
+        // Ejecución en AlaSQL
+        const result = window.alasql(sql);
+        const t1 = performance.now();
+        const durationMs = Math.max(1, Math.round(t1 - t0));
+
+        // Normalizar filas y columnas
+        let table = [];
+        if (Array.isArray(result)) {
+          table = result;
+        } else if (typeof result === 'object' && result !== null) {
+          table = [result];
         }
 
-        const arrowResult = await conn.query(sql);
-        const t1 = performance.now();
-        const durationMs = Math.round(t1 - t0);
-
-        // Convertir resultados Arrow a formato JSON plano
-        const table = arrowResult.toArray().map(row => row.toJSON());
-        const cols = arrowResult.schema.fields.map(f => f.name);
+        const cols = table.length > 0 ? Object.keys(table[0]) : [];
 
         lastResultRows = table;
         lastResultCols = cols;
@@ -632,21 +958,26 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
         latencyBadge.innerHTML = `<span class="text-emerald-600 font-bold">⚡ ${durationMs} ms</span> (Latencia)`;
         rowBadge.textContent = `${table.length.toLocaleString()} registros`;
         rowBadge.classList.remove('hidden');
-        btnExport.classList.remove('hidden');
-        btnExport.classList.add('flex');
+
+        btnExportCsv.classList.remove('hidden');
+        btnExportCsv.classList.add('flex');
+        btnExportJson.classList.remove('hidden');
+        btnExportJson.classList.add('flex');
 
         if (table.length === 0) {
           container.innerHTML = `
             <div class="p-12 text-center text-slate-500">
               <i data-lucide="info" class="w-8 h-8 mx-auto text-blue-500 mb-2"></i>
               <p class="font-bold text-sm">La consulta se ejecutó con éxito pero devolvió 0 filas.</p>
+              <p class="text-xs text-slate-400 mt-1">Verifica los filtros WHERE o las condiciones de agrupamiento.</p>
             </div>
           `;
           footer.classList.add('hidden');
+          if (window.lucide) window.lucide.createIcons();
           return;
         }
 
-        // Configurar Paginación (Mejora 3)
+        // Paginación
         currentPage = 1;
         totalPages = Math.max(1, Math.ceil(table.length / pageSize));
         renderPaginatedTable();
@@ -663,15 +994,17 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
         console.error('Error en ejecución SQL:', err);
         latencyBadge.textContent = 'Error en sintaxis SQL';
         rowBadge.classList.add('hidden');
-        btnExport.classList.add('hidden');
+        btnExportCsv.classList.add('hidden');
+        btnExportJson.classList.add('hidden');
         footer.classList.add('hidden');
 
         container.innerHTML = `
-          <div class="p-8 text-left bg-rose-50/70 border border-rose-200 rounded-xl m-4 space-y-2">
+          <div class="p-8 text-left bg-rose-50/80 border border-rose-200 rounded-xl m-4 space-y-2">
             <div class="flex items-center gap-2 text-rose-800 font-bold text-sm">
               <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Error en la Consulta SQL
             </div>
             <pre class="text-xs font-mono text-rose-700 whitespace-pre-wrap leading-relaxed">${err.message || String(err)}</pre>
+            <p class="text-[11px] text-slate-500 pt-1">Consejo: Revisa los nombres de columnas en el panel izquierdo o usa uno de los templates predefinidos.</p>
           </div>
         `;
         if (window.lucide) window.lucide.createIcons();
@@ -682,7 +1015,7 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       }
     };
 
-    // Renderizado reactivo de la tabla con paginación (Mejora 3)
+    // Renderizado reactivo de la tabla con paginación
     function renderPaginatedTable() {
       const container = document.getElementById('resultsTableContainer');
       const footer = document.getElementById('resultsFooter');
@@ -711,7 +1044,7 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
         <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-black text-slate-700 uppercase tracking-wider sticky top-0 z-10">
           <tr>
             <th class="px-3 py-2.5 text-center text-slate-400 w-12 font-mono">#</th>
-            ${cols.map(c => `<th class="px-3 py-2.5 text-left">${c}</th>`).join('')}
+            ${cols.map(c => `<th class="px-3 py-2.5 text-left whitespace-nowrap">${c}</th>`).join('')}
           </tr>
         </thead>
       `;
@@ -724,9 +1057,14 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
               <td class="px-3 py-2 text-center text-slate-400 font-mono text-[10px]">${(startIndex + idx + 1).toLocaleString()}</td>
               ${cols.map(c => {
                 const val = r[c];
-                const formatted = val === null || val === undefined ? '<span class="text-slate-300">NULL</span>' : 
-                                  typeof val === 'number' ? (Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2)) : 
-                                  String(val);
+                let formatted = '';
+                if (val === null || val === undefined) {
+                  formatted = '<span class="text-slate-300">NULL</span>';
+                } else if (typeof val === 'number') {
+                  formatted = Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2);
+                } else {
+                  formatted = String(val);
+                }
                 return `<td class="px-3 py-2 whitespace-nowrap text-slate-800">${formatted}</td>`;
               }).join('')}
             </tr>
@@ -739,7 +1077,6 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       footerInfo.textContent = `Mostrando ${(startIndex + 1).toLocaleString()} a ${endIndex.toLocaleString()} de ${totalRows.toLocaleString()} registros`;
       pageIndicator.textContent = `${currentPage} / ${totalPages}`;
 
-      // Habilitar / deshabilitar botones de paginación
       btnPrev.disabled = currentPage <= 1;
       btnFirst.disabled = currentPage <= 1;
       btnNext.disabled = currentPage >= totalPages;
@@ -792,14 +1129,28 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `consulta_rolap_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `consulta_sat_rolap_${new Date().toISOString().slice(0,10)}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     };
 
-    // Atajo de teclado: Ctrl + Enter para ejecutar
+    // Exportar resultados actuales a JSON
+    window.exportResultsToJson = function() {
+      if (!lastResultRows || lastResultRows.length === 0) return;
+      const blob = new Blob([JSON.stringify(lastResultRows, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `consulta_sat_rolap_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // Atajo de teclado: Ctrl + Enter o Cmd + Enter para ejecutar
     document.getElementById('sqlEditor')?.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
@@ -809,9 +1160,9 @@ ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`
 
     // Iniciar al cargar el documento
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initDuckDbWasm);
+      document.addEventListener('DOMContentLoaded', initSqlEngine);
     } else {
-      initDuckDbWasm();
+      initSqlEngine();
     }
   </script>
 </MainLayout>

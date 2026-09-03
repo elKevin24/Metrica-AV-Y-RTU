@@ -12,7 +12,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
       <div class="absolute -right-20 -top-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
       
-      <div class="relative z-10 max-w-3xl space-y-4">
+      <div class="relative z-10 max-w-4xl space-y-4">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold">
           <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
           <span>Superintendencia de Administración Tributaria • Intendencia de Atención al Contribuyente</span>
@@ -23,50 +23,87 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         </h1>
 
         <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-          Plataforma de inteligencia operacional con arquitectura <strong class="text-white">Maestro-Detalle</strong> y cálculo vectorizado en jornada hábil de 8 horas con calendario oficial de feriados SAT.
+          Plataforma de inteligencia operacional con cálculo vectorizado en jornada laboral de <strong class="text-white">8 horas hábiles</strong> (08:00 a 16:00, ratio 1:3 frente a 24 horas de calendario corrido) integrando el calendario oficial de feriados y asuetos de SAT Guatemala.
         </p>
 
-        <!-- Métricas Resumen Global en Vivo -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
-          <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
-            <p class="text-[11px] text-slate-400 font-medium">Expedientes Únicos</p>
-            <p class="text-xl sm:text-2xl font-black text-white mt-0.5">182,412</p>
-            <p class="text-[10px] text-blue-400 mt-0.5">Enero – Julio 2026</p>
+        <!-- Métricas Resumen Global en Vivo: Horas, Calendario, Porcentajes y SLAs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4">
+          <!-- Card 1: Demanda & Tasa de Resolución -->
+          <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 backdrop-blur-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <p class="text-[11px] text-slate-400 font-medium">Demanda & Resolución</p>
+                <span class="text-[10px] font-mono bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-bold">100% Univ.</span>
+              </div>
+              <p class="text-2xl font-black text-white mt-1">182,412</p>
+              <p class="text-[11px] text-blue-400 font-semibold mt-0.5">87.3% resueltos (159,256)</p>
+            </div>
+            <div class="pt-2 mt-2 border-t border-slate-800 text-[10px] text-slate-400 flex justify-between">
+              <span class="text-emerald-400 font-semibold">77.1% Aprobados</span>
+              <span class="text-rose-400 font-semibold">10.2% Rechazados</span>
+            </div>
           </div>
 
-          <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
-            <p class="text-[11px] text-slate-400 font-medium">Eventos de Bitácora</p>
-            <p class="text-xl sm:text-2xl font-black text-indigo-400 mt-0.5">1,254,098</p>
-            <p class="text-[10px] text-indigo-300 mt-0.5">16 Archivos Oficiales</p>
+          <!-- Card 2: Ciclo de Vida (Horas Hábiles vs Calendario) -->
+          <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 backdrop-blur-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <p class="text-[11px] text-slate-400 font-medium">Ciclo Promedio de Vida</p>
+                <span class="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">14.4% Activo</span>
+              </div>
+              <p class="text-2xl font-black text-emerald-400 mt-1">4.12 h <span class="text-xs font-normal text-slate-300">hábiles</span></p>
+              <p class="text-[11px] text-emerald-300 font-semibold mt-0.5">= 28.50 h calendario (1.19 d)</p>
+            </div>
+            <div class="pt-2 mt-2 border-t border-slate-800 text-[10px] text-slate-400">
+              <span>85.5% espera pasiva en cola (24.38h cal.)</span>
+            </div>
           </div>
 
-          <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
-            <p class="text-[11px] text-slate-400 font-medium">Arquitectura</p>
-            <p class="text-xl sm:text-2xl font-black text-emerald-400 mt-0.5">Maestro-Detalle</p>
-            <p class="text-[10px] text-emerald-300 mt-0.5">DuckDB + Cubos OLAP</p>
+          <!-- Card 3: SLA 1ª Respuesta (Horas Hábiles vs Calendario) -->
+          <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 backdrop-blur-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <p class="text-[11px] text-slate-400 font-medium">SLA ≤ 3 Días Hábiles</p>
+                <span class="text-[10px] font-mono bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded font-bold">≤ 24h Háb.</span>
+              </div>
+              <p class="text-2xl font-black text-sky-400 mt-1">82.36% <span class="text-xs font-normal text-slate-300">en SLA</span></p>
+              <p class="text-[11px] text-sky-300 font-semibold mt-0.5">≤ 24h háb. = ≤ 72h calendario</p>
+            </div>
+            <div class="pt-2 mt-2 border-t border-slate-800 text-[10px] text-slate-400">
+              <span>48.0% resuelto en ≤ 1 día hábil (≤ 8h = 24h cal.)</span>
+            </div>
           </div>
 
-          <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
-            <p class="text-[11px] text-slate-400 font-medium">Latencia de Consulta</p>
-            <p class="text-xl sm:text-2xl font-black text-amber-400 mt-0.5">&lt; 50 ms</p>
-            <p class="text-[10px] text-amber-300 mt-0.5">En memoria del cliente</p>
+          <!-- Card 4: Capacidad y Ritmo de Atención -->
+          <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 backdrop-blur-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <p class="text-[11px] text-slate-400 font-medium">Capacidad Diaria (8h)</p>
+                <span class="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-bold">145.8 c/h</span>
+              </div>
+              <p class="text-2xl font-black text-amber-400 mt-1">1,166 <span class="text-xs font-normal text-slate-300">/ jornada</span></p>
+              <p class="text-[11px] text-amber-300 font-semibold mt-0.5">145.8 casos / h hábil equipo</p>
+            </div>
+            <div class="pt-2 mt-2 border-t border-slate-800 text-[10px] text-slate-400">
+              <span>~145.6 casos/día por revisor (18.2 c/h hábil)</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Menú Principal: Módulos del Sistema -->
+    <!-- Menú Principal: Módulos del Sistema con Horas, Calendario y Porcentajes -->
     <div class="space-y-4">
       <div class="flex items-center justify-between">
         <div>
           <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
             <i data-lucide="grid" class="w-5 h-5 text-blue-600"></i> Módulos Principales de Navegación
           </h2>
-          <p class="text-xs text-slate-500">Selecciona el tablero de análisis, auditoría o administración</p>
+          <p class="text-xs text-slate-500">Selecciona el tablero de análisis, auditoría o administración con métricas temporales normalizadas</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         
         <!-- Tarjeta 1: Tablero AV (Histórico 360°) -->
         <a href={`${baseUrl}/historico`} class="group bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-blue-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
@@ -77,24 +114,44 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">MOLAP</span>
+                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase font-mono">MOLAP</span>
                 <span class="text-slate-400 text-xs font-medium">Módulo 1</span>
               </div>
               <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-blue-600 transition">Tablero AV (2026)</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Análisis macro de <strong class="text-slate-900">182,412 casos</strong>. Comparativa regional, estacionalidad y SLAs en &lt;50ms.
+                Análisis macro de <strong class="text-slate-900">182,412 casos</strong> (100% de demanda). Tasa de aprobación <strong class="text-emerald-700">77.1%</strong> (140,642) vs <strong class="text-rose-700">10.2%</strong> de rechazos (18,614).
               </p>
+            </div>
+
+            <!-- Desglose Horario y Porcentual -->
+            <div class="bg-blue-50/50 p-3 rounded-2xl border border-blue-100/80 text-[11px] space-y-1.5">
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Ciclo Promedio:</span>
+                <span class="font-bold text-slate-900 font-mono">4.12h háb. = 28.50h cal.</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Espera Pasiva:</span>
+                <span class="font-bold text-purple-700 font-mono">24.38h cal. (85.5%)</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">SLA ≤ 3 Días Háb.:</span>
+                <span class="font-bold text-blue-700 font-mono">82.36% (≤ 24h = ≤ 72h cal.)</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Capacidad Diaria:</span>
+                <span class="font-bold text-amber-700 font-mono">1,166 casos / día 8h</span>
+              </div>
             </div>
 
             <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Diagnóstico & Balance
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> 87.3% Dictaminados (72.1% FTR 1ª Ronda)
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Regionales & Sobrecarga
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Balance Regional: Sur 77.7% vs Central 35% vol.
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Taxonomía de Rechazos
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i> Taxonomía de Rechazos: 51.4% sin causal formal
               </li>
             </ul>
           </div>
@@ -114,24 +171,44 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">MOLAP</span>
+                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase font-mono">MOLAP</span>
                 <span class="text-slate-400 text-xs font-medium">Módulo 2</span>
               </div>
               <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-indigo-600 transition">Bitácora Transaccional</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Trazabilidad con <strong class="text-slate-900">1,254,098 eventos</strong>. Embudo de ciclo de vida y simulación operativa 8h.
+                Trazabilidad secuencial con <strong class="text-slate-900">1,254,098 eventos</strong>. <strong class="text-indigo-700">82.36%</strong> de expedientes alcanzan revisor humano (150,230 casos).
               </p>
+            </div>
+
+            <!-- Desglose Horario y Porcentual -->
+            <div class="bg-indigo-50/50 p-3 rounded-2xl border border-indigo-100/80 text-[11px] space-y-1.5">
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Espera en Buzón:</span>
+                <span class="font-bold text-slate-900 font-mono">14.8h háb. = 44.4h cal.</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Decisión en Pantalla:</span>
+                <span class="font-bold text-indigo-700 font-mono">1.8 seg (0.27h hábiles)</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Saturación en Cola:</span>
+                <span class="font-bold text-purple-700 font-mono">93.5% prom. • 95.7% med.</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Ratio Temporal:</span>
+                <span class="font-bold text-blue-700 font-mono">8h hábiles = 24h calendario</span>
+              </div>
             </div>
 
             <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Embudo de Estados
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Embudo: 82.36% a revisor, 17.64% sin asignar
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Cuellos en Buzón
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Bolsón Pasivo: retraso concentrado en noches/fines de sem.
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Modelo Predictivo 8h
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Simulación Operativa: 1,166 casos/día (145.8 c/h hábil)
               </li>
             </ul>
           </div>
@@ -142,7 +219,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
         </a>
 
-        <!-- Tarjeta 3: Laboratorio SQL (ROLAP Studio) [NUEVO] -->
+        <!-- Tarjeta 3: Laboratorio SQL (ROLAP Studio) -->
         <a href={`${baseUrl}/laboratorio-sql`} class="group bg-gradient-to-b from-amber-500/5 via-white to-white rounded-3xl p-5 border-2 border-amber-500/40 hover:border-amber-500 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="space-y-4 relative z-10">
             <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200 shadow-xs group-hover:scale-110 transition">
@@ -151,24 +228,44 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">ROLAP</span>
+                <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono">ROLAP</span>
                 <span class="text-amber-700 text-xs font-semibold">DuckDB-Wasm</span>
               </div>
               <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-amber-600 transition">Laboratorio SQL (ROLAP)</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Consultas ad-hoc libres sin límites de cubos. Corre SQL relacional sobre <strong class="text-slate-900">182k expedientes</strong> en memoria.
+                Consultas ad-hoc libres sobre <strong class="text-slate-900">182,412 expedientes</strong> (100% de registros) con métricas temporales y porcentajes vectorizados en memoria.
               </p>
+            </div>
+
+            <!-- Desglose Horario y Porcentual -->
+            <div class="bg-amber-50/50 p-3 rounded-2xl border border-amber-200/80 text-[11px] space-y-1.5">
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Duración Hábil:</span>
+                <span class="font-bold text-slate-900 font-mono">duracion_horas_hab</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Duración Calendario:</span>
+                <span class="font-bold text-amber-800 font-mono">duracion_segundos / 3600</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Ratios de Rendimiento:</span>
+                <span class="font-bold text-emerald-800 font-mono">(hab / cal) * 100%</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Latencia en Memoria:</span>
+                <span class="font-bold text-blue-700 font-mono">&lt; 50 ms por consulta</span>
+              </div>
             </div>
 
             <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
               <li class="flex items-center gap-1.5 font-semibold text-slate-800">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Motor SQL en Navegador
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Motor Relacional DuckDB en Navegador
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> 56 Columnas Analíticas
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> 56 Columnas con marcas temporales completas
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Exportación Directa a CSV
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Exportación CSV con cálculo de horas y porcentajes
               </li>
             </ul>
           </div>
@@ -188,24 +285,44 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="bg-cyan-100 text-cyan-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Drill-Down</span>
+                <span class="bg-cyan-100 text-cyan-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase font-mono">Drill-Down</span>
                 <span class="text-slate-400 text-xs font-medium">Módulo 3</span>
               </div>
               <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-cyan-600 transition">Auditoría Forense</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Inspección individual. Búsqueda instantánea por <strong class="text-slate-900">No. Gestión o NIT</strong> mediante 256 particiones hash.
+                Inspección individual por <strong class="text-slate-900">No. Gestión o NIT</strong>. Cronología exacta de eventos con horas hábiles y horas calendario transcurridas.
               </p>
+            </div>
+
+            <!-- Desglose Horario y Porcentual -->
+            <div class="bg-cyan-50/50 p-3 rounded-2xl border border-cyan-100/80 text-[11px] space-y-1.5">
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Cronometría:</span>
+                <span class="font-bold text-slate-900 font-mono">Horas Hábiles vs Calendario</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Semáforo de SLA:</span>
+                <span class="font-bold text-emerald-700 font-mono">≤ 24h háb. = ≤ 72h cal.</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Trazabilidad:</span>
+                <span class="font-bold text-cyan-800 font-mono">% en cola vs % dictamen</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700">
+                <span class="font-medium text-slate-600">Rondas Evaluadas:</span>
+                <span class="font-bold text-blue-700 font-mono">R1 (FTR) • R2 • R3+</span>
+              </div>
             </div>
 
             <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Historial Cronológico
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Historial Cronológico con horas exactas por evento
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Motivos de Rechazo
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Motivos de Rechazo e inspección de tipificación
               </li>
               <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Búsqueda en &lt;15ms
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Búsqueda en &lt;15ms mediante 256 particiones hash
               </li>
             </ul>
           </div>
@@ -216,57 +333,108 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
         </a>
 
-        <!-- Tarjeta 5: Ingesta & Calidad de Datos -->
-        <a href={`${baseUrl}/cargar-datos`} class="group bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-emerald-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-          <div class="space-y-4 relative z-10">
-            <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200/60 shadow-xs group-hover:scale-110 transition">
-              <i data-lucide="database" class="w-5 h-5"></i>
-            </div>
-
-            <div>
-              <div class="flex items-center gap-1.5">
-                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">ETL</span>
-                <span class="text-slate-400 text-xs font-medium">Módulo 4</span>
-              </div>
-              <h3 class="text-base font-black text-slate-900 mt-1 group-hover:text-emerald-600 transition">Carga & Calidad</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Inventario de las <strong class="text-slate-900">16 fuentes oficiales</strong> en Excel, detección de desbordes y 100% integridad.
-              </p>
-            </div>
-
-            <ul class="text-[11px] text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-              <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Auditoría de Calidad
-              </li>
-              <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> 16 Libros Verificados
-              </li>
-              <li class="flex items-center gap-1.5">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Integridad 100%
-              </li>
-            </ul>
-          </div>
-
-          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
-            <span>Ver Fuentes & Calidad</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
-          </div>
-        </a>
-
       </div>
     </div>
 
-    <!-- Sección de Arquitectura y Metodología -->
-    <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-          <i data-lucide="cpu" class="w-4 h-4 text-blue-600"></i> Arquitectura Técnica & Estructura de Optimización Maestro-Detalle
-        </h3>
+    <!-- Panel de Marco Metodológico: Horas Hábiles (8h), Horas Calendario (24h), SLAs y Porcentajes de Rendimiento -->
+    <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 border border-blue-900/40 shadow-xl space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-white/10">
+        <div>
+          <h3 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2.5">
+            <i data-lucide="clock" class="w-5 h-5 text-blue-400"></i> Marco Metodológico: Horas Hábiles (8h), Igualdad a Horas Calendario (24h) & Cumplimiento de SLAs
+          </h3>
+          <p class="text-xs text-blue-200 mt-1">Reglas normativas de cálculo cronológico aplicadas en las auditorías de SAT Guatemala</p>
+        </div>
+        <span class="bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs px-3 py-1 rounded-full font-bold font-mono">
+          Ratio 1:3 • Jornada Oficial 8h
+        </span>
       </div>
-      <p class="text-xs text-slate-600 leading-relaxed">
-        El sistema procesa los archivos crudos en dos niveles relacionales optimizados: la tabla <strong class="text-slate-900">Maestro</strong> (<code class="bg-slate-200/70 px-1 py-0.5 rounded font-mono text-[11px]">maestro_expedientes</code>) con 1 fila por trámite (<strong class="text-slate-900">182,412 expedientes</strong>) para respuestas analíticas instantáneas (&lt;50ms), y la tabla <strong class="text-slate-900">Detalle</strong> (<code class="bg-slate-200/70 px-1 py-0.5 rounded font-mono text-[11px]">detalle_eventos</code>) con <strong class="text-slate-900">1,254,098 transacciones</strong> secuenciales para auditoría profunda bajo demanda.
-      </p>
+
+      <!-- Cuadrícula de 4 Bloques de Equivalencia -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+        
+        <!-- Bloque 1: Jornada Hábil vs Calendario -->
+        <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-blue-300 text-xs uppercase tracking-wider">1. Jornada Diaria</span>
+              <span class="bg-blue-400/20 text-blue-200 px-2 py-0.5 rounded text-[10px] font-mono">Ratio 1:3</span>
+            </div>
+            <h4 class="text-xl font-black text-white font-mono">8h Háb. = 24h Cal.</h4>
+            <p class="text-slate-200 mt-2 leading-relaxed text-[11px]">
+              La jornada laboral comprende <strong>8 horas hábiles</strong> (08:00 a 16:00, L-V, sin fines de semana ni 13 feriados). Cada hora hábil de atención humana equivale a <strong>3.0 horas en el reloj continuo del ciudadano</strong>.
+            </p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-white/10 text-[10px] text-blue-200">
+            📌 1 Día Laboral SAT = 8 Horas Hábiles = 24 Horas Calendario.
+          </div>
+        </div>
+
+        <!-- Bloque 2: SLA Reglamentario 3 Días -->
+        <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-sky-300 text-xs uppercase tracking-wider">2. SLA Normativo</span>
+              <span class="bg-sky-400/20 text-sky-200 px-2 py-0.5 rounded text-[10px] font-mono">82.36% SLA</span>
+            </div>
+            <h4 class="text-xl font-black text-white font-mono">24h Háb. = 72h Cal.</h4>
+            <p class="text-slate-200 mt-2 leading-relaxed text-[11px]">
+              El plazo límite de 1ª respuesta (≤ 3 días hábiles) equivale a <strong>24 horas hábiles reglamentarias</strong> (= <strong>72 horas de calendario</strong> continuas; asciende hasta <strong>120 horas calendario</strong> si incluye 64 horas de fin de semana).
+            </p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-white/10 text-[10px] text-sky-200">
+            📌 82.36% dentro de SLA (208k casos) vs 17.64% fuera de plazo.
+          </div>
+        </div>
+
+        <!-- Bloque 3: Descomposición del Ciclo -->
+        <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-emerald-300 text-xs uppercase tracking-wider">3. Ciclo Promedio</span>
+              <span class="bg-emerald-400/20 text-emerald-200 px-2 py-0.5 rounded text-[10px] font-mono">1.19 Días Cal.</span>
+            </div>
+            <h4 class="text-xl font-black text-white font-mono">4.12h Háb. / 28.5h Cal.</h4>
+            <p class="text-slate-200 mt-2 leading-relaxed text-[11px]">
+              El ciclo medio total es <strong>28.50 horas de calendario</strong>. De estas, solo <strong>4.12 horas hábiles (14.4%)</strong> son de análisis activo; las restantes <strong>24.38 horas calendario (85.5%)</strong> son espera pasiva en noches y feriados.
+            </p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-white/10 text-[10px] text-emerald-200">
+            📌 El 85.5% del tiempo acumulado ocurre con oficinas cerradas.
+          </div>
+        </div>
+
+        <!-- Bloque 4: Capacidad y Tasa Diaria -->
+        <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-amber-300 text-xs uppercase tracking-wider">4. Capacidad Diaria</span>
+              <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded text-[10px] font-mono">145.8 c/h</span>
+            </div>
+            <h4 class="text-xl font-black text-white font-mono">1,166 Casos / Día</h4>
+            <p class="text-slate-200 mt-2 leading-relaxed text-[11px]">
+              El equipo procesa <strong>1,166 dictámenes finalizados por jornada de 8 horas hábiles</strong> (145.8 casos / hora hábil equipo; 48.6 casos / hora calendario). Promedio individual: ~<strong>145.6 casos/día</strong> por revisor (18.2 c/h).
+            </p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-white/10 text-[10px] text-amber-200">
+            📌 77.1% aprobadas (140,642) y 10.2% rechazadas (18,614).
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Conclusión Resumen en Barra Inferior -->
+      <div class="p-3.5 bg-white/5 border border-white/10 rounded-2xl text-xs text-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <span class="flex items-center gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-blue-400 shrink-0"></i>
+          <span><strong>Regla de Transformación Oficial:</strong> Horas Calendario = (Días Calendario × 24) • Horas Hábiles = Minutos Laborables dentro de jornada (08:00 a 16:00 L-V) / 60.</span>
+        </span>
+        <span class="text-blue-300 font-mono font-semibold text-[11px] shrink-0">
+          Base: 182,412 Casos • 1,254,098 Eventos
+        </span>
+      </div>
     </div>
 
   </main>
 </MainLayout>
+

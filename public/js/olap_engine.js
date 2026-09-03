@@ -81,7 +81,7 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
     const isJuridica = fTipo === 'JURIDICA';
 
     let totalCasos = 0, totalRechazos = 0, totalAprobados = 0, totalNoConf = 0, totalCanceladas = 0;
-    let totalAprobDirectas = 0, totalAprobSubsanadas = 0, totalRechDefinitivos = 0, totalRechHuerfanos = 0;
+    let totalAprobDirectas = 0, totalAprobSubsanadas = 0, totalRechDefinitivos = 0, totalRechHuerfanos = 0, totalRechSistema = 0;
     let sumBuzonHab = 0, nBuzonHab = 0, sumBuzonCal = 0, nBuzonCal = 0;
     let sumBolson = 0, nBolson = 0;
     let sumAtencionFinal = 0, nAtencionFinal = 0;
@@ -177,6 +177,10 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
 
         if (rRech > 0 && (rMac === 'Sin Rechazo' || r.ID_Subcategoria === 'SUB-00')) {
             totalRechHuerfanos += rRech;
+        }
+
+        if (rRech > 0 && (rMac === 'Validaciones del Sistema' || r.ID_Subcategoria === 'SUB-26' || r.ID_Subcategoria === 'SUB-24' || r.ID_Subcategoria === 'SUB-25')) {
+            totalRechSistema += rRech;
         }
 
         const sBuzH = r.Suma_Buzon_Hab_Sec || 0, nBuzH = r.N_Buzon_Hab || 0;
@@ -380,14 +384,19 @@ function processOlapFilters(cuboData, fGes, fAnio, fTrimOrMes, fMesOrReg, fRegOr
     const pctReincidencia = totalRechazos > 0 ? ((multiTouchTotalRech / totalRechazos) * 100) : 0;
 
     return {
-        totalCasos, totalRechazos, totalAprobados, totalNoConf, totalCanceladas,
-        totalAprobDirectas, totalAprobSubsanadas, totalRechDefinitivos, totalRechHuerfanos,
+        totalCasos, totalAtendidas: Math.max(0, totalCasos - totalNoConf), totalRechazos, totalAprobados,
+        totalOtrosEstados: Math.max(0, totalCasos - totalAprobados), totalNoConf, totalCanceladas,
+        totalAprobDirectas, totalAprobSubsanadas, totalRechDefinitivos, totalRechHuerfanos, totalRechSistema,
         sumBuzonHab, nBuzonHab, sumBuzonCal, nBuzonCal,
         sumBolson, nBolson,
         sumAtencionFinal, nAtencionFinal,
         sumAtencionRechazo, nAtencionRechazo,
         sumCreacionAtenHab, nCreacionAtenHab,
         sumCicloHab, nCicloHab, sumCicloCal, nCicloCal,
+        cicloTotalPromedioHab: nCicloHab > 0 ? (sumCicloHab / nCicloHab / 3600) : 0,
+        cicloTotalPromedioCalendario: nCicloCal > 0 ? (sumCicloCal / nCicloCal / 3600) : 0,
+        cicloTotalDiasHab: nCicloHab > 0 ? (sumCicloHab / nCicloHab / 3600 / 8) : 0,
+        cicloTotalDiasCalendario: nCicloCal > 0 ? (sumCicloCal / nCicloCal / 3600 / 24) : 0,
         sumCiclo1ra, nCiclo1ra, sumCicloSub, nCicloSub,
         sla1d, sla2d, sla3d, sla5d, slaFuera,
         estCounts, macCounts, subcatCounts, monthMap, regMap, monthRegMap, speedMap, opMap,

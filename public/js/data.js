@@ -177,6 +177,16 @@ async function loadData(cubeType = 'AV') {
         
         window.DATA.cubo = cubo;
         window.DATA.loaded = true;
+
+        // Cargar serie histórica multinivel Demanda vs Resolución
+        try {
+            const resSerie = await fetch(`${baseUrl}/data/serie_demanda_resolucion.json`);
+            if (resSerie.ok) {
+                window.DATA.serieDemandaResolucion = await resSerie.json();
+            }
+        } catch (eSerie) {
+            console.warn("Aviso: No se pudo precargar serie_demanda_resolucion.json:", eSerie);
+        }
         
         updateSystemStatus(`Cubo Activo: ${cubeLabel}`, "ready");
         

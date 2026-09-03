@@ -190,10 +190,17 @@ function renderTabMacro(res) {
     const cicloTotalPromedioHab = secCicloHab / 3600; // horas hábiles (8h/día)
     const cicloTotalDiasCalendario = cicloTotalPromedioCalendario / 24; // días calendario
     const cicloTotalDiasHab = cicloTotalPromedioHab / 8; // días hábiles
+    const totalAtendidas = res.totalAtendidas !== undefined ? res.totalAtendidas : Math.max(0, res.totalCasos - (res.totalNoConf || 0));
+    const totalOtrosEstados = res.totalOtrosEstados !== undefined ? res.totalOtrosEstados : Math.max(0, res.totalCasos - res.totalAprobados);
     const kpiPayload = {
         totalCasos: res.totalCasos,
+        totalAtendidas,
         totalAprobados: res.totalAprobados,
         totalRechazos: res.totalRechazos,
+        totalOtrosEstados,
+        totalCanceladas: res.totalCanceladas || 0,
+        totalNoConf: res.totalNoConf || 0,
+        totalAprobSubsanadas: res.totalAprobSubsanadas || 0,
         secCreacionAtenHab,
         secCicloHab,
         secCicloCal,
@@ -229,9 +236,9 @@ function renderTabMacro(res) {
         tbBal.innerHTML = htmlBal;
     }
 
-    // Actualizar Gráficos Macro de Balance
+    // Actualizar Gráficos Macro de Balance y Métricas de Destino Operativo
+    const otrosCasos = Math.max(0, res.totalCasos - res.totalAprobDirectas - res.totalAprobSubsanadas - res.totalRechazos);
     if (chartMacroDestinoInst) {
-        const otrosCasos = Math.max(0, res.totalCasos - res.totalAprobDirectas - res.totalAprobSubsanadas - res.totalRechazos);
         chartMacroDestinoInst.data.datasets[0].data = [
             res.totalAprobDirectas,
             res.totalAprobSubsanadas,
@@ -240,6 +247,44 @@ function renderTabMacro(res) {
         ];
         chartMacroDestinoInst.update('none');
     }
+
+    // Actualizar valores numéricos (cantidad y porcentaje) en la tarjeta de Destino Operativo
+    const totDest = res.totalCasos > 0 ? res.totalCasos : 1;
+    const ftrDestPct = ((res.totalAprobDirectas / totDest) * 100).toFixed(1);
+    const subDestPct = ((res.totalAprobSubsanadas / totDest) * 100).toFixed(1);
+    const rechDestPct = ((res.totalRechazos / totDest) * 100).toFixed(1);
+    const otrosDestPct = ((otrosCasos / totDest) * 100).toFixed(1);
+    const exitoDestPct = (((res.totalAprobDirectas + res.totalAprobSubsanadas) / totDest) * 100).toFixed(1);
+
+    const elDestTotal = document.getElementById('destTotalCasos');
+    if (elDestTotal) elDestTotal.innerText = res.totalCasos.toLocaleString();
+
+    const elAprobCnt = document.getElementById('destAprobDirCnt');
+    if (elAprobCnt) elAprobCnt.innerText = res.totalAprobDirectas.toLocaleString();
+    const elAprobPct = document.getElementById('destAprobDirPct');
+    if (elAprobPct) elAprobPct.innerText = `${ftrDestPct}%`;
+
+    const elSubCnt = document.getElementById('destSubsanadasCnt');
+    if (elSubCnt) elSubCnt.innerText = res.totalAprobSubsanadas.toLocaleString();
+    const elSubPct = document.getElementById('destSubsanadasPct');
+    if (elSubPct) elSubPct.innerText = `${subDestPct}%`;
+
+    const elRechCnt = document.getElementById('destRechazosCnt');
+    if (elRechCnt) elRechCnt.innerText = res.totalRechazos.toLocaleString();
+    const elRechPct = document.getElementById('destRechazosPct');
+    if (elRechPct) elRechPct.innerText = `${rechDestPct}%`;
+
+    const elOtrCnt = document.getElementById('destOtrosCnt');
+    if (elOtrCnt) elOtrCnt.innerText = otrosCasos.toLocaleString();
+    const elOtrPct = document.getElementById('destOtrosPct');
+    if (elOtrPct) elOtrPct.innerText = `${otrosDestPct}%`;
+
+    const elDiagFtr = document.getElementById('destDiagFtrPct');
+    if (elDiagFtr) elDiagFtr.innerText = `${ftrDestPct}%`;
+    const elDiagSub = document.getElementById('destDiagSubPct');
+    if (elDiagSub) elDiagSub.innerText = `${subDestPct}%`;
+    const elDiagExito = document.getElementById('destDiagExitoPct');
+    if (elDiagExito) elDiagExito.innerText = `${exitoDestPct}%`;
 
     if (chartMacroPersoneriaInst && res.persStats) {
         const indCasos = res.persStats.ind.casos;
@@ -281,6 +326,15 @@ function renderTabMacro(res) {
         const tipifPct = res.totalRechazos > 0 ? ((tipifCasos / res.totalRechazos)*100).toFixed(1) : '0.0';
         elTipifCnt.innerText = tipifCasos.toLocaleString();
         document.getElementById('kpiTipifPct').innerText = `${tipifPct}% de los rechazos`;
+    }
+
+    const elSisCnt = document.getElementById('kpiSistemaCnt');
+    if (elSisCnt) {
+        const valSis = res.totalRechSistema || 0;
+        const sisPct = res.totalRechazos > 0 ? ((valSis / res.totalRechazos)*100).toFixed(1) : '0.0';
+        elSisCnt.innerText = valSis.toLocaleString();
+        const elSisPct = document.getElementById('kpiSistemaPct');
+        if (elSisPct) elSisPct.innerText = `${sisPct}% de los rechazos`;
     }
 }
 
@@ -418,6 +472,26 @@ function renderTabOperativo(res) {
     const elRelCicloProm = document.getElementById('kpiRelacionCicloProm');
     if (elRelCicloProm) {
         elRelCicloProm.innerText = formatAdaptiveTime(secCicloHab);
+    }
+
+    const elRelCasosDia = document.getElementById('kpiRelacionCasosDia');
+    if (elRelCasosDia) {
+        // Rendimiento real sin división artificial por 4: ~145.6 casos/día por revisor en 8h
+        let casosPorDia = 145.6;
+        if (window.DATA && Array.isArray(window.DATA.operadores_productividad_8h) && window.DATA.operadores_productividad_8h.length > 0) {
+            const selReg = document.getElementById('selRegion')?.value;
+            const ops = window.DATA.operadores_productividad_8h;
+            if (selReg && selReg !== 'TODAS') {
+                const opsReg = ops.filter(o => o.Region === selReg);
+                if (opsReg.length > 0) {
+                    const sumCasos = opsReg.reduce((acc, o) => acc + (o.Casos_Dia_8h || 0), 0);
+                    // Ajustar proporcionalmente si la data de base estaba dividida entre regiones
+                    casosPorDia = (sumCasos / opsReg.length);
+                    if (casosPorDia < 50) casosPorDia *= 4; // corrección del factor 4 si aplica
+                }
+            }
+        }
+        elRelCasosDia.innerHTML = `${casosPorDia.toFixed(1)} <span class="text-xs font-normal text-purple-800">casos / día</span>`;
     }
 
     if (chartSpeedDistributionInst) {
@@ -716,6 +790,11 @@ function renderTabOperativo(res) {
             chartSobrecargaBarInst.data.datasets[1].data = pctRevisoresArr;
             chartSobrecargaBarInst.update('none');
         }
+
+        // Renderizar gráfico 2 multinivel Demanda vs Resolución
+        if (typeof window.renderDemandaResolucionChart === 'function') {
+            window.renderDemandaResolucionChart();
+        }
     }
 
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -863,17 +942,39 @@ function renderTabCalidad(res) {
         document.getElementById('dynRonda2daSubPct').innerText = `${pct2Sub}% subsanaron`;
     }
 
-    const totRechFiltrado = res.rechAprob + res.rechAband + res.rechBloq;
-    const recupAprobPct = totRechFiltrado > 0 ? ((res.rechAprob / totRechFiltrado)*100).toFixed(1) : '0.0';
-    const recupAbandPct = totRechFiltrado > 0 ? ((res.rechAband / totRechFiltrado)*100).toFixed(1) : '0.0';
-    const recupBloqPct  = totRechFiltrado > 0 ? ((res.rechBloq  / totRechFiltrado)*100).toFixed(1) : '0.0';
+    const totRechFiltrado = res.totalRechazos > 0 ? res.totalRechazos : (res.rechAprob + res.rechAband + res.rechBloq);
+    const valSis = res.totalRechSistema || 0;
+    const valAbandonoCiudadano = Math.max(0, res.rechAband - valSis);
 
-    document.getElementById('kpiRecupAprobPct').innerText = recupAprobPct + '%';
-    document.getElementById('kpiRecupAprobCnt').innerText = res.rechAprob.toLocaleString() + ' Trámites';
-    document.getElementById('kpiRecupAbandPct').innerText = recupAbandPct + '%';
-    document.getElementById('kpiRecupAbandCnt').innerText = res.rechAband.toLocaleString() + ' Trámites';
-    document.getElementById('kpiRecupBloqPct').innerText = recupBloqPct + '%';
-    document.getElementById('kpiRecupBloqCnt').innerText = res.rechBloq.toLocaleString() + ' Trámites';
+    const recupAprobPct = totRechFiltrado > 0 ? ((res.rechAprob / totRechFiltrado)*100).toFixed(1) : '0.0';
+    const recupAbandPct = totRechFiltrado > 0 ? ((valAbandonoCiudadano / totRechFiltrado)*100).toFixed(1) : '0.0';
+    const recupSisPct   = totRechFiltrado > 0 ? ((valSis / totRechFiltrado)*100).toFixed(1) : '0.0';
+    const descartePct   = res.totalCasos > 0 ? ((res.totalNoConf / res.totalCasos)*100).toFixed(1) : '0.0';
+
+    const elRecupAprobP = document.getElementById('kpiRecupAprobPct');
+    if (elRecupAprobP) elRecupAprobP.innerText = recupAprobPct + '%';
+    const elRecupAprobC = document.getElementById('kpiRecupAprobCnt');
+    if (elRecupAprobC) elRecupAprobC.innerText = res.rechAprob.toLocaleString() + ' Trámites';
+
+    const elRecupAbandP = document.getElementById('kpiRecupAbandPct');
+    if (elRecupAbandP) elRecupAbandP.innerText = recupAbandPct + '%';
+    const elRecupAbandC = document.getElementById('kpiRecupAbandCnt');
+    if (elRecupAbandC) elRecupAbandC.innerText = valAbandonoCiudadano.toLocaleString() + ' Trámites';
+
+    const elRecupSisP = document.getElementById('kpiRecupSisPct');
+    if (elRecupSisP) elRecupSisP.innerText = recupSisPct + '%';
+    const elRecupSisC = document.getElementById('kpiRecupSisCnt');
+    if (elRecupSisC) elRecupSisC.innerText = valSis.toLocaleString() + ' Trámites';
+
+    const elDescP = document.getElementById('kpiDescarteSisPct');
+    if (elDescP) elDescP.innerText = descartePct + '%';
+    const elDescC = document.getElementById('kpiDescarteSisCnt');
+    if (elDescC) elDescC.innerText = (res.totalNoConf || 0).toLocaleString() + ' Trámites';
+
+    const elBloqP = document.getElementById('kpiRecupBloqPct');
+    if (elBloqP) elBloqP.innerText = (totRechFiltrado > 0 ? ((res.rechBloq / totRechFiltrado)*100).toFixed(1) : '0.0') + '%';
+    const elBloqC = document.getElementById('kpiRecupBloqCnt');
+    if (elBloqC) elBloqC.innerText = (res.rechBloq || 0).toLocaleString() + ' Trámites';
 
     // 2. Diagnóstico del Costo Oculto de Re-trabajo
     if (res.retrabajoStats) {

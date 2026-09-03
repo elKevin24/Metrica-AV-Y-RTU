@@ -6,7 +6,9 @@ export function animateVisibleCards(containerSelector = '.tab-content:not(.hidde
   const container = document.querySelector(containerSelector);
   if (!container) return;
 
-  const cards = container.querySelectorAll('.bg-white, .card-hover, [id^="kpi"]');
+  const allCards = container.querySelectorAll('.bg-white, .card-hover, [id^="kpi"]');
+  // Excluir elementos contenidos dentro de islas de React (astro-island) para prevenir desajustes de hidratación
+  const cards = Array.from(allCards).filter(el => !el.closest('astro-island'));
   if (cards.length > 0) {
     animate(
       cards,
