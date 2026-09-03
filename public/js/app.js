@@ -121,6 +121,15 @@ function onMesChange() {
 }
 
 function initSelectors() {
+    // 0. Años únicos según datos cargados
+    const selAnio = document.getElementById('selAnio');
+    if (selAnio && DATA.opciones && DATA.opciones.anios) {
+        selAnio.innerHTML = '<option value="TODOS">Todos los Años</option>';
+        DATA.opciones.anios.forEach(a => {
+            selAnio.innerHTML += `<option value="${a}">${a}</option>`;
+        });
+    }
+
     // 1. Coordinar dropdown de meses
     updateMonthDropdown('TODOS');
 

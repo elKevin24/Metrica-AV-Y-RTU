@@ -1,38 +1,118 @@
 {
-  "ultima_actualizacion": "2026-08-27 14:00:00",
-  "cubo_activo_defecto": "RTU JULIO 2026",
-  "total_archivos_rtu": 5,
-  "total_expedientes_rtu": 420606,
-  "fuentes_rtu_julio": [
+  "ultima_actualizacion": "2026-09-02 22:10:31",
+  "total_archivos": 16,
+  "fuentes": [
     {
-      "archivo": "10000390411_reporteRTUjulio1.xlsx",
-      "filas": 106379,
-      "modulo": "RTU Digital",
-      "periodo": "2026-07"
+      "archivo": "10000390411_reporteAV2026_1.xlsx",
+      "tamano_mb": 7.06,
+      "filas": 87207,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
     },
     {
-      "archivo": "10000390411_reporteRTUjulio2.xlsx",
-      "filas": 105076,
-      "modulo": "RTU Digital",
-      "periodo": "2026-07"
+      "archivo": "10000390411_reporteAV2026_10.xlsx",
+      "tamano_mb": 6.53,
+      "filas": 79152,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
     },
     {
-      "archivo": "10000390411_reporteRTUjulio3.xlsx",
-      "filas": 103774,
-      "modulo": "RTU Digital",
-      "periodo": "2026-07"
+      "archivo": "10000390411_reporteAV2026_11.xlsx",
+      "tamano_mb": 6.7,
+      "filas": 81640,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:25"
     },
     {
-      "archivo": "10000390411_reporteRTUjulio4.xlsx",
-      "filas": 101946,
-      "modulo": "RTU Digital",
-      "periodo": "2026-07"
+      "archivo": "10000390411_reporteAV2026_12.xlsx",
+      "tamano_mb": 6.61,
+      "filas": 80320,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
     },
     {
-      "archivo": "10000390411_reporteRTUjulio5.xlsx",
-      "filas": 3431,
-      "modulo": "RTU Digital",
-      "periodo": "2026-07"
+      "archivo": "10000390411_reporteAV2026_13.xlsx",
+      "tamano_mb": 6.74,
+      "filas": 81585,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:25"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_14.xlsx",
+      "tamano_mb": 6.75,
+      "filas": 82102,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:25"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_15.xlsx",
+      "tamano_mb": 6.46,
+      "filas": 78001,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:25"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_16.xlsx",
+      "tamano_mb": 6.55,
+      "filas": 79318,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:25"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_2.xlsx",
+      "tamano_mb": 7.21,
+      "filas": 88510,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_3.xlsx",
+      "tamano_mb": 6.99,
+      "filas": 85212,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_4.xlsx",
+      "tamano_mb": 6.76,
+      "filas": 82355,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_5.xlsx",
+      "tamano_mb": 6.61,
+      "filas": 80025,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_6.xlsx",
+      "tamano_mb": 6.49,
+      "filas": 78421,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_7.xlsx",
+      "tamano_mb": 6.58,
+      "filas": 79688,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_8.xlsx",
+      "tamano_mb": 6.69,
+      "filas": 81086,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
+    },
+    {
+      "archivo": "10000390411_reporteAV2026_9.xlsx",
+      "tamano_mb": 6.73,
+      "filas": 81458,
+      "formato_detectado": "BITACORA",
+      "fecha_modificacion": "2026-09-02 20:41:26"
     }
   ]
 }

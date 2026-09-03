@@ -54,8 +54,8 @@ async function loadData(cubeType = 'AV') {
 
     try {
         window.DATA.tipo_cubo_activo = cubeType;
-        const cubeFileName = cubeType === 'RTU' ? 'cubo_rtu' : (cubeType === 'BITACORA' ? 'cubo_bitacora' : 'cubo_av');
-        const cubeLabel = cubeType === 'RTU' ? 'RTU Digital' : (cubeType === 'BITACORA' ? 'Maestro-Detalle Bitácora' : 'Agencia Virtual (AV)');
+        const cubeFileName = cubeType === 'BITACORA' ? 'cubo_bitacora' : 'cubo_av';
+        const cubeLabel = cubeType === 'BITACORA' ? 'Bitácora Transaccional' : 'Agencia Virtual (AV)';
 
         updateSystemStatus(`Cargando Cubo ${cubeLabel}...`, "loading");
         const baseUrl = getBaseUrl();

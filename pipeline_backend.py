@@ -76,15 +76,15 @@ RAW_TAXONOMIA = [
 # FUNCIONES DE LIMPIEZA, ENCODING Y SANEAMIENTO (DATA SCRUBBING)
 # ==============================================================================
 def clean_nit(nit_raw):
-    """Convierte NITs a string numérico entero sin .0 ni espacios."""
+    """Convierte NITs a string alfanumérico en mayúsculas sin .0 ni espacios."""
     if pd.isna(nit_raw) or nit_raw == '' or nit_raw is None:
         return 'SIN_NIT'
     if isinstance(nit_raw, float):
         try:
             return str(int(nit_raw))
         except (ValueError, OverflowError):
-            return str(nit_raw).strip()
-    s = str(nit_raw).strip()
+            return str(nit_raw).strip().upper()
+    s = str(nit_raw).strip().upper()
     if s.endswith('.0'):
         s = s[:-2]
     return s if s else 'SIN_NIT'
@@ -244,9 +244,9 @@ def run_etl_bitacora_pipeline(files, data_dir, output_duckdb):
             # 2. Saneamiento de Campos Individuales
             raw_nit = r_aligned[0]
             nit = clean_nit(raw_nit)
-            # Filtro Anti-Derrame: descarta filas "viñeta" generadas cuando una celda
-            # larga de MotivoRechazo se derrama a filas extra (Nit no-numérico con texto).
-            if not nit.isdigit():
+            # Filtro Anti-Derrame: descarta filas de desborde de celda (sin NIT válido).
+            # En SAT Guatemala, los NITs válidos se componen de dígitos y opcionalmente 'K' (módulo 11).
+            if not re.match(r'^\d+[kK]?$', nit):
                 continue
             if isinstance(raw_nit, float) or str(raw_nit).endswith('.0'):
                 nit_cleaned_count += 1
@@ -306,6 +306,8 @@ def run_etl_bitacora_pipeline(files, data_dir, output_duckdb):
         "MotivoRechazo", "U_Auditoria", "EstadoActual", "UsuarioAtendio", "NombreBitacora"
     ]
     df_clean = pd.DataFrame(clean_records, columns=cols)
+    df_clean["Nit"] = df_clean["Nit"].astype(str)
+    df_clean["NumeroGestion"] = df_clean["NumeroGestion"].astype(str)
     
     # Conversión segura de fechas
     for col in ["FechaCreacion", "FechaAsignacion", "FechaRevision", "FechaFinaliza", "FechaRechazo"]:
@@ -359,6 +361,7 @@ def run_etl_bitacora_pipeline(files, data_dir, output_duckdb):
     FROM base_eventos;
     """)
     out_pq_detalle = os.path.join(data_dir, "detalle_eventos.parquet")
+    con.execute(f"COPY detalle_eventos TO '{out_pq_detalle}' (FORMAT PARQUET, COMPRESSION SNAPPY)")
     event_count = con.execute("SELECT COUNT(*) FROM detalle_eventos").fetchone()[0]
     print(f"  [OK] Detalle guardado: {out_pq_detalle} ({event_count:,} eventos deduplicados y ordenados)")
 
@@ -441,8 +444,12 @@ def run_etl_bitacora_pipeline(files, data_dir, output_duckdb):
     
     return df_clean, df_maestro
 
-def build_olap_cube(df_expedientes, output_json):
-    """Calcula métricas vectorizadas sobre la tabla Maestra y exporta el Cubo OLAP."""
+def build_olap_cube(df_expedientes, output_json, db_path=None, output_dir=None):
+    """Calcula métricas vectorizadas sobre la tabla Maestra y exporta el Cubo OLAP.
+    db_path: ruta del DuckDB con la tabla detalle_eventos (Maestro-Detalle) para
+    construir las particiones y el dataset muestral. Por defecto usa el duckdb
+    canónico de la carpeta de datos del run (Data\\sat_tramites.duckdb).
+    """
     print("\n4. CALCULANDO MÉTRICAS VECTORIZADAS Y CUBO OLAP...")
     t0 = time.time()
     
@@ -577,7 +584,6 @@ def build_olap_cube(df_expedientes, output_json):
     
     # Inclusión de historial detallado de eventos para Maestro-Detalle
     sample_ids = muestra_500["NoGestion"].tolist()
-    db_path = r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data\sat_tramites.duckdb"
     con_db = duckdb.connect(db_path)
     events_df = con_db.execute("SELECT * FROM detalle_eventos WHERE NoGestion IN (SELECT UNNEST(?))", [sample_ids]).df()
     con_db.close()
@@ -639,11 +645,10 @@ def build_olap_cube(df_expedientes, output_json):
     operadores_productividad_8h = con.execute(op_cap_query).df().to_dict(orient='records')
     con.close()
 
-    # Guardar maestro enriquecido con todos los tiempos calculados en Parquet y DuckDB
-    out_pq_maestro = os.path.abspath(r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data\maestro_expedientes.parquet")
+    target_dir = output_dir or (os.path.dirname(db_path) if db_path else r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data")
+    out_pq_maestro = os.path.join(target_dir, "maestro_expedientes.parquet")
     df.to_parquet(out_pq_maestro, engine='pyarrow', compression='snappy', index=False)
     
-    db_path = r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data\sat_tramites.duckdb"
     con_db = duckdb.connect(db_path)
     con_db.execute("CREATE OR REPLACE TABLE maestro_expedientes AS SELECT * FROM df")
     
@@ -740,12 +745,15 @@ def update_fuentes_metadata(data_dir, output_meta_json):
 
 def main():
     parser = argparse.ArgumentParser(description="Pipeline ETL con Motor de Limpieza de Datos para Métricas SAT")
-    parser.add_argument("--data-dir", default=r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data", help="Carpeta con archivos Excel")
+    parser.add_argument("--data-dir", default=r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data\Excel", help="Carpeta con archivos Excel")
+    parser.add_argument("--output-dir", default=r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\Data", help="Carpeta de almacenamiento de DuckDB y Parquet")
     parser.add_argument("--input-file", default=None, help="Archivo Excel individual a procesar")
     args = parser.parse_args()
 
     data_dir = args.data_dir
+    output_dir = args.output_dir
     os.makedirs(data_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
     
     print("=" * 70)
     print("PIPELINE BACKEND: ETL PROFESIONAL & LIMPIEZA DE DATOS")
@@ -755,6 +763,9 @@ def main():
         all_excel_files = [args.input_file]
     else:
         all_excel_files = sorted(glob.glob(os.path.join(data_dir, "*.xlsx")))
+        if not all_excel_files and os.path.exists(os.path.join(data_dir, "Excel")):
+            data_dir = os.path.join(data_dir, "Excel")
+            all_excel_files = sorted(glob.glob(os.path.join(data_dir, "*.xlsx")))
         
     if not all_excel_files:
         print(f"[AVISO] No se encontraron archivos Excel en {data_dir}")
@@ -771,13 +782,13 @@ def main():
 
     print(f"Archivos detectados: {len(consolidado_files)} Consolidados Planos, {len(bitacora_files)} Bitácoras Transaccionales")
     
-    out_duckdb = os.path.join(data_dir, "sat_tramites.duckdb")
+    out_duckdb = os.path.join(output_dir, "sat_tramites.duckdb")
     out_json_bitacora = r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\public\data\cubo_bitacora.json"
     out_meta_fuentes = r"C:\Users\busqu\Documents\GitHub\Metrica AV Y RTU\public\data\metadata_fuentes.json"
 
     if bitacora_files:
-        df_clean, df_maestro = run_etl_bitacora_pipeline(bitacora_files, data_dir, out_duckdb)
-        build_olap_cube(df_maestro, out_json_bitacora)
+        df_clean, df_maestro = run_etl_bitacora_pipeline(bitacora_files, output_dir, out_duckdb)
+        build_olap_cube(df_maestro, out_json_bitacora, db_path=out_duckdb, output_dir=output_dir)
 
     update_fuentes_metadata(data_dir, out_meta_fuentes)
 

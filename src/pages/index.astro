@@ -29,15 +29,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         <!-- Métricas Resumen Global en Vivo -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
           <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
-            <p class="text-[11px] text-slate-400 font-medium">Expedientes Históricos</p>
-            <p class="text-xl sm:text-2xl font-black text-white mt-0.5">865,876</p>
-            <p class="text-[10px] text-blue-400 mt-0.5">2024 – 2026 Consolidado</p>
+            <p class="text-[11px] text-slate-400 font-medium">Expedientes Únicos</p>
+            <p class="text-xl sm:text-2xl font-black text-white mt-0.5">182,412</p>
+            <p class="text-[10px] text-blue-400 mt-0.5">Enero – Julio 2026</p>
           </div>
 
           <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
             <p class="text-[11px] text-slate-400 font-medium">Eventos de Bitácora</p>
-            <p class="text-xl sm:text-2xl font-black text-indigo-400 mt-0.5">466,006</p>
-            <p class="text-[10px] text-indigo-300 mt-0.5">64,197 Trámites Julio 2026</p>
+            <p class="text-xl sm:text-2xl font-black text-indigo-400 mt-0.5">1,254,098</p>
+            <p class="text-[10px] text-indigo-300 mt-0.5">16 Archivos Oficiales</p>
           </div>
 
           <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 backdrop-blur-xs">
@@ -62,13 +62,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
             <i data-lucide="grid" class="w-5 h-5 text-blue-600"></i> Módulos Principales de Navegación
           </h2>
-          <p class="text-xs text-slate-500">Selecciona el tablero de análisis o módulo de administración</p>
+          <p class="text-xs text-slate-500">Selecciona el tablero de análisis, auditoría o administración</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         
-        <!-- Tarjeta 1: Tablero Histórico 360° -->
+        <!-- Tarjeta 1: Tablero AV (Histórico 360°) -->
         <a href={`${baseUrl}/historico`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-blue-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full group-hover:bg-blue-500/10 transition"></div>
           
@@ -80,11 +80,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
             <div>
               <div class="flex items-center gap-2">
                 <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 1</span>
-                <span class="text-slate-400 text-xs font-medium">Histórico Consolidado</span>
+                <span class="text-slate-400 text-xs font-medium">Analítica AV</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-blue-600 transition">Tablero Histórico 360° (2024–2026)</h3>
+              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-blue-600 transition">Tablero de Gestión AV (2026)</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Análisis macroeconómico y operativo de los <strong class="text-slate-900">865,876 expedientes</strong> consolidados. Comparativa multianual, estacionalidad, SLAs y productividad por regional.
+                Análisis macroeconómico y operativo de los <strong class="text-slate-900">182,412 expedientes</strong> de Agencia Virtual (Activaciones y Cambios de Correo). Comparativa regional, estacionalidad y SLAs.
               </p>
             </div>
 
@@ -105,7 +105,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
 
           <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 group-hover:text-blue-700">
-            <span>Abrir Tablero Histórico</span>
+            <span>Abrir Tablero AV</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
@@ -126,7 +126,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               </div>
               <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-indigo-600 transition">Auditoría & Bitácora Transaccional</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Trazabilidad paso a paso con <strong class="text-slate-900">466,006 eventos</strong> y <strong class="text-slate-900">64,197 expedientes</strong>. Embudo de estados, cuellos de botella en colas y reasignaciones.
+                Trazabilidad paso a paso con <strong class="text-slate-900">1,254,098 eventos</strong> deduplicados. Embudo de estados, cuellos de botella en colas, rondas y simulación operativa 8h.
               </p>
             </div>
 
@@ -138,7 +138,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
                 <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Cuellos de Botella en Colas sin Asignar
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Modelo Maestro-Detalle con Drill-Down
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Modelo Predictivo & Asignación 8h
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i> Ranking & Z-Score de Operadores
               </li>
             </ul>
           </div>
@@ -149,49 +152,49 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
           </div>
         </a>
 
-        <!-- Tarjeta 3: Módulo Especializado RTU (NUEVO) -->
-        <a href={`${baseUrl}/rtu`} class="group bg-white rounded-3xl p-6 border-2 border-amber-500/50 hover:border-amber-600 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full group-hover:bg-amber-500/15 transition"></div>
+        <!-- Tarjeta 3: Auditoría Forense de Expedientes -->
+        <a href={`${baseUrl}/auditoria`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-cyan-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-bl-full group-hover:bg-cyan-500/15 transition"></div>
           
           <div class="space-y-4 relative z-10">
-            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200/60 shadow-xs group-hover:scale-110 transition">
-              <i data-lucide="file-check-2" class="w-6 h-6"></i>
+            <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center border border-cyan-200/60 shadow-xs group-hover:scale-110 transition">
+              <i data-lucide="file-search" class="w-6 h-6"></i>
             </div>
 
             <div>
               <div class="flex items-center gap-2">
-                <span class="bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Especializado</span>
-                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 3</span>
+                <span class="bg-cyan-100 text-cyan-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 3</span>
+                <span class="text-slate-400 text-xs font-medium">Búsqueda Directa</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-amber-600 transition">Tablero Especializado RTU (Julio 2026)</h3>
+              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-cyan-600 transition">Auditoría Forense de Casos</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Análisis dedicado a los <strong class="text-slate-900">420,606 expedientes</strong> de RTU. Actualizaciones, cancelaciones de establecimientos, inscripciones y productividad de 361 operadores.
+                Inspección expediente por expediente. Búsqueda instantánea por <strong class="text-slate-900">No. Gestión o NIT</strong> mediante 256 particiones hash estáticas.
               </p>
             </div>
 
             <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Macro-Gestiones (Actualización / Cancelación)
-              </li>
-              <li class="flex items-center gap-2 font-bold text-amber-900">
-                <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i> Análisis de Tiempos & SLAs de Ciclo
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Historial Completo de Secuencias
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Desglose Territorial por 4 Regiones
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Tiempos en Bolsón y Operador
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i> Rendimiento de Revisores & Procesos APS
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Motivos de Rechazo Textuales
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500 shrink-0"></i> Particionamiento Hash Instantáneo
               </li>
             </ul>
           </div>
 
-          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:text-amber-700">
-            <span>Abrir Módulo RTU</span>
+          <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-cyan-600 group-hover:text-cyan-700">
+            <span>Auditar Casos</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
 
-        <!-- Tarjeta 4: Ingesta & Carga Dinámica -->
+        <!-- Tarjeta 4: Ingesta & Calidad de Datos -->
         <a href={`${baseUrl}/cargar-datos`} class="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-emerald-500/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
           <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full group-hover:bg-emerald-500/10 transition"></div>
           
@@ -205,27 +208,30 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
                 <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Módulo 4</span>
                 <span class="text-slate-400 text-xs font-medium">Administración</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-emerald-600 transition">Centro de Ingesta & Carga de Datos</h3>
+              <h3 class="text-lg font-black text-slate-900 mt-1 group-hover:text-emerald-600 transition">Centro de Carga & Calidad</h3>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Motor polimórfico ETL para incorporar nuevos archivos Excel (<code class="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono text-[11px]">.xlsx</code>) de forma incremental sin sobrescribir lo previo.
+                Inventario de las <strong class="text-slate-900">16 fuentes oficiales</strong> en Excel, reporte de saneamiento, detección de desbordes y consistencia referencial 100%.
               </p>
             </div>
 
             <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Auto-detección de Esquema (18 / 21 cols)
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Auditoría de Calidad en Vivo
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Actualización Incremental DuckDB/Parquet
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> 16 Libros Excel Verificados
               </li>
               <li class="flex items-center gap-2">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Ejecución por Comando CLI o Batch
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Motor ETL DuckDB & Parquet
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i> Integridad Referencial 100%
               </li>
             </ul>
           </div>
 
           <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
-            <span>Administrar Fuentes</span>
+            <span>Ver Fuentes & Calidad</span>
             <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
           </div>
         </a>
@@ -241,7 +247,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         </h3>
       </div>
       <p class="text-xs text-slate-600 leading-relaxed">
-        El sistema procesa los archivos crudos en dos niveles relacionales optimizados: la tabla <strong class="text-slate-900">Maestro</strong> (<code class="bg-slate-200/70 px-1 py-0.5 rounded font-mono text-[11px]">maestro_expedientes</code>) con 1 fila por trámite para respuestas analíticas instantáneas (&lt;50ms), y la tabla <strong class="text-slate-900">Detalle</strong> (<code class="bg-slate-200/70 px-1 py-0.5 rounded font-mono text-[11px]">detalle_eventos</code>) con 466k transacciones secuenciales para auditoría profunda bajo demanda.
+        El sistema procesa los archivos crudos en dos niveles relacionales optimizados: la tabla <strong class="text-slate-900">Maestro</strong> (<code class="bg-slate-200/70 px-1 py-0.5 rounded font-mono text-[11px]">maestro_expedientes</code>) con 1 fila por trámite (<strong class="text-slate-900">182,412 expedientes</strong>) para respuestas analíticas instantáneas (&lt;50ms), y la tabla <strong class="text-slate-900">Detalle</strong> (<code class="bg-slate-200/70 px-1 py-0.5 rounded font-mono text-[11px]">detalle_eventos</code>) con <strong class="text-slate-900">1,254,098 transacciones</strong> secuenciales para auditoría profunda bajo demanda.
       </p>
     </div>
 

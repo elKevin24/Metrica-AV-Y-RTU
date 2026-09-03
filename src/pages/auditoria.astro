@@ -15,8 +15,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   </div>
 
   <script is:inline define:vars={{ baseUrl }}>
-    // Redirigir limpiamente a la pestaña nativa de auditoría
-    window.location.replace(`${baseUrl}/#tab-auditoria`);
+    // Redirigir limpiamente a la pestaña nativa de auditoría en el tablero AV
+    window.location.replace(`${baseUrl}/historico#tab-auditoria`);
   </script>
 </MainLayout>
 

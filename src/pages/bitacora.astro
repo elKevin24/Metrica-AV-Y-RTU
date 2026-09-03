@@ -17,15 +17,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
         <span class="text-slate-300">|</span>
         <h1 class="text-sm font-black text-slate-800 flex items-center gap-1.5">
           <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i>
-          Módulo 2: Bitácora Transaccional & Auditoría Forense (Julio 2026)
+          Módulo 2: Bitácora Transaccional & Auditoría Forense (Enero – Julio 2026)
         </h1>
       </div>
       <div class="flex items-center gap-2">
         <a href={`${baseUrl}/historico`} class="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold transition flex items-center gap-1.5 border border-blue-200 shadow-xs">
           <i data-lucide="shield" class="w-3.5 h-3.5 text-blue-600"></i> Tablero AV
         </a>
-        <a href={`${baseUrl}/rtu`} class="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-bold transition flex items-center gap-1.5 border border-amber-200 shadow-xs">
-          <i data-lucide="file-check-2" class="w-3.5 h-3.5 text-amber-600"></i> Módulo RTU
+        <a href={`${baseUrl}/auditoria`} class="px-3 py-1.5 rounded-lg bg-cyan-50 text-cyan-800 hover:bg-cyan-100 text-xs font-bold transition flex items-center gap-1.5 border border-cyan-200 shadow-xs">
+          <i data-lucide="file-search" class="w-3.5 h-3.5 text-cyan-600"></i> Auditoría de Casos
         </a>
       </div>
     </div>
@@ -52,14 +52,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               Diagnóstico Predictivo, Cuello de Botella y Auto-Asignación en 8 Horas
             </h2>
             <p class="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              De la bitácora descriptiva a la anticipación: factores causales de rechazo, scores de riesgo preventivo y viabilidad del balanceo automático para eliminar las 10.2 horas de espera en buzón.
+              De la bitácora descriptiva a la anticipación: factores causales de rechazo, scores de riesgo preventivo y viabilidad del balanceo automático para eliminar las 9.48 horas de espera en buzón.
             </p>
           </div>
 
           <div class="bg-slate-800/90 p-3.5 rounded-2xl border border-slate-600 text-right">
-            <span class="text-[10px] text-slate-400 block uppercase font-mono">Capacidad Requerida</span>
-            <span class="text-lg font-black text-emerald-400 font-mono">3.2 casos / h / revisor</span>
-            <span class="text-[10px] text-slate-400 block">para absorber 3,210 casos/día</span>
+            <span class="text-[10px] text-slate-400 block uppercase font-mono">Capacidad Operativa</span>
+            <span class="text-lg font-black text-emerald-400 font-mono">167 revisores activos</span>
+            <span class="text-[10px] text-slate-400 block">182,412 gestiones procesadas</span>
           </div>
         </div>
 
@@ -72,9 +72,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-xs font-bold text-amber-300 uppercase tracking-wider font-mono">1. Cuello de Botella Real</span>
               <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
             </div>
-            <div class="text-2xl font-black text-white">10.24 h <span class="text-xs font-normal text-slate-400">en buzón</span></div>
+            <div class="text-2xl font-black text-white">9.48 h <span class="text-xs font-normal text-slate-400">en buzón</span></div>
             <p class="text-xs text-slate-300 leading-relaxed">
-              El <strong>27.9%</strong> del Lead Time hábil es tiempo muerto de espera en cola. El tiempo activo humano de dictamen es de apenas <strong>2.14 min</strong>.
+              El <strong>47.5%</strong> del Lead Time hábil es tiempo muerto de espera en cola. El tiempo activo humano de dictamen en 1ra ronda es de apenas <strong>1.55 min</strong>.
             </p>
           </div>
 
@@ -84,9 +84,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-xs font-bold text-blue-300 uppercase tracking-wider font-mono">2. Brecha Territorial</span>
               <i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i>
             </div>
-            <div class="text-2xl font-black text-white">28.8% <span class="text-xs font-normal text-slate-400">FTR Central</span></div>
+            <div class="text-2xl font-black text-white">33.1% <span class="text-xs font-normal text-slate-400">FTR Central</span></div>
             <p class="text-xs text-slate-300 leading-relaxed">
-              La Región Central concentra el <strong>39.8%</strong> del volumen pero sufre un Lead Time de <strong>45.7 h</strong>, mientras Sur y Occidente superan el <strong>50%</strong> de FTR.
+              La Región Central concentra el <strong>40.1%</strong> del volumen pero sufre un Lead Time de <strong>24.3 h</strong>, mientras Sur y Occidente superan el <strong>52%</strong> de FTR.
             </p>
           </div>
 
@@ -96,9 +96,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-xs font-bold text-rose-300 uppercase tracking-wider font-mono">3. Causal Más Letal</span>
               <i data-lucide="video-off" class="w-4 h-4 text-rose-400"></i>
             </div>
-            <div class="text-2xl font-black text-white">79.1% <span class="text-xs font-normal text-slate-400">Abandono Video</span></div>
+            <div class="text-2xl font-black text-white">83.9% <span class="text-xs font-normal text-slate-400">Abandono Video</span></div>
             <p class="text-xs text-slate-300 leading-relaxed">
-              La causal <code class="text-rose-300">SUB-02</code> (Omisión de fecha en video) generó <strong>3,668 rechazos</strong> con 0% de recuperación directa y 79% de abandono.
+              La causal <code class="text-rose-300">SUB-02</code> (Omisión de fecha en video) acumula <strong>10,122 rechazos</strong> con 0% de recuperación directa y 83.9% de abandono.
             </p>
           </div>
 
@@ -108,9 +108,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
               <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider font-mono">4. Meta Asignación 8h</span>
               <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
             </div>
-            <div class="text-2xl font-black text-white">&gt; 98% <span class="text-xs font-normal text-slate-400">SLA en 1ª Ronda</span></div>
+            <div class="text-2xl font-black text-white">&gt; 95% <span class="text-xs font-normal text-slate-400">SLA en 1ª Ronda</span></div>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Con auto-asignación tipo push a los 126 revisores, el Lead Time de casos limpios baja de <strong>29.1 h a &lt; 4.5 h</strong> sin requerir nuevo personal.
+              Con auto-asignación tipo push a los 167 revisores, el Lead Time de casos limpios baja de <strong>19.9 h a &lt; 4.0 h</strong> sin requerir nuevo personal.
             </p>
           </div>
 
