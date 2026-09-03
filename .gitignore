@@ -16,6 +16,7 @@ Data/*.xls
 *.duckdb
 *.parquet
 Data/*.parquet
+!public/data/maestro_expedientes.parquet
 *.tmp
 graphify-out/
 

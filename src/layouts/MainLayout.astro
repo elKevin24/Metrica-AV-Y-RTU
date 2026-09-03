@@ -816,9 +816,9 @@ if (!activeModule) {
       { id: 'tab-auditoria', title: '6. Auditoría Forense', desc: 'Muestreo individual de expedientes, traza por NIT y rondas de dictamen', icon: 'table', keywords: 'auditoría expedientes muestra forense nit estado rondas detalle tabla' },
       { id: 'tab-informe2026', title: '7. Informe Ejecutivo 2026', desc: 'Dictamen directivo consolidado, metas y estadísticas 2026', icon: 'file-text', keywords: 'informe ejecutivo 2026 reporte directores gerencia' },
       { id: 'tab-hallazgos', title: '8. Hallazgos & Plan de Acción', desc: 'Matriz de rescate, recomendaciones de TI, modelo dual de medición', icon: 'sparkles', keywords: 'hallazgos recomendaciones plan accion rescate oportunidades ia mejoras' },
-      { id: 'page-rtu-tiempos', url: `${baseUrl}/rtu-tiempos`, title: '⏱️ RTU: Análisis de Tiempos & SLAs', desc: 'Mediana 1.5h, Brecha Regional y Simulador de Rebalanceo', icon: 'clock', keywords: 'rtu tiempos sla horas habiles simulador lead time cola' },
-      { id: 'page-rtu', url: `${baseUrl}/rtu`, title: '📋 RTU: Tablero General RTU (420.6k)', desc: 'Inscripciones, Actualizaciones y Cancelación de Establecimientos', icon: 'file-check-2', keywords: 'rtu digital inscripcion actualizacion cese negocios' },
-      { id: 'page-bitacora', url: `${baseUrl}/bitacora`, title: '🔍 Bitácora Transaccional & Auditoría', desc: '466.0k eventos, trazabilidad de estados y cuellos de botella', icon: 'activity', keywords: 'bitacora eventos trazabilidad auditoria logs' }
+      { id: 'page-laboratorio-sql', url: `${baseUrl}/laboratorio-sql`, title: '💻 Laboratorio SQL & ROLAP Studio', desc: 'Consultas analíticas libres con DuckDB-Wasm sobre 182k expedientes', icon: 'terminal', keywords: 'sql rolap duckdb consulta adhoc parquet exportar csv' },
+      { id: 'page-bitacora', url: `${baseUrl}/bitacora`, title: '🔍 Bitácora Transaccional & Auditoría', desc: '1.25M eventos, trazabilidad de estados, embudo y modelo 8h', icon: 'activity', keywords: 'bitacora eventos trazabilidad auditoria logs embudo' },
+      { id: 'page-auditoria', url: `${baseUrl}/auditoria`, title: '📑 Auditoría Forense de Expedientes', desc: 'Búsqueda instantánea por No. Gestión y NIT (<15ms)', icon: 'file-search', keywords: 'auditoria expediente nit gestion individual buscador' }
     ];
 
     function renderCommandPalette(items) {
