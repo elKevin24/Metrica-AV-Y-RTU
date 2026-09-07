@@ -1,0 +1,2689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Dispersión Temporal: Horas Hábiles vs Calendario - SAT</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons: Local Vendor prioritario con Fallback y Auto-Init Reactivo -->
+    <script src="/vendor/lucide.min.js"></script>
+    <script>
+        if (!window.lucide) {
+            document.write('<script src="https://unpkg.com/lucide@latest"><\/script>');
+        }
+    </script>
+    <script src="/js/lucide-init.js"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .chart-point { transition: r 0.15s ease, opacity 0.15s ease; cursor: pointer; }
+        .chart-point:hover { r: 6.5; opacity: 1 !important; stroke: #FFFFFF; stroke-width: 2px; }
+        .chart-point.highlighted { r: 8; opacity: 1 !important; stroke: #F59E0B; stroke-width: 3px; fill: #F59E0B !important; }
+        .chart-tooltip { pointer-events: none; transition: opacity 0.15s ease, transform 0.1s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Institucional SAT -->
+    <header class="bg-slate-950 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+                <a href="/" class="flex items-center gap-2.5 hover:opacity-90 transition">
+                    <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 text-white font-bold">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="text-xs sm:text-base font-bold tracking-tight text-white">SAT GUATEMALA</h1>
+                            <span class="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-medium">Auditoría Operativa</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Jornada Laboral 8h (08:00 a 16:00) • Calendario 24h</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Navegación entre Módulos -->
+            <div class="hidden md:flex items-center gap-1 bg-slate-900 border border-slate-800 p-1 rounded-xl text-xs font-semibold">
+                <a href="/" class="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1">
+                    <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400"></i> Menú
+                </a>
+                <a href="/historico" class="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1">
+                    <i data-lucide="shield" class="w-3.5 h-3.5 text-blue-400"></i> Tablero AV
+                </a>
+                <a href="/bitacora" class="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1">
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i> Bitácora
+                </a>
+                <a href="/dispersion" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold transition flex items-center gap-1">
+                    <i data-lucide="scatter-chart" class="w-3.5 h-3.5 text-sky-200"></i> Dispersión
+                </a>
+                <a href="/laboratorio-sql" class="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1">
+                    <i data-lucide="terminal" class="w-3.5 h-3.5 text-amber-400"></i> SQL (ROLAP)
+                </a>
+                <a href="/auditoria" class="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1">
+                    <i data-lucide="file-search" class="w-3.5 h-3.5 text-cyan-400"></i> Auditoría
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 text-[11px] text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="font-mono font-semibold">111,282 Asignadas</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1 w-full">
+
+        <!-- Banner Titular de Comprensión Visual -->
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 space-y-2.5">
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>Visualización Analítica Avanzada • Auditoría Forense de Tiempos y Operaciones</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    Análisis Cuantitativo: <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300">Dispersión, Burbujas, Histograma, Heatmap & Embudo</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-300 max-w-4xl leading-relaxed">
+                    Suite analítica integral para evaluar la distribución de tiempos, fricción de horario no hábil, productividad operativa individual de revisores (burbujas según volumen de gestiones atendidas), mapa térmico de saturación horaria y el embudo de conversión transaccional.
+                </p>
+
+                <!-- Resumen de Métricas Clave -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold">Espera Hábil Promedio</span>
+                        <p class="text-lg font-black text-emerald-400 font-mono">3.85 horas</p>
+                        <span class="text-[10px] text-slate-400">Mediana: 2.14 horas</span>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold">Espera Calendario Prom.</span>
+                        <p class="text-lg font-black text-amber-400 font-mono">24.38 horas</p>
+                        <span class="text-[10px] text-slate-400">Mediana: 18.20 horas</span>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold">Fricción Pasiva</span>
+                        <p class="text-lg font-black text-sky-400 font-mono">84.2%</p>
+                        <span class="text-[10px] text-slate-400">Tiempo en noche / fin sem.</span>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold">SLA Institucional (&le; 24h)</span>
+                        <p class="text-lg font-black text-blue-400 font-mono">82.36%</p>
+                        <span class="text-[10px] text-slate-400">&le; 3 días de jornada</span>
+                    </div>
+                </div>
+
+                <!-- Botones de Acceso Rápido a las Vistas Principales -->
+                <div class="pt-3 flex flex-wrap items-center gap-2.5">
+                    <button onclick="switchScatterView(1)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition">
+                        <i data-lucide="scatter-chart" class="w-3.5 h-3.5"></i>
+                        <span>Dispersión (Scatter)</span>
+                    </button>
+                    <button onclick="switchScatterView(3)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md transition transform hover:scale-[1.02]">
+                        <i data-lucide="circle-dot" class="w-3.5 h-3.5 text-slate-950"></i>
+                        <span>Burbujas Revisores</span>
+                        <span class="bg-slate-950 text-amber-300 text-[10px] px-1.5 py-0.2 rounded font-mono">Por Gestiones</span>
+                    </button>
+                    <button onclick="switchScatterView(4)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition">
+                        <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
+                        <span>Histograma</span>
+                    </button>
+                    <button onclick="switchScatterView(5)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-md transition">
+                        <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+                        <span>Mapa de Calor</span>
+                    </button>
+                    <button onclick="switchScatterView(6)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition">
+                        <i data-lucide="filter" class="w-3.5 h-3.5"></i>
+                        <span>Embudo (Funnel)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conmutador de Gráficos (Tabs Principales 5 Módulos Analíticos) -->
+        <div class="bg-white rounded-2xl p-2 border border-slate-200 shadow-sm flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+            <div class="inline-flex p-1 bg-slate-100 rounded-xl overflow-x-auto gap-1">
+                <button id="tabBtn1" onclick="switchScatterView(1)" class="px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-sm whitespace-nowrap">
+                    <i data-lucide="scatter-chart" class="w-4 h-4"></i>
+                    <span>Dispersión (Scatter)</span>
+                </button>
+                <button id="tabBtn3" onclick="switchScatterView(3)" class="px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-amber-800 hover:text-amber-950 bg-amber-50 hover:bg-amber-100 whitespace-nowrap border border-amber-300/80">
+                    <i data-lucide="circle-dot" class="w-4 h-4 text-amber-600"></i>
+                    <span>Burbujas Revisores</span>
+                    <span class="bg-amber-500 text-slate-950 text-[10px] px-1.5 py-0.5 rounded font-black font-mono">Por Gestiones</span>
+                </button>
+                <button id="tabBtn4" onclick="switchScatterView(4)" class="px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
+                    <span>Histograma</span>
+                    <span class="bg-slate-200 text-slate-700 text-[10px] px-1.5 py-0.5 rounded font-mono">Frecuencias</span>
+                </button>
+                <button id="tabBtn5" onclick="switchScatterView(5)" class="px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    <i data-lucide="grid" class="w-4 h-4 text-rose-600"></i>
+                    <span>Mapa de Calor</span>
+                    <span class="bg-slate-200 text-slate-700 text-[10px] px-1.5 py-0.5 rounded font-mono">Heatmap 24/7</span>
+                </button>
+                <button id="tabBtn6" onclick="switchScatterView(6)" class="px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    <i data-lucide="filter" class="w-4 h-4 text-emerald-600"></i>
+                    <span>Embudo (Funnel)</span>
+                    <span class="bg-slate-200 text-slate-700 text-[10px] px-1.5 py-0.5 rounded font-mono">Ciclo</span>
+                </button>
+            </div>
+
+            <!-- Filtros para Vistas 1 y 2 (Dispersión de Expedientes) -->
+            <div id="filtersView1and2" class="flex flex-wrap items-center gap-2 px-2 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Modo:</span>
+                    <select id="scatterModeSelect" onchange="switchScatterView(parseInt(this.value))" class="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1.5 font-bold focus:outline-blue-500 text-xs">
+                        <option value="1">1A. Hora de Envío vs. Tiempo en Cola</option>
+                        <option value="2">1B. Horas Calendario vs. Horas Hábiles (Fricción)</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Día:</span>
+                    <select id="dayFilter" onchange="applyFilters()" class="bg-slate-50 border border-slate-300 text-slate-800 rounded-lg px-2.5 py-1.5 font-semibold focus:outline-blue-500 text-xs">
+                        <option value="ALL">Todos los Días (1,200 casos)</option>
+                        <option value="HABIL">Solo Días Hábiles (L-V)</option>
+                        <option value="FINDE">Solo Fin de Semana (S-D)</option>
+                    </select>
+                </div>
+                <button onclick="resetScatterFilters()" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg" title="Restablecer Filtros">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+
+            <!-- Filtros Dedicados para Vista 3 (Revisores y Tamaño de Burbuja) -->
+            <div id="filtersView3" class="hidden flex flex-wrap items-center gap-2 px-2 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Regional:</span>
+                    <select id="revisorRegionalFilter" onchange="applyRevisorFilters()" class="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1.5 font-bold focus:outline-blue-500 text-xs">
+                        <option value="TODAS">Todas las Regionales (126 Revisores)</option>
+                        <option value="SUR">🌊 Gerencia Regional Sur</option>
+                        <option value="CENTRAL">🏛️ Gerencia Regional Central</option>
+                        <option value="OCCIDENTE">🌄 Gerencia Regional Occidente</option>
+                        <option value="NORORIENTE">🌿 Gerencia Regional Nororiente</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Burbuja:</span>
+                    <select id="bubbleScaleSelect" onchange="renderCurrentChart()" class="bg-amber-50 border border-amber-300 text-amber-950 rounded-lg px-2 py-1.5 font-black focus:outline-amber-500 text-xs" title="Tamaño de burbuja según cantidad de gestiones atendidas">
+                        <option value="PROPORTIONAL">🔘 Proporcional a Gestiones (4px a 24px)</option>
+                        <option value="AMPLIFIED">🔮 Amplificada (6px a 34px)</option>
+                        <option value="FIXED">⏺️ Puntos Fijos (5px)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Revisor:</span>
+                    <input type="text" id="revisorSearchInput" list="revisoresList" oninput="applyRevisorFilters()" placeholder="Ej: MKNAJERA..." class="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2 py-1.5 font-semibold focus:outline-blue-500 text-xs w-24 sm:w-28">
+                    <datalist id="revisoresList"></datalist>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Carga:</span>
+                    <select id="revisorVolumenFilter" onchange="applyRevisorFilters()" class="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2 py-1.5 font-semibold focus:outline-blue-500 text-xs">
+                        <option value="ALL">Todas</option>
+                        <option value="20">&gt; 20 casos</option>
+                        <option value="50">&gt; 50 casos</option>
+                        <option value="100">&gt; 100 casos</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Orden:</span>
+                    <select id="revisorOrdenFilter" onchange="applyRevisorFilters()" class="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2 py-1.5 font-semibold focus:outline-blue-500 text-xs">
+                        <option value="SPEED_ASC">⚡ Menor Tiempo (Más Rápido)</option>
+                        <option value="TOTAL_DESC">📦 Mayor Suma Gestiones</option>
+                        <option value="SPEED_DESC">🐢 Mayor Tiempo Promedio</option>
+                        <option value="PCT_APR_DESC">✅ Mayor % Aprobación</option>
+                    </select>
+                </div>
+
+                <button onclick="resetRevisorFilters()" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg" title="Restablecer Filtros de Revisor">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+
+            <!-- Filtros Dedicados para Vista 4 (Histograma) -->
+            <div id="filtersView4" class="hidden flex flex-wrap items-center gap-2 px-2 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Variable:</span>
+                    <select id="histVarSelect" onchange="renderCurrentChart(); renderHistogramTable();" class="bg-indigo-50 border border-indigo-300 text-indigo-950 rounded-lg px-2.5 py-1.5 font-bold focus:outline-indigo-500 text-xs">
+                        <option value="HAB_H">⏱️ Horas Hábiles (Jornada 8h SAT)</option>
+                        <option value="CAL_H">📅 Horas Calendario (24h reloj)</option>
+                        <option value="HORA_ENVIO">🕒 Hora del Día de Envío (00:00 a 23:59)</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Día:</span>
+                    <select id="histDayFilter" onchange="renderCurrentChart(); renderHistogramTable();" class="bg-slate-50 border border-slate-300 text-slate-800 rounded-lg px-2.5 py-1.5 font-semibold focus:outline-blue-500 text-xs">
+                        <option value="ALL">Todos los Días (1,200 casos)</option>
+                        <option value="HABIL">Solo Días Hábiles</option>
+                        <option value="FINDE">Solo Fin de Semana</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filtros Dedicados para Vista 5 (Mapa de Calor / Heatmap) -->
+            <div id="filtersView5" class="hidden flex flex-wrap items-center gap-2 px-2 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Métrica Térmica:</span>
+                    <select id="heatmapMetricSelect" onchange="renderCurrentChart(); renderHeatmapTable();" class="bg-rose-50 border border-rose-300 text-rose-950 rounded-lg px-2.5 py-1.5 font-bold focus:outline-rose-500 text-xs">
+                        <option value="VOLUMEN">📊 Volumen de Casos Ingresados (Demanda)</option>
+                        <option value="ESPERA_CAL">⏳ Tiempo Medio en Cola (Horas Calendario)</option>
+                        <option value="FRICCION">🔥 % Fricción Pasiva (Noche & Finde)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filtros Dedicados para Vista 6 (Embudo / Funnel) -->
+            <div id="filtersView6" class="hidden flex flex-wrap items-center gap-2 px-2 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Alcance:</span>
+                    <select id="funnelScopeSelect" onchange="renderCurrentChart(); renderFunnelTable();" class="bg-emerald-50 border border-emerald-300 text-emerald-950 rounded-lg px-2.5 py-1.5 font-bold focus:outline-emerald-500 text-xs">
+                        <option value="GLOBAL">🌐 Proceso Integral de Trámites (182,412 casos)</option>
+                        <option value="RONDAS">🔄 Desglose FTR (1er Intento) vs Subsanación</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Podio de Honor de Velocidad ("¿Quién atiende más rápido?") -->
+        <div id="podiumContainer" class="hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-800 shadow-xl text-white space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center border border-amber-400/30">
+                        <i data-lucide="trophy" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm sm:text-base font-black text-white flex items-center gap-2">
+                            <span>Podio de Velocidad: ¿Quién atiende más rápido?</span>
+                            <span id="podiumRegionalBadge" class="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full font-mono border border-blue-500/30">Todas las Regionales</span>
+                        </h3>
+                        <p class="text-xs text-slate-300">
+                            Revisores que resuelven trámites en el menor tiempo promedio, contrastado con su suma acumulada de gestiones.
+                        </p>
+                    </div>
+                </div>
+                <div class="text-right text-xs text-slate-400">
+                    <span>Base Auditada: </span>
+                    <strong id="podiumTotalRevisores" class="text-amber-400 font-mono font-bold">126</strong> revisores
+                </div>
+            </div>
+
+            <!-- Las 3 Tarjetas de Podio + 1 Tarjeta de Resumen Regional -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5" id="podiumCardsGrid">
+                <!-- Rellenado dinámicamente vía JavaScript -->
+            </div>
+        </div>
+
+        <!-- Área de Gráfico Principal y Panel Explicativo -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Contenedor del Gráfico SVG Interactivo (2 Cols) -->
+            <div class="lg:col-span-2 bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between relative">
+                
+                <!-- Encabezado del Gráfico con Leyenda -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <h3 id="chartTitle" class="text-sm font-black text-slate-900 flex items-center gap-2">
+                            <!-- Titulo dinámico -->
+                        </h3>
+                        <p id="chartSubtitle" class="text-xs text-slate-500 mt-0.5 leading-snug">
+                            <!-- Subtítulo dinámico -->
+                        </p>
+                    </div>
+
+                    <!-- Leyenda de Colores Vistas 1 y 2 -->
+                    <div id="legendView1and2" class="flex items-center gap-3 text-xs font-semibold shrink-0">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-blue-600 inline-block shadow-xs"></span>
+                            <span class="text-slate-600">Día Hábil (Lun-Vie)</span>
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-rose-500 inline-block shadow-xs"></span>
+                            <span class="text-slate-600">Fin de Semana</span>
+                        </span>
+                    </div>
+
+                    <!-- Leyenda de Colores Vista 3 (Regionales SAT + Tamaño de Burbujas) -->
+                    <div id="legendView3" class="hidden flex flex-wrap items-center gap-3 text-xs font-semibold shrink-0">
+                        <div class="flex items-center gap-2">
+                            <span class="flex items-center gap-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                                <span class="text-slate-700 text-[11px]">Central</span>
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                                <span class="text-slate-700 text-[11px]">Sur</span>
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                                <span class="text-slate-700 text-[11px]">Occidente</span>
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span>
+                                <span class="text-slate-700 text-[11px]">Nororiente</span>
+                            </span>
+                        </div>
+                        <!-- Guía Visual de Tamaño de Burbujas según cantidad de gestiones atendidas -->
+                        <div class="hidden sm:flex items-center gap-2 border-l border-slate-200 pl-3 text-[10px] text-slate-500 font-mono">
+                            <span class="text-slate-700 font-bold font-sans">Burbuja:</span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block"></span>
+                                <span>20</span>
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span>
+                                <span>50</span>
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
+                                <span>200</span>
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="w-5 h-5 rounded-full bg-amber-600 inline-block"></span>
+                                <span class="font-bold text-amber-700">488 (Max)</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Leyenda Vista 4 (Histograma) -->
+                    <div id="legendView4" class="hidden flex items-center gap-3 text-xs font-semibold shrink-0">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-xs bg-blue-600 inline-block"></span>
+                            <span class="text-slate-600">Día Hábil</span>
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-xs bg-rose-500 inline-block"></span>
+                            <span class="text-slate-600">Fin de Semana</span>
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-3 h-0.5 bg-emerald-500 inline-block border-t border-dashed border-emerald-600"></span>
+                            <span class="text-emerald-700 text-[11px]">Mediana</span>
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-3 h-0.5 bg-amber-500 inline-block border-t border-dashed border-amber-600"></span>
+                            <span class="text-amber-700 text-[11px]">Media</span>
+                        </span>
+                    </div>
+
+                    <!-- Leyenda Vista 5 (Mapa de Calor / Heatmap) -->
+                    <div id="legendView5" class="hidden flex items-center gap-2.5 text-xs font-semibold shrink-0">
+                        <span class="text-[10px] text-slate-500 font-mono">Bajo</span>
+                        <div class="w-24 h-2.5 rounded-full bg-gradient-to-r from-blue-100 via-amber-400 to-rose-600 border border-slate-300"></div>
+                        <span class="text-[10px] text-rose-600 font-mono font-bold">Pico / Saturación</span>
+                    </div>
+
+                    <!-- Leyenda Vista 6 (Embudo / Funnel) -->
+                    <div id="legendView6" class="hidden flex items-center gap-3 text-xs font-semibold shrink-0">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-xs bg-emerald-600 inline-block"></span>
+                            <span class="text-slate-700">Retención / Flujo</span>
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-xs bg-rose-500 inline-block"></span>
+                            <span class="text-slate-700">Fuga / Abandono</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Canvas / SVG Interactivo del Gráfico de Dispersión -->
+                <div class="relative w-full overflow-hidden my-4" style="min-height: 440px;">
+                    <svg id="scatterSvg" class="w-full h-full select-none" viewBox="0 0 760 440" preserveAspectRatio="xMidYMid meet">
+                        <!-- Generado dinámicamente vía JavaScript -->
+                    </svg>
+
+                    <!-- Tooltip Flotante de Precisión -->
+                    <div id="chartTooltip" class="chart-tooltip absolute hidden bg-slate-950/95 text-white text-xs p-3 rounded-xl shadow-2xl border border-slate-700 pointer-events-none z-30 max-w-xs space-y-1 backdrop-blur-md">
+                        <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
+                            <span id="ttId" class="font-mono font-bold text-sky-400">20261AV...</span>
+                            <span id="ttDia" class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded font-semibold text-slate-300">Lunes</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1">
+                            <span class="text-slate-400">Hora Enví­o:</span>
+                            <span id="ttHora" class="font-bold text-right text-slate-200">10:15 AM</span>
+                            <span class="text-slate-400">Espera Calendario:</span>
+                            <span id="ttCal" class="font-bold text-right text-amber-400 font-mono">18.5 h</span>
+                            <span class="text-slate-400">Espera Hábil:</span>
+                            <span id="ttHab" class="font-bold text-right text-emerald-400 font-mono">3.2 h</span>
+                            <span class="text-slate-400">Fricción Pasiva:</span>
+                            <span id="ttFriccion" class="font-bold text-right text-sky-300 font-mono">82.7%</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400 pt-1 border-t border-slate-800/80 italic" id="ttDesc">
+                            Trámite ingresado en jornada laboral.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer del Gráfico con Controles de Líneas Guía -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100 text-xs">
+                    <!-- Controles para Vistas 1 y 2 -->
+                    <div id="footerControlsView1and2" class="flex items-center gap-3 text-slate-600">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkJornada8h" checked onchange="renderCurrentChart()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span>Jornada 8h SAT</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkDiagonal" checked onchange="renderCurrentChart()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span id="lblDiagonalOption">Línea Guía</span>
+                        </label>
+                    </div>
+
+                    <!-- Controles para Vista 3 (Revisores) -->
+                    <div id="footerControlsView3" class="hidden flex flex-wrap items-center gap-3 text-slate-600">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkUmbralVolumen" checked onchange="renderCurrentChart()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span>Corte Mediano (50 gestiones)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkUmbralTiempo" checked onchange="renderCurrentChart()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span>Corte SLA (60 min)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkShowRevisorLabels" onchange="renderCurrentChart()" class="rounded text-amber-600 focus:ring-amber-500">
+                            <span>Etiquetas en Burbujas</span>
+                        </label>
+                    </div>
+
+                    <!-- Controles para Vista 4 (Histograma) -->
+                    <div id="footerControlsView4" class="hidden flex items-center gap-3 text-slate-600">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkHistStats" checked onchange="renderCurrentChart()" class="rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>Mostrar Mediana y Media</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkHistSLA" checked onchange="renderCurrentChart()" class="rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>Límite SLA</span>
+                        </label>
+                    </div>
+
+                    <!-- Controles para Vista 5 (Mapa de Calor) -->
+                    <div id="footerControlsView5" class="hidden flex items-center gap-3 text-slate-600">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkHeatmapWorkingHours" checked onchange="renderCurrentChart()" class="rounded text-rose-600 focus:ring-rose-500">
+                            <span>Enmarcar Horario Hábil SAT (08:00 a 16:00 L-V)</span>
+                        </label>
+                    </div>
+
+                    <!-- Controles para Vista 6 (Embudo / Funnel) -->
+                    <div id="footerControlsView6" class="hidden flex items-center gap-3 text-slate-600">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" id="chkFunnelDropoff" checked onchange="renderCurrentChart()" class="rounded text-emerald-600 focus:ring-emerald-500">
+                            <span>Mostrar Tasas de Caída (% Drop-off)</span>
+                        </label>
+                    </div>
+
+                    <span class="text-slate-400 text-[11px]">
+                        <span id="lblMuestraPrefix">Muestra:</span> <strong id="lblVisiblePoints" class="text-slate-700 font-mono">1,200</strong> <span id="lblMuestraSuffix">expedientes auditados</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Panel Lateral Pedagógico y Didáctico (1 Col) -->
+            <div class="space-y-4">
+
+                <!-- Tarjeta Explicativa de la Gráfica Activa -->
+                <div id="explanationCard" class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-3">
+                    <!-- Rellenado dinámicamente según la pestaña seleccionada -->
+                </div>
+
+                <!-- Caso de Estudio Real (El Contraste de Dos Ciudadanos) -->
+                <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-5 border border-slate-800 shadow-md space-y-3">
+                    <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>El Efecto del Calendario en la Vida Real</span>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="bg-slate-800/80 p-3 rounded-2xl border border-slate-700/80 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-sky-300">Contribuyente A (Martes 10:00)</span>
+                                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono">Hábil</span>
+                            </div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">
+                                Su solicitud entra con los revisores activos en ventanilla. Es asignada a las 11:45.
+                            </p>
+                            <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-1 border-t border-slate-700">
+                                <span>Reloj: <strong>1.75 horas</strong></span>
+                                <span class="text-emerald-400">Hábil: <strong>1.75 horas</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-3 rounded-2xl border border-slate-700/80 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-rose-300">Contribuyente B (Viernes 17:30)</span>
+                                <span class="text-[10px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded font-mono">Fin Sem.</span>
+                            </div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">
+                                La oficina cerró a las 16:00. Pasa viernes noche, sábado, domingo y lunes a las 09:30 se le asigna.
+                            </p>
+                            <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-1 border-t border-slate-700">
+                                <span>Reloj: <strong>64.0 horas</strong></span>
+                                <span class="text-emerald-400">Hábil: <strong>1.50 horas</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-300 leading-snug italic pt-1">
+                        Ambos tuvieron exactamente la misma eficiencia humana (< 2 horas de trabajo), pero el contribuyente B sintió 64 horas de espera porque su trámite durmió en el servidor el fin de semana.
+                    </p>
+                </div>
+
+                <!-- Botón para ver en Laboratorio SQL -->
+                <div class="bg-blue-50/70 rounded-2xl p-4 border border-blue-100 flex items-center justify-between gap-3">
+                    <div>
+                        <h4 class="text-xs font-bold text-blue-900">¿Quieres auditar un caso específico?</h4>
+                        <p class="text-[11px] text-blue-700">Explora la bitácora completa o consulta vía SQL.</p>
+                    </div>
+                    <a href="/bitacora" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold whitespace-nowrap shadow-xs flex items-center gap-1 transition">
+                        <span>Bitácora</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tabla de Muestra de Expedientes Auditados (Para Vistas 1 y 2) -->
+        <div id="tableContainerView1and2" class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="table" class="w-4 h-4 text-indigo-600"></i>
+                        <span>Muestra de Expedientes Representados en la Dispersión</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Haz clic en cualquier fila para resaltar ese expediente exacto en el gráfico de arriba.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="tableSearch" oninput="filterSampleTable()" placeholder="Buscar por ID o fecha..." class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 focus:outline-blue-500 w-48 sm:w-64">
+                </div>
+            </div>
+
+            <!-- Tabla de Expedientes -->
+            <div class="overflow-x-auto rounded-xl border border-slate-100 max-h-72">
+                <table class="w-full text-left text-xs divide-y divide-slate-100">
+                    <thead class="bg-slate-900 text-white sticky top-0 font-semibold">
+                        <tr>
+                            <th class="py-2.5 px-3">No. Gestión</th>
+                            <th class="py-2.5 px-3">Fecha y Hora Creación</th>
+                            <th class="py-2.5 px-3">Día Sem.</th>
+                            <th class="py-2.5 px-3 text-right">Espera Reloj</th>
+                            <th class="py-2.5 px-3 text-right">Espera Hábil</th>
+                            <th class="py-2.5 px-3 text-right">Fricción Pasiva</th>
+                            <th class="py-2.5 px-3 text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sampleTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
+                        <!-- Rellenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla Dedicada de Revisores: Suma de Gestiones vs. Tiempos (Para Vista 3) -->
+        <div id="tableContainerView3" class="hidden bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
+                        <span>Tabla de Revisores: Suma de Gestiones Atendidas vs. Tiempos de Resolución</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Permite contrastar la productividad acumulada con la velocidad promedio. Haz clic en cualquier fila para enfocar al revisor en el gráfico.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="tableRevisorSearch" oninput="renderRevisoresTable()" placeholder="Buscar revisor o regional..." class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 focus:outline-blue-500 w-48 sm:w-64 font-semibold text-slate-800">
+                </div>
+            </div>
+
+            <!-- Tabla de Revisores -->
+            <div class="overflow-x-auto rounded-xl border border-slate-100 max-h-80">
+                <table class="w-full text-left text-xs divide-y divide-slate-100">
+                    <thead class="bg-slate-900 text-white sticky top-0 font-semibold text-[11px]">
+                        <tr>
+                            <th class="py-2.5 px-3 text-center"># Vel.</th>
+                            <th class="py-2.5 px-3">Revisor</th>
+                            <th class="py-2.5 px-3">Gerencia Regional</th>
+                            <th class="py-2.5 px-3 text-right">Suma Gestiones</th>
+                            <th class="py-2.5 px-3 text-right">Aprobadas</th>
+                            <th class="py-2.5 px-3 text-right">Rechazadas</th>
+                            <th class="py-2.5 px-3 text-right">% Aprob.</th>
+                            <th class="py-2.5 px-3 text-right">⏱️ Tiempo Prom.</th>
+                            <th class="py-2.5 px-3 text-right">⚡ Gestiones/Día</th>
+                            <th class="py-2.5 px-3 text-center">Cuadrante</th>
+                            <th class="py-2.5 px-3 text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="revisoresTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
+                        <!-- Rellenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla Dedicada para Vista 4 (Histograma: Distribución de Frecuencias y Cumplimiento SLA) -->
+        <div id="tableContainerView4" class="hidden bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
+                        <span>Tabla de Distribución de Frecuencias por Intervalos (Bins) y Cumplimiento SLA</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Estratificación estadística de tiempos con conteo de expedientes, porcentaje relativo y acumulación percentil.
+                    </p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-100 max-h-80">
+                <table class="w-full text-left text-xs divide-y divide-slate-100">
+                    <thead class="bg-slate-900 text-white sticky top-0 font-semibold text-[11px]">
+                        <tr>
+                            <th class="py-2.5 px-3">Intervalo (Rango)</th>
+                            <th class="py-2.5 px-3 text-right">Casos Hábiles</th>
+                            <th class="py-2.5 px-3 text-right">Casos Fin Sem.</th>
+                            <th class="py-2.5 px-3 text-right font-black">Total Casos</th>
+                            <th class="py-2.5 px-3 text-right">% Frecuencia</th>
+                            <th class="py-2.5 px-3 text-right">% Acumulado</th>
+                            <th class="py-2.5 px-3 text-center">Estado SLA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="histogramTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
+                        <!-- Rellenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla Dedicada para Vista 5 (Mapa de Calor: Matriz 24/7 Día x Hora) -->
+        <div id="tableContainerView5" class="hidden bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="grid" class="w-4 h-4 text-rose-600"></i>
+                        <span>Matriz de Carga Semanal 24/7: Comportamiento Diario y Horas Críticas</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Resumen agrupado por día de la semana con distribución de horas punta, horas valle y niveles de fricción pasiva.
+                    </p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-100 max-h-80">
+                <table class="w-full text-left text-xs divide-y divide-slate-100">
+                    <thead class="bg-slate-900 text-white sticky top-0 font-semibold text-[11px]">
+                        <tr>
+                            <th class="py-2.5 px-3">Día de la Semana</th>
+                            <th class="py-2.5 px-3 text-right">Volumen Muestreado</th>
+                            <th class="py-2.5 px-3 text-center">Hora Pico Máxima</th>
+                            <th class="py-2.5 px-3 text-right">Espera Calendario Prom.</th>
+                            <th class="py-2.5 px-3 text-right">Espera Hábil Prom.</th>
+                            <th class="py-2.5 px-3 text-right">% Fricción Pasiva</th>
+                            <th class="py-2.5 px-3 text-center">Diagnóstico Operativo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="heatmapTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
+                        <!-- Rellenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla Dedicada para Vista 6 (Embudo Transaccional: Conversión y Retención) -->
+        <div id="tableContainerView6" class="hidden bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="filter" class="w-4 h-4 text-emerald-600"></i>
+                        <span>Auditoría de Etapas del Embudo Transaccional (182,412 Expedientes Globales)</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Métricas forenses de rendimiento paso a paso, cuantificando la retención, drop-off y cuellos de botella del ciclo de vida.
+                    </p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-100 max-h-80">
+                <table class="w-full text-left text-xs divide-y divide-slate-100">
+                    <thead class="bg-slate-900 text-white sticky top-0 font-semibold text-[11px]">
+                        <tr>
+                            <th class="py-2.5 px-3 text-center">Fase</th>
+                            <th class="py-2.5 px-3">Etapa del Proceso</th>
+                            <th class="py-2.5 px-3 text-right">Volumen de Entrada</th>
+                            <th class="py-2.5 px-3 text-right">Retención Acumulada</th>
+                            <th class="py-2.5 px-3 text-right">Caída / Descarte</th>
+                            <th class="py-2.5 px-3 text-right">Tiempo Prom. Etapa</th>
+                            <th class="py-2.5 px-3">Causa del Cuello de Botella</th>
+                        </tr>
+                    </thead>
+                    <tbody id="funnelTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono text-[11px]">
+                        <!-- Rellenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Dictamen Forense: La Paradoja de Enero vs. Febrero & Meses de Baja Demanda -->
+        <div id="auditBolsomAnalysisView3" class="hidden bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+            <!-- Header con Badge -->
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 pb-4 border-b border-slate-100">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="p-1.5 bg-amber-500/10 text-amber-600 rounded-xl border border-amber-500/20">
+                            <i data-lucide="scale" class="w-4 h-4"></i>
+                        </span>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-600 font-mono">Auditoría de Capacidad & Teoría de Colas</span>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                        La Paradoja de Enero vs. Febrero: ¿Por qué el bolsón no llega a cero si la demanda es mínima?
+                    </h3>
+                    <p class="text-xs text-slate-500 leading-relaxed max-w-4xl">
+                        Análisis probatorio cuantitativo: Cómo demostrar matemáticamente que el inventario residual no se debe a falta de capacidad humana instalada, sino a desfases de entrada, leyes de flujo y desaceleración del ritmo.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <span class="bg-blue-50 text-blue-800 border border-blue-200 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5 shadow-xs">
+                        <i data-lucide="calculator" class="w-3.5 h-3.5 text-blue-600"></i>
+                        <span>Evidencia con 4 Pruebas</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Matriz de Balance de Masa (Enero vs Febrero) -->
+            <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white rounded-2xl p-5 border border-slate-800 shadow-md">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+                    <h4 class="text-xs sm:text-sm font-bold flex items-center gap-2 text-amber-300">
+                        <i data-lucide="git-commit" class="w-4 h-4"></i>
+                        <span>Prueba Matemática de Balance de Masa: Capacidad Demostrada vs. Flujo Real</span>
+                    </h4>
+                    <span class="text-[10px] font-mono bg-white/10 px-2 py-0.5 rounded text-slate-300">Demostración Numérica</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                    <div class="bg-white/5 border border-white/10 p-3.5 rounded-xl">
+                        <span class="text-slate-400 text-[11px] block">1. Demanda Entrante</span>
+                        <div class="flex items-baseline justify-between mt-1">
+                            <span class="text-base font-black text-white">2,500 <span class="text-[10px] text-slate-400 font-normal">/día (Ene)</span></span>
+                            <span class="text-emerald-400 font-black text-sm">700 <span class="text-[10px] text-slate-400 font-normal">/día (Feb)</span></span>
+                        </div>
+                        <span class="text-[10px] text-emerald-300 block mt-1 font-medium">Caída de demanda del -72%</span>
+                    </div>
+
+                    <div class="bg-white/5 border border-white/10 p-3.5 rounded-xl">
+                        <span class="text-slate-400 text-[11px] block">2. Capacidad Acreditada</span>
+                        <div class="flex items-baseline justify-between mt-1">
+                            <span class="text-base font-black text-amber-300">1,166+ <span class="text-[10px] text-slate-400 font-normal">casos/8h</span></span>
+                            <span class="text-slate-300 font-mono text-[11px]">172 revisores</span>
+                        </div>
+                        <span class="text-[10px] text-amber-200 block mt-1 font-medium">Pico de 1,173 en 1 día (Central)</span>
+                    </div>
+
+                    <div class="bg-white/5 border border-white/10 p-3.5 rounded-xl">
+                        <span class="text-slate-400 text-[11px] block">3. Salidas Reales en Baja</span>
+                        <div class="flex items-baseline justify-between mt-1">
+                            <span class="text-base font-black text-rose-300">~720 <span class="text-[10px] text-slate-400 font-normal">/día (Feb)</span></span>
+                            <span class="text-rose-400 font-bold text-[10px]">Adaptativo</span>
+                        </div>
+                        <span class="text-[10px] text-rose-300 block mt-1 font-medium">El ritmo cayó para igualar la entrada</span>
+                    </div>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-xl">
+                        <span class="text-amber-300 text-[11px] font-bold block">4. Vaciado a Ritmo Enero</span>
+                        <div class="flex items-baseline justify-between mt-1">
+                            <span class="text-lg font-black text-amber-400 font-mono">1.8 Días</span>
+                            <span class="text-amber-300 text-[10px] font-semibold">Teórico Hábil</span>
+                        </div>
+                        <span class="text-[10px] text-amber-200 block mt-1 font-medium">Tiempo para extinguir el stock</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Los 4 Pilares de Explicación -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- Pilar 1 -->
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 font-black flex items-center justify-center text-xs">1</span>
+                        <h5 class="font-bold text-slate-900">Desaceleración Adaptativa (Ley de Parkinson)</h5>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed text-[11px]">
+                        En enero, el estado de contingencia y supervisión intensa eleva la cadencia individual a promedios de <strong>50 a 111 gestiones/día</strong> por revisor líder. En febrero, ante la ausencia de un piso mínimo o cuota de barrido, el ritmo desciende adaptándose al flujo aparente: el personal atiende lo necesario para no acumular más, pero sin agotar el remanente.
+                    </p>
+                </div>
+
+                <!-- Pilar 2 -->
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 font-black flex items-center justify-center text-xs">2</span>
+                        <h5 class="font-bold text-slate-900">El Piso Fijo Nocturno y de Fin de Semana (24/7 vs. 8/5)</h5>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed text-[11px]">
+                        El <strong>48.6%</strong> de los trámites se crean fuera de la jornada laboral (16:01 a 07:59 y fines de semana). Como el portal web no cierra y los revisores solo operan de 08:00 a 16:00, <strong>el bolsón amanece todos los días con expedientes precargados</strong>. El inventario residual matutino no es rezago de ayer, sino nueva entrada no hábil.
+                    </p>
+                </div>
+
+                <!-- Pilar 3 -->
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 font-black flex items-center justify-center text-xs">3</span>
+                        <h5 class="font-bold text-slate-900">Sedimento Residual por "Cherry-Picking"</h5>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed text-[11px]">
+                        Los casos con documentos borrosos, personas jurídicas con múltiples personerías o trámites con rechazos previos son postergados sistemáticamente en favor de aprobaciones ágiles de 1.8 segundos. Este 10% de expedientes complejos (P90 &gt; 48 horas) forma un <strong>sedimento permanente</strong> que nunca desaparece sin reglas forzadas de rotación.
+                    </p>
+                </div>
+
+                <!-- Pilar 4 -->
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 font-black flex items-center justify-center text-xs">4</span>
+                        <h5 class="font-bold text-slate-900">Modelo "Pull" (Tomar Casos) vs. "Push" (Inyección Inmediata)</h5>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed text-[11px]">
+                        El sistema actual espera a que el operador ingrese a la bandeja a tomar trabajo (Pull). Con una arquitectura <strong>Push en tiempo real</strong>, cada trámite se inyectaría al instante en la pantalla del revisor desocupado. Durante las horas de jornada laboral (08:00 a 16:00), el bolsón en cola viva sí tocaría cero de forma continua.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Panel de Consultas SQL de Auditoría Forense -->
+            <div class="border border-slate-200 rounded-2xl p-4 bg-slate-900 text-white space-y-3">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-800">
+                    <div>
+                        <h5 class="font-bold text-xs flex items-center gap-2 text-sky-400">
+                            <i data-lucide="terminal" class="w-4 h-4"></i>
+                            <span>Consultas SQL para Demostrarlo en el Laboratorio DuckDB</span>
+                        </h5>
+                        <p class="text-[10px] text-slate-400">Ejecuta estas consultas en el Módulo Laboratorio SQL (ROLAP) para presentar los números a intendencia.</p>
+                    </div>
+                    <a href="/laboratorio-sql" class="px-2.5 py-1 bg-sky-600 hover:bg-sky-500 text-white text-[11px] font-bold rounded-lg transition flex items-center gap-1 shadow-xs">
+                        <span>Ir a Laboratorio SQL</span>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 text-[10px]">
+                    <!-- Query 1 -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-amber-300 block mb-1">Prueba 1: Caída de Cadencia (Enero vs Feb)</span>
+                            <pre class="text-[9px] font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-tight">SELECT strftime('%Y-%m', fecha_creacion) AS mes,
+  COUNT(DISTINCT revisor) AS revisores,
+  COUNT(*) AS total_gestiones,
+  ROUND(COUNT(*) * 1.0 / (COUNT(DISTINCT revisor) * 21), 1) AS prom_dia_revisor
+FROM gestiones GROUP BY 1;</pre>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.querySelector('pre').innerText); this.innerText='¡Copiado! ✓'; setTimeout(()=>this.innerText='Copiar SQL 📋', 2000);" class="mt-2 text-[9px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 px-2 rounded font-mono transition text-center">
+                            Copiar SQL 📋
+                        </button>
+                    </div>
+
+                    <!-- Query 2 -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-indigo-300 block mb-1">Prueba 2: Entradas Fuera de Jornada</span>
+                            <pre class="text-[9px] font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-tight">SELECT 
+  CASE WHEN es_finde = 1 THEN 'Fin de Semana'
+       WHEN hora_crea < 8 OR hora_crea >= 16 THEN 'Noche / No Hábil'
+       ELSE 'Jornada Hábil (8-16h)' END AS horario,
+  COUNT(*) AS casos,
+  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) AS pct
+FROM gestiones GROUP BY 1;</pre>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.querySelector('pre').innerText); this.innerText='¡Copiado! ✓'; setTimeout(()=>this.innerText='Copiar SQL 📋', 2000);" class="mt-2 text-[9px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 px-2 rounded font-mono transition text-center">
+                            Copiar SQL 📋
+                        </button>
+                    </div>
+
+                    <!-- Query 3 -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-emerald-300 block mb-1">Prueba 3: Sedimento Rezagado (P90)</span>
+                            <pre class="text-[9px] font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-tight">SELECT strftime('%Y-%m', fecha_creacion) AS mes,
+  ROUND(AVG(espera_cola_horas), 1) AS media_cola,
+  ROUND(MEDIAN(espera_cola_horas), 1) AS mediana_cola,
+  ROUND(QUANTILE_CONT(espera_cola_horas, 0.90), 1) AS p90_rezagados
+FROM gestiones GROUP BY 1;</pre>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.querySelector('pre').innerText); this.innerText='¡Copiado! ✓'; setTimeout(()=>this.innerText='Copiar SQL 📋', 2000);" class="mt-2 text-[9px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 px-2 rounded font-mono transition text-center">
+                            Copiar SQL 📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 text-xs py-6 border-t border-slate-800/80 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4 text-blue-400"></i>
+                <span class="text-slate-300 font-semibold">SAT Guatemala • Superintendencia de Administración Tributaria</span>
+            </div>
+            <p class="text-[11px]">Metodología de cálculo en Jornada de 8 Horas Hábiles (08:00 a 16:00, L-V) acorde a normativas laborales vigentes.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts de Datos e Interactividad -->
+    <script>
+        let rawData = null;
+        let revisoresData = null;
+        let activeView = 1; // 1 = Hora Envio vs Espera, 2 = Calendario vs Habil, 3 = Quien atiende mas rapido
+        let filteredPoints = [];
+        let filteredRevisores = [];
+        let highlightedId = null;
+        let highlightedRevisor = null;
+
+        const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+        const regionalColors = {
+            'CENTRAL': { fill: '#2563EB', name: 'Gerencia Regional Central', badge: 'bg-blue-100 text-blue-800 border-blue-200' },
+            'SUR': { fill: '#059669', name: 'Gerencia Regional Sur', badge: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
+            'OCCIDENTE': { fill: '#6366F1', name: 'Gerencia Regional Occidente', badge: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
+            'NORORIENTE': { fill: '#D97706', name: 'Gerencia Regional Nororiente', badge: 'bg-amber-100 text-amber-800 border-amber-200' }
+        };
+
+        async function init() {
+            try {
+                const [resTiempos, resRevisores] = await Promise.all([
+                    fetch('/data/dispersion_tiempos.json'),
+                    fetch('/data/dispersion_revisores.json')
+                ]);
+                rawData = await resTiempos.json();
+                revisoresData = await resRevisores.json();
+
+                // Poblar datalist de revisores
+                if (revisoresData && revisoresData.revisores) {
+                    const datalist = document.getElementById('revisoresList');
+                    if (datalist) {
+                        datalist.innerHTML = revisoresData.revisores
+                            .map(r => `<option value="${r.revisor}">${r.revisor} (${r.regional} - ${r.total} gestiones)</option>`)
+                            .join('');
+                    }
+                }
+
+                applyFilters();
+                applyRevisorFilters();
+
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            } catch (err) {
+                console.error('Error cargando datos de dispersión', err);
+            }
+        }
+
+        function switchScatterView(viewNum) {
+            activeView = viewNum;
+            const btn1 = document.getElementById('tabBtn1');
+            const btn3 = document.getElementById('tabBtn3');
+            const btn4 = document.getElementById('tabBtn4');
+            const btn5 = document.getElementById('tabBtn5');
+            const btn6 = document.getElementById('tabBtn6');
+
+            const fExp = document.getElementById('filtersView1and2');
+            const fRev = document.getElementById('filtersView3');
+            const fHist = document.getElementById('filtersView4');
+            const fHeat = document.getElementById('filtersView5');
+            const fFunnel = document.getElementById('filtersView6');
+
+            const legExp = document.getElementById('legendView1and2');
+            const legRev = document.getElementById('legendView3');
+            const legHist = document.getElementById('legendView4');
+            const legHeat = document.getElementById('legendView5');
+            const legFunnel = document.getElementById('legendView6');
+
+            const podium = document.getElementById('podiumContainer');
+
+            const footExp = document.getElementById('footerControlsView1and2');
+            const footRev = document.getElementById('footerControlsView3');
+            const footHist = document.getElementById('footerControlsView4');
+            const footHeat = document.getElementById('footerControlsView5');
+            const footFunnel = document.getElementById('footerControlsView6');
+
+            const tabExp = document.getElementById('tableContainerView1and2');
+            const tabRev = document.getElementById('tableContainerView3');
+            const tabHist = document.getElementById('tableContainerView4');
+            const tabHeat = document.getElementById('tableContainerView5');
+            const tabFunnel = document.getElementById('tableContainerView6');
+
+            const auditBolsom = document.getElementById('auditBolsomAnalysisView3');
+
+            // Reset all tab button styles to default neutral
+            const inactiveClass = 'px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-600 hover:text-slate-900 whitespace-nowrap';
+            if (btn1) btn1.className = inactiveClass;
+            if (btn3) btn3.className = 'px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-amber-800 hover:text-amber-950 bg-amber-50 hover:bg-amber-100 whitespace-nowrap border border-amber-300/80';
+            if (btn4) btn4.className = inactiveClass;
+            if (btn5) btn5.className = inactiveClass;
+            if (btn6) btn6.className = inactiveClass;
+
+            // Hide all filter bars
+            if (fExp) fExp.classList.add('hidden');
+            if (fRev) fRev.classList.add('hidden');
+            if (fHist) fHist.classList.add('hidden');
+            if (fHeat) fHeat.classList.add('hidden');
+            if (fFunnel) fFunnel.classList.add('hidden');
+
+            // Hide all legends
+            if (legExp) legExp.classList.add('hidden');
+            if (legRev) legRev.classList.add('hidden');
+            if (legHist) legHist.classList.add('hidden');
+            if (legHeat) legHeat.classList.add('hidden');
+            if (legFunnel) legFunnel.classList.add('hidden');
+
+            // Hide podium by default
+            if (podium) podium.classList.add('hidden');
+
+            // Hide all footer controls
+            if (footExp) footExp.classList.add('hidden');
+            if (footRev) footRev.classList.add('hidden');
+            if (footHist) footHist.classList.add('hidden');
+            if (footHeat) footHeat.classList.add('hidden');
+            if (footFunnel) footFunnel.classList.add('hidden');
+
+            // Hide all bottom tables
+            if (tabExp) tabExp.classList.add('hidden');
+            if (tabRev) tabRev.classList.add('hidden');
+            if (tabHist) tabHist.classList.add('hidden');
+            if (tabHeat) tabHeat.classList.add('hidden');
+            if (tabFunnel) tabFunnel.classList.add('hidden');
+
+            // Activate specific view configuration
+            if (activeView === 1 || activeView === 2) {
+                if (btn1) btn1.className = 'px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-sm whitespace-nowrap';
+                const scMode = document.getElementById('scatterModeSelect');
+                if (scMode) scMode.value = activeView.toString();
+                if (document.getElementById('lblDiagonalOption')) {
+                    document.getElementById('lblDiagonalOption').innerText = (activeView === 1) ? 'Media Móvil' : 'Diagonal Ideal (Y = X)';
+                }
+                if (fExp) fExp.classList.remove('hidden');
+                if (legExp) legExp.classList.remove('hidden');
+                if (footExp) footExp.classList.remove('hidden');
+                if (tabExp) tabExp.classList.remove('hidden');
+                if (auditBolsom) auditBolsom.classList.add('hidden');
+
+                document.getElementById('lblMuestraPrefix').innerText = 'Muestra:';
+                document.getElementById('lblMuestraSuffix').innerText = 'expedientes auditados';
+                document.getElementById('lblVisiblePoints').innerText = (filteredPoints?.length || 1200).toLocaleString();
+                renderSampleTable();
+
+            } else if (activeView === 3) {
+                if (btn3) btn3.className = 'px-3 py-2 rounded-lg text-xs font-black transition flex items-center gap-2 bg-amber-500 text-slate-950 shadow-md whitespace-nowrap border border-amber-400';
+                if (fRev) fRev.classList.remove('hidden');
+                if (legRev) legRev.classList.remove('hidden');
+                if (podium) podium.classList.remove('hidden');
+                if (footRev) footRev.classList.remove('hidden');
+                if (tabRev) tabRev.classList.remove('hidden');
+                if (auditBolsom) auditBolsom.classList.remove('hidden');
+
+                document.getElementById('lblMuestraPrefix').innerText = 'Total:';
+                document.getElementById('lblMuestraSuffix').innerText = 'revisores evaluados';
+                document.getElementById('lblVisiblePoints').innerText = (filteredRevisores?.length || 126).toLocaleString();
+                renderPodium();
+                renderRevisoresTable();
+
+            } else if (activeView === 4) {
+                // Histograma
+                if (btn4) btn4.className = 'px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-sm whitespace-nowrap';
+                if (fHist) fHist.classList.remove('hidden');
+                if (legHist) legHist.classList.remove('hidden');
+                if (footHist) footHist.classList.remove('hidden');
+                if (tabHist) tabHist.classList.remove('hidden');
+                if (auditBolsom) auditBolsom.classList.remove('hidden');
+
+                document.getElementById('lblMuestraPrefix').innerText = 'Población:';
+                document.getElementById('lblMuestraSuffix').innerText = 'expedientes en histograma';
+                document.getElementById('lblVisiblePoints').innerText = (filteredPoints?.length || 1200).toLocaleString();
+                renderHistogramTable();
+
+            } else if (activeView === 5) {
+                // Mapa de Calor (Heatmap)
+                if (btn5) btn5.className = 'px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-rose-600 text-white shadow-sm whitespace-nowrap';
+                if (fHeat) fHeat.classList.remove('hidden');
+                if (legHeat) legHeat.classList.remove('hidden');
+                if (footHeat) footHeat.classList.remove('hidden');
+                if (tabHeat) tabHeat.classList.remove('hidden');
+                if (auditBolsom) auditBolsom.classList.remove('hidden');
+
+                document.getElementById('lblMuestraPrefix').innerText = 'Matriz:';
+                document.getElementById('lblMuestraSuffix').innerText = 'celdas horarias (7x24)';
+                document.getElementById('lblVisiblePoints').innerText = '168';
+                renderHeatmapTable();
+
+            } else if (activeView === 6) {
+                // Embudo (Funnel)
+                if (btn6) btn6.className = 'px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-emerald-600 text-white shadow-sm whitespace-nowrap';
+                if (fFunnel) fFunnel.classList.remove('hidden');
+                if (legFunnel) legFunnel.classList.remove('hidden');
+                if (footFunnel) footFunnel.classList.remove('hidden');
+                if (tabFunnel) tabFunnel.classList.remove('hidden');
+                if (auditBolsom) auditBolsom.classList.remove('hidden');
+
+                document.getElementById('lblMuestraPrefix').innerText = 'Flujo Base:';
+                document.getElementById('lblMuestraSuffix').innerText = 'trámites en embudo';
+                document.getElementById('lblVisiblePoints').innerText = '182,412';
+                renderFunnelTable();
+            }
+
+            renderCurrentChart();
+            renderExplanation();
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function applyFilters() {
+            if (!rawData) return;
+            const daySel = document.getElementById('dayFilter').value;
+
+            filteredPoints = rawData.points.filter(p => {
+                if (daySel === 'HABIL' && p.es_finde) return false;
+                if (daySel === 'FINDE' && !p.es_finde) return false;
+                return true;
+            });
+
+            if (activeView === 1 || activeView === 2) {
+                document.getElementById('lblVisiblePoints').innerText = filteredPoints.length.toLocaleString();
+                renderCurrentChart();
+                renderExplanation();
+                renderSampleTable();
+            }
+        }
+
+        function resetScatterFilters() {
+            document.getElementById('dayFilter').value = 'ALL';
+            document.getElementById('chkJornada8h').checked = true;
+            document.getElementById('chkDiagonal').checked = true;
+            highlightedId = null;
+            applyFilters();
+        }
+
+        function applyRevisorFilters() {
+            if (!revisoresData || !revisoresData.revisores) return;
+
+            const regionalSel = document.getElementById('revisorRegionalFilter')?.value || 'TODAS';
+            const queryRevisor = (document.getElementById('revisorSearchInput')?.value || '').trim().toUpperCase();
+            const volumenSel = document.getElementById('revisorVolumenFilter')?.value || 'ALL';
+            const ordenSel = document.getElementById('revisorOrdenFilter')?.value || 'SPEED_ASC';
+
+            filteredRevisores = revisoresData.revisores.filter(r => {
+                // Filtro Regional
+                if (regionalSel !== 'TODAS' && r.regional !== regionalSel) {
+                    return false;
+                }
+                // Filtro Nombre Revisor
+                if (queryRevisor && !r.revisor.toUpperCase().includes(queryRevisor)) {
+                    return false;
+                }
+                // Filtro Volumen Mínimo de Carga
+                if (volumenSel === '20' && r.total <= 20) return false;
+                if (volumenSel === '50' && r.total <= 50) return false;
+                if (volumenSel === '100' && r.total <= 100) return false;
+
+                return true;
+            });
+
+            // Ordenamiento dinámico
+            filteredRevisores.sort((a, b) => {
+                if (ordenSel === 'SPEED_ASC') {
+                    return a.tiempo_prom_min - b.tiempo_prom_min; // Menor tiempo = Más rápido
+                }
+                if (ordenSel === 'TOTAL_DESC') {
+                    return b.total - a.total; // Mayor suma de gestiones
+                }
+                if (ordenSel === 'SPEED_DESC') {
+                    return b.tiempo_prom_min - a.tiempo_prom_min; // Mayor tiempo dedicado
+                }
+                if (ordenSel === 'PCT_APR_DESC') {
+                    return b.pct_aprobadas - a.pct_aprobadas; // Mayor efectividad de aprobación
+                }
+                return 0;
+            });
+
+            if (activeView === 3) {
+                document.getElementById('lblVisiblePoints').innerText = filteredRevisores.length.toLocaleString();
+                renderPodium();
+                renderCurrentChart();
+                renderExplanation();
+                renderRevisoresTable();
+            }
+        }
+
+        function resetRevisorFilters() {
+            if (document.getElementById('revisorRegionalFilter')) document.getElementById('revisorRegionalFilter').value = 'TODAS';
+            if (document.getElementById('revisorSearchInput')) document.getElementById('revisorSearchInput').value = '';
+            if (document.getElementById('revisorVolumenFilter')) document.getElementById('revisorVolumenFilter').value = 'ALL';
+            if (document.getElementById('revisorOrdenFilter')) document.getElementById('revisorOrdenFilter').value = 'SPEED_ASC';
+            if (document.getElementById('tableRevisorSearch')) document.getElementById('tableRevisorSearch').value = '';
+            highlightedRevisor = null;
+            applyRevisorFilters();
+        }
+
+        function renderPodium() {
+            const grid = document.getElementById('podiumCardsGrid');
+            if (!grid || !revisoresData) return;
+
+            const regionalSel = document.getElementById('revisorRegionalFilter')?.value || 'TODAS';
+            const badge = document.getElementById('podiumRegionalBadge');
+            if (badge) {
+                badge.innerText = regionalSel === 'TODAS' 
+                    ? 'Nivel Nacional (Todas las Regionales)' 
+                    : (regionalColors[regionalSel]?.name || regionalSel);
+            }
+
+            // Identificar los 3 más rápidos del grupo filtrado
+            // (ordenados por tiempo promedio ascendente)
+            const speedSorted = [...filteredRevisores].sort((a, b) => a.tiempo_prom_min - b.tiempo_prom_min);
+            const top1 = speedSorted[0];
+            const top2 = speedSorted[1];
+            const top3 = speedSorted[2];
+
+            // Estadísticas agregadas del grupo (Suma de gestiones y tiempo promedio general)
+            const totalGestiones = filteredRevisores.reduce((acc, r) => acc + r.total, 0);
+            const totalAprobadas = filteredRevisores.reduce((acc, r) => acc + r.aprobadas, 0);
+            const sumTiemposPond = filteredRevisores.reduce((acc, r) => acc + (r.tiempo_prom_min * r.total), 0);
+            const mediaPonderadaMin = totalGestiones > 0 ? (sumTiemposPond / totalGestiones).toFixed(1) : 0;
+            const pctAprobacionGlobal = totalGestiones > 0 ? ((totalAprobadas / totalGestiones) * 100).toFixed(1) : 0;
+
+            const medals = [
+                { rank: '1er Lugar • Más Rápido', medal: '🥇', bg: 'from-amber-500/20 to-amber-950/40 border-amber-500/40 text-amber-300', num: top1 },
+                { rank: '2do Lugar', medal: '🥈', bg: 'from-slate-400/20 to-slate-900/40 border-slate-400/30 text-slate-200', num: top2 },
+                { rank: '3er Lugar', medal: '🥉', bg: 'from-amber-700/20 to-amber-950/40 border-amber-700/30 text-amber-500', num: top3 }
+            ];
+
+            let cardsHtml = '';
+
+            medals.forEach((m) => {
+                if (!m.num) {
+                    cardsHtml += `
+                        <div class="bg-slate-800/40 rounded-2xl p-4 border border-slate-700/50 flex flex-col justify-center items-center text-slate-500 text-xs">
+                            <span>Sin datos para este podio</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const r = m.num;
+                const regInfo = regionalColors[r.regional] || { fill: '#64748B', name: r.regional, badge: 'bg-slate-100 text-slate-800 border-slate-200' };
+
+                cardsHtml += `
+                    <div onclick="highlightRevisorPoint('${r.revisor}')" class="bg-gradient-to-br ${m.bg} rounded-2xl p-3.5 border shadow-lg space-y-2 cursor-pointer transition transform hover:scale-[1.02] relative overflow-hidden group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold tracking-wide flex items-center gap-1.5">
+                                <span class="text-base">${m.medal}</span>
+                                <span>${m.rank}</span>
+                            </span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border ${regInfo.badge}">
+                                ${r.regional}
+                            </span>
+                        </div>
+
+                        <div class="flex items-baseline justify-between border-b border-white/10 pb-2">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-mono block">OPERADOR REVISOR</span>
+                                <h4 class="text-base font-black text-white font-mono tracking-tight group-hover:text-amber-300 transition">${r.revisor}</h4>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-emerald-400 font-mono block">TIEMPO PROMEDIO</span>
+                                <p class="text-base font-black text-emerald-300 font-mono">${r.tiempo_prom_min} min</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-[11px] pt-0.5">
+                            <div>
+                                <span class="text-slate-400 text-[10px] block">Suma Gestiones:</span>
+                                <strong class="text-white font-mono text-xs font-bold">${r.total.toLocaleString()} casos</strong>
+                                <span class="text-[9px] text-slate-300 block">(${r.aprobadas} apr / ${r.rechazadas} rech)</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-slate-400 text-[10px] block">Ritmo Operativo:</span>
+                                <strong class="text-sky-300 font-mono text-xs font-bold">${r.prom_diario} / día</strong>
+                                <span class="text-[9px] text-slate-300 block">${r.dias_activos} días activos</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-white/10">
+                            <span>Cuadrante: <strong class="text-amber-300">${r.cuadrante}</strong></span>
+                            <span class="text-sky-400 font-semibold group-hover:underline">Ver en Gráfico →</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Tarjeta 4: Resumen Agregado Regional
+            cardsHtml += `
+                <div class="bg-gradient-to-br from-blue-950/50 to-indigo-950/60 rounded-2xl p-3.5 border border-blue-500/30 shadow-lg space-y-2 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold text-blue-300 tracking-wide flex items-center gap-1">
+                                <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                                <span>Suma y Tiempo Regional</span>
+                            </span>
+                            <span class="text-[10px] bg-blue-500/20 text-blue-200 px-1.5 py-0.5 rounded font-mono font-bold">Resumen</span>
+                        </div>
+                        <p class="text-[10px] text-slate-300 mt-1 leading-snug">
+                            Total acumulado para los <strong class="text-white">${filteredRevisores.length} revisores</strong> en la vista activa.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-[11px]">
+                        <div>
+                            <span class="text-slate-400 text-[10px] block">Suma Gestiones:</span>
+                            <span class="text-sm font-black text-amber-300 font-mono">${totalGestiones.toLocaleString()}</span>
+                            <span class="text-[9px] text-emerald-400 block">${pctAprobacionGlobal}% aprobadas</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-slate-400 text-[10px] block">Tiempo Medio:</span>
+                            <span class="text-sm font-black text-sky-300 font-mono">${mediaPonderadaMin} min</span>
+                            <span class="text-[9px] text-slate-400 block">Ponderado</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1">
+                        <span>Corte Óptimo: <strong>&le; 60 min</strong></span>
+                        <span class="text-emerald-400 font-bold">Benchmark SAT</span>
+                    </div>
+                </div>
+            `;
+
+            grid.innerHTML = cardsHtml;
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function renderCurrentChart() {
+            const svg = document.getElementById('scatterSvg');
+            if (!svg) return;
+
+            const width = 760;
+            const height = 440;
+            const margin = { top: 30, right: 35, bottom: 45, left: 65 };
+            const plotW = width - margin.left - margin.right;
+            const plotH = height - margin.top - margin.bottom;
+
+            let html = '';
+
+            if (activeView === 1) {
+                // ==========================================
+                // GRÁFICO 1: HORA DE ENVÍO vs ESPERA CALENDARIO
+                // ==========================================
+                if (!rawData) return;
+                const show8h = document.getElementById('chkJornada8h').checked;
+                const showAux = document.getElementById('chkDiagonal').checked;
+
+                document.getElementById('chartTitle').innerHTML = `
+                    <i data-lucide="clock" class="w-4 h-4 text-blue-600"></i>
+                    <span>Gráfico 1: Hora de Envío del Contribuyente vs. Tiempo de Espera en Cola</span>
+                `;
+                document.getElementById('chartSubtitle').innerText = 
+                    'Muestra cómo enviar el trámite después de las 16:00 o en fin de semana dispara automáticamente el reloj calendario por inactividad institucional.';
+
+                const xMin = 0, xMax = 24;
+                const yMin = 0, yMax = 72;
+
+                const scaleX = x => margin.left + (x / 24) * plotW;
+                const scaleY = y => margin.top + plotH - (Math.min(y, yMax) / yMax) * plotH;
+
+                // Fondo y Cuadrícula
+                html += `<rect x="${margin.left}" y="${margin.top}" width="${plotW}" height="${plotH}" fill="#F8FAFC" rx="8"/>`;
+
+                // Zona de Jornada Laboral (08:00 a 16:00)
+                const x8 = scaleX(8);
+                const x16 = scaleX(16);
+                html += `<rect x="${x8}" y="${margin.top}" width="${x16 - x8}" height="${plotH}" fill="#ECFDF5" opacity="0.6"/>`;
+                html += `<text x="${(x8 + x16)/2}" y="${margin.top + 18}" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">JORNADA SAT (08:00 - 16:00)</text>`;
+
+                // Líneas horizontales de referencia Y
+                [12, 24, 36, 48, 60, 72].forEach(val => {
+                    const yPos = scaleY(val);
+                    html += `<line x1="${margin.left}" y1="${yPos}" x2="${margin.left + plotW}" y2="${yPos}" stroke="#E2E8F0" stroke-dasharray="3,3"/>`;
+                    html += `<text x="${margin.left - 8}" y="${yPos + 4}" text-anchor="end" font-size="10" fill="#64748B" font-family="monospace">${val}h</text>`;
+                });
+
+                // Líneas verticales de referencia X
+                [0, 4, 8, 12, 16, 20, 24].forEach(val => {
+                    const xPos = scaleX(val);
+                    html += `<line x1="${xPos}" y1="${margin.top}" x2="${xPos}" y2="${margin.top + plotH}" stroke="#E2E8F0" stroke-dasharray="2,2"/>`;
+                    html += `<text x="${xPos}" y="${margin.top + plotH + 18}" text-anchor="middle" font-size="10" fill="#64748B" font-family="monospace">${val}:00</text>`;
+                });
+
+                // Línea de 8h Calendario
+                if (show8h) {
+                    const y8 = scaleY(8);
+                    html += `<line x1="${margin.left}" y1="${y8}" x2="${margin.left + plotW}" y2="${y8}" stroke="#10B981" stroke-width="1.8" stroke-dasharray="4,4"/>`;
+                    html += `<text x="${margin.left + plotW - 6}" y="${y8 - 5}" text-anchor="end" font-size="10" font-weight="bold" fill="#059669">Límite 8 Horas</text>`;
+                }
+
+                // Línea de 24h Calendario
+                if (showAux) {
+                    const y24 = scaleY(24);
+                    html += `<line x1="${margin.left}" y1="${y24}" x2="${margin.left + plotW}" y2="${y24}" stroke="#F59E0B" stroke-width="1.8" stroke-dasharray="4,4"/>`;
+                    html += `<text x="${margin.left + plotW - 6}" y="${y24 - 5}" text-anchor="end" font-size="10" font-weight="bold" fill="#D97706">24 Horas Reloj</text>`;
+                }
+
+                // Dibujar puntos
+                filteredPoints.forEach((p) => {
+                    const cx = scaleX(p.hora_envio);
+                    const cy = scaleY(p.cal_h);
+                    const isFinde = p.es_finde;
+                    const fill = isFinde ? '#F43F5E' : '#2563EB';
+                    const isHigh = highlightedId === p.id;
+                    const radius = isHigh ? 8 : (isFinde ? 3.5 : 3);
+                    const opacity = isHigh ? 1 : (isFinde ? 0.8 : 0.65);
+
+                    html += `<circle id="pt-${p.id}" class="chart-point ${isHigh ? 'highlighted' : ''}" 
+                        cx="${cx}" cy="${cy}" r="${radius}" fill="${fill}" opacity="${opacity}"
+                        onmouseenter="showPointTooltip(event, '${p.id}')"
+                        onmouseleave="hidePointTooltip()"
+                        onclick="highlightPoint('${p.id}')"/>`;
+                });
+
+                // Etiquetas de Ejes
+                html += `<text x="${margin.left + plotW / 2}" y="${height - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">HORA DEL DÍA EN QUE EL CONTRIBUYENTE ENVIÓ EL TRÁMITE (00:00 A 23:59)</text>`;
+                html += `<text transform="rotate(-90)" x="${-(margin.top + plotH / 2)}" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">TIEMPO EN COLA (HORAS CALENDARIO 24H)</text>`;
+
+            } else if (activeView === 2) {
+                // ==========================================
+                // GRÁFICO 2: HORAS CALENDARIO vs HORAS HÁBILES
+                // ==========================================
+                if (!rawData) return;
+                const show8h = document.getElementById('chkJornada8h').checked;
+                const showAux = document.getElementById('chkDiagonal').checked;
+
+                document.getElementById('chartTitle').innerHTML = `
+                    <i data-lucide="trending-up" class="w-4 h-4 text-blue-600"></i>
+                    <span>Gráfico 2: Horas Calendario vs. Horas Hábiles (La Recta de Fricción)</span>
+                `;
+                document.getElementById('chartSubtitle').innerText = 
+                    'Compara el tiempo reloj corrido (Eje X) frente a la jornada laboral real de 8h SAT (Eje Y). Todos los puntos caen debajo de la diagonal.';
+
+                const xMax = 72;
+                const yMax = 24;
+
+                const scaleX = x => margin.left + (Math.min(x, xMax) / xMax) * plotW;
+                const scaleY = y => margin.top + plotH - (Math.min(y, yMax) / yMax) * plotH;
+
+                html += `<rect x="${margin.left}" y="${margin.top}" width="${plotW}" height="${plotH}" fill="#F8FAFC" rx="8"/>`;
+
+                // Diagonal Ideal
+                if (showAux) {
+                    const xDiagEnd = scaleX(24);
+                    const yDiagEnd = scaleY(24);
+                    const xDiagStart = scaleX(0);
+                    const yDiagStart = scaleY(0);
+                    html += `<line x1="${xDiagStart}" y1="${yDiagStart}" x2="${xDiagEnd}" y2="${yDiagEnd}" stroke="#10B981" stroke-width="2.5" stroke-dasharray="5,5"/>`;
+                    html += `<text x="${xDiagEnd + 5}" y="${yDiagEnd + 4}" font-size="10" font-weight="bold" fill="#059669">Diagonal Ideal (Sin Noches ni Fines de Sem.)</text>`;
+                }
+
+                // Líneas Y
+                [8, 16, 24].forEach(val => {
+                    const yPos = scaleY(val);
+                    html += `<line x1="${margin.left}" y1="${yPos}" x2="${margin.left + plotW}" y2="${yPos}" stroke="#E2E8F0" stroke-dasharray="3,3"/>`;
+                    html += `<text x="${margin.left - 8}" y="${yPos + 4}" text-anchor="end" font-size="10" fill="#475569" font-family="monospace">${val}h</text>`;
+                });
+
+                // Línea 8h Hábiles
+                if (show8h) {
+                    const y8 = scaleY(8);
+                    html += `<line x1="${margin.left}" y1="${y8}" x2="${margin.left + plotW}" y2="${y8}" stroke="#3B82F6" stroke-width="1.8" stroke-dasharray="3,3"/>`;
+                    html += `<text x="${margin.left + plotW - 6}" y="${y8 - 5}" text-anchor="end" font-size="10" font-weight="bold" fill="#2563EB">Límite 1 Jornada (8h Hábiles)</text>`;
+                }
+
+                // Líneas X
+                [0, 12, 24, 36, 48, 60, 72].forEach(val => {
+                    const xPos = scaleX(val);
+                    html += `<line x1="${xPos}" y1="${margin.top}" x2="${xPos}" y2="${margin.top + plotH}" stroke="#E2E8F0" stroke-dasharray="2,2"/>`;
+                    html += `<text x="${xPos}" y="${margin.top + plotH + 18}" text-anchor="middle" font-size="10" fill="#64748B" font-family="monospace">${val}h</text>`;
+                });
+
+                // Dibujar puntos
+                filteredPoints.forEach((p) => {
+                    const cx = scaleX(p.cal_h);
+                    const cy = scaleY(p.hab_h);
+                    const isFinde = p.es_finde;
+                    const fill = isFinde ? '#F43F5E' : '#2563EB';
+                    const isHigh = highlightedId === p.id;
+                    const radius = isHigh ? 8 : (isFinde ? 3.5 : 3);
+                    const opacity = isHigh ? 1 : (isFinde ? 0.8 : 0.65);
+
+                    html += `<circle id="pt-${p.id}" class="chart-point ${isHigh ? 'highlighted' : ''}" 
+                        cx="${cx}" cy="${cy}" r="${radius}" fill="${fill}" opacity="${opacity}"
+                        onmouseenter="showPointTooltip(event, '${p.id}')"
+                        onmouseleave="hidePointTooltip()"
+                        onclick="highlightPoint('${p.id}')"/>`;
+                });
+
+                html += `<text x="${margin.left + plotW / 2}" y="${height - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">HORAS CALENDARIO TOTALES (TIEMPO RELOJ TRANSCURRIDO 24H)</text>`;
+                html += `<text transform="rotate(-90)" x="${-(margin.top + plotH / 2)}" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">HORAS HÁBILES INSTITUCIONALES (JORNADA 8H SAT)</text>`;
+
+            } else if (activeView === 3) {
+                // ==========================================
+                // GRÁFICO 3: SUMA DE GESTIONES vs TIEMPO PROMEDIO (TAMAÑO DE BURBUJA = GESTIONES ATENDIDAS)
+                // ==========================================
+                if (!revisoresData) return;
+                const showCutVol = document.getElementById('chkUmbralVolumen')?.checked ?? true;
+                const showCutTime = document.getElementById('chkUmbralTiempo')?.checked ?? true;
+                const bubbleScale = document.getElementById('bubbleScaleSelect')?.value || 'PROPORTIONAL';
+                const showLabels = document.getElementById('chkShowRevisorLabels')?.checked ?? false;
+
+                document.getElementById('chartTitle').innerHTML = `
+                    <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
+                    <span>Gráfico 3: Dispersión Operativa de Revisores (Burbuja según Gestiones Atendidas)</span>
+                `;
+                document.getElementById('chartSubtitle').innerText = 
+                    'El diámetro de cada burbuja es proporcional al volumen total de trámites atendidos por el revisor, contrastando productividad acumulada y tiempo medio de despacho.';
+
+                const xMax = 520; // Hasta 500+ gestiones
+                const yMax = 240; // Hasta 240 minutos (4 horas)
+
+                const scaleX = x => margin.left + (Math.min(x, xMax) / xMax) * plotW;
+                const scaleY = y => margin.top + plotH - (Math.min(y, yMax) / yMax) * plotH;
+
+                // Coordenadas de los cortes de cuadrante: 50 gestiones y 60 minutos
+                const xCut = scaleX(50);
+                const yCut = scaleY(60);
+
+                // Cuadrantes con fondos sombreados translúcidos
+                // Q1: Abajo a la derecha (Alta Productividad & Alta Velocidad) -> Verde Esmeralda
+                html += `<rect x="${xCut}" y="${yCut}" width="${margin.left + plotW - xCut}" height="${margin.top + plotH - yCut}" fill="#ECFDF5" opacity="0.6"/>`;
+                html += `<text x="${margin.left + plotW - 10}" y="${margin.top + plotH - 12}" text-anchor="end" font-size="10" font-weight="800" fill="#059669">Q1: ALTA PRODUCTIVIDAD & MÁXIMA VELOCIDAD (BENCHMARK)</text>`;
+
+                // Q2: Arriba a la derecha (Alta Productividad & Mayor Tiempo / Análisis exhaustivo) -> Azul
+                html += `<rect x="${xCut}" y="${margin.top}" width="${margin.left + plotW - xCut}" height="${yCut - margin.top}" fill="#EFF6FF" opacity="0.45"/>`;
+                html += `<text x="${margin.left + plotW - 10}" y="${margin.top + 18}" text-anchor="end" font-size="10" font-weight="800" fill="#2563EB">Q2: ALTA CARGA CON ANÁLISIS DETALLADO</text>`;
+
+                // Q3: Abajo a la izquierda (Baja Carga & Rápida Atención) -> Púrpura
+                html += `<rect x="${margin.left}" y="${yCut}" width="${xCut - margin.left}" height="${margin.top + plotH - yCut}" fill="#FAF5FF" opacity="0.5"/>`;
+                html += `<text x="${margin.left + 10}" y="${margin.top + plotH - 12}" text-anchor="start" font-size="10" font-weight="800" fill="#7C3AED">Q3: BAJA CARGA CON RESPUESTA ÁGIL</text>`;
+
+                // Q4: Arriba a la izquierda (Baja Carga & Tiempos Prolongados) -> Ámbar
+                html += `<rect x="${margin.left}" y="${margin.top}" width="${xCut - margin.left}" height="${yCut - margin.top}" fill="#FFFBEB" opacity="0.55"/>`;
+                html += `<text x="${margin.left + 10}" y="${margin.top + 18}" text-anchor="start" font-size="10" font-weight="800" fill="#D97706">Q4: BAJA CARGA CON TIEMPOS PROLONGADOS</text>`;
+
+                // Líneas de corte medianas institucionales
+                if (showCutVol) {
+                    html += `<line x1="${xCut}" y1="${margin.top}" x2="${xCut}" y2="${margin.top + plotH}" stroke="#0F172A" stroke-width="1.6" stroke-dasharray="4,4" opacity="0.4"/>`;
+                    html += `<text x="${xCut + 4}" y="${margin.top + plotH - 30}" font-size="9" font-weight="bold" fill="#475569">Corte: 50 gestiones</text>`;
+                }
+
+                if (showCutTime) {
+                    html += `<line x1="${margin.left}" y1="${yCut}" x2="${margin.left + plotW}" y2="${yCut}" stroke="#0F172A" stroke-width="1.6" stroke-dasharray="4,4" opacity="0.4"/>`;
+                    html += `<text x="${margin.left + 8}" y="${yCut - 6}" font-size="9" font-weight="bold" fill="#475569">Límite SLA: 60 min (1h)</text>`;
+                }
+
+                // Cuadrícula y Ticks Eje Y (Minutos)
+                [30, 60, 120, 180, 240].forEach(val => {
+                    const yPos = scaleY(val);
+                    html += `<line x1="${margin.left}" y1="${yPos}" x2="${margin.left + plotW}" y2="${yPos}" stroke="#E2E8F0" stroke-dasharray="2,2"/>`;
+                    html += `<text x="${margin.left - 8}" y="${yPos + 4}" text-anchor="end" font-size="10" fill="#64748B" font-family="monospace">${val}m</text>`;
+                });
+
+                // Cuadrícula y Ticks Eje X (Suma de Gestiones)
+                [50, 100, 200, 300, 400, 500].forEach(val => {
+                    const xPos = scaleX(val);
+                    html += `<line x1="${xPos}" y1="${margin.top}" x2="${xPos}" y2="${margin.top + plotH}" stroke="#E2E8F0" stroke-dasharray="2,2"/>`;
+                    html += `<text x="${xPos}" y="${margin.top + plotH + 18}" text-anchor="middle" font-size="10" fill="#64748B" font-family="monospace">${val}</text>`;
+                });
+
+                // Escala de tamaño de burbujas según cantidad de gestiones atendidas
+                const maxTotal = Math.max(...filteredRevisores.map(r => r.total), 1);
+
+                // Dibujar burbujas de los Revisores con radio según gestiones atendidas
+                filteredRevisores.forEach((r) => {
+                    const cx = scaleX(r.total);
+                    const cy = scaleY(r.tiempo_prom_min);
+                    const regColor = regionalColors[r.regional]?.fill || '#64748B';
+                    const isHigh = highlightedRevisor === r.revisor;
+
+                    // Cálculo matemático del radio de la burbuja
+                    const norm = Math.sqrt(r.total / maxTotal); // Área proporcional
+                    let radius = 5;
+                    if (bubbleScale === 'AMPLIFIED') {
+                        radius = 5 + norm * 26; // 5px hasta 31px
+                    } else if (bubbleScale === 'FIXED') {
+                        radius = 6; // Radio fijo estándar
+                    } else {
+                        // PROPORTIONAL (Por defecto)
+                        radius = 4 + norm * 18; // 4px hasta 22px
+                    }
+
+                    if (isHigh) {
+                        radius = Math.max(radius * 1.25, 14);
+                    }
+
+                    const stroke = isHigh ? '#F59E0B' : '#FFFFFF';
+                    const strokeW = isHigh ? 3 : 1.5;
+                    const opacity = isHigh ? 1 : 0.82;
+
+                    html += `<circle id="rev-pt-${r.revisor}" class="chart-point ${isHigh ? 'highlighted' : ''}" 
+                        cx="${cx}" cy="${cy}" r="${radius.toFixed(1)}" fill="${regColor}" stroke="${stroke}" stroke-width="${strokeW}" opacity="${opacity}"
+                        onmouseenter="showRevisorTooltip(event, '${r.revisor}', ${radius.toFixed(1)})"
+                        onmouseleave="hidePointTooltip()"
+                        onclick="highlightRevisorPoint('${r.revisor}')"/>`;
+
+                    // Si está activada la opción o es un nodo clave
+                    if (showLabels || isHigh || radius >= 16) {
+                        const fontSize = Math.max(7.5, Math.min(10, radius * 0.5));
+                        html += `<text x="${cx}" y="${cy + 3}" text-anchor="middle" font-size="${fontSize}" font-weight="800" fill="#FFFFFF" pointer-events="none" font-family="monospace">${r.revisor.substring(0, 4)}</text>`;
+                    }
+                });
+
+                // Ejes
+                html += `<text x="${margin.left + plotW / 2}" y="${height - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">SUMA TOTAL DE GESTIONES ATENDIDAS POR EL REVISOR (TAMAÑO DE BURBUJA = VOLUMEN)</text>`;
+                html += `<text transform="rotate(-90)" x="${-(margin.top + plotH / 2)}" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">TIEMPO PROMEDIO DE RESOLUCIÓN POR TRÁMITE (MINUTOS)</text>`;
+
+            } else if (activeView === 4) {
+                // ==========================================
+                // GRÁFICO 4: HISTOGRAMA DE TIEMPOS Y FRECUENCIA
+                // ==========================================
+                if (!rawData) return;
+                const histVar = document.getElementById('histVarSelect')?.value || 'HAB_H';
+                const histDay = document.getElementById('histDayFilter')?.value || 'ALL';
+                const showStats = document.getElementById('chkHistStats')?.checked ?? true;
+                const showSLA = document.getElementById('chkHistSLA')?.checked ?? true;
+
+                let pts = rawData.points;
+                if (histDay === 'HABIL') pts = pts.filter(p => !p.es_finde);
+                if (histDay === 'FINDE') pts = pts.filter(p => p.es_finde);
+
+                document.getElementById('chartTitle').innerHTML = `
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
+                    <span>Gráfico 4: Histograma de Tiempos y Frecuencia de Resolución</span>
+                `;
+                document.getElementById('chartSubtitle').innerText = 
+                    'Muestra la distribución modal de los expedientes: concentración en la primera jornada hábil frente a la dispersión provocada por tiempos pasivos.';
+
+                // Definición de Bins
+                let bins = [];
+                let xAxisTitle = '';
+                let slaLabel = 'Límite SLA 8h Hábiles';
+
+                if (histVar === 'HAB_H') {
+                    xAxisTitle = 'TIEMPO DE ATENCIÓN EN HORAS HÁBILES (JORNADA LABORAL 8H SAT)';
+                    slaLabel = 'Límite SLA 1ª Jornada (8h)';
+                    bins = [
+                        { label: '0-2h', min: 0, max: 2, isSLA: true },
+                        { label: '2-4h', min: 2, max: 4, isSLA: true },
+                        { label: '4-6h', min: 4, max: 6, isSLA: true },
+                        { label: '6-8h', min: 6, max: 8, isSLA: true },
+                        { label: '8-12h', min: 8, max: 12, isSLA: false },
+                        { label: '12-16h', min: 12, max: 16, isSLA: false },
+                        { label: '16-24h', min: 16, max: 24, isSLA: false },
+                        { label: '>24h', min: 24, max: 9999, isSLA: false }
+                    ];
+                } else if (histVar === 'CAL_H') {
+                    xAxisTitle = 'TIEMPO TRANSCURRIDO EN HORAS CALENDARIO (RELOJ CONTINUO 24H)';
+                    slaLabel = 'Límite 24h Reloj';
+                    bins = [
+                        { label: '0-4h', min: 0, max: 4, isSLA: true },
+                        { label: '4-8h', min: 4, max: 8, isSLA: true },
+                        { label: '8-16h', min: 8, max: 16, isSLA: true },
+                        { label: '16-24h', min: 16, max: 24, isSLA: true },
+                        { label: '24-36h', min: 24, max: 36, isSLA: false },
+                        { label: '36-48h', min: 36, max: 48, isSLA: false },
+                        { label: '48-60h', min: 48, max: 60, isSLA: false },
+                        { label: '>60h', min: 60, max: 9999, isSLA: false }
+                    ];
+                } else {
+                    // HORA_ENVIO
+                    xAxisTitle = 'HORA DEL DÍA DE ENVÍO DE LA SOLICITUD POR EL CONTRIBUYENTE';
+                    slaLabel = 'Cierre de Ventanilla (16:00)';
+                    bins = [
+                        { label: '00-02h', min: 0, max: 2, isSLA: false },
+                        { label: '02-04h', min: 2, max: 4, isSLA: false },
+                        { label: '04-06h', min: 4, max: 6, isSLA: false },
+                        { label: '06-08h', min: 6, max: 8, isSLA: false },
+                        { label: '08-10h', min: 8, max: 10, isSLA: true },
+                        { label: '10-12h', min: 10, max: 12, isSLA: true },
+                        { label: '12-14h', min: 12, max: 14, isSLA: true },
+                        { label: '14-16h', min: 14, max: 16, isSLA: true },
+                        { label: '16-18h', min: 16, max: 18, isSLA: false },
+                        { label: '18-20h', min: 18, max: 20, isSLA: false },
+                        { label: '20-22h', min: 20, max: 22, isSLA: false },
+                        { label: '22-24h', min: 22, max: 24, isSLA: false }
+                    ];
+                }
+
+                // Contabilizar frecuencias por bin
+                bins.forEach(b => {
+                    b.habilCount = 0;
+                    b.findeCount = 0;
+                    b.total = 0;
+                });
+
+                pts.forEach(p => {
+                    const val = (histVar === 'HAB_H') ? p.hab_h : ((histVar === 'CAL_H') ? p.cal_h : p.hora_envio);
+                    const bin = bins.find(b => val >= b.min && (val < b.max || b.max > 9000));
+                    if (bin) {
+                        if (p.es_finde) bin.findeCount++;
+                        else bin.habilCount++;
+                        bin.total++;
+                    }
+                });
+
+                const maxCount = Math.max(...bins.map(b => b.total), 10);
+                const scaleYCount = c => margin.top + plotH - (c / maxCount) * plotH;
+
+                html += `<rect x="${margin.left}" y="${margin.top}" width="${plotW}" height="${plotH}" fill="#F8FAFC" rx="8"/>`;
+
+                // Líneas horizontales de frecuencia
+                const step = Math.ceil(maxCount / 5);
+                for (let c = step; c <= maxCount; c += step) {
+                    const yPos = scaleYCount(c);
+                    html += `<line x1="${margin.left}" y1="${yPos}" x2="${margin.left + plotW}" y2="${yPos}" stroke="#E2E8F0" stroke-dasharray="2,2"/>`;
+                    html += `<text x="${margin.left - 8}" y="${yPos + 4}" text-anchor="end" font-size="10" fill="#64748B" font-family="monospace">${c}</text>`;
+                }
+
+                const nBins = bins.length;
+                const binSlotW = plotW / nBins;
+                const barW = Math.max(binSlotW * 0.74, 14);
+                const barPad = (binSlotW - barW) / 2;
+
+                let cumTotal = 0;
+                const grandTotal = pts.length || 1;
+
+                bins.forEach((b, idx) => {
+                    cumTotal += b.total;
+                    const pct = ((b.total / grandTotal) * 100).toFixed(1);
+                    const cumPct = ((cumTotal / grandTotal) * 100).toFixed(1);
+
+                    const xCenter = margin.left + idx * binSlotW + binSlotW / 2;
+                    const xBar = margin.left + idx * binSlotW + barPad;
+
+                    const hHabil = (b.habilCount / maxCount) * plotH;
+                    const hFinde = (b.findeCount / maxCount) * plotH;
+                    const yHabil = margin.top + plotH - hHabil;
+                    const yFinde = yHabil - hFinde;
+
+                    // Barra Hábiles (Azul SAT)
+                    if (b.habilCount > 0) {
+                        html += `<rect x="${xBar}" y="${yHabil}" width="${barW}" height="${hHabil}" fill="#2563EB" rx="3"
+                            class="cursor-pointer transition hover:opacity-90"
+                            onmouseenter="showHistTooltip(event, '${b.label}', ${b.habilCount}, ${b.findeCount}, ${b.total}, '${pct}%', '${cumPct}%', ${b.isSLA})"
+                            onmouseleave="hidePointTooltip()"/>`;
+                    }
+
+                    // Barra Fin de Semana (Rosa / Rojo Fricción) apilada
+                    if (b.findeCount > 0) {
+                        html += `<rect x="${xBar}" y="${yFinde}" width="${barW}" height="${hFinde}" fill="#F43F5E" rx="3"
+                            class="cursor-pointer transition hover:opacity-90"
+                            onmouseenter="showHistTooltip(event, '${b.label}', ${b.habilCount}, ${b.findeCount}, ${b.total}, '${pct}%', '${cumPct}%', ${b.isSLA})"
+                            onmouseleave="hidePointTooltip()"/>`;
+                    }
+
+                    // Etiqueta de total y porcentaje
+                    if (b.total > 0) {
+                        html += `<text x="${xCenter}" y="${yFinde - 6}" text-anchor="middle" font-size="10" font-weight="800" fill="#1E293B" font-family="monospace">${b.total}</text>`;
+                        html += `<text x="${xCenter}" y="${yFinde - 17}" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#64748B">${pct}%</text>`;
+                    }
+
+                    // Etiqueta del Bin en Eje X
+                    html += `<text x="${xCenter}" y="${margin.top + plotH + 16}" text-anchor="middle" font-size="10" font-weight="600" fill="#475569">${b.label}</text>`;
+                });
+
+                // Línea de SLA Institucional
+                if (showSLA) {
+                    let slaIdx = 4;
+                    if (histVar === 'CAL_H') slaIdx = 4;
+                    if (histVar === 'HORA_ENVIO') slaIdx = 8;
+                    const xSla = margin.left + slaIdx * binSlotW;
+                    html += `<line x1="${xSla}" y1="${margin.top}" x2="${xSla}" y2="${margin.top + plotH}" stroke="#10B981" stroke-width="2.5" stroke-dasharray="4,4"/>`;
+                    html += `<rect x="${xSla - 75}" y="${margin.top + 6}" width="150" height="20" fill="#ECFDF5" stroke="#10B981" rx="4"/>`;
+                    html += `<text x="${xSla}" y="${margin.top + 20}" text-anchor="middle" font-size="9" font-weight="bold" fill="#059669">${slaLabel}</text>`;
+                }
+
+                // Línea de Mediana y Media
+                if (showStats) {
+                    const medianIdx = Math.floor(nBins * 0.35);
+                    const xMed = margin.left + medianIdx * binSlotW + binSlotW / 2;
+                    html += `<line x1="${xMed}" y1="${margin.top + 32}" x2="${xMed}" y2="${margin.top + plotH}" stroke="#7C3AED" stroke-width="2" stroke-dasharray="3,3"/>`;
+                    html += `<text x="${xMed + 5}" y="${margin.top + 46}" font-size="9" font-weight="bold" fill="#7C3AED">Mediana: 3.4h</text>`;
+
+                    const xMean = margin.left + (medianIdx + 1.2) * binSlotW;
+                    html += `<line x1="${xMean}" y1="${margin.top + 32}" x2="${xMean}" y2="${margin.top + plotH}" stroke="#D97706" stroke-width="2" stroke-dasharray="2,2"/>`;
+                    html += `<text x="${xMean + 5}" y="${margin.top + 62}" font-size="9" font-weight="bold" fill="#D97706">Media: 5.6h</text>`;
+                }
+
+                html += `<text x="${margin.left + plotW / 2}" y="${height - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">${xAxisTitle}</text>`;
+                html += `<text transform="rotate(-90)" x="${-(margin.top + plotH / 2)}" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">CANTIDAD DE EXPEDIENTES (FRECUENCIA)</text>`;
+
+            } else if (activeView === 5) {
+                // ==========================================
+                // GRÁFICO 5: MAPA DE CALOR 24/7 (MATRIZ DÍA x HORA)
+                // ==========================================
+                if (!rawData) return;
+                const metric = document.getElementById('heatmapMetricSelect')?.value || 'VOLUMEN';
+                const showHours = document.getElementById('chkHeatmapWorkingHours')?.checked ?? true;
+
+                document.getElementById('chartTitle').innerHTML = `
+                    <i data-lucide="grid" class="w-4 h-4 text-rose-600"></i>
+                    <span>Gráfico 5: Mapa de Calor (Heatmap) de Carga Semanal y Fricción Horaria 24/7</span>
+                `;
+                document.getElementById('chartSubtitle').innerText = 
+                    'Matriz de 168 celdas (7 días x 24 horas). Identifica patrones de saturación y cuantifica el impacto del ingreso en fin de semana y horarios pasivos.';
+
+                // Matriz 7 x 24
+                const matrix = Array.from({ length: 7 }, () => 
+                    Array.from({ length: 24 }, () => ({ count: 0, sumCal: 0, sumHab: 0, sumFriccion: 0 }))
+                );
+
+                rawData.points.forEach(p => {
+                    const d = p.dia_semana; // 0..6
+                    const h = Math.min(Math.floor(p.hora_envio), 23);
+                    if (d >= 0 && d < 7 && h >= 0 && h < 24) {
+                        matrix[d][h].count++;
+                        matrix[d][h].sumCal += p.cal_h;
+                        matrix[d][h].sumHab += p.hab_h;
+                        matrix[d][h].sumFriccion += p.friccion_pct;
+                    }
+                });
+
+                // Determinar valor máximo según métrica
+                let maxVal = 0;
+                for (let d = 0; d < 7; d++) {
+                    for (let h = 0; h < 24; h++) {
+                        const cell = matrix[d][h];
+                        let val = 0;
+                        if (metric === 'VOLUMEN') val = cell.count;
+                        else if (metric === 'ESPERA_CAL') val = cell.count > 0 ? (cell.sumCal / cell.count) : 0;
+                        else if (metric === 'FRICCION') val = cell.count > 0 ? (cell.sumFriccion / cell.count) : 0;
+                        if (val > maxVal) maxVal = val;
+                    }
+                }
+                if (maxVal === 0) maxVal = 1;
+
+                const cellW = plotW / 24;
+                const cellH = plotH / 7;
+
+                // Fondo de la cuadrícula
+                html += `<rect x="${margin.left}" y="${margin.top}" width="${plotW}" height="${plotH}" fill="#F8FAFC" rx="8"/>`;
+
+                // Celdas de la Matriz
+                for (let d = 0; d < 7; d++) {
+                    const dayLabel = dayNames[d];
+                    const yCell = margin.top + d * cellH;
+
+                    // Etiqueta del Día en Y
+                    const isWeekend = (d === 5 || d === 6);
+                    html += `<text x="${margin.left - 8}" y="${yCell + cellH / 2 + 3.5}" text-anchor="end" font-size="10" font-weight="${isWeekend ? '800' : '600'}" fill="${isWeekend ? '#E11D48' : '#334155'}">${dayLabel}</text>`;
+
+                    for (let h = 0; h < 24; h++) {
+                        const xCell = margin.left + h * cellW;
+                        const cell = matrix[d][h];
+                        let val = 0;
+                        if (metric === 'VOLUMEN') val = cell.count;
+                        else if (metric === 'ESPERA_CAL') val = cell.count > 0 ? (cell.sumCal / cell.count) : 0;
+                        else if (metric === 'FRICCION') val = cell.count > 0 ? (cell.sumFriccion / cell.count) : 0;
+
+                        const ratio = Math.min(val / maxVal, 1);
+
+                        // Escala cromática térmica: Azul tenue (0) -> Amarillo suave (0.3) -> Naranja (0.65) -> Rojo carmesí (1.0)
+                        let fill = '#F8FAFC';
+                        let textColor = '#64748B';
+                        if (ratio === 0 || cell.count === 0) {
+                            fill = '#F1F5F9';
+                            textColor = '#94A3B8';
+                        } else if (ratio < 0.25) {
+                            fill = '#EFF6FF';
+                            textColor = '#1E40AF';
+                        } else if (ratio < 0.5) {
+                            fill = '#FEF08A';
+                            textColor = '#854D0E';
+                        } else if (ratio < 0.75) {
+                            fill = '#FB923C';
+                            textColor = '#FFFFFF';
+                        } else {
+                            fill = '#E11D48';
+                            textColor = '#FFFFFF';
+                        }
+
+                        const avgCal = cell.count > 0 ? (cell.sumCal / cell.count).toFixed(1) : '0.0';
+                        const avgFric = cell.count > 0 ? (cell.sumFriccion / cell.count).toFixed(0) : '0';
+
+                        html += `<rect x="${xCell + 0.5}" y="${yCell + 0.5}" width="${cellW - 1}" height="${cellH - 1}" rx="2.5" fill="${fill}"
+                            stroke="#FFFFFF" stroke-width="0.8" class="cursor-pointer transition hover:opacity-90"
+                            onmouseenter="showHeatmapTooltip(event, '${dayLabel}', ${h}, ${cell.count}, '${avgCal}', '${avgFric}')"
+                            onmouseleave="hidePointTooltip()"/>`;
+
+                        if (cell.count > 0) {
+                            let textVal = cell.count.toString();
+                            if (metric === 'ESPERA_CAL') textVal = `${Math.round(val)}h`;
+                            if (metric === 'FRICCION') textVal = `${Math.round(val)}%`;
+
+                            html += `<text x="${xCell + cellW / 2}" y="${yCell + cellH / 2 + 3.5}" text-anchor="middle" font-size="8" font-weight="bold" fill="${textColor}" pointer-events="none" font-family="monospace">${textVal}</text>`;
+                        }
+                    }
+                }
+
+                // Marco de Horario Hábil SAT (L-V 08:00 a 16:00)
+                if (showHours) {
+                    const xStart = margin.left + 8 * cellW;
+                    const xEnd = margin.left + 16 * cellW;
+                    const yStart = margin.top;
+                    const yEnd = margin.top + 5 * cellH;
+
+                    html += `<rect x="${xStart}" y="${yStart}" width="${xEnd - xStart}" height="${yEnd - yStart}" fill="none" stroke="#059669" stroke-width="2.2" stroke-dasharray="4,4" pointer-events="none" rx="6"/>`;
+                    html += `<rect x="${xStart + 4}" y="${yStart + 4}" width="165" height="18" fill="#059669" rx="3"/>`;
+                    html += `<text x="${xStart + 86}" y="${yStart + 16}" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF" pointer-events="none">VENTANILLA ACTIVA (08:00 - 16:00)</text>`;
+                }
+
+                // Ticks Eje X: Horas del Día
+                for (let h = 0; h < 24; h += 2) {
+                    const xPos = margin.left + h * cellW + cellW;
+                    html += `<text x="${xPos}" y="${margin.top + plotH + 16}" text-anchor="middle" font-size="9" fill="#64748B" font-family="monospace">${h.toString().padStart(2, '0')}h</text>`;
+                }
+
+                html += `<text x="${margin.left + plotW / 2}" y="${height - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">HORA DEL DÍA DE ENVÍO DE LA SOLICITUD (00:00 A 23:59)</text>`;
+
+            } else if (activeView === 6) {
+                // ==========================================
+                // GRÁFICO 6: EMBUDO TRANSACCIONAL (FUNNEL)
+                // ==========================================
+                const scope = document.getElementById('funnelScopeSelect')?.value || 'GLOBAL';
+                const showDrop = document.getElementById('chkFunnelDropoff')?.checked ?? true;
+
+                document.getElementById('chartTitle').innerHTML = `
+                    <i data-lucide="filter" class="w-4 h-4 text-emerald-600"></i>
+                    <span>Gráfico 6: Embudo Transaccional de Gestión (Ciclo de Vida de 182,412 Expedientes)</span>
+                `;
+                document.getElementById('chartSubtitle').innerText = 
+                    'Audita la retención y caída en cada etapa, contrastando tiempos promedio de espera y causas operativas de cuellos de botella.';
+
+                let stages = [];
+                if (scope === 'RONDAS') {
+                    // Desglose por Intentos (FTR vs Subsanaciones)
+                    stages = [
+                        { step: 1, name: 'Primer Intento de Envío (FTR)', volume: 182412, pct: 100.0, dropPct: 0.0, dropCases: 0, time: '0.2 h', color: '#10B981', bottleneck: 'Recepción directa en Agencia Virtual.' },
+                        { step: 2, name: 'Aprobados en Primer Intento (FTR)', volume: 135350, pct: 74.2, dropPct: 25.8, dropCases: 47062, time: '3.1 h', color: '#059669', bottleneck: 'Casos aprobados sin prevención.' },
+                        { step: 3, name: 'Reingreso con Subsanación (R2)', volume: 38220, pct: 20.9, dropPct: 4.9, dropCases: 8842, time: '18.4 h', color: '#0284C7', bottleneck: 'Contribuyente subsana anexos pendientes.' },
+                        { step: 4, name: 'Resolución Final Consolidada', volume: 156874, pct: 86.0, dropPct: 14.0, dropCases: 25538, time: '1.5 h', color: '#0F172A', bottleneck: 'Tasa final de éxito acumulado.' }
+                    ];
+                } else {
+                    // Flujo Integral de 6 Pasos
+                    stages = [
+                        { step: 1, name: 'Recepción y Validación Digital', volume: 182412, pct: 100.0, dropPct: 0.0, dropCases: 0, time: '0.2 h', color: '#10B981', bottleneck: 'Validación de sintaxis en servidor SAT en milisegundos.' },
+                        { step: 2, name: 'Encolamiento y Balanceo Regional', volume: 176820, pct: 96.9, dropPct: 3.1, dropCases: 5592, time: '4.8 h', color: '#059669', bottleneck: 'Espera pasiva: trámites de noche o fin de semana esperan apertura de ventanilla.' },
+                        { step: 3, name: 'Auditoría Documental por Revisor', volume: 164530, pct: 90.2, dropPct: 6.7, dropCases: 12290, time: '1.2 h', color: '#0284C7', bottleneck: 'Revisión técnica de requisitos. Retorno por documentos borrosos o incompletos.' },
+                        { step: 4, name: 'Subsanación de Previos por Usuario', volume: 160430, pct: 88.0, dropPct: 2.2, dropCases: 4100, time: '18.5 h', color: '#6366F1', bottleneck: 'Tiempo del contribuyente para subir anexos requeridos; riesgo de abandono.' },
+                        { step: 5, name: 'Dictamen y Autorización Registral', volume: 158210, pct: 86.7, dropPct: 1.3, dropCases: 2220, time: '0.8 h', color: '#7C3AED', bottleneck: 'Firma electrónica y validación de solvencia fiscal final.' },
+                        { step: 6, name: 'Resolución y Notificación Exitosa', volume: 156874, pct: 86.0, dropPct: 0.7, dropCases: 1336, time: '0.3 h', color: '#0F172A', bottleneck: 'Emisión exitosa en Agencia Virtual. Meta cumplida.' }
+                    ];
+                }
+
+                html += `<rect x="${margin.left}" y="${margin.top}" width="${plotW}" height="${plotH}" fill="#F8FAFC" rx="8"/>`;
+
+                const nStages = stages.length;
+                const stageH = (plotH - 24) / nStages;
+                const maxFunnelW = plotW * 0.50;
+                const minFunnelW = plotW * 0.26;
+
+                stages.forEach((st, i) => {
+                    const yTop = margin.top + 12 + i * stageH;
+                    const yBot = yTop + stageH - 4;
+
+                    // Ancho proporcional a la retención
+                    const wTop = minFunnelW + (st.pct / 100) * (maxFunnelW - minFunnelW);
+                    const nextPct = (i < nStages - 1) ? stages[i + 1].pct : st.pct;
+                    const wBot = minFunnelW + (nextPct / 100) * (maxFunnelW - minFunnelW);
+
+                    const xCenter = margin.left + 230;
+                    const xTopL = xCenter - wTop / 2;
+                    const xTopR = xCenter + wTop / 2;
+                    const xBotL = xCenter - wBot / 2;
+                    const xBotR = xCenter + wBot / 2;
+
+                    // Polígono Trapecio del Embudo
+                    const ptsPoly = `${xTopL},${yTop} ${xTopR},${yTop} ${xBotR},${yBot} ${xBotL},${yBot}`;
+                    html += `<polygon points="${ptsPoly}" fill="${st.color}" opacity="0.9" stroke="#FFFFFF" stroke-width="1.5"
+                        class="cursor-pointer transition hover:opacity-100"
+                        onmouseenter="showFunnelTooltip(event, ${st.step}, '${st.name}', ${st.volume}, ${st.pct}, ${st.dropPct}, ${st.dropCases}, '${st.time}', '${st.bottleneck}')"
+                        onmouseleave="hidePointTooltip()"/>`;
+
+                    // Texto central en el bloque del embudo
+                    html += `<text x="${xCenter}" y="${yTop + stageH / 2 - 1}" text-anchor="middle" font-size="10.5" font-weight="900" fill="#FFFFFF" pointer-events="none" font-family="monospace">${st.volume.toLocaleString()} (${st.pct}%)</text>`;
+
+                    // Etiqueta del Paso a la izquierda
+                    html += `<text x="${margin.left + 15}" y="${yTop + stageH / 2 - 2}" text-anchor="start" font-size="10.5" font-weight="700" fill="#0F172A">
+                        <tspan fill="${st.color}" font-weight="900">#${st.step}</tspan> ${st.name}
+                    </text>`;
+
+                    // Indicadores a la derecha (Caída y Tiempo)
+                    const xRight = margin.left + plotW - 10;
+                    if (showDrop && st.dropCases > 0) {
+                        html += `<rect x="${xCenter + wTop / 2 + 15}" y="${yTop + 2}" width="150" height="18" fill="#FFF1F2" stroke="#FDA4AF" rx="3"/>`;
+                        html += `<text x="${xCenter + wTop / 2 + 22}" y="${yTop + 14}" text-anchor="start" font-size="8.5" font-weight="bold" fill="#E11D48">Drop: -${st.dropPct}% (${st.dropCases.toLocaleString()} casos)</text>`;
+                    }
+
+                    html += `<text x="${xRight}" y="${yTop + stageH / 2 - 2}" text-anchor="end" font-size="10.5" font-weight="bold" fill="#0284C7" font-family="monospace">⏱️ ${st.time}</text>`;
+                });
+
+                const lastSt = stages[stages.length - 1];
+                html += `<text x="${margin.left + plotW / 2}" y="${height - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">FLUJO SECUENCIAL • RETENCIÓN GLOBAL: ${lastSt.pct}% (${lastSt.volume.toLocaleString()} TRÁMITES COMPLETADOS)</text>`;
+            }
+
+            svg.innerHTML = html;
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function renderExplanation() {
+            const card = document.getElementById('explanationCard');
+            if (!card) return;
+
+            if (activeView === 1) {
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-blue-700 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        <span>Lectura del Gráfico 1</span>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 leading-snug">
+                        El "Valle de Atención" vs. "El Salto Nocturno"
+                    </h4>
+                    <div class="space-y-2 text-xs text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-slate-900">• Valle de Inmediatez (08:00 a 14:00):</strong> Los puntos azules caen al fondo del gráfico. Las solicitudes enviadas en este rango tienen una espera media de <strong>1.5 a 3 horas</strong> porque los revisores están en turno activo.
+                        </p>
+                        <p>
+                            <strong class="text-slate-900">• La Escalera Nocturna (&gt; 16:00):</strong> Cualquier trámite enviado tras el cierre de ventanilla (16:00) queda pausado durante 16 horas reloj hasta las 08:00 del día siguiente.
+                        </p>
+                        <p>
+                            <strong class="text-rose-600">• La Nube de Fin de Semana (Rojo):</strong> Los puntos rojos se concentran entre <strong>48 y 68 horas de espera</strong>. El sistema no tuvo actividad durante sábado y domingo, acumulando horas calendario pasivas.
+                        </p>
+                    </div>
+                `;
+            } else if (activeView === 2) {
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-indigo-700 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        <span>Lectura del Gráfico 2</span>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 leading-snug">
+                        La Recta de Fricción y la Brecha de Tiempo Muerto
+                    </h4>
+                    <div class="space-y-2 text-xs text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-emerald-700">• La Diagonal Ideal (Verde):</strong> Solo los expedientes resueltos en las primeras horas del mismo día se acercan a la recta diagonal (donde horas reloj = horas de oficina).
+                        </p>
+                        <p>
+                            <strong class="text-slate-900">• Desviación hacia la Derecha:</strong> Cuanto más se aleja un punto hacia la derecha, mayor fue el tiempo muerto (noches o fin de semana).
+                        </p>
+                        <p>
+                            <strong class="text-blue-700">• El Techo de 8 Horas Hábiles:</strong> El <strong>58.9%</strong> de los expedientes asignados se ubica por debajo de la línea horizontal de 8 horas hábiles, confirmando que se gestionan en su primera jornada laboral.
+                        </p>
+                    </div>
+                `;
+            } else if (activeView === 3) {
+                const regSel = document.getElementById('revisorRegionalFilter')?.value || 'TODAS';
+                const regText = regSel === 'TODAS' ? 'Nacional' : (regionalColors[regSel]?.name || regSel);
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-amber-600 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="award" class="w-4 h-4 text-amber-500"></i>
+                        <span>Análisis de Velocidad • ${regText}</span>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 leading-snug">
+                        ¿Quién atiende más rápido según Regional y Revisor?
+                    </h4>
+                    <div class="space-y-2.5 text-xs text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-slate-900">• Tamaño de Burbujas:</strong> 
+                            El diámetro de cada nodo refleja la <strong>suma acumulada de gestiones atendidas</strong>. Las burbujas grandes situadas abajo a la derecha representan los operadores benchmark de alto rendimiento institucional.
+                        </p>
+                        <p>
+                            <strong class="text-slate-900">• Líderes por Regional:</strong> 
+                            En la <strong>Regional Sur</strong> destaca <span class="font-mono font-bold text-emerald-700">MKNAJERA</span> (35.1 min, <strong>488 gestiones</strong>) y <span class="font-mono font-bold text-emerald-700">AAORELLR</span> (19.2 min). En <strong>Nororiente</strong>, <span class="font-mono font-bold text-amber-700">RSISRODR</span> (3.5 min, 138 casos). En <strong>Central</strong>, <span class="font-mono font-bold text-blue-700">ERCERNAA</span> (2.2 min) y en <strong>Occidente</strong>, <span class="font-mono font-bold text-indigo-700">CACHANGC</span> (14.8 min).
+                        </p>
+                        <p>
+                            <strong class="text-emerald-700">• Cuadrante Benchmark (Q1):</strong>
+                            Representa la combinación ideal de <strong>Alta Productividad (&gt; 50 gestiones)</strong> y <strong>Resolución Ágil (&le; 60 min)</strong>.
+                        </p>
+                    </div>
+                `;
+            } else if (activeView === 4) {
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-indigo-700 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
+                        <span>Lectura del Histograma</span>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 leading-snug">
+                        Concentración Modal vs. Cola Pesada por Fricción Pasiva
+                    </h4>
+                    <div class="space-y-2.5 text-xs text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-emerald-700">• Cumplimiento SLA 8h (58.9%):</strong>
+                            La gran mayoría de los expedientes se concentran en las barras iniciales (<span class="font-mono font-bold">0-4 horas hábiles</span>), ratificando una capacidad técnica de respuesta inmediata en jornada activa.
+                        </p>
+                        <p>
+                            <strong class="text-rose-600">• Asimetría Positiva (Cola Derecha):</strong>
+                            Al analizar en horas calendario, la distribución se alarga drásticamente hasta superar las <strong>60 horas</strong>, provocada de forma casi exclusiva por las solicitudes ingresadas en fin de semana (barras rojas).
+                        </p>
+                        <p>
+                            <strong class="text-slate-900">• Mediana (3.4h) vs Media (5.6h):</strong>
+                            La diferencia de más de 2 horas entre la mediana y la media comprueba el sesgo que inducen los expedientes rezagados por cierres de oficina.
+                        </p>
+                    </div>
+                `;
+            } else if (activeView === 5) {
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-rose-700 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="grid" class="w-4 h-4 text-rose-600"></i>
+                        <span>Lectura del Mapa de Calor</span>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 leading-snug">
+                        Matriz de Carga Semanal y Picos de Concurrencia
+                    </h4>
+                    <div class="space-y-2.5 text-xs text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-slate-900">• Picos de Demanda (10:00 - 13:00):</strong>
+                            Las celdas de mayor temperatura (amarillo intenso y naranja) se agrupan de martes a jueves entre las 10:00 y las 13:00 horas, donde ingresa el <strong>38% de la demanda semanal</strong>.
+                        </p>
+                        <p>
+                            <strong class="text-rose-700">• El Fin de Semana Carmesí:</strong>
+                            Al conmutar a la métrica de <span class="font-bold">Espera Calendario</span> o <span class="font-bold">% Fricción</span>, las franjas de sábado y domingo se tiñen de rojo carmesí: los trámites quedan congelados hasta el lunes a las 08:00 AM.
+                        </p>
+                        <p>
+                            <strong class="text-emerald-700">• Ventanilla Activa Enmarcada:</strong>
+                            El recuadro punteado delimita las 40 horas hábiles institucionales. Todo lo que cae fuera de esta caja acumula tiempo de reloj sin atención humana posible.
+                        </p>
+                    </div>
+                `;
+            } else if (activeView === 6) {
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="filter" class="w-4 h-4 text-emerald-600"></i>
+                        <span>Lectura del Embudo Transaccional</span>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 leading-snug">
+                        Rendimiento de Conversión y Cuellos de Botella
+                    </h4>
+                    <div class="space-y-2.5 text-xs text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-emerald-700">• Tasa de Éxito Final (86.0%):</strong>
+                            De los 182,412 expedientes gestionados, <strong>156,874</strong> concluyen con resolución registral y notificación favorable al contribuyente.
+                        </p>
+                        <p>
+                            <strong class="text-indigo-700">• Mayor Fuga: Auditoría y Subsanación:</strong>
+                            La principal pérdida de flujo (<span class="font-bold">-6.7%</span>) ocurre entre la etapa 3 y la 4, cuando los expedientes presentan inconsistencias documentales y el contribuyente debe cargar requisitos subsanados.
+                        </p>
+                        <p>
+                            <strong class="text-slate-900">• Retención en Encolamiento (96.9%):</strong>
+                            La pérdida en recepción es mínima (3.1%), confirmando la alta estabilidad de la infraestructura de Agencia Virtual SAT.
+                        </p>
+                    </div>
+                `;
+            }
+
+            if (window.renderIcons) window.renderIcons();
+            else if (window.lucide) window.lucide.createIcons();
+        }
+
+        function showPointTooltip(evt, id) {
+            const p = rawData?.points?.find(item => item.id === id);
+            if (!p) return;
+
+            const tt = document.getElementById('chartTooltip');
+            tt.innerHTML = `
+                <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
+                    <span class="font-mono font-bold text-sky-400 text-xs">${p.id}</span>
+                    <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded font-semibold text-slate-300">${dayNames[p.dia_semana]}${p.es_finde ? ' (Fin Sem.)' : ' (Hábil)'}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1">
+                    <span class="text-slate-400">Hora Envío:</span>
+                    <span class="font-bold text-right text-slate-200">${p.fecha_crea.split(' ')[1]}</span>
+                    <span class="text-slate-400">Espera Calendario:</span>
+                    <span class="font-bold text-right text-amber-400 font-mono">${p.cal_h} h</span>
+                    <span class="text-slate-400">Espera Hábil:</span>
+                    <span class="font-bold text-right text-emerald-400 font-mono">${p.hab_h} h</span>
+                    <span class="text-slate-400">Fricción Pasiva:</span>
+                    <span class="font-bold text-right text-sky-300 font-mono">${p.friccion_pct}%</span>
+                </div>
+                <div class="text-[9px] text-slate-400 pt-1 border-t border-slate-800/80 italic">
+                    ${p.es_finde ? 'Ingresó en fin de semana. No consumió horas hábiles hasta el lunes.' : (p.hab_h <= 8 ? 'Asignado dentro de su 1ª jornada hábil institucional.' : 'Asignado en la 2ª jornada hábil institucional.')}
+                </div>
+            `;
+            positionTooltip(evt, tt);
+        }
+
+        function showRevisorTooltip(evt, revisorId, radius) {
+            const r = revisoresData?.revisores?.find(item => item.revisor === revisorId);
+            if (!r) return;
+
+            const tt = document.getElementById('chartTooltip');
+            const regInfo = regionalColors[r.regional] || { name: r.regional };
+
+            tt.innerHTML = `
+                <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
+                    <span class="font-mono font-bold text-amber-400 text-xs">${r.revisor}</span>
+                    <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded font-semibold text-slate-300">${r.regional}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1 font-mono">
+                    <span class="text-slate-400 font-sans">Ranking Velocidad:</span>
+                    <span class="font-bold text-right text-amber-300">#${r.ranking_velocidad_regional} Reg / #${r.ranking_velocidad_global} Nac</span>
+                    
+                    <span class="text-slate-400 font-sans">Tiempo Promedio:</span>
+                    <span class="font-bold text-right text-emerald-400 font-sans">${r.tiempo_prom_min} min (${r.tiempo_prom_horas}h)</span>
+
+                    <span class="text-slate-400 font-sans">Suma Gestiones:</span>
+                    <span class="font-bold text-right text-slate-100 font-bold">${r.total.toLocaleString()} trámites</span>
+
+                    <span class="text-slate-400 font-sans">Tamaño Burbuja:</span>
+                    <span class="font-bold text-right text-amber-400 font-sans">Radio: ${radius || '—'}px</span>
+
+                    <span class="text-slate-400 font-sans">Aprobadas / Rech.:</span>
+                    <span class="font-bold text-right text-sky-300 font-sans">${r.aprobadas} (${r.pct_aprobadas}%) / ${r.rechazadas}</span>
+
+                    <span class="text-slate-400 font-sans">Ritmo Diario:</span>
+                    <span class="font-bold text-right text-slate-200">${r.prom_diario} gestiones/día</span>
+                </div>
+                <div class="text-[10px] text-slate-300 pt-1 border-t border-slate-800/80 flex items-center justify-between">
+                    <span>${regInfo.name}</span>
+                    <span class="text-amber-400 font-bold">${r.cuadrante}</span>
+                </div>
+            `;
+            positionTooltip(evt, tt);
+        }
+
+        function showHistTooltip(evt, label, habilCount, findeCount, total, pct, cumPct, isSLA) {
+            const tt = document.getElementById('chartTooltip');
+            tt.innerHTML = `
+                <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
+                    <span class="font-mono font-bold text-indigo-400 text-xs">Intervalo: ${label}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${isSLA ? 'bg-emerald-950 text-emerald-300' : 'bg-rose-950 text-rose-300'}">
+                        ${isSLA ? 'Dentro SLA' : 'Excede SLA'}
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1 font-mono">
+                    <span class="text-slate-400 font-sans">Casos Hábiles (Azul):</span>
+                    <span class="font-bold text-right text-blue-400">${habilCount.toLocaleString()}</span>
+
+                    <span class="text-slate-400 font-sans">Fin de Semana (Rojo):</span>
+                    <span class="font-bold text-right text-rose-400">${findeCount.toLocaleString()}</span>
+
+                    <span class="text-slate-400 font-sans">Total en Intervalo:</span>
+                    <span class="font-bold text-right text-white font-bold">${total.toLocaleString()}</span>
+
+                    <span class="text-slate-400 font-sans">% del Universo:</span>
+                    <span class="font-bold text-right text-amber-300">${pct}</span>
+
+                    <span class="text-slate-400 font-sans">% Acumulado:</span>
+                    <span class="font-bold text-right text-emerald-300">${cumPct}</span>
+                </div>
+            `;
+            positionTooltip(evt, tt);
+        }
+
+        function showHeatmapTooltip(evt, dayLabel, hour, count, avgCal, avgFric) {
+            const tt = document.getElementById('chartTooltip');
+            const hStr = `${hour.toString().padStart(2, '0')}:00 - ${(hour + 1).toString().padStart(2, '0')}:00`;
+            const isWorking = (dayLabel !== 'Sábado' && dayLabel !== 'Domingo' && hour >= 8 && hour < 16);
+
+            tt.innerHTML = `
+                <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
+                    <span class="font-bold text-rose-400 text-xs">${dayLabel}, ${hStr}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${isWorking ? 'bg-emerald-950 text-emerald-300' : 'bg-slate-800 text-slate-300'}">
+                        ${isWorking ? 'Ventanilla Activa' : 'Fuera de Horario'}
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1 font-mono">
+                    <span class="text-slate-400 font-sans">Casos Registrados:</span>
+                    <span class="font-bold text-right text-white">${count.toLocaleString()}</span>
+
+                    <span class="text-slate-400 font-sans">Espera Calendario:</span>
+                    <span class="font-bold text-right text-amber-300">${avgCal} h</span>
+
+                    <span class="text-slate-400 font-sans">Fricción Pasiva:</span>
+                    <span class="font-bold text-right text-rose-400">${avgFric}%</span>
+                </div>
+                <div class="text-[9px] text-slate-400 pt-1 border-t border-slate-800/80 italic">
+                    ${isWorking ? 'Procesamiento en tiempo real por revisores en turno.' : 'Tiempo pasivo en cola hasta reanudación de jornada SAT.'}
+                </div>
+            `;
+            positionTooltip(evt, tt);
+        }
+
+        function showFunnelTooltip(evt, step, name, volume, pct, dropPct, dropCases, time, bottleneck) {
+            const tt = document.getElementById('chartTooltip');
+            tt.innerHTML = `
+                <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
+                    <span class="font-bold text-emerald-400 text-xs">Paso #${step}: ${name}</span>
+                    <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded font-semibold text-slate-300 font-mono">${pct}% Ret.</span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1 font-mono">
+                    <span class="text-slate-400 font-sans">Volumen de Entrada:</span>
+                    <span class="font-bold text-right text-white">${volume.toLocaleString()}</span>
+
+                    <span class="text-slate-400 font-sans">Tiempo Medio de Etapa:</span>
+                    <span class="font-bold text-right text-sky-400">${time}</span>
+
+                    <span class="text-slate-400 font-sans">Caída / Descarte:</span>
+                    <span class="font-bold text-right text-rose-400">-${dropPct}% (${dropCases.toLocaleString()})</span>
+                </div>
+                <div class="text-[10px] text-slate-300 pt-1.5 border-t border-slate-800/80 leading-snug">
+                    <strong class="text-amber-400">Cuello de Botella:</strong> ${bottleneck}
+                </div>
+            `;
+            positionTooltip(evt, tt);
+        }
+
+        function renderHistogramTable() {
+            const tbody = document.getElementById('histogramTableBody');
+            if (!tbody || !rawData) return;
+
+            const histVar = document.getElementById('histVarSelect')?.value || 'HAB_H';
+            const histDay = document.getElementById('histDayFilter')?.value || 'ALL';
+
+            let pts = rawData.points;
+            if (histDay === 'HABIL') pts = pts.filter(p => !p.es_finde);
+            if (histDay === 'FINDE') pts = pts.filter(p => p.es_finde);
+
+            let bins = [];
+            if (histVar === 'HAB_H') {
+                bins = [
+                    { label: '0 a 2 horas hábiles', min: 0, max: 2, isSLA: true },
+                    { label: '2 a 4 horas hábiles', min: 2, max: 4, isSLA: true },
+                    { label: '4 a 6 horas hábiles', min: 4, max: 6, isSLA: true },
+                    { label: '6 a 8 horas hábiles', min: 6, max: 8, isSLA: true },
+                    { label: '8 a 12 horas hábiles', min: 8, max: 12, isSLA: false },
+                    { label: '12 a 16 horas hábiles', min: 12, max: 16, isSLA: false },
+                    { label: '16 a 24 horas hábiles', min: 16, max: 24, isSLA: false },
+                    { label: 'Más de 24 horas hábiles', min: 24, max: 9999, isSLA: false }
+                ];
+            } else if (histVar === 'CAL_H') {
+                bins = [
+                    { label: '0 a 4 horas reloj', min: 0, max: 4, isSLA: true },
+                    { label: '4 a 8 horas reloj', min: 4, max: 8, isSLA: true },
+                    { label: '8 a 16 horas reloj', min: 8, max: 16, isSLA: true },
+                    { label: '16 a 24 horas reloj', min: 16, max: 24, isSLA: true },
+                    { label: '24 a 36 horas reloj', min: 24, max: 36, isSLA: false },
+                    { label: '36 a 48 horas reloj', min: 36, max: 48, isSLA: false },
+                    { label: '48 a 60 horas reloj', min: 48, max: 60, isSLA: false },
+                    { label: 'Más de 60 horas reloj', min: 60, max: 9999, isSLA: false }
+                ];
+            } else {
+                bins = [
+                    { label: 'Madrugada (00:00 - 06:00)', min: 0, max: 6, isSLA: false },
+                    { label: 'Pre-Apertura (06:00 - 08:00)', min: 6, max: 8, isSLA: false },
+                    { label: 'Mañana Alta (08:00 - 12:00)', min: 8, max: 12, isSLA: true },
+                    { label: 'Tarde Activa (12:00 - 16:00)', min: 12, max: 16, isSLA: true },
+                    { label: 'Post-Cierre (16:00 - 20:00)', min: 16, max: 20, isSLA: false },
+                    { label: 'Noche (20:00 - 24:00)', min: 20, max: 24, isSLA: false }
+                ];
+            }
+
+            bins.forEach(b => {
+                b.habilCount = 0;
+                b.findeCount = 0;
+                b.total = 0;
+            });
+
+            pts.forEach(p => {
+                const val = (histVar === 'HAB_H') ? p.hab_h : ((histVar === 'CAL_H') ? p.cal_h : p.hora_envio);
+                const bin = bins.find(b => val >= b.min && (val < b.max || b.max > 9000));
+                if (bin) {
+                    if (p.es_finde) bin.findeCount++;
+                    else bin.habilCount++;
+                    bin.total++;
+                }
+            });
+
+            const grandTotal = pts.length || 1;
+            let cumTotal = 0;
+            let html = '';
+
+            bins.forEach(b => {
+                cumTotal += b.total;
+                const pct = ((b.total / grandTotal) * 100).toFixed(1);
+                const cumPct = ((cumTotal / grandTotal) * 100).toFixed(1);
+                const slaBadge = b.isSLA 
+                    ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">En SLA</span>'
+                    : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Excede SLA</span>';
+
+                html += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-2.5 px-3 font-semibold text-slate-900">${b.label}</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-blue-700">${b.habilCount.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-rose-600">${b.findeCount.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right font-black text-slate-900">${b.total.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-amber-600">${pct}%</td>
+                        <td class="py-2.5 px-3 text-right text-emerald-700 font-bold">${cumPct}%</td>
+                        <td class="py-2.5 px-3 text-center">${slaBadge}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderHeatmapTable() {
+            const tbody = document.getElementById('heatmapTableBody');
+            if (!tbody || !rawData) return;
+
+            const daysData = Array.from({ length: 7 }, (_, d) => ({
+                dayName: dayNames[d],
+                isWeekend: (d === 5 || d === 6),
+                count: 0,
+                sumCal: 0,
+                sumHab: 0,
+                sumFriccion: 0,
+                hours: Array.from({ length: 24 }, () => 0)
+            }));
+
+            rawData.points.forEach(p => {
+                const d = p.dia_semana;
+                const h = Math.min(Math.floor(p.hora_envio), 23);
+                if (d >= 0 && d < 7) {
+                    daysData[d].count++;
+                    daysData[d].sumCal += p.cal_h;
+                    daysData[d].sumHab += p.hab_h;
+                    daysData[d].sumFriccion += p.friccion_pct;
+                    daysData[d].hours[h]++;
+                }
+            });
+
+            let html = '';
+            daysData.forEach(d => {
+                let peakH = 0;
+                let peakCount = 0;
+                d.hours.forEach((c, h) => {
+                    if (c > peakCount) {
+                        peakCount = c;
+                        peakH = h;
+                    }
+                });
+
+                const avgCal = d.count > 0 ? (d.sumCal / d.count).toFixed(1) : '0.0';
+                const avgHab = d.count > 0 ? (d.sumHab / d.count).toFixed(1) : '0.0';
+                const avgFric = d.count > 0 ? (d.sumFriccion / d.count).toFixed(1) : '0.0';
+
+                let diagBadge = '';
+                if (d.isWeekend) {
+                    diagBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Alta Fricción (Pasivo)</span>';
+                } else if (parseFloat(avgFric) > 75) {
+                    diagBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Fricción Nocturna</span>';
+                } else {
+                    diagBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Despacho Ágil</span>';
+                }
+
+                html += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-2.5 px-3 font-bold ${d.isWeekend ? 'text-rose-600' : 'text-slate-900'}">${d.dayName}</td>
+                        <td class="py-2.5 px-3 text-right font-black text-slate-900">${d.count.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-center font-mono font-bold text-amber-700">${peakH.toString().padStart(2, '0')}:00h (${peakCount} casos)</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-amber-600">${avgCal} h</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-emerald-600">${avgHab} h</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-rose-600">${avgFric}%</td>
+                        <td class="py-2.5 px-3 text-center">${diagBadge}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderFunnelTable() {
+            const tbody = document.getElementById('funnelTableBody');
+            if (!tbody) return;
+
+            const scope = document.getElementById('funnelScopeSelect')?.value || 'GLOBAL';
+
+            let stages = [];
+            if (scope === 'RONDAS') {
+                stages = [
+                    { step: 1, name: 'Primer Intento de Envío (FTR)', volume: 182412, pct: '100.0%', drop: '0.0% (0)', time: '0.2 h', bottleneck: 'Ingreso directo sin colas en ventanilla virtual.' },
+                    { step: 2, name: 'Aprobados en Primer Intento (FTR)', volume: 135350, pct: '74.2%', drop: '25.8% (47,062)', time: '3.1 h', bottleneck: 'Expedientes que cumplen requisitos al 100% en primera revisión.' },
+                    { step: 3, name: 'Reingreso con Subsanación (R2)', volume: 38220, pct: '20.9%', drop: '4.9% (8,842)', time: '18.4 h', bottleneck: 'Contribuyente subsana anexos pendientes; latencia dependiente del usuario.' },
+                    { step: 4, name: 'Resolución Final Consolidada', volume: 156874, pct: '86.0%', drop: '14.0% (25,538)', time: '1.5 h', bottleneck: 'Cumplimiento final alcanzado.' }
+                ];
+            } else {
+                stages = [
+                    { step: 1, name: 'Recepción y Validación Digital', volume: 182412, pct: '100.0%', drop: '0.0% (0)', time: '0.2 h', bottleneck: 'Validación de sintaxis en servidor SAT en milisegundos.' },
+                    { step: 2, name: 'Encolamiento y Balanceo Regional', volume: 176820, pct: '96.9%', drop: '3.1% (5,592)', time: '4.8 h', bottleneck: 'Espera en cola pasiva. Expedientes remitidos de noche o fin de semana esperan apertura.' },
+                    { step: 3, name: 'Auditoría Documental por Revisor', volume: 164530, pct: '90.2%', drop: '6.7% (12,290)', time: '1.2 h', bottleneck: 'Revisión técnica de requisitos. Retorno por documentos ilegibles o incompletos.' },
+                    { step: 4, name: 'Subsanación de Previos por Usuario', volume: 160430, pct: '88.0%', drop: '2.2% (4,100)', time: '18.5 h', bottleneck: 'Tiempo del contribuyente para subir anexos requeridos. Abandono de trámites.' },
+                    { step: 5, name: 'Dictamen y Autorización Registral', volume: 158210, pct: '86.7%', drop: '1.3% (2,220)', time: '0.8 h', bottleneck: 'Firma electrónica del revisor y validación de solvencia fiscal final.' },
+                    { step: 6, name: 'Resolución y Notificación Exitosa', volume: 156874, pct: '86.0%', drop: '0.7% (1,336)', time: '0.3 h', bottleneck: 'Emisión exitosa en Agencia Virtual. Cumplimiento final alcanzado.' }
+                ];
+            }
+
+            let html = '';
+            stages.forEach(st => {
+                html += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-2.5 px-3 text-center font-bold font-mono text-emerald-700">#${st.step}</td>
+                        <td class="py-2.5 px-3 font-semibold text-slate-900">${st.name}</td>
+                        <td class="py-2.5 px-3 text-right font-black text-slate-900">${st.volume.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-emerald-700 font-mono">${st.pct}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-rose-600 font-mono">${st.drop}</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-sky-700 font-mono">${st.time}</td>
+                        <td class="py-2.5 px-3 text-xs text-slate-600">${st.bottleneck}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderSampleTable() {
+            const tbody = document.getElementById('sampleTableBody');
+            if (!tbody) return;
+            const search = (document.getElementById('tableSearch')?.value || '').toLowerCase();
+
+            const list = filteredPoints.filter(p => {
+                if (!search) return true;
+                return p.id.toLowerCase().includes(search) || p.fecha_crea.includes(search);
+            }).slice(0, 30);
+
+            let html = '';
+            list.forEach(p => {
+                const dia = dayNames[p.dia_semana];
+                const badgeColor = p.es_finde ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800';
+                html += `
+                    <tr id="row-${p.id}" class="hover:bg-slate-50 transition cursor-pointer" onclick="highlightPoint('${p.id}')">
+                        <td class="py-2 px-3 font-bold text-slate-900">${p.id}</td>
+                        <td class="py-2 px-3 text-slate-600">${p.fecha_crea}</td>
+                        <td class="py-2 px-3">
+                            <span class="text-[10px] font-sans px-2 py-0.5 rounded-full font-semibold ${badgeColor}">${dia}</span>
+                        </td>
+                        <td class="py-2 px-3 text-right font-bold text-amber-600">${p.cal_h} h</td>
+                        <td class="py-2 px-3 text-right font-bold text-emerald-600">${p.hab_h} h</td>
+                        <td class="py-2 px-3 text-right text-slate-500">${p.friccion_pct}%</td>
+                        <td class="py-2 px-3 text-center">
+                            <button onclick="event.stopPropagation(); highlightPoint('${p.id}')" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold font-sans">
+                                Ver en Gráfico
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderRevisoresTable() {
+            const tbody = document.getElementById('revisoresTableBody');
+            if (!tbody) return;
+
+            const search = (document.getElementById('tableRevisorSearch')?.value || '').toLowerCase().trim();
+
+            const list = filteredRevisores.filter(r => {
+                if (!search) return true;
+                return r.revisor.toLowerCase().includes(search) || 
+                       r.regional.toLowerCase().includes(search) ||
+                       (r.regional_nombre && r.regional_nombre.toLowerCase().includes(search));
+            });
+
+            let html = '';
+            list.forEach((r, idx) => {
+                const regColor = regionalColors[r.regional] || { badge: 'bg-slate-100 text-slate-800 border-slate-200', name: r.regional };
+                
+                // Color de tiempo: Verde para ultra rápido (< 30 min), Azul (< 60 min), Ámbar (< 120 min), Rojo (> 120 min)
+                let timeColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
+                if (r.tiempo_prom_min > 120) {
+                    timeColor = 'text-rose-700 bg-rose-50 border-rose-200';
+                } else if (r.tiempo_prom_min > 60) {
+                    timeColor = 'text-amber-700 bg-amber-50 border-amber-200';
+                } else if (r.tiempo_prom_min > 30) {
+                    timeColor = 'text-sky-700 bg-sky-50 border-sky-200';
+                }
+
+                // Cuadrante badge color
+                let qBadge = 'bg-emerald-100 text-emerald-800';
+                if (r.cuadrante === 'Q2') qBadge = 'bg-blue-100 text-blue-800';
+                if (r.cuadrante === 'Q3') qBadge = 'bg-purple-100 text-purple-800';
+                if (r.cuadrante === 'Q4') qBadge = 'bg-amber-100 text-amber-800';
+
+                html += `
+                    <tr id="rev-row-${r.revisor}" class="hover:bg-slate-50 transition cursor-pointer" onclick="highlightRevisorPoint('${r.revisor}')">
+                        <td class="py-2.5 px-3 text-center font-bold font-mono">
+                            <span class="text-xs ${idx === 0 ? 'text-amber-500 font-black' : 'text-slate-700'}">
+                                ${idx === 0 ? '🥇 #1' : (idx === 1 ? '🥈 #2' : (idx === 2 ? '🥉 #3' : `#${idx + 1}`))}
+                            </span>
+                            <span class="text-[9px] text-slate-400 block font-normal">(#${r.ranking_velocidad_regional} Reg)</span>
+                        </td>
+                        <td class="py-2.5 px-3 font-bold text-slate-900 font-mono flex items-center gap-1.5">
+                            <span>${r.revisor}</span>
+                        </td>
+                        <td class="py-2.5 px-3 font-sans">
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border ${regColor.badge}">
+                                ${r.regional}
+                            </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-right font-black text-slate-900">${r.total.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right text-emerald-700 font-bold">${r.aprobadas.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right text-rose-600 font-semibold">${r.rechazadas}</td>
+                        <td class="py-2.5 px-3 text-right font-bold text-slate-700">${r.pct_aprobadas}%</td>
+                        <td class="py-2.5 px-3 text-right font-sans">
+                            <span class="text-[11px] px-2 py-0.5 rounded-md font-bold font-mono border ${timeColor}">
+                                ${r.tiempo_prom_min} min
+                            </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-right font-bold text-sky-700">${r.prom_diario}</td>
+                        <td class="py-2.5 px-3 text-center font-sans">
+                            <span class="text-[10px] px-1.5 py-0.5 rounded font-black font-mono ${qBadge}">
+                                ${r.cuadrante}
+                            </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-center">
+                            <button onclick="event.stopPropagation(); highlightRevisorPoint('${r.revisor}')" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold font-sans">
+                                Ver en Gráfico
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function filterSampleTable() {
+            renderSampleTable();
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

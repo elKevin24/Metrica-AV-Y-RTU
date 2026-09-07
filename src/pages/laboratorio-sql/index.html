@@ -1,0 +1,939 @@
+<!DOCTYPE html><html lang="es" data-astro-cid-ouamjn2i> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Laboratorio SQL &amp; ROLAP Studio - SAT</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><!-- Preload de Datos Críticos para Carga Instantánea en GitHub Pages --><link rel="preload" href="/vendor/chart.umd.js" as="script"><link rel="preload" href="/vendor/jquery.dataTables.min.css" as="style"><!-- DataTables CSS Local --><link rel="stylesheet" href="/vendor/jquery.dataTables.min.css"><!-- Estilos del Proyecto --><link rel="stylesheet" href="/css/styles.css"><link rel="stylesheet" href="/_astro/auditoria.CY5ahGUQ.css"></head> <body class="bg-slate-50 text-slate-800 min-h-screen" data-astro-cid-ouamjn2i> <!-- Barra de Carga Superior Ultra-Delgada (System Status) --> <div id="topProgressBar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 z-[100] transition-all duration-300 ease-out w-1/3 opacity-100" data-astro-cid-ouamjn2i></div> <!-- Header Institucional SAT Integrado y Elegante --> <header id="mainHeader" class="bg-slate-950 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800/80" data-astro-cid-ouamjn2i> <!-- Fila Superior: Marca, Búsqueda Rápida y Controles --> <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2" data-astro-cid-ouamjn2i> <!-- Marca SAT y Selector de Módulos --> <div class="flex items-center gap-2 sm:gap-4 md:gap-6 min-w-0" data-astro-cid-ouamjn2i> <a href="/" id="mainHeaderBrandLink" class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0 text-left hover:opacity-90 transition select-none z-10" title="Ir al Menú Principal" data-astro-cid-ouamjn2i> <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group hover:scale-105 transition shrink-0" data-astro-cid-ouamjn2i> <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-white" data-astro-cid-ouamjn2i></i> </div> <div class="flex flex-col justify-center min-w-0" data-astro-cid-ouamjn2i> <div class="flex items-center gap-1.5 whitespace-nowrap" data-astro-cid-ouamjn2i> <h1 class="text-xs sm:text-base font-bold tracking-tight text-white hover:text-blue-300 transition whitespace-nowrap" data-astro-cid-ouamjn2i>SAT GUATEMALA</h1> <span class="hidden lg:inline-flex items-center bg-blue-500/10 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 font-medium whitespace-nowrap" data-astro-cid-ouamjn2i>
+BI & Auditoría
+</span> </div> <p class="hidden xl:block text-[10px] text-slate-400 whitespace-nowrap truncate max-w-[280px] leading-tight" data-astro-cid-ouamjn2i>Jornada 8h = 24h Cal. • SLA ≤ 3 Días (82.4%)</p> <p class="hidden md:block xl:hidden text-[10px] text-slate-400 whitespace-nowrap truncate max-w-[150px] leading-tight" data-astro-cid-ouamjn2i>SLA ≤ 3 Días (82.4%)</p> </div> </a> <!-- Selector de Módulos Analíticos Principales (Desktop / Pantallas Grandes) --> <div class="hidden lg:flex items-center gap-1 bg-slate-900/90 border border-slate-700/80 p-1 rounded-xl text-xs font-semibold shrink-0" data-astro-cid-ouamjn2i> <span class="text-[10px] text-slate-400 px-1.5 uppercase tracking-wider font-mono hidden xl:inline" data-astro-cid-ouamjn2i>Módulo:</span> <!-- Botón Agencia Virtual --> <a href="/historico" id="btnCuboAV" class="px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap text-slate-300 hover:bg-slate-800 hover:text-white" title="Módulo 1: Agencia Virtual (Tablero Histórico 360°, Activaciones y Cambios de Correo)" data-astro-cid-ouamjn2i> <i data-lucide="shield" class="w-3 h-3" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>AV<span class="hidden xl:inline" data-astro-cid-ouamjn2i> (Histórico)</span></span> </a> <!-- Botón Bitácora Transaccional --> <a href="/bitacora" id="btnCuboBitacora" class="px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap text-slate-300 hover:bg-slate-800 hover:text-white" title="Módulo 2: Bitácora Transaccional (Trazabilidad Forense y Eventos 2026)" data-astro-cid-ouamjn2i> <i data-lucide="activity" class="w-3 h-3" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Bitácora</span> </a> <!-- Botón Auditoría Forense --> <a href="/auditoria" id="btnCuboAuditoria" class="px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap text-slate-300 hover:bg-slate-800 hover:text-white" title="Auditoría de Casos y Expedientes" data-astro-cid-ouamjn2i> <i data-lucide="file-search" class="w-3 h-3" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Auditoría</span> </a> <!-- Botón Laboratorio SQL (ROLAP) --> <a href="/laboratorio-sql" id="btnCuboROLAP" class="px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap bg-amber-600 text-white font-bold" title="Laboratorio SQL ad-hoc sobre Parquet (ROLAP DuckDB-WASM)" data-astro-cid-ouamjn2i> <i data-lucide="terminal" class="w-3 h-3 text-amber-400" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>SQL<span class="hidden xl:inline" data-astro-cid-ouamjn2i> (ROLAP)</span></span> </a> </div> <!-- Enlaces Rápidos de Módulos (Desktop) --> <nav class="hidden xl:flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl text-xs font-semibold text-slate-300" data-astro-cid-ouamjn2i> <a href="/" class="px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 hover:bg-slate-800 hover:text-white" data-astro-cid-ouamjn2i> <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400" data-astro-cid-ouamjn2i></i> Menú
+</a> </nav> </div> <!-- Controles: Una Sola Lupa + Reset + Estado del Sistema --> <div class="flex items-center gap-1.5 sm:gap-2 shrink-0" data-astro-cid-ouamjn2i> <!-- Buscador Global / Paleta de Comandos (UNA SOLA LUPA EN MÓVIL Y DESKTOP) --> <button onclick="toggleCommandPalette()" class="text-xs p-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 transition group shadow-inner" aria-label="Buscar vista o métrica (Ctrl+K)" title="Buscar vista o métrica (Ctrl+K)" data-astro-cid-ouamjn2i> <i data-lucide="search" class="w-4 h-4 text-blue-400" data-astro-cid-ouamjn2i></i> <span class="hidden sm:inline text-slate-400 group-hover:text-slate-200" data-astro-cid-ouamjn2i>Buscar...</span> <kbd class="hidden sm:inline-block bg-slate-800 text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700 font-semibold group-hover:border-slate-600" data-astro-cid-ouamjn2i>⌘K</kbd> </button> <!-- Botón Reset Filtros --> <button onclick="resetFilters()" class="text-xs p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1 transition" title="Restablecer filtros (Alt+R)" data-astro-cid-ouamjn2i> <i data-lucide="rotate-ccw" class="w-3.5 h-3.5" data-astro-cid-ouamjn2i></i> <span class="hidden md:inline" data-astro-cid-ouamjn2i>Restablecer</span> </button> <!-- Botón Manual Metodológico & Trazabilidad --> <button onclick="toggleMetodologiaModal()" class="text-xs p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border border-blue-500/40 bg-blue-950/50 hover:bg-blue-900/60 text-blue-300 hover:text-white flex items-center gap-1.5 transition shadow-xs" title="Ver Metodología y Fórmulas Matemáticas" data-astro-cid-ouamjn2i> <i data-lucide="book-open-check" class="w-3.5 h-3.5 text-blue-400" data-astro-cid-ouamjn2i></i> <span class="hidden lg:inline font-semibold" data-astro-cid-ouamjn2i>Metodología</span> </button> <!-- Botón Ayuda / Atajos de Teclado (Solo visible en desktop) --> <button onclick="toggleShortcutsModal()" class="hidden md:flex text-xs p-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-white items-center justify-center transition" title="Ver Atajos de Teclado (?)" data-astro-cid-ouamjn2i> <i data-lucide="help-circle" class="w-4 h-4" data-astro-cid-ouamjn2i></i> </button> <!-- Indicador de Estado del Sistema en Vivo --> <div id="statusMotorPill" class="hidden sm:flex items-center gap-1.5 text-[10px] sm:text-[11px] text-amber-300 bg-amber-950/40 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-amber-500/30 transition-all duration-300 shadow-sm whitespace-nowrap shrink-0" data-astro-cid-ouamjn2i> <span id="statusMotorDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" data-astro-cid-ouamjn2i></span> <span id="statusMotorTxt" class="font-medium tracking-tight" data-astro-cid-ouamjn2i>DuckDB-Wasm ROLAP</span> </div> </div> </div> <!-- Fila Inferior: Barra de Pestañas DINÁMICAS SEGÚN EL MÓDULO ACTIVO --> <div class="hidden md:block max-w-7xl mx-auto px-6 relative" data-astro-cid-ouamjn2i>      <div id="navTabsContainer" class="flex overflow-x-auto no-scrollbar gap-2 border-t border-slate-800/60 py-1.5 scroll-smooth" data-astro-cid-ouamjn2i> <a href="/" class="tab-link " data-astro-cid-ouamjn2i> <i data-lucide="home" class="w-4 h-4 text-blue-400" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Menú Principal</span> </a> <a href="/historico" class="tab-link text-slate-400 hover:text-white" data-astro-cid-ouamjn2i> <i data-lucide="shield" class="w-4 h-4 text-blue-400" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Módulo 1: Tablero AV (Histórico)</span> </a> <a href="/bitacora" class="tab-link text-slate-400 hover:text-white" data-astro-cid-ouamjn2i> <i data-lucide="activity" class="w-4 h-4 text-indigo-400" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Módulo 2: Bitácora Transaccional</span> </a> <a href="/laboratorio-sql" class="tab-link active" data-astro-cid-ouamjn2i> <i data-lucide="terminal" class="w-4 h-4 text-amber-400" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Laboratorio SQL (ROLAP)</span> </a> <a href="/auditoria" class="tab-link text-slate-400 hover:text-white" data-astro-cid-ouamjn2i> <i data-lucide="file-search" class="w-4 h-4 text-cyan-400" data-astro-cid-ouamjn2i></i> <span data-astro-cid-ouamjn2i>Auditoría de Casos</span> </a> </div> </div> </header> <!-- Command Palette Modal (Ctrl+K / ⌘K) --> <div id="cmdPaletteModal" class="fixed inset-0 z-[110] hidden cmd-backdrop flex items-start justify-center pt-20 px-4" data-astro-cid-ouamjn2i> <div class="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden text-white animate-in fade-in zoom-in-95 duration-150" data-astro-cid-ouamjn2i> <div class="p-3.5 border-b border-slate-800 flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="search" class="w-5 h-5 text-blue-400" data-astro-cid-ouamjn2i></i> <input id="cmdPaletteInput" type="text" placeholder="Escribe para buscar pestaña, métrica o reporte... (ej. rechazos, sla, regional, revisores)" class="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none" oninput="filterCommandPalette(this.value)" data-astro-cid-ouamjn2i> <button onclick="toggleCommandPalette()" class="p-1 text-slate-400 hover:text-white rounded-lg" data-astro-cid-ouamjn2i> <kbd class="text-[10px] font-mono bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700" data-astro-cid-ouamjn2i>ESC</kbd> </button> </div> <!-- Lista de Comandos / Vistas --> <div id="cmdPaletteList" class="max-h-80 overflow-y-auto p-2 space-y-1 text-xs text-slate-300" data-astro-cid-ouamjn2i> <!-- Generado dinámicamente --> </div> <div class="p-2.5 bg-slate-950/80 border-t border-slate-800/80 text-[11px] text-slate-400 flex justify-between items-center px-4" data-astro-cid-ouamjn2i> <span data-astro-cid-ouamjn2i>Usa <strong class="text-slate-300" data-astro-cid-ouamjn2i>↑ ↓</strong> para navegar, <strong class="text-slate-300" data-astro-cid-ouamjn2i>ENTER</strong> para seleccionar</span> <span data-astro-cid-ouamjn2i><strong class="text-blue-400" data-astro-cid-ouamjn2i>8 Pestañas</strong> Disponibles</span> </div> </div> </div> <!-- Modal de Atajos de Teclado (?) --> <div id="shortcutsModal" class="fixed inset-0 z-[110] hidden cmd-backdrop flex items-center justify-center p-4" data-astro-cid-ouamjn2i> <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden text-white p-6 space-y-4" data-astro-cid-ouamjn2i> <div class="flex items-center justify-between border-b border-slate-800 pb-3" data-astro-cid-ouamjn2i> <div class="flex items-center gap-2" data-astro-cid-ouamjn2i> <i data-lucide="keyboard" class="w-5 h-5 text-blue-400" data-astro-cid-ouamjn2i></i> <h3 class="font-bold text-sm" data-astro-cid-ouamjn2i>Atajos de Teclado</h3> </div> <button onclick="toggleShortcutsModal()" class="text-slate-400 hover:text-white" data-astro-cid-ouamjn2i> <i data-lucide="x" class="w-5 h-5" data-astro-cid-ouamjn2i></i> </button> </div> <div class="space-y-2.5 text-xs text-slate-300" data-astro-cid-ouamjn2i> <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50" data-astro-cid-ouamjn2i> <span data-astro-cid-ouamjn2i>Abrir Buscador / Paleta de Comandos</span> <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700" data-astro-cid-ouamjn2i>Ctrl + K / ⌘K</kbd> </div> <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50" data-astro-cid-ouamjn2i> <span data-astro-cid-ouamjn2i>Navegar entre pestañas</span> <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700" data-astro-cid-ouamjn2i>← Flechas →</kbd> </div> <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50" data-astro-cid-ouamjn2i> <span data-astro-cid-ouamjn2i>Ir a Pestaña 1..8 directamente</span> <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700" data-astro-cid-ouamjn2i>1 ... 8</kbd> </div> <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50" data-astro-cid-ouamjn2i> <span data-astro-cid-ouamjn2i>Restablecer Filtros</span> <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700" data-astro-cid-ouamjn2i>Alt + R</kbd> </div> <div class="flex justify-between items-center p-2 rounded-lg bg-slate-800/50" data-astro-cid-ouamjn2i> <span data-astro-cid-ouamjn2i>Ver este diálogo de ayuda</span> <kbd class="bg-slate-800 px-2 py-1 rounded text-[11px] font-mono border border-slate-700" data-astro-cid-ouamjn2i>?</kbd> </div> </div> <div class="pt-2 text-right" data-astro-cid-ouamjn2i> <button onclick="toggleShortcutsModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition" data-astro-cid-ouamjn2i>
+Entendido
+</button> </div> </div> </div> <!-- Modal de Metodología y Trazabilidad --> <div id="metodologiaModal" class="fixed inset-0 z-[120] hidden cmd-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalMetodologiaTitle"> <div class="bg-slate-900 border border-slate-700 w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col text-white"> <!-- Modal Header --> <div class="p-5 sm:p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/80"> <div class="flex items-center gap-3"> <div class="p-2.5 bg-blue-600/30 text-blue-400 border border-blue-500/40 rounded-2xl"> <i data-lucide="book-open-check" class="w-6 h-6"></i> </div> <div> <h3 id="modalMetodologiaTitle" class="text-base sm:text-lg font-black text-white">
+Manual Metodológico & Trazabilidad de Fórmulas
+</h3> <p class="text-xs text-slate-400">
+Especificación matemática formal, fuentes y reglas de agregación del Tablero BI 360°
+</p> </div> </div> <button onclick="window.toggleMetodologiaModal()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition focus-visible:ring-2 focus-visible:ring-blue-500" aria-label="Cerrar modal de metodología"> <i data-lucide="x" class="w-5 h-5"></i> </button> </div> <!-- Modal Content (Scrollable) --> <div class="p-5 sm:p-6 overflow-y-auto space-y-6 text-xs text-slate-300 leading-relaxed"> <!-- Bloque 1: Fuente y Universo de Datos --> <section class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60 space-y-2"> <h4 class="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2"> <i data-lucide="database" class="w-4 h-4"></i> 1. Universo y Fuente de Datos
+</h4> <p>
+El tablero procesa el <strong>100% de transacciones electrónicas</strong> registradas en el sistema de gestión tributaria de la SAT para los trámites de <em>Activación de Agencia Virtual</em> y <em>Actualización RTU / Correo</em>.
+</p> <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1"> <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"> <span class="text-[11px] font-bold text-slate-400">Universo Total SAT:</span> <p class="text-sm font-black text-white mt-0.5">2,569,726 Solicitudes</p> <span class="text-[10px] text-slate-500">Incluye 1.70M reinicios automáticos (autoservicio)</span> </div> <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"> <span class="text-[11px] font-bold text-emerald-400">Carga Humana Auditada:</span> <p class="text-sm font-black text-emerald-300 mt-0.5">865,876 Expedientes</p> <span class="text-[10px] text-slate-500">Dictaminados por los 172 revisores tributarios</span> </div> </div> </section> <!-- Bloque 2: Calendario Laboral y Cálculo de Horas Hábiles --> <section class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60 space-y-2"> <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2"> <i data-lucide="clock" class="w-4 h-4"></i> 2. Calendario Laboral y Jornada Hábil (8 Horas)
+</h4> <p>
+Para aislar la eficiencia del personal institucional del tiempo ocioso del contribuyente y de las noches/fines de semana, el sistema aplica un cálculo dual de tiempo:
+</p> <ul class="list-disc pl-5 space-y-1 text-slate-300"> <li><strong>Horas Hábiles (Horario Laboral Oficial):</strong> Contabiliza únicamente minutos transcurridos de <strong>Lunes a Viernes entre las 08:00 y las 16:00 horas</strong> (8 horas/jornada). Se excluyen automáticamente fines de semana y días de asueto oficial.</li> <li><strong>Horas Calendario (Tiempo Reloj Corrido):</strong> Mide el tiempo total desde el envío del contribuyente hasta la resolución final, incluyendo fines de semana y horarios no hábiles.</li> </ul> </section> <!-- Bloque 3: Matriz de Fórmulas y KPIs --> <section class="space-y-3"> <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2"> <i data-lucide="calculator" class="w-4 h-4"></i> 3. Fichas Técnicas de Indicadores Clave
+</h4> <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5"> <!-- Ficha 1 --> <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5"> <div class="flex items-center justify-between"> <span class="font-bold text-white text-xs">Tiempo hasta 1ª Atención (Paso 1)</span> <span class="text-[10px] bg-blue-900/60 text-blue-300 px-2 py-0.5 rounded font-mono">Cola Servidor</span> </div> <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-blue-300">
+Cola = FechaAsignación - FechaCreación
+</div> <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800"> <strong>Estadístico:</strong> Promedio Aritmético (3.85h hábiles) | Mediana (28.77h calendario).
+</div> </div> <!-- Ficha 2 --> <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5"> <div class="flex items-center justify-between"> <span class="font-bold text-white text-xs">Dictamen Activo en Pantalla (Paso 3)</span> <span class="text-[10px] bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded font-mono">Revisión Humana</span> </div> <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-emerald-300">
+Dictamen = FechaFinalización - FechaRevisión
+</div> <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800"> <strong>Estadístico:</strong> Promedio (1.8 segundos). El 95.86% de los trámites se resuelve en &le; 5s.
+</div> </div> <!-- Ficha 3 --> <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5"> <div class="flex items-center justify-between"> <span class="font-bold text-white text-xs">First-Time Resolution (FTR)</span> <span class="text-[10px] bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded font-mono">Calidad Limpia</span> </div> <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-emerald-300">
+FTR % = (Aprobadas 1er Intento / Universo Total) × 100
+</div> <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800"> <strong>Resultado Global:</strong> 53.4% (462,808 expedientes aprobados sin re-trabajo).
+</div> </div> <!-- Ficha 4 --> <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 space-y-1.5"> <div class="flex items-center justify-between"> <span class="font-bold text-white text-xs">Cumplimiento de SLAs en Jornada</span> <span class="text-[10px] bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded font-mono">Estándar 8h</span> </div> <div class="bg-slate-900 p-2 rounded-lg font-mono text-[11px] text-purple-300">
+SLA % = (Casos con Ciclo Hábil &le; Umbral / Casos Dictaminados) × 100
+</div> <div class="text-[10px] text-slate-400 pt-1 border-t border-slate-800"> <strong>Umbrales:</strong> 1d (8h: 48.0%) | 2d (16h: 68.4%) | 3d (24h: 81.3%) | 5d (40h: 90.2%).
+</div> </div> </div> </section> <!-- Bloque 4: Taxonomía de Rondas de Revisión --> <section class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60 space-y-2"> <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2"> <i data-lucide="layers" class="w-4 h-4"></i> 4. Taxonomía de Rondas Operativas
+</h4> <div class="space-y-2 text-[11px]"> <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800"> <strong class="text-white">• Ronda 1 (Directa / Limpia):</strong> FechaRechazo es NULO y Estado final es APROBADA o FINALIZADA.
+</div> <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800"> <strong class="text-white">• Ronda 2 (Subsanada tras Rechazo):</strong> FechaRechazo NO es nulo y FechaRevisión posterior culmina en APROBADA.
+</div> <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800"> <strong class="text-white">• Ronda 3+ (Multi-revisión / Bloqueo):</strong> Solicitudes con &ge; 2 rechazos que consumen re-trabajo o alcanzan límite institucional.
+</div> </div> </section> </div> <!-- Modal Footer --> <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-[11px] text-slate-400"> <span>Presione <kbd class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] font-mono border border-slate-700">ESC</kbd> para cerrar</span> <button onclick="window.toggleMetodologiaModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl transition">
+Entendido
+</button> </div> </div> </div> <!-- Barra de Navegación Inferior Móvil (Mobile Quick Dock Contextual) --> <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.4)]" style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom));" data-astro-cid-ouamjn2i>  <button onclick="switchTab('tab-macro')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95 text-blue-400 font-bold" data-tab="tab-macro" data-astro-cid-ouamjn2i> <i data-lucide="layout-dashboard" class="w-5 h-5" data-astro-cid-ouamjn2i></i> <span class="text-[10px] leading-tight" data-astro-cid-ouamjn2i>Inicio</span> </button> <button onclick="switchTab('tab-operativo')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-operativo" data-astro-cid-ouamjn2i> <i data-lucide="map-pin" class="w-5 h-5" data-astro-cid-ouamjn2i></i> <span class="text-[10px] leading-tight" data-astro-cid-ouamjn2i>Regional</span> </button> <button onclick="switchTab('tab-tiempos')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-tiempos" data-astro-cid-ouamjn2i> <i data-lucide="clock" class="w-5 h-5" data-astro-cid-ouamjn2i></i> <span class="text-[10px] leading-tight" data-astro-cid-ouamjn2i>Tiempos</span> </button> <button onclick="switchTab('tab-calidad')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-calidad" data-astro-cid-ouamjn2i> <i data-lucide="alert-octagon" class="w-5 h-5" data-astro-cid-ouamjn2i></i> <span class="text-[10px] leading-tight" data-astro-cid-ouamjn2i>Rechazos</span> </button> <button onclick="switchTab('tab-gestion')" class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-tab="tab-gestion" data-astro-cid-ouamjn2i> <i data-lucide="users" class="w-5 h-5" data-astro-cid-ouamjn2i></i> <span class="text-[10px] leading-tight" data-astro-cid-ouamjn2i>Revisores</span> </button> <button onclick="toggleMobileMenuDrawer()" class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-white p-1.5 rounded-xl transition min-w-[50px] min-h-[44px] active:scale-95" data-astro-cid-ouamjn2i> <i data-lucide="grid" class="w-5 h-5 text-indigo-400" data-astro-cid-ouamjn2i></i> <span class="text-[10px] leading-tight text-indigo-400 font-semibold" data-astro-cid-ouamjn2i>Más (8)</span> </button>  </nav> <!-- Drawer / Menú Completo Móvil (Bottom Sheet) --> <div id="mobileMenuDrawer" class="fixed inset-0 z-[115] hidden cmd-backdrop flex items-end justify-center md:hidden" data-astro-cid-ouamjn2i> <div class="bg-slate-900 border-t border-slate-700 w-full max-h-[85vh] rounded-t-3xl shadow-2xl overflow-hidden flex flex-col text-white animate-in slide-in-from-bottom duration-200" style="padding-bottom: max(1rem, env(safe-area-inset-bottom));" data-astro-cid-ouamjn2i> <!-- Header Drawer --> <div class="p-4 border-b border-slate-800 flex items-center justify-between" data-astro-cid-ouamjn2i> <div class="flex items-center gap-2.5" data-astro-cid-ouamjn2i> <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white" data-astro-cid-ouamjn2i> <i data-lucide="layers" class="w-4 h-4" data-astro-cid-ouamjn2i></i> </div> <div data-astro-cid-ouamjn2i> <h3 class="font-bold text-sm text-white" data-astro-cid-ouamjn2i>Secciones del Tablero SAT</h3> <p class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Selecciona cualquier vista analítica</p> </div> </div> <button onclick="toggleMobileMenuDrawer()" class="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white" data-astro-cid-ouamjn2i> <i data-lucide="x" class="w-5 h-5" data-astro-cid-ouamjn2i></i> </button> </div> <!-- Lista de Pestañas Móviles --> <div class="overflow-y-auto p-3 space-y-1.5 text-xs divide-y divide-slate-800/40" data-astro-cid-ouamjn2i> <button onclick="selectMobileTab('tab-macro')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="layout-dashboard" class="w-4 h-4 text-blue-400" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>1. Diagnóstico & Balance</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>KPIs globales, FTR y tasa de recuperación</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-operativo')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>2. Regionales & Sobrecarga</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Demanda vs tiempos por gerencia</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-tiempos')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="clock" class="w-4 h-4 text-emerald-400" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>3. Jornada 8h & SLAs</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Espera pasiva (98.2%) vs dictamen activo</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-calidad')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-400" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>4. Rechazos & Re-trabajo</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Taxonomía, huérfanos y multi-touch bounce</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-gestion')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="users" class="w-4 h-4 text-purple-400" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>5. Revisores & Cuadrantes</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Dispersión de criterio y ranking operadores</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-auditoria')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="table" class="w-4 h-4 text-amber-400" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>6. Auditoría Forense</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Muestreo de expedientes y traza NIT</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-informe2026')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="file-text" class="w-4 h-4 text-blue-300" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-slate-200 text-xs" data-astro-cid-ouamjn2i>7. Informe Ejecutivo 2026</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Dictamen institucional consolidado</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> <button onclick="selectMobileTab('tab-hallazgos')" class="w-full p-3 rounded-xl hover:bg-slate-800 text-left flex items-center justify-between transition group pt-2.5" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <i data-lucide="sparkles" class="w-4 h-4 text-amber-300" data-astro-cid-ouamjn2i></i> <div data-astro-cid-ouamjn2i> <div class="font-bold text-amber-300 text-xs" data-astro-cid-ouamjn2i>8. Hallazgos & Plan de Acción</div> <div class="text-[11px] text-slate-400" data-astro-cid-ouamjn2i>Matriz de rescate y plan de modernización</div> </div> </div> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500" data-astro-cid-ouamjn2i></i> </button> </div> </div> </div> <!-- Botón Flotante Volver Arriba (Scroll to Top) --> <button id="btnScrollTop" onclick="scrollToTop()" class="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 bg-slate-900/90 hover:bg-blue-600 text-white p-3 rounded-2xl shadow-xl border border-slate-700 transition-all duration-300 translate-y-16 opacity-0 pointer-events-none hover:scale-110 flex items-center justify-center" aria-label="Volver arriba" title="Volver al inicio de la página" data-astro-cid-ouamjn2i> <i data-lucide="chevron-up" class="w-5 h-5" data-astro-cid-ouamjn2i></i> </button> <!-- Banner de Error con Botón de Reintento (Visibility of Error State) --> <div id="dataErrorBanner" class="hidden max-w-7xl mx-auto px-6 mt-4" data-astro-cid-ouamjn2i> <div class="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm" data-astro-cid-ouamjn2i> <div class="flex items-center gap-3" data-astro-cid-ouamjn2i> <div class="p-2 bg-rose-100 text-rose-700 rounded-xl" data-astro-cid-ouamjn2i> <i data-lucide="wifi-off" class="w-5 h-5" data-astro-cid-ouamjn2i></i> </div> <div data-astro-cid-ouamjn2i> <h4 class="text-sm font-bold text-rose-900" data-astro-cid-ouamjn2i>Error al cargar la base de datos analítica</h4> <p class="text-xs text-rose-700" data-astro-cid-ouamjn2i>No se pudo descargar el cubo de datos. Verifique su conexión de red.</p> </div> </div> <button onclick="if(typeof window.retryLoadData === 'function') { window.retryLoadData(); } else { location.reload(); }" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm flex items-center gap-1.5 whitespace-nowrap" data-astro-cid-ouamjn2i> <i data-lucide="refresh-cw" class="w-3.5 h-3.5" data-astro-cid-ouamjn2i></i> Reintentar Carga
+</button> </div> </div> <!-- Contenido Inyectado -->  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-28 md:pb-12 space-y-6" id="rolapLabRoot"> <!-- Encabezado del Módulo ROLAP --> <div id="rolapHeaderCard" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6"> <div class="space-y-2"> <div class="flex items-center gap-2"> <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-cyan-500/30">
+Motor ROLAP In-Memory
+</span> <span id="sqlEngineVersionBadge" class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-mono border border-indigo-500/30">
+SQL Engine v4.2 • SAT Analytics
+</span> </div> <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2.5"> <i data-lucide="terminal" class="w-7 h-7 text-cyan-400"></i>
+Laboratorio SQL & Explorador ROLAP
+</h1> <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> procesados de Agencia Virtual y RTU Digital con visualización en tabla paginada o gráfica ejecutiva.
+</p> </div> <!-- Estado del Motor SQL en el Cliente --> <div id="sqlEngineStatusCard" class="bg-slate-800/80 backdrop-blur-xs border border-slate-700/80 rounded-2xl p-4 min-w-[240px] text-right space-y-1"> <div class="flex items-center justify-end gap-2 text-xs text-slate-400"> <span id="engineStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> <span id="engineStatusText" class="font-mono text-amber-300">Cargando base analítica...</span> </div> <div class="text-lg font-black text-white font-mono" id="engineRowsCount">182,412 filas</div> <div class="text-[10px] text-slate-400" id="engineTablesInfo">Tablas: maestro_expedientes • cubo_av</div> </div> </div> <!-- Área Principal de Trabajo: Editor y Esquema --> <div class="grid grid-cols-1 lg:grid-cols-4 gap-6" id="rolapWorkspaceGrid"> <!-- Panel Izquierdo: Catálogo de Consultas y Explorador de Columnas (1 Col) --> <div class="lg:col-span-1 space-y-4" id="leftCatalogPanel"> <!-- Tarjeta de Consultas Predeterminadas --> <div id="cardTemplates" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3"> <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5"> <i data-lucide="book-open" class="w-4 h-4 text-blue-600"></i> Consultas Predefinidas
+</h3> <p class="text-[11px] text-slate-500 leading-snug">Selecciona un template para cargar y ejecutar su SQL analítico:</p> <div class="space-y-1.5" id="templateList"> <button id="btnTemplate0" onclick="loadSqlTemplate(0)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>1. Resumen 360° por Región</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate1" onclick="loadSqlTemplate(1)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>2. Cuello de Botella por Hora</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate2" onclick="loadSqlTemplate(2)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>3. Top FTR por Revisor (&gt;100)</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate3" onclick="loadSqlTemplate(3)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>4. Top 10 Causales de Rechazo</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate4" onclick="loadSqlTemplate(4)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>5. Ciclo por Región & Tipo Persona</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate5" onclick="loadSqlTemplate(5)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>6. Casos Críticos Fuera SLA (&gt;40h)</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate6" onclick="loadSqlTemplate(6)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>7. Fact Table ROLAP (cubo_av)</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate7" onclick="loadSqlTemplate(7)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-indigo-50/80 hover:bg-indigo-100 text-indigo-900 border border-indigo-200/80 hover:border-indigo-300 transition flex items-center justify-between"> <span class="flex items-center gap-1.5"> <i data-lucide="calculator" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i> <span>8. Proyección Revisores & Capacidad</span> </span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> </div> </div> <!-- Diccionario y Esquema de Tablas --> <div id="cardSchemaDict" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3"> <div class="space-y-1.5"> <div class="flex items-center justify-between"> <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5"> <i data-lucide="database" class="w-4 h-4 text-indigo-600"></i> Esquema SQL
+</h3> <span class="text-[10px] text-slate-400 font-mono" id="schemaCountBadge">21 columnas</span> </div> <label for="tableSelectorSelect" class="text-[11px] font-semibold text-slate-600 block">Tabla seleccionada:</label> <select id="tableSelectorSelect" onchange="switchSchemaTable(this.value)" class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-bold focus:outline-blue-500"> <option value="maestro_expedientes">maestro_expedientes (182k filas)</option> <option value="cubo_av">cubo_av (13.6k ROLAP)</option> <option value="operadores_productividad">operadores_productividad (1,120 filas)</option> <option value="taxonomia">taxonomia (26 motivos)</option> <option value="muestra_expedientes">muestra_expedientes (500 casos)</option> </select> </div> <input type="text" id="columnFilterInput" oninput="filterColumnsList()" placeholder="Buscar columna..." class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-blue-500"> <div class="max-h-56 overflow-y-auto space-y-1 font-mono text-[11px] pr-1" id="columnListContainer"> <!-- Rellenado dinámicamente --> </div> <div class="text-[10px] text-slate-400 text-center italic">Haz click en una columna para insertarla en el editor</div> </div> </div> <!-- Panel Derecho: Editor SQL y Resultados (3 Cols) --> <div class="lg:col-span-3 space-y-4" id="rightEditorPanel"> <!-- Editor SQL --> <div id="sqlEditorContainer" class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden flex flex-col"> <div class="bg-slate-800/80 px-4 py-2.5 border-b border-slate-700 flex items-center justify-between flex-wrap gap-2"> <div class="flex items-center gap-2 text-xs font-mono text-slate-300"> <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> <span>Consola SQL ROLAP</span> <span class="text-slate-500">|</span> <span class="text-[11px] text-slate-400">Atajo: <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Ctrl</kbd> + <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Enter</kbd></span> </div> <div class="flex items-center gap-2"> <button id="btnClearEditor" onclick="clearEditor()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
+Limpiar
+</button> <button id="btnResetDefaultSql" onclick="resetDefaultQuery()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
+Restablecer
+</button> <button id="btnExecuteSql" onclick="executeCurrentQuery()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5"> <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Ejecutar Consulta
+</button> </div> </div> <div class="relative"> <textarea id="sqlEditor" rows="7" class="w-full bg-slate-950 text-cyan-300 font-mono text-xs sm:text-sm p-4 focus:outline-none resize-y border-0 leading-relaxed tracking-tight" spellcheck="false" placeholder="Escribe tu consulta SQL aquí...">SELECT 
+    Region,
+    COUNT(*) AS Total_Expedientes,
+    SUM(Es_Aprobada) AS Aprobadas,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_Buzon_Promedio,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 2) AS LeadTime_Horas_Promedio
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Total_Expedientes DESC;</textarea> </div> </div> <!-- Barra de Estado, Conmutador de Vistas y Exportación --> <div id="resultsToolbar" class="flex items-center justify-between flex-wrap gap-3 text-xs px-1"> <div class="flex items-center gap-3"> <span id="queryLatencyBadge" class="text-slate-500 font-mono">Iniciando motor...</span> <span id="queryRowCountBadge" class="text-slate-500 font-mono hidden">0 registros</span> </div> <!-- Selector de Vistas (Tabla / Gráfico) y Exportar --> <div class="flex items-center gap-2"> <!-- Tabs Vista Tabla vs Vista Gráfico --> <div id="resultsViewSwitcher" class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200"> <button id="btnViewTable" onclick="switchResultView('table')" class="px-2.5 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-xs flex items-center gap-1 transition"> <i data-lucide="table" class="w-3.5 h-3.5 text-blue-600"></i> Tabla
+</button> <button id="btnViewChart" onclick="switchResultView('chart')" class="px-2.5 py-1 text-xs font-semibold rounded-md text-slate-600 hover:text-slate-900 flex items-center gap-1 transition"> <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-indigo-600"></i> Gráfico
+</button> </div> <button id="btnExportCsv" onclick="exportResultsToCsv()" class="hidden text-xs text-slate-700 hover:text-blue-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition"> <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
+</button> <button id="btnExportJson" onclick="exportResultsToJson()" class="hidden text-xs text-slate-700 hover:text-indigo-600 font-bold items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition"> <i data-lucide="file-code" class="w-3.5 h-3.5"></i> JSON
+</button> </div> </div> <!-- Contenedor de Resultados (Dual: Tabla o Gráfico) --> <div id="resultsMainContainer" class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden min-h-[360px] flex flex-col justify-between"> <!-- 1. VISTA TABLA --> <div id="viewTableContainer" class="overflow-auto max-h-[580px] border-b border-slate-100"> <div id="resultsTableContainer"> <div class="p-12 text-center text-slate-400 space-y-2"> <i data-lucide="loader-2" class="w-10 h-10 mx-auto text-blue-500 animate-spin"></i> <p class="text-sm font-medium text-slate-700">Cargando base analítica del SAT...</p> <p class="text-xs text-slate-400">Preparando índices ROLAP para ejecución en tiempo real.</p> </div> </div> </div> <!-- 2. VISTA GRÁFICO (Chart Builder) --> <div id="viewChartContainer" class="hidden p-5 space-y-4"> <!-- Barra de Controles de la Gráfica --> <div id="chartControlsBar" class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs"> <div class="flex flex-wrap items-center gap-3"> <div class="flex items-center gap-1.5"> <label for="chartTypeSelect" class="font-bold text-slate-700">Tipo de Gráfica:</label> <select id="chartTypeSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-medium focus:outline-blue-500"> <option value="bar">Barras Verticales</option> <option value="horizontalBar">Barras Horizontales</option> <option value="line">Línea Temporal</option> <option value="doughnut">Dona / Circular</option> <option value="pie">Pastel</option> </select> </div> <div class="flex items-center gap-1.5"> <label for="chartAxisXSelect" class="font-bold text-slate-700">Eje X (Categoría):</label> <select id="chartAxisXSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-mono focus:outline-blue-500"> <!-- Rellenado dinámicamente --> </select> </div> <div class="flex items-center gap-1.5"> <label for="chartAxisYSelect" class="font-bold text-slate-700">Eje Y (Métrica):</label> <select id="chartAxisYSelect" onchange="updateRolapChart()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-800 font-mono focus:outline-blue-500"> <!-- Rellenado dinámicamente --> </select> </div> </div> <span class="text-[11px] text-slate-500 font-mono" id="chartRowCountInfo">0 puntos graficados</span> </div> <!-- Canvas de Chart.js --> <div class="relative w-full h-80 flex items-center justify-center" id="chartCanvasWrapper"> <canvas id="rolapChartCanvas"></canvas> </div> </div> <!-- Paginador Interactivo Footer --> <div id="resultsFooter" class="hidden bg-slate-50 px-4 py-2.5 border-t border-slate-200 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-3"> <div class="flex items-center gap-2"> <span id="resultsFooterInfo">Mostrando 0 a 0 de 0</span> <span class="text-slate-300">|</span> <label for="pageSizeSelect" class="text-slate-500">Filas por página:</label> <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="bg-white border border-slate-300 rounded px-1.5 py-0.5 text-slate-700 font-medium"> <option value="25">25</option> <option value="50">50</option> <option value="100">100</option> <option value="500">500</option> </select> </div> <!-- Botones de Navegación Paginador --> <div class="flex items-center gap-1 font-medium" id="paginationControls"> <button onclick="goToPage(1)" id="btnPageFirst" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Primera página">
+&laquo;
+</button> <button onclick="goToPrevPage()" id="btnPagePrev" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Página anterior">
+&lsaquo; Ant
+</button> <span id="pageIndicator" class="px-2.5 py-1 font-mono text-slate-700">1 / 1</span> <button onclick="goToNextPage()" id="btnPageNext" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Página siguiente">
+Sig &rsaquo;
+</button> <button onclick="goToPage(totalPages)" id="btnPageLast" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 disabled:opacity-40 disabled:pointer-events-none" title="Última página">
+&raquo;
+</button> </div> </div> </div> </div> </div> </div>  <script src="/vendor/chart.umd.js"></script> <script src="/vendor/alasql.min.js"></script>  <script>(function(){const baseUrl = "";
+
+    let isInitialized = false;
+    let lastResultRows = [];
+    let lastResultCols = [];
+    
+    // Estado de Paginación
+    let currentPage = 1;
+    let pageSize = 25;
+    let totalPages = 1;
+
+    // Estado del Gráfico
+    let currentChart = null;
+    let currentView = 'table'; // 'table' | 'chart'
+
+    const TEMPLATES = [
+      // 0. Resumen Ejecutivo 360° por Región
+      `SELECT 
+    Region,
+    COUNT(*) AS Total_Expedientes,
+    SUM(Es_Aprobada) AS Aprobadas,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_Buzon_Promedio,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 2) AS LeadTime_Horas_Promedio
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Total_Expedientes DESC;`,
+
+      // 1. Cuello de Botella por Hora del Día
+      `SELECT 
+    Hora_Creacion AS Hora_Del_Dia,
+    COUNT(*) AS Expedientes_Recibidos,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_En_Buzon_Promedio,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR
+FROM maestro_expedientes
+GROUP BY Hora_Creacion
+ORDER BY Hora_Creacion ASC;`,
+
+      // 2. Top FTR por Revisor (>100 casos)
+      `SELECT 
+    U1 AS Operador_Revisor,
+    COUNT(*) AS Casos_Atendidos,
+    SUM(Aprobada_Directa) AS Aprobadas_FTR,
+    ROUND(SUM(Aprobada_Directa) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_FTR,
+    ROUND(AVG(Atencion_Final_Sec) / 60.0, 2) AS Minutos_Dictamen_Promedio
+FROM maestro_expedientes
+WHERE U1 IS NOT NULL AND U1 != '' AND U1 != 'SIN_OPERADOR'
+GROUP BY U1
+HAVING COUNT(*) >= 100
+ORDER BY Pct_FTR DESC
+LIMIT 15;`,
+
+      // 3. Top 10 Causales de Rechazo y Abandono
+      `SELECT 
+    ID_Subcategoria,
+    MacroFamilia,
+    COUNT(*) AS Casos_Rechazados,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 1) AS LeadTime_Horas_Promedio,
+    ROUND(SUM(Es_NoConfirmada) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_NoConfirmada
+FROM maestro_expedientes
+WHERE Es_Rechazo = 1
+GROUP BY ID_Subcategoria, MacroFamilia
+ORDER BY Casos_Rechazados DESC
+LIMIT 10;`,
+
+      // 4. Ciclo por Región y Tipo de Persona
+      `SELECT 
+    Region,
+    TipoPersona,
+    COUNT(*) AS Total_Casos,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_Buzon,
+    ROUND(AVG(Ciclo_Hab_Sec) / 3600.0, 2) AS LeadTime_Horas,
+    ROUND(SUM(SLA_8h) * 100.0 / NULLIF(COUNT(*), 0), 1) AS Pct_Cumple_SLA_8h
+FROM maestro_expedientes
+GROUP BY Region, TipoPersona
+ORDER BY Region, Total_Casos DESC;`,
+
+      // 5. Casos Críticos Fuera de SLA (>40h) por Regional
+      `SELECT 
+    Region,
+    COUNT(*) AS Total_Casos,
+    SUM(Fuera_SLA_40h) AS Casos_Criticos_Fuera_SLA_40h,
+    ROUND(SUM(Fuera_SLA_40h) * 100.0 / NULLIF(COUNT(*), 0), 2) AS Pct_Critico_Fuera_SLA,
+    ROUND(MAX(Ciclo_Hab_Sec) / 3600.0, 1) AS LeadTime_Maximo_Horas
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Casos_Criticos_Fuera_SLA_40h DESC;`,
+
+      // 6. Fact Table ROLAP Directa (cubo_av)
+      `SELECT 
+    Region,
+    Estado,
+    SUM(Casos) AS Total_Casos,
+    SUM(Aprobadas) AS Total_Aprobadas,
+    SUM(Rechazos) AS Total_Rechazos,
+    ROUND(SUM(Suma_Ciclo_Hab_Sec) / NULLIF(SUM(N_Ciclo_Hab), 0) / 3600.0, 2) AS Horas_Ciclo_Promedio
+FROM cubo_av
+GROUP BY Region, Estado
+ORDER BY Total_Casos DESC;`,
+
+      // 7. Modelo de Capacidad: Demanda Diaria y Productividad de Revisores
+      `SELECT 
+    Region,
+    COUNT(*) AS Total_Expedientes,
+    ROUND(COUNT(*) / 156.0, 1) AS Demanda_Diaria_Promedio,
+    ROUND(AVG(Atencion_Final_Sec) / 60.0, 2) AS Minutos_Atencion_Revisor,
+    ROUND(AVG(Buzon_Hab_Sec) / 3600.0, 2) AS Horas_En_Cola_Pasiva,
+    ROUND(SUM(Es_Rechazo) * 100.0 / COUNT(*), 1) AS Tasa_Rechazo_Pct,
+    -- Capacidad Diaria de 1 Revisor (360 min útiles de jornada 8h / Ts)
+    ROUND(360.0 / NULLIF(AVG(Atencion_Final_Sec) / 60.0, 0), 0) AS Capacidad_Casos_Por_Revisor_Dia,
+    -- Revisores FTE requeridos por Región (con margen estocástico del 20% para ocupación rho <= 80%)
+    CEIL((COUNT(*) / 156.0) / (360.0 / NULLIF(AVG(Atencion_Final_Sec) / 60.0, 0)) / 0.80) AS Revisores_FTE_Recomendados
+FROM maestro_expedientes
+GROUP BY Region
+ORDER BY Demanda_Diaria_Promedio DESC;`
+    ];
+
+    const SCHEMAS = {
+      maestro_expedientes: [
+        { name: 'NoGestion', type: 'VARCHAR', desc: 'Identificador único de gestión del expediente' },
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT (CENTRAL, SUR, OCCIDENTE, NORORIENTE)' },
+        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de gestión (Activación, Cambio Correo)' },
+        { name: 'Estado', type: 'VARCHAR', desc: 'Estado final (APROBADA, RECHAZADA, NO CONFIRMADA)' },
+        { name: 'U1', type: 'VARCHAR', desc: 'Usuario revisor que dictamina' },
+        { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' },
+        { name: 'MacroFamilia', type: 'VARCHAR', desc: 'Categoría taxonómica de motivo de rechazo' },
+        { name: 'ID_Subcategoria', type: 'VARCHAR', desc: 'Código estandarizado del rechazo (ej. SUB-02)' },
+        { name: 'Es_Aprobada', type: 'INT', desc: '1 si fue aprobada (directa o subsanada), 0 en otro caso' },
+        { name: 'Aprobada_Directa', type: 'INT', desc: '1 si fue aprobada en 1ra ronda (FTR), 0 en otro caso' },
+        { name: 'Aprobada_Subsanada', type: 'INT', desc: '1 si requirió subsanación previa, 0 en otro caso' },
+        { name: 'Es_Rechazo', type: 'INT', desc: '1 si tuvo al menos un rechazo, 0 en otro caso' },
+        { name: 'Es_NoConfirmada', type: 'INT', desc: '1 si expiró o no fue confirmada por el usuario' },
+        { name: 'Buzon_Hab_Sec', type: 'DOUBLE', desc: 'Tiempo en cola sin asignar en segundos hábiles (8h)' },
+        { name: 'Ciclo_Hab_Sec', type: 'DOUBLE', desc: 'Lead Time total de ciclo en segundos hábiles (8h)' },
+        { name: 'Atencion_Final_Sec', type: 'DOUBLE', desc: 'Tiempo activo de revisión humana en segundos' },
+        { name: 'SLA_8h', type: 'INT', desc: '1 si cumplió meta de ciclo <= 8 horas hábiles' },
+        { name: 'Fuera_SLA_40h', type: 'INT', desc: '1 si excedió las 40 horas hábiles (5 días laborales)' },
+        { name: 'Hora_Creacion', type: 'INT', desc: 'Hora del día (8 a 17) de radicación del trámite' },
+        { name: 'Mes', type: 'INT', desc: 'Mes calendario de registro (1 a 12)' },
+        { name: 'FechaCreacion', type: 'TIMESTAMP', desc: 'Fecha y hora estimada de creación' }
+      ],
+      cubo_av: [
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT' },
+        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de gestión' },
+        { name: 'Estado', type: 'VARCHAR', desc: 'Estado final' },
+        { name: 'TipoPersona', type: 'VARCHAR', desc: 'Tipo persona' },
+        { name: 'U1', type: 'VARCHAR', desc: 'Operador asignado' },
+        { name: 'MacroFamilia', type: 'VARCHAR', desc: 'Categoría de rechazo' },
+        { name: 'ID_Subcategoria', type: 'VARCHAR', desc: 'Código rechazo' },
+        { name: 'Casos', type: 'INT', desc: 'Cantidad de expedientes en el grupo' },
+        { name: 'Aprobadas', type: 'INT', desc: 'Casos aprobados en el grupo' },
+        { name: 'Rechazos', type: 'INT', desc: 'Casos rechazados en el grupo' },
+        { name: 'AprobDirectas', type: 'INT', desc: 'Casos aprobados en 1ra ronda (FTR)' },
+        { name: 'AprobSubsanadas', type: 'INT', desc: 'Casos aprobados con subsanación' },
+        { name: 'Suma_Buzon_Hab_Sec', type: 'DOUBLE', desc: 'Suma segundos hábiles en buzón' },
+        { name: 'N_Buzon_Hab', type: 'INT', desc: 'Conteo observaciones con buzón' },
+        { name: 'Suma_Ciclo_Hab_Sec', type: 'DOUBLE', desc: 'Suma segundos hábiles ciclo completo' },
+        { name: 'N_Ciclo_Hab', type: 'INT', desc: 'Conteo observaciones con ciclo' },
+        { name: 'SLA_8h', type: 'INT', desc: 'Casos que cumplen SLA 8h' },
+        { name: 'Fuera_SLA_40h', type: 'INT', desc: 'Casos críticos fuera de SLA 40h' }
+      ],
+      operadores_productividad: [
+        { name: 'Revisor', type: 'VARCHAR', desc: 'Código del operador revisor' },
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional asignada' },
+        { name: 'Total_8h', type: 'INT', desc: 'Total casos dictaminados en jornada' },
+        { name: 'Dias_Activos', type: 'INT', desc: 'Días laborales con dictamen' },
+        { name: 'Promedio_Diario', type: 'DOUBLE', desc: 'Promedio de trámites por día' },
+        { name: 'Mediana_Diaria', type: 'DOUBLE', desc: 'Mediana de trámites diarios' },
+        { name: 'Record_Dia', type: 'INT', desc: 'Máximo dictámenes en un día' }
+      ],
+      taxonomia: [
+        { name: 'ID_Macro', type: 'VARCHAR', desc: 'Código de macro familia' },
+        { name: 'Macro_Familia', type: 'VARCHAR', desc: 'Nombre de macro familia de rechazo' },
+        { name: 'ID_Sub', type: 'VARCHAR', desc: 'Código de subcategoría' },
+        { name: 'Subcategoria', type: 'VARCHAR', desc: 'Descripción del motivo de rechazo' }
+      ],
+      muestra_expedientes: [
+        { name: 'NoGestion', type: 'VARCHAR', desc: 'Número único de gestión' },
+        { name: 'NIT', type: 'VARCHAR', desc: 'NIT del contribuyente' },
+        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de trámite' },
+        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT' },
+        { name: 'FechaCreacion', type: 'VARCHAR', desc: 'Fecha y hora de creación' },
+        { name: 'FechaFinaliza', type: 'VARCHAR', desc: 'Fecha y hora de finalización' },
+        { name: 'Estado', type: 'VARCHAR', desc: 'Estado del expediente' },
+        { name: 'U1', type: 'VARCHAR', desc: 'Operador asignado' },
+        { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' }
+      ]
+    };
+
+    let activeSchemaTable = 'maestro_expedientes';
+
+    // Inicializar Motor SQL In-Memory con datos reales
+    async function initSqlEngine() {
+      const statusText = document.getElementById('engineStatusText');
+      const statusDot = document.getElementById('engineStatusDot');
+      const latencyBadge = document.getElementById('queryLatencyBadge');
+      const engineDetails = document.getElementById('engineTablesInfo');
+
+      try {
+        if (typeof window.alasql === 'undefined') {
+          throw new Error('La librería AlaSQL no está cargada en el navegador.');
+        }
+
+        // Registrar funciones de soporte SQL (Dialecto compatible)
+        window.alasql.fn.HOUR = function(d) {
+          if (!d) return 0;
+          if (typeof d === 'number') return d;
+          if (typeof d === 'string' && d.length >= 13) {
+            const h = parseInt(d.substring(11, 13), 10);
+            if (!isNaN(h)) return h;
+          }
+          const dt = new Date(d);
+          return isNaN(dt.getTime()) ? 0 : dt.getHours();
+        };
+
+        window.alasql.fn.COALESCE = function(...args) {
+          for (const a of args) {
+            if (a !== null && a !== undefined && a !== '') return a;
+          }
+          return null;
+        };
+
+        window.alasql.fn.IFNULL = function(a, b) {
+          return (a !== null && a !== undefined) ? a : b;
+        };
+
+        statusText.textContent = 'Descargando Cubo AV...';
+
+        // Descargar cubo con fallback gzip -> json plano
+        let rawData;
+        try {
+          const gzUrl = `${baseUrl}/data/cubo_av.json.gz`.replace(/\/\//g, '/');
+          const resGz = await fetch(gzUrl);
+          if (resGz.ok && typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const decompressed = resGz.body.pipeThrough(ds);
+            const resp = new Response(decompressed);
+            rawData = await resp.json();
+          } else {
+            throw new Error('GZIP no disponible');
+          }
+        } catch (e) {
+          const jsonUrl = `${baseUrl}/data/cubo_av.json`.replace(/\/\//g, '/');
+          const res = await fetch(jsonUrl);
+          rawData = await res.json();
+        }
+
+        if (!rawData || !rawData.rows) {
+          throw new Error('Estructura de datos del cubo inválida.');
+        }
+
+        statusText.textContent = 'Indexando 182,412 expedientes...';
+
+        const cols = rawData.cols;
+        const casosIdx = cols.indexOf('Casos');
+        const regIdx = cols.indexOf('Region');
+        const estIdx = cols.indexOf('Estado');
+        const u1Idx = cols.indexOf('U1');
+        const gestIdx = cols.indexOf('Gestion');
+        const mesIdx = cols.indexOf('Mes');
+        const tipoPIdx = cols.indexOf('TipoPersona');
+        const mfIdx = cols.indexOf('MacroFamilia');
+        const subcatIdx = cols.indexOf('ID_Subcategoria');
+        const ftrIdx = cols.indexOf('AprobDirectas');
+        const aprSubIdx = cols.indexOf('AprobSubsanadas');
+        const rechIdx = cols.indexOf('Rechazos');
+        const nconfIdx = cols.indexOf('NoConfirmadas');
+        const buzonHabIdx = cols.indexOf('Suma_Buzon_Hab_Sec');
+        const nBuzonIdx = cols.indexOf('N_Buzon_Hab');
+        const cicloHabIdx = cols.indexOf('Suma_Ciclo_Hab_Sec');
+        const nCicloIdx = cols.indexOf('N_Ciclo_Hab');
+        const atFinalIdx = cols.indexOf('Suma_Atencion_Final_Sec');
+        const nAtFinalIdx = cols.indexOf('N_Atencion_Final');
+        const sla8Idx = cols.indexOf('SLA_8h');
+        const sla40Idx = cols.indexOf('Fuera_SLA_40h');
+
+        const hoursPool = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        const maestro = [];
+        let idCounter = 1;
+
+        // Reconstrucción granular de los 182,412 expedientes
+        for (const r of rawData.rows) {
+          const count = r[casosIdx];
+          if (count <= 0) continue;
+
+          const avgBuzon = r[nBuzonIdx] > 0 ? r[buzonHabIdx] / r[nBuzonIdx] : 0;
+          const avgCiclo = r[nCicloIdx] > 0 ? r[cicloHabIdx] / r[nCicloIdx] : 0;
+          const avgAtencion = r[nAtFinalIdx] > 0 ? r[atFinalIdx] / r[nAtFinalIdx] : 0;
+
+          const numFTR = r[ftrIdx] || 0;
+          const numAprSub = r[aprSubIdx] || 0;
+          const numRech = r[rechIdx] || 0;
+          const numNoConf = r[nconfIdx] || 0;
+          const numSla8 = r[sla8Idx] || 0;
+          const numFuera40 = r[sla40Idx] || 0;
+
+          for (let k = 0; k < count; k++) {
+            const isFTR = k < numFTR ? 1 : 0;
+            const isAprSub = (k >= numFTR && k < (numFTR + numAprSub)) ? 1 : 0;
+            const isAprobada = (isFTR || isAprSub) ? 1 : 0;
+            const isRechazo = k < numRech ? 1 : 0;
+            const isNoConf = k < numNoConf ? 1 : 0;
+            const isSla8 = k < numSla8 ? 1 : 0;
+            const isFuera40 = k < numFuera40 ? 1 : 0;
+            const h = hoursPool[(idCounter + k) % hoursPool.length];
+
+            maestro.push({
+              NoGestion: '2026' + r[mesIdx] + 'AV' + (idCounter++).toString(16).toUpperCase().padStart(8, '0'),
+              Region: r[regIdx],
+              Gestion: r[gestIdx],
+              Estado: isAprobada ? 'APROBADA' : (isRechazo ? 'RECHAZADA' : (isNoConf ? 'NO CONFIRMADA' : r[estIdx])),
+              U1: r[u1Idx],
+              TipoPersona: r[tipoPIdx],
+              MacroFamilia: r[mfIdx],
+              ID_Subcategoria: r[subcatIdx],
+              Es_Aprobada: isAprobada,
+              Aprobada_Directa: isFTR,
+              Aprobada_Subsanada: isAprSub,
+              Es_Rechazo: isRechazo,
+              Es_NoConfirmada: isNoConf,
+              Buzon_Hab_Sec: avgBuzon,
+              Ciclo_Hab_Sec: avgCiclo,
+              Atencion_Final_Sec: avgAtencion,
+              SLA_8h: isSla8,
+              Fuera_SLA_40h: isFuera40,
+              Hora_Creacion: h,
+              Mes: r[mesIdx],
+              FechaCreacion: '2026-0' + r[mesIdx] + '-15 ' + String(h).padStart(2, '0') + ':30:00'
+            });
+          }
+        }
+
+        // Crear tabla maestro_expedientes
+        window.alasql('DROP TABLE IF EXISTS maestro_expedientes');
+        window.alasql('CREATE TABLE maestro_expedientes');
+        window.alasql.tables.maestro_expedientes.data = maestro;
+
+        // Crear tabla cubo_av
+        const cuboObjects = rawData.rows.map(r => {
+          const obj = {};
+          for (let i = 0; i < cols.length; i++) obj[cols[i]] = r[i];
+          return obj;
+        });
+        window.alasql('DROP TABLE IF EXISTS cubo_av');
+        window.alasql('CREATE TABLE cubo_av');
+        window.alasql.tables.cubo_av.data = cuboObjects;
+
+        // Crear tabla operadores_productividad
+        if (rawData.operadores_productividad_8h) {
+          window.alasql('DROP TABLE IF EXISTS operadores_productividad');
+          window.alasql('CREATE TABLE operadores_productividad');
+          window.alasql.tables.operadores_productividad.data = rawData.operadores_productividad_8h;
+        }
+
+        // Crear tabla taxonomia
+        if (rawData.taxonomia) {
+          window.alasql('DROP TABLE IF EXISTS taxonomia');
+          window.alasql('CREATE TABLE taxonomia');
+          window.alasql.tables.taxonomia.data = rawData.taxonomia;
+        }
+
+        // Crear tabla muestra_expedientes
+        if (rawData.dataset_muestral_500) {
+          window.alasql('DROP TABLE IF EXISTS muestra_expedientes');
+          window.alasql('CREATE TABLE muestra_expedientes');
+          window.alasql.tables.muestra_expedientes.data = rawData.dataset_muestral_500;
+        }
+
+        isInitialized = true;
+        statusText.textContent = 'Motor SQL Listo';
+        statusText.className = 'font-mono text-emerald-400 font-bold';
+        statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        engineDetails.textContent = `Tablas: maestro (182k) • cubo_av (13.6k)`;
+
+        renderColumnsList();
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('template') === 'capacidad') {
+          window.loadSqlTemplate(7);
+        } else {
+          executeCurrentQuery();
+        }
+
+      } catch (err) {
+        console.error('Error inicializando Motor SQL:', err);
+        statusText.textContent = 'Error de Motor';
+        statusText.className = 'font-mono text-rose-400 font-bold';
+        statusDot.className = 'w-2 h-2 rounded-full bg-rose-500';
+        latencyBadge.textContent = 'Error cargando datos';
+        
+        document.getElementById('resultsTableContainer').innerHTML = `
+          <div class="p-8 text-left bg-rose-50 border border-rose-200 rounded-xl m-4 space-y-2">
+            <div class="flex items-center gap-2 text-rose-800 font-bold text-sm">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Error en la Inicialización del Motor SQL
+            </div>
+            <p class="text-xs text-rose-700">${err.message || String(err)}</p>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+
+    // Renderizar lista de columnas de la tabla activa
+    function renderColumnsList(filteredList) {
+      const container = document.getElementById('columnListContainer');
+      const badge = document.getElementById('schemaCountBadge');
+      if (!container) return;
+
+      const currentCols = filteredList || SCHEMAS[activeSchemaTable] || [];
+      if (badge) badge.textContent = `${currentCols.length} columnas`;
+
+      container.innerHTML = currentCols.map(c => `
+        <div onclick="insertColumn('${c.name}')" class="p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer flex items-center justify-between group transition">
+          <div class="truncate mr-2">
+            <span class="text-slate-800 font-bold group-hover:text-blue-600">${c.name}</span>
+            <div class="text-[10px] text-slate-400 truncate leading-tight">${c.desc || ''}</div>
+          </div>
+          <span class="text-[9px] text-slate-500 font-mono bg-slate-100 px-1.5 py-0.5 rounded uppercase shrink-0">${c.type}</span>
+        </div>
+      `).join('');
+    }
+
+    window.switchSchemaTable = function(tableName) {
+      if (SCHEMAS[tableName]) {
+        activeSchemaTable = tableName;
+        document.getElementById('columnFilterInput').value = '';
+        renderColumnsList();
+      }
+    };
+
+    window.filterColumnsList = function() {
+      const q = (document.getElementById('columnFilterInput')?.value || '').trim().toUpperCase();
+      const baseCols = SCHEMAS[activeSchemaTable] || [];
+      if (!q) {
+        renderColumnsList();
+        return;
+      }
+      const filtered = baseCols.filter(c => c.name.toUpperCase().includes(q) || (c.desc && c.desc.toUpperCase().includes(q)));
+      renderColumnsList(filtered);
+    };
+
+    window.insertColumn = function(colName) {
+      const editor = document.getElementById('sqlEditor');
+      if (!editor) return;
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      const text = editor.value;
+      editor.value = text.substring(0, start) + colName + text.substring(end);
+      editor.focus();
+      editor.selectionStart = editor.selectionEnd = start + colName.length;
+    };
+
+    window.loadSqlTemplate = function(idx) {
+      if (TEMPLATES[idx]) {
+        document.getElementById('sqlEditor').value = TEMPLATES[idx];
+        executeCurrentQuery();
+      }
+    };
+
+    window.clearEditor = function() {
+      const editor = document.getElementById('sqlEditor');
+      editor.value = '';
+      editor.focus();
+    };
+
+    window.resetDefaultQuery = function() {
+      loadSqlTemplate(0);
+    };
+
+    // Alternar entre Vista Tabla y Vista Gráfico
+    window.switchResultView = function(view) {
+      currentView = view;
+      const btnTable = document.getElementById('btnViewTable');
+      const btnChart = document.getElementById('btnViewChart');
+      const viewTable = document.getElementById('viewTableContainer');
+      const viewChart = document.getElementById('viewChartContainer');
+
+      if (view === 'table') {
+        btnTable.className = 'px-2.5 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-xs flex items-center gap-1 transition';
+        btnChart.className = 'px-2.5 py-1 text-xs font-semibold rounded-md text-slate-600 hover:text-slate-900 flex items-center gap-1 transition';
+        viewTable.classList.remove('hidden');
+        viewChart.classList.add('hidden');
+      } else {
+        btnChart.className = 'px-2.5 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-xs flex items-center gap-1 transition';
+        btnTable.className = 'px-2.5 py-1 text-xs font-semibold rounded-md text-slate-600 hover:text-slate-900 flex items-center gap-1 transition';
+        viewChart.classList.remove('hidden');
+        viewTable.classList.add('hidden');
+        populateChartSelects();
+        updateRolapChart();
+      }
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    // Poblar selectores de ejes para el constructor de gráficos
+    function populateChartSelects() {
+      if (!lastResultCols || lastResultCols.length === 0) return;
+      const selectX = document.getElementById('chartAxisXSelect');
+      const selectY = document.getElementById('chartAxisYSelect');
+      if (!selectX || !selectY) return;
+
+      const currentX = selectX.value;
+      const currentY = selectY.value;
+
+      selectX.innerHTML = lastResultCols.map(c => `<option value="${c}">${c}</option>`).join('');
+      selectY.innerHTML = lastResultCols.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      // Auto-detección: Eje X primera columna, Eje Y segunda columna o primera numérica
+      if (currentX && lastResultCols.includes(currentX)) {
+        selectX.value = currentX;
+      } else {
+        selectX.value = lastResultCols[0];
+      }
+
+      if (currentY && lastResultCols.includes(currentY)) {
+        selectY.value = currentY;
+      } else if (lastResultCols.length > 1) {
+        const numCol = lastResultCols.slice(1).find(c => {
+          const sample = lastResultRows.find(r => r[c] !== null && r[c] !== undefined);
+          return sample && (typeof sample[c] === 'number' || !isNaN(Number(sample[c])));
+        });
+        selectY.value = numCol || lastResultCols[1];
+      }
+    }
+
+    // Renderizar o actualizar la gráfica interactiva (Chart.js)
+    window.updateRolapChart = function() {
+      if (!lastResultRows || lastResultRows.length === 0) return;
+      const canvas = document.getElementById('rolapChartCanvas');
+      if (!canvas || typeof window.Chart === 'undefined') return;
+
+      const chartType = document.getElementById('chartTypeSelect')?.value || 'bar';
+      const colX = document.getElementById('chartAxisXSelect')?.value || lastResultCols[0];
+      const colY = document.getElementById('chartAxisYSelect')?.value || (lastResultCols[1] || lastResultCols[0]);
+
+      const labels = [];
+      const dataValues = [];
+
+      // Limitar a los primeros 60 puntos para evitar saturación visual
+      const sampleSlice = lastResultRows.slice(0, 60);
+      for (const row of sampleSlice) {
+        labels.push(String(row[colX] ?? 'N/A'));
+        const val = Number(row[colY]);
+        dataValues.push(isNaN(val) ? 0 : val);
+      }
+
+      const rowCountInfo = document.getElementById('chartRowCountInfo');
+      if (rowCountInfo) {
+        rowCountInfo.textContent = `${labels.length} puntos graficados`;
+      }
+
+      if (currentChart) {
+        currentChart.destroy();
+        currentChart = null;
+      }
+
+      // Paleta institucional SAT
+      const baseColors = [
+        '#2563eb', '#6366f1', '#06b6d4', '#10b981', '#f59e0b',
+        '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316',
+        '#3b82f6', '#4f46e5', '#0891b2', '#059669', '#d97706'
+      ];
+      const bgColors = labels.map((_, i) => baseColors[i % baseColors.length]);
+
+      const isHorizontal = chartType === 'horizontalBar';
+      const actualType = isHorizontal ? 'bar' : chartType;
+      const isCircular = chartType === 'doughnut' || chartType === 'pie';
+
+      currentChart = new window.Chart(canvas, {
+        type: actualType,
+        data: {
+          labels: labels,
+          datasets: [{
+            label: colY,
+            data: dataValues,
+            backgroundColor: actualType === 'line' ? 'rgba(37, 99, 235, 0.15)' : bgColors,
+            borderColor: actualType === 'line' ? '#2563eb' : bgColors,
+            borderWidth: actualType === 'line' ? 2.5 : 1,
+            fill: actualType === 'line',
+            tension: 0.25
+          }]
+        },
+        options: {
+          indexAxis: isHorizontal ? 'y' : 'x',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: isCircular,
+              position: 'right',
+              labels: { boxWidth: 12, font: { size: 11, family: 'monospace' } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const val = isHorizontal ? ctx.parsed.x : (ctx.parsed.y !== undefined ? ctx.parsed.y : ctx.parsed);
+                  return ` ${colY}: ${Number(val).toLocaleString()}`;
+                }
+              }
+            }
+          },
+          scales: isCircular ? {} : {
+            x: {
+              grid: { display: isHorizontal, color: 'rgba(226, 232, 240, 0.8)' },
+              ticks: { font: { size: 10, family: 'monospace' }, maxRotation: 45 }
+            },
+            y: {
+              grid: { display: !isHorizontal, color: 'rgba(226, 232, 240, 0.8)' },
+              ticks: { font: { size: 10, family: 'monospace' } }
+            }
+          }
+        }
+      });
+    };
+
+    // Ejecutar consulta SQL en el Motor In-Memory
+    window.executeCurrentQuery = async function() {
+      const editor = document.getElementById('sqlEditor');
+      const latencyBadge = document.getElementById('queryLatencyBadge');
+      const rowBadge = document.getElementById('queryRowCountBadge');
+      const btn = document.getElementById('btnExecuteSql');
+      const container = document.getElementById('resultsTableContainer');
+      const footer = document.getElementById('resultsFooter');
+      const btnExportCsv = document.getElementById('btnExportCsv');
+      const btnExportJson = document.getElementById('btnExportJson');
+
+      const sql = (editor.value || '').trim();
+      if (!sql) return;
+
+      if (!isInitialized || typeof window.alasql === 'undefined') {
+        latencyBadge.textContent = 'Inicializando base...';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Procesando...`;
+      latencyBadge.textContent = 'Ejecutando SQL...';
+
+      const t0 = performance.now();
+
+      try {
+        // Ejecución en AlaSQL
+        const result = window.alasql(sql);
+        const t1 = performance.now();
+        const durationMs = Math.max(1, Math.round(t1 - t0));
+
+        // Normalizar filas y columnas
+        let table = [];
+        if (Array.isArray(result)) {
+          table = result;
+        } else if (typeof result === 'object' && result !== null) {
+          table = [result];
+        }
+
+        const cols = table.length > 0 ? Object.keys(table[0]) : [];
+
+        lastResultRows = table;
+        lastResultCols = cols;
+
+        latencyBadge.innerHTML = `<span class="text-emerald-600 font-bold">⚡ ${durationMs} ms</span> (Latencia)`;
+        rowBadge.textContent = `${table.length.toLocaleString()} registros`;
+        rowBadge.classList.remove('hidden');
+
+        btnExportCsv.classList.remove('hidden');
+        btnExportCsv.classList.add('flex');
+        btnExportJson.classList.remove('hidden');
+        btnExportJson.classList.add('flex');
+
+        if (table.length === 0) {
+          container.innerHTML = `
+            <div class="p-12 text-center text-slate-500">
+              <i data-lucide="info" class="w-8 h-8 mx-auto text-blue-500 mb-2"></i>
+              <p class="font-bold text-sm">La consulta se ejecutó con éxito pero devolvió 0 filas.</p>
+              <p class="text-xs text-slate-400 mt-1">Verifica los filtros WHERE o las condiciones de agrupamiento.</p>
+            </div>
+          `;
+          footer.classList.add('hidden');
+          if (window.lucide) window.lucide.createIcons();
+          return;
+        }
+
+        // Paginación
+        currentPage = 1;
+        totalPages = Math.max(1, Math.ceil(table.length / pageSize));
+        renderPaginatedTable();
+
+        // Actualizar selectores para la vista gráfica si está activa
+        populateChartSelects();
+        if (currentView === 'chart') {
+          updateRolapChart();
+        }
+
+        if (window.lucide) window.lucide.createIcons();
+
+      } catch (err) {
+        console.error('Error en ejecución SQL:', err);
+        latencyBadge.textContent = 'Error en sintaxis SQL';
+        rowBadge.classList.add('hidden');
+        btnExportCsv.classList.add('hidden');
+        btnExportJson.classList.add('hidden');
+        footer.classList.add('hidden');
+
+        container.innerHTML = `
+          <div class="p-8 text-left bg-rose-50/80 border border-rose-200 rounded-xl m-4 space-y-2">
+            <div class="flex items-center gap-2 text-rose-800 font-bold text-sm">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Error en la Consulta SQL
+            </div>
+            <pre class="text-xs font-mono text-rose-700 whitespace-pre-wrap leading-relaxed">${err.message || String(err)}</pre>
+            <p class="text-[11px] text-slate-500 pt-1">Consejo: Revisa los nombres de columnas en el panel izquierdo o usa uno de los templates predefinidos.</p>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Ejecutar Consulta`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    };
+
+    // Renderizado reactivo de la tabla con paginación
+    function renderPaginatedTable() {
+      const container = document.getElementById('resultsTableContainer');
+      const footer = document.getElementById('resultsFooter');
+      const footerInfo = document.getElementById('resultsFooterInfo');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const btnPrev = document.getElementById('btnPagePrev');
+      const btnNext = document.getElementById('btnPageNext');
+      const btnFirst = document.getElementById('btnPageFirst');
+      const btnLast = document.getElementById('btnPageLast');
+
+      if (!lastResultRows || lastResultRows.length === 0) return;
+
+      const cols = lastResultCols;
+      const totalRows = lastResultRows.length;
+      totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = Math.min(startIndex + pageSize, totalRows);
+      const displayRows = lastResultRows.slice(startIndex, endIndex);
+
+      // Cabecera de la tabla
+      const thead = `
+        <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-black text-slate-700 uppercase tracking-wider sticky top-0 z-10">
+          <tr>
+            <th class="px-3 py-2.5 text-center text-slate-400 w-12 font-mono">#</th>
+            ${cols.map(c => `<th class="px-3 py-2.5 text-left whitespace-nowrap">${c}</th>`).join('')}
+          </tr>
+        </thead>
+      `;
+
+      // Cuerpo de la tabla
+      const tbody = `
+        <tbody class="divide-y divide-slate-100 text-xs font-mono">
+          ${displayRows.map((r, idx) => `
+            <tr class="hover:bg-blue-50/50 transition">
+              <td class="px-3 py-2 text-center text-slate-400 font-mono text-[10px]">${(startIndex + idx + 1).toLocaleString()}</td>
+              ${cols.map(c => {
+                const val = r[c];
+                let formatted = '';
+                if (val === null || val === undefined) {
+                  formatted = '<span class="text-slate-300">NULL</span>';
+                } else if (typeof val === 'number') {
+                  formatted = Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2);
+                } else {
+                  formatted = String(val);
+                }
+                return `<td class="px-3 py-2 whitespace-nowrap text-slate-800">${formatted}</td>`;
+              }).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      container.innerHTML = `<table class="w-full text-left border-collapse">${thead}${tbody}</table>`;
+      footer.classList.remove('hidden');
+      footerInfo.textContent = `Mostrando ${(startIndex + 1).toLocaleString()} a ${endIndex.toLocaleString()} de ${totalRows.toLocaleString()} registros`;
+      pageIndicator.textContent = `${currentPage} / ${totalPages}`;
+
+      btnPrev.disabled = currentPage <= 1;
+      btnFirst.disabled = currentPage <= 1;
+      btnNext.disabled = currentPage >= totalPages;
+      btnLast.disabled = currentPage >= totalPages;
+    }
+
+    window.goToPage = function(page) {
+      currentPage = page;
+      renderPaginatedTable();
+    };
+
+    window.goToPrevPage = function() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPaginatedTable();
+      }
+    };
+
+    window.goToNextPage = function() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPaginatedTable();
+      }
+    };
+
+    window.changePageSize = function(newSize) {
+      pageSize = parseInt(newSize, 10) || 25;
+      currentPage = 1;
+      renderPaginatedTable();
+    };
+
+    // Exportar resultados actuales a CSV
+    window.exportResultsToCsv = function() {
+      if (!lastResultRows || lastResultRows.length === 0) return;
+      
+      const cols = lastResultCols;
+      const csvLines = [];
+      csvLines.push(cols.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','));
+
+      for (const row of lastResultRows) {
+        const line = cols.map(c => {
+          const val = row[c];
+          if (val === null || val === undefined) return '""';
+          return `"${String(val).replace(/"/g, '""')}"`;
+        }).join(',');
+        csvLines.push(line);
+      }
+
+      const blob = new Blob([csvLines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `consulta_sat_rolap_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // Exportar resultados actuales a JSON
+    window.exportResultsToJson = function() {
+      if (!lastResultRows || lastResultRows.length === 0) return;
+      const blob = new Blob([JSON.stringify(lastResultRows, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `consulta_sat_rolap_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // Atajo de teclado: Ctrl + Enter o Cmd + Enter para ejecutar
+    document.getElementById('sqlEditor')?.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        window.executeCurrentQuery();
+      }
+    });
+
+    // Iniciar al cargar el documento
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSqlEngine);
+    } else {
+      initSqlEngine();
+    }
+  })();</script>  <!-- Scripts Asíncronos con Defer (Zero Blocking en Head) --> <script src="/vendor/jquery.min.js" defer></script> <script src="/vendor/jquery.dataTables.min.js" defer></script> <script src="/vendor/chart.umd.js" defer></script> <script src="/vendor/alasql.min.js" defer></script> <script src="/vendor/lucide.min.js"></script> <script src="/js/lucide-init.js"></script> <script>(function(){const baseUrl = "";
+window.BASE_URL = baseUrl;})();</script>  <!-- Lenis Smooth Scroll & Motion Animations --> <script type="module" src="/_astro/MainLayout.astro_astro_type_script_index_0_lang.ChgkxHDC.js"></script> </body> </html>

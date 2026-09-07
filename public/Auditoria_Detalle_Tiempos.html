@@ -382,8 +382,15 @@
         }
 
         $(document).ready(function() {
-            populateFilterDropdowns();
-            renderDataTablesAudit();
+            if (window.DATA && window.DATA.loaded) {
+                populateFilterDropdowns();
+                renderDataTablesAudit();
+            } else {
+                document.addEventListener('data:ready', function() {
+                    populateFilterDropdowns();
+                    renderDataTablesAudit();
+                });
+            }
         });
     </script>
 </body>

@@ -1,29 +1,18 @@
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
+import react from '@astrojs/react';
 
-const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
-const repoName = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[1] : '';
-const base = process.env.BASE_PATH || (isGitHubActions && repoName ? `/${repoName}/` : '/');
-const site = process.env.SITE_URL || (isGitHubActions && process.env.GITHUB_REPOSITORY ? `https://${process.env.GITHUB_REPOSITORY.split('/')[0]}.github.io` : undefined);
-
-// https://astro.build/config
 export default defineConfig({
-  site,
-  base,
-  integrations: [
-    react(),
-    tailwind({
-      applyBaseStyles: false,
-    })
-  ],
-  output: 'static',
+  integrations: [tailwind(), react()],
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+    allowedHosts: true
+  },
   vite: {
-    resolve: {
-      dedupe: ['react', 'react-dom']
-    },
-    optimizeDeps: {
-      include: ['react', 'react-dom', 'react/jsx-runtime']
+    server: {
+      allowedHosts: true,
+      cors: true
     }
   }
 });
