@@ -623,9 +623,222 @@ Implementar <strong>Weighted Round-Robin</strong> que envíe automáticamente la
     </div>
   </div>
 </div>
-</div> <!-- 3. PESTAÑA BUSCADOR FORENSE & AUDITORÍA --> <div id="tab-bitacora-buscador" class="bitacora-tab-content hidden space-y-6"> <!-- BUSCADOR PRIORITARIO --> <div class="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden"> <div class="p-5 border-b border-slate-100 bg-slate-900 text-white flex items-center gap-2.5"> <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0"> <i data-lucide="search" class="w-4.5 h-4.5"></i> </div> <div> <h2 class="text-sm font-black tracking-tight">Buscador y Consulta Forense de Bitácora (Enero – Julio 2026)</h2> <p class="text-[10px] text-slate-400 font-semibold">Pega el Número de Gestión para obtener su historial, rondas y ciclos operativos de inmediato desde las 256 particiones</p> </div> </div> <div class="p-5 space-y-4"> <div class="flex gap-2 max-w-xl"> <input type="text" id="txtDirectGestionId" placeholder="Pegar No. Gestión aquí... (ej. 20261AV02E90900)" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-blue-500 text-xs font-bold text-slate-800 shadow-inner" onkeydown="if(event.key === 'Enter') queryDirectGestion()"> <button onclick="queryDirectGestion()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-blue-500/20 shrink-0">
-Consultar
-</button> </div> <!-- Casos de prueba rápidos --> <div class="flex flex-wrap items-center gap-2 pt-1 text-xs"> <span class="text-slate-400 font-semibold text-[11px]">Casos de prueba para auditoría forense:</span>
+</div> <!-- 3. PESTAÑA BUSCADOR FORENSE & AUDITORÍA -->
+<div id="tab-bitacora-buscador" class="bitacora-tab-content hidden space-y-6">
+
+  <!-- RESUMEN MACRO: TOTAL GESTIONES, ATENDIDAS Y DISTRIBUCIÓN DE RONDAS -->
+  <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-3xl shadow-lg border border-slate-800 space-y-5">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-white/10">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 bg-blue-600/30 text-blue-400 rounded-lg border border-blue-400/20"><i data-lucide="layers" class="w-4 h-4"></i></span>
+          <h3 class="text-base font-bold text-white tracking-tight">Universo de Gestiones y Rondas de Atención en Bitácora</h3>
+        </div>
+        <p class="text-xs text-slate-300 mt-0.5">Desglose de gestiones creadas vs atendidas por operadores humanos y distribución por cantidad de atenciones</p>
+      </div>
+      <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs px-3 py-1 rounded-full font-bold">
+        Auditoría 100% de Particiones
+      </span>
+    </div>
+
+    <!-- 4 Tarjetas de Resumen Global -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+      <!-- Card 1: Total Gestiones -->
+      <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+        <div>
+          <span class="text-slate-300 font-bold uppercase text-[10px] tracking-wider">Total Gestiones en Bitácora</span>
+          <p class="text-2xl font-black text-white mt-1 font-mono">10,824</p>
+          <p class="text-[11px] text-blue-300 font-semibold mt-0.5">100% Universo Auditado</p>
+        </div>
+        <p class="text-[10px] text-slate-400 mt-2 pt-2 border-t border-white/10">Expedientes con trazabilidad de eventos</p>
+      </div>
+
+      <!-- Card 2: Gestiones Atendidas -->
+      <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+        <div>
+          <span class="text-emerald-300 font-bold uppercase text-[10px] tracking-wider">Gestiones Atendidas</span>
+          <p class="text-2xl font-black text-emerald-400 mt-1 font-mono">8,088 <span class="text-xs font-normal text-emerald-200">(74.7%)</span></p>
+          <p class="text-[11px] text-emerald-300 font-semibold mt-0.5">6,409 Aprobadas • 1,679 Dictaminadas</p>
+        </div>
+        <p class="text-[10px] text-slate-400 mt-2 pt-2 border-t border-white/10">Tuvieron al menos 1 intervención humana</p>
+      </div>
+
+      <!-- Card 3: No Atendidas / Canceladas -->
+      <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+        <div>
+          <span class="text-rose-300 font-bold uppercase text-[10px] tracking-wider">Sin Atención (Abandono)</span>
+          <p class="text-2xl font-black text-rose-400 mt-1 font-mono">2,736 <span class="text-xs font-normal text-rose-200">(25.3%)</span></p>
+          <p class="text-[11px] text-rose-300 font-semibold mt-0.5">No confirmadas o canceladas en cola</p>
+        </div>
+        <p class="text-[10px] text-slate-400 mt-2 pt-2 border-t border-white/10">El usuario canceló antes de asignación</p>
+      </div>
+
+      <!-- Card 4: Frecuencia de Rondas -->
+      <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+        <div>
+          <span class="text-amber-300 font-bold uppercase text-[10px] tracking-wider">Re-trabajo (≥ 2 atenciones)</span>
+          <p class="text-2xl font-black text-amber-400 mt-1 font-mono">1,766 <span class="text-xs font-normal text-amber-200">(21.8%)</span></p>
+          <p class="text-[11px] text-amber-300 font-semibold mt-0.5">Gestiones con 1 o más rechazos</p>
+        </div>
+        <p class="text-[10px] text-slate-400 mt-2 pt-2 border-t border-white/10">Generaron 2da, 3ra o más revisiones</p>
+      </div>
+    </div>
+
+    <!-- Desglose por Veces Atendido (Rondas) -->
+    <div class="bg-slate-900/90 rounded-2xl border border-white/10 p-4">
+      <div class="flex items-center gap-2 mb-3 pb-2 border-b border-white/10">
+        <i data-lucide="calculator" class="w-4 h-4 text-cyan-400"></i>
+        <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Distribución por Número de Veces Atendida</h4>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-mono">
+        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
+          <div class="text-[10px] text-slate-400 font-sans font-medium">0 veces (Sin atención)</div>
+          <div class="text-base font-black text-slate-300 mt-0.5">2,745</div>
+          <div class="text-[10px] text-slate-400 font-sans">25.4% (Canceladas)</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30">
+          <div class="text-[10px] text-emerald-300 font-sans font-bold">1 vez atendida</div>
+          <div class="text-base font-black text-emerald-400 mt-0.5">6,313</div>
+          <div class="text-[10px] text-emerald-300 font-sans">58.3% (Resolución directa)</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-sky-950/40 border border-sky-500/30">
+          <div class="text-[10px] text-sky-300 font-sans font-bold">2 veces atendida</div>
+          <div class="text-base font-black text-sky-400 mt-0.5">1,105</div>
+          <div class="text-[10px] text-sky-300 font-sans">10.2% (1 rechazo previo)</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/30">
+          <div class="text-[10px] text-amber-300 font-sans font-bold">3 veces atendida</div>
+          <div class="text-base font-black text-amber-400 mt-0.5">376</div>
+          <div class="text-[10px] text-amber-300 font-sans">3.5% (2 rechazos previos)</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-purple-950/40 border border-purple-500/30">
+          <div class="text-[10px] text-purple-300 font-sans font-bold">4 veces atendida</div>
+          <div class="text-base font-black text-purple-400 mt-0.5">239</div>
+          <div class="text-[10px] text-purple-300 font-sans">2.2% (3 rechazos previos)</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-rose-950/40 border border-rose-500/30">
+          <div class="text-[10px] text-rose-300 font-sans font-bold">5 veces atendida</div>
+          <div class="text-base font-black text-rose-400 mt-0.5">46</div>
+          <div class="text-[10px] text-rose-300 font-sans">0.4% (Límite agotado)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLA DE IMPACTO: GESTIONES APROBADAS VS ATENCIONES OPERATIVAS -->
+    <div class="bg-slate-900/95 rounded-2xl border border-white/10 p-4 space-y-3">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <i data-lucide="table" class="w-4 h-4 text-emerald-400"></i>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">
+            Matriz de Re-trabajo: Gestiones Aprobadas vs Total de Atenciones que Suman (108,229 Aprobadas)
+          </h4>
+        </div>
+        <span class="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold">
+          Factor Multiplicador: 1.315 atenciones/gestión
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300 font-sans border-collapse">
+          <thead>
+            <tr class="border-b border-white/10 text-[10px] uppercase tracking-wider text-slate-400 font-semibold bg-white/5">
+              <th class="py-2.5 px-3 rounded-l-lg">Rondas de Revisión (Comportamiento)</th>
+              <th class="py-2.5 px-3 text-right">% Gestiones</th>
+              <th class="py-2.5 px-3 text-right text-sky-300 font-bold">Gestiones Aprobadas</th>
+              <th class="py-2.5 px-3 text-center text-slate-300">Atenciones / Gestión</th>
+              <th class="py-2.5 px-3 text-right text-emerald-300 font-black rounded-r-lg">Total Atenciones que Suman</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 font-mono text-[11px]">
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-2.5 px-3 font-sans font-medium text-emerald-300 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span><strong>1 Atención (Aprobación Directa Limpia)</strong> <span class="text-[10px] text-slate-400 font-normal font-sans block sm:inline">• Sin observaciones ni rechazos previos</span></span>
+              </td>
+              <td class="py-2.5 px-3 text-right text-slate-300">78.82%</td>
+              <td class="py-2.5 px-3 text-right font-bold text-sky-300">85,310</td>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-200">1</td>
+              <td class="py-2.5 px-3 text-right font-black text-emerald-300">85,310</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-2.5 px-3 font-sans font-medium text-sky-300 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                <span><strong>2 Atenciones (1 Rechazo + 1 Aprobación)</strong> <span class="text-[10px] text-slate-400 font-normal font-sans block sm:inline">• Subsanación exitosa en 2ª ronda</span></span>
+              </td>
+              <td class="py-2.5 px-3 text-right text-slate-300">14.00%</td>
+              <td class="py-2.5 px-3 text-right font-bold text-sky-300">15,152</td>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-200">2</td>
+              <td class="py-2.5 px-3 text-right font-black text-emerald-300">30,304</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-2.5 px-3 font-sans font-medium text-amber-300 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span><strong>3 Atenciones (2 Rechazos + 1 Aprobación)</strong> <span class="text-[10px] text-slate-400 font-normal font-sans block sm:inline">• Re-trabajo severo en 3ª ronda</span></span>
+              </td>
+              <td class="py-2.5 px-3 text-right text-slate-300">4.76%</td>
+              <td class="py-2.5 px-3 text-right font-bold text-sky-300">5,152</td>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-200">3</td>
+              <td class="py-2.5 px-3 text-right font-black text-emerald-300">15,456</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-2.5 px-3 font-sans font-medium text-purple-300 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                <span><strong>4 Atenciones (3 Rechazos + 1 Aprobación)</strong> <span class="text-[10px] text-slate-400 font-normal font-sans block sm:inline">• Re-trabajo crítico en 4ª ronda</span></span>
+              </td>
+              <td class="py-2.5 px-3 text-right text-slate-300">1.70%</td>
+              <td class="py-2.5 px-3 text-right font-bold text-sky-300">1,840</td>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-200">4</td>
+              <td class="py-2.5 px-3 text-right font-black text-emerald-300">7,360</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-2.5 px-3 font-sans font-medium text-rose-300 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                <span><strong>5 Atenciones (4 Rechazos + 1 Aprobación)</strong> <span class="text-[10px] text-slate-400 font-normal font-sans block sm:inline">• Límite normativo de subsanaciones</span></span>
+              </td>
+              <td class="py-2.5 px-3 text-right text-slate-300">0.72%</td>
+              <td class="py-2.5 px-3 text-right font-bold text-sky-300">775</td>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-200">5</td>
+              <td class="py-2.5 px-3 text-right font-black text-emerald-300">3,875</td>
+            </tr>
+          </tbody>
+          <tfoot class="bg-white/10 font-bold border-t border-white/20 text-white font-mono text-xs">
+            <tr>
+              <td class="py-3 px-3 font-sans font-black uppercase text-amber-300">TOTAL CONSOLIDADO</td>
+              <td class="py-3 px-3 text-right">100.00%</td>
+              <td class="py-3 px-3 text-right font-black text-sky-300 text-sm">108,229</td>
+              <td class="py-3 px-3 text-center text-amber-300">1.315 prom.</td>
+              <td class="py-3 px-3 text-right font-black text-emerald-300 text-sm">142,303</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="p-3 bg-white/5 rounded-xl border border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px] text-slate-300">
+        <div>
+          <strong class="text-amber-300">⚡ Carga Neta por Re-trabajo:</strong> Las <span class="font-mono font-bold text-white">22,919 gestiones subsanadas (21.18%)</span> generaron <span class="font-mono font-bold text-emerald-300">56,993 atenciones</span> en lugar de 22,919, agregando <strong class="text-rose-300">34,074 atenciones adicionales</strong> de fricción operativa.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUSCADOR PRIORITARIO -->
+  <div class="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden">
+    <div class="p-5 border-b border-slate-100 bg-slate-900 text-white flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0">
+        <i data-lucide="search" class="w-4.5 h-4.5"></i>
+      </div>
+      <div>
+        <h2 class="text-sm font-black tracking-tight">Buscador y Consulta Forense de Bitácora (Enero – Julio 2026)</h2>
+        <p class="text-[10px] text-slate-400 font-semibold">Pega el Número de Gestión para saber exactamente cuántas veces fue atendido, sus rechazos y cronometría</p>
+      </div>
+    </div>
+    <div class="p-5 space-y-4">
+      <div class="flex gap-2 max-w-xl">
+        <input type="text" id="txtDirectGestionId" placeholder="Pegar No. Gestión aquí... (ej. 20261AV02E90900)" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-blue-500 text-xs font-bold text-slate-800 shadow-inner" onkeydown="if(event.key === 'Enter') queryDirectGestion()">
+        <button onclick="queryDirectGestion()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-blue-500/20 shrink-0">
+          Consultar
+        </button>
+      </div> <!-- Casos de prueba rápidos --> <div class="flex flex-wrap items-center gap-2 pt-1 text-xs"> <span class="text-slate-400 font-semibold text-[11px]">Casos de prueba para auditoría forense:</span>
 <button type="button" onclick="testSearchGestion('20261AV02E90900')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-mono text-[11px] font-bold transition flex items-center gap-1 border border-slate-300">
   <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i> 20261AV02E90900 (1 atención • 0 rechazos / FTR Limpia)
 </button>
