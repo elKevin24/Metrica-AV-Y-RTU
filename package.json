@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0 --port 3000",
     "start": "astro dev --host 0.0.0.0 --port 3000",
-    "build": "astro build",
+    "build:css": "tailwindcss -i ./src/styles/global.css -o ./public/css/tailwind.css --minify",
+    "build": "npm run build:css && astro build",
     "preview": "astro preview"
   },
   "dependencies": {

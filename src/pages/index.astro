@@ -1,0 +1,1050 @@
+---
+// Portal Ejecutivo SAT Guatemala - Métricas Clave, Rendimiento de Revisores & SLAs
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAT Guatemala | Rendimiento Estadístico de Revisores & SLAs</title>
+  <script is:inline src="/vendor/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #0b1120;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+    header {
+      background-color: #030712;
+      border-bottom: 1px solid #1e293b;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo-icon {
+      background-color: #2563eb;
+      color: white;
+      font-weight: 900;
+      font-size: 1.125rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+    .header-title {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      background-color: rgba(37,99,235,0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(96,165,250,0.3);
+      text-transform: uppercase;
+    }
+    .header-subtitle {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      background-color: #1e293b;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+    main {
+      flex: 1;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    /* Hero & KPIs */
+    .hero {
+      background: linear-gradient(135deg, #030712 0%, #0f172a 50%, #172554 100%);
+      border: 1px solid #1e293b;
+      border-radius: 1.5rem;
+      padding: 1.75rem;
+      box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #60a5fa;
+      background: rgba(37,99,235,0.12);
+      border: 1px solid rgba(37,99,235,0.25);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+    }
+    .hero-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .hero-title span {
+      color: #38bdf8;
+    }
+    .hero-desc {
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      max-width: 850px;
+      margin-top: 0.5rem;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .kpi-card {
+      background-color: rgba(15, 23, 42, 0.85);
+      border: 1px solid #1e293b;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .kpi-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 600;
+      display: block;
+    }
+    .kpi-val {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 0.25rem 0;
+    }
+    .kpi-val.emerald { color: #34d399; }
+    .kpi-val.amber { color: #fbbf24; }
+    .kpi-val.sky { color: #38bdf8; }
+    .kpi-val.purple { color: #c084fc; }
+    .kpi-sub {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .kpi-sub.blue { color: #60a5fa; }
+    .kpi-sub.emerald { color: #10b981; }
+    .kpi-sub.amber { color: #f59e0b; }
+    .kpi-sub.sky { color: #0ea5e9; }
+    .kpi-sub.purple { color: #a855f7; }
+
+    /* Section Cards */
+    .section-card {
+      background-color: #030712;
+      border: 1px solid #1e293b;
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-desc {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Statistical Descriptor Cards */
+    .stat-metric-card {
+      background-color: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    .stat-metric-card.media::before { background-color: #3b82f6; }
+    .stat-metric-card.mediana::before { background-color: #10b981; }
+    .stat-metric-card.moda::before { background-color: #a855f7; }
+    .stat-metric-card.dispersion::before { background-color: #f59e0b; }
+
+    .stat-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+      display: inline-block;
+    }
+    .stat-tag.blue { color: #60a5fa; }
+    .stat-tag.emerald { color: #34d399; }
+    .stat-tag.purple { color: #c084fc; }
+    .stat-tag.amber { color: #fbbf24; }
+
+    .stat-main-val {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+    .stat-detail {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      line-height: 1.35;
+    }
+    .stat-subrow {
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+    }
+
+    /* Charts Container */
+    .chart-box {
+      background-color: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chart-canvas-wrapper {
+      position: relative;
+      height: 230px;
+      width: 100%;
+    }
+
+    /* Retrabajo Stat Cards */
+    .rework-card {
+      background-color: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .rework-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rework-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+    .badge-green { background: rgba(16,185,129,0.15); color: #34d399; }
+    .badge-yellow { background: rgba(245,158,11,0.15); color: #fbbf24; }
+    .badge-red { background: rgba(239,68,68,0.15); color: #f87171; }
+    .badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .badge-purple { background: rgba(168,85,247,0.15); color: #c084fc; }
+
+    /* Interactive Table */
+    .table-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      background-color: #0b1120;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      flex: 1;
+      min-width: 200px;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .filter-select {
+      background-color: #0b1120;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+      border-radius: 0.75rem;
+      max-height: 420px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.8rem;
+    }
+    th {
+      background-color: #0f172a;
+      color: #94a3b8;
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #1e293b;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #1e293b;
+      color: #cbd5e1;
+    }
+    tr:hover td {
+      background-color: rgba(30, 41, 59, 0.4);
+    }
+    .status-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      display: inline-block;
+    }
+    .status-aprobado { background: rgba(16,185,129,0.15); color: #34d399; }
+    .status-rechazado { background: rgba(239,68,68,0.15); color: #f87171; }
+    .status-proceso { background: rgba(56,189,248,0.15); color: #38bdf8; }
+
+    /* Dictamen Box */
+    .finding-card {
+      background-color: #0b1120;
+      border-left: 4px solid #3b82f6;
+      border-top: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
+      border-bottom: 1px solid #1e293b;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-size: 0.825rem;
+    }
+    .finding-card.amber { border-left-color: #f59e0b; }
+    .finding-card.red { border-left-color: #ef4444; }
+    .finding-card.emerald { border-left-color: #10b981; }
+    .finding-title {
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+    }
+    .finding-text {
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    footer {
+      background-color: #030712;
+      border-top: 1px solid #1e293b;
+      padding: 1.25rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Superior -->
+  <header>
+    <div class="container header-content">
+      <div class="logo-badge">
+        <div class="logo-icon">SAT</div>
+        <div>
+          <div class="header-title">
+            SAT GUATEMALA
+            <span class="pill">BI &amp; Rendimiento</span>
+          </div>
+          <div class="header-subtitle">Intendencia de Atención • 126 Revisores • 182,412 Expedientes</div>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#kpis" class="nav-btn">1. Resumen SLAs</a>
+        <a href="#revisores-stats" class="nav-btn active">2. Performance Revisores</a>
+        <a href="#retrabajo" class="nav-btn">3. Gestiones vs Atenciones</a>
+        <a href="#dictamen" class="nav-btn">4. Dictamen & Plan</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="container">
+
+    <!-- SECCIÓN 1: RESUMEN EJECUTIVO & SLAS -->
+    <section id="kpis" class="hero">
+      <div class="hero-top">
+        <div>
+          <span class="hero-tag">Jornada Oficial 8h Hábiles (08:00 - 16:00) • SLA Institucional &le; 3 Días</span>
+          <h1 class="hero-title" style="margin-top: 0.5rem;">
+            Resultados Clave &amp; <span>Cumplimiento Operativo</span>
+          </h1>
+          <p class="hero-desc">
+            Evaluación consolidada del flujo de trámites del Registro Tributario Unificado (RTU). Medición de tiempos activos vs pasivos en cola y capacidad de resolución.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 KPIs Clave -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Demanda Total Procesada</span>
+          <div class="kpi-val">182,412</div>
+          <span class="kpi-sub blue">100% de expedientes analizados</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Tasa de Aprobación</span>
+          <div class="kpi-val emerald">77.1%</div>
+          <span class="kpi-sub emerald">140,642 trámites aprobados</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Ciclo Promedio Hábil</span>
+          <div class="kpi-val amber">4.12 h</div>
+          <span class="kpi-sub amber">28.50 h en tiempo calendario</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Cumplimiento SLA &le; 3d</span>
+          <div class="kpi-val sky">82.36%</div>
+          <span class="kpi-sub sky">150,234 resueltos a tiempo</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: PERFORMANCE DE REVISORES (MEDIA, MEDIANA, MODA, MODAL) -->
+    <section id="revisores-stats" class="section-card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">2. Performance Estadístico de Revisores (126 Operadores)</h2>
+          <p class="section-desc">Análisis comparativo de tendencia central y distribución de tiempos de resolución de los revisores.</p>
+        </div>
+        <span class="pill" style="background: rgba(168,85,247,0.15); color: #c084fc; border-color: rgba(168,85,247,0.3);">
+          Análisis Paramétrico
+        </span>
+      </div>
+
+      <!-- 4 Tarjetas Estadísticas Descriptivas -->
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        
+        <!-- Tarjeta 1: MEDIA (PROMEDIO) -->
+        <div class="stat-metric-card media">
+          <span class="stat-tag blue">&mu; Media (Promedio)</span>
+          <div class="stat-main-val">1.56 h</div>
+          <p class="stat-detail">Tiempo medio de resolución por expediente (93.4 min). Sesgado hacia la derecha por casos complejos atípicos.</p>
+          <div class="stat-subrow">
+            <span style="color: #94a3b8;">Carga Media:</span>
+            <strong style="color: #e2e8f0;">53.8 casos/rev</strong>
+          </div>
+          <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
+            <span style="color: #94a3b8;">Prod. Diaria:</span>
+            <strong style="color: #e2e8f0;">2.77 casos/día</strong>
+          </div>
+        </div>
+
+        <!-- Tarjeta 2: MEDIANA (P50) -->
+        <div class="stat-metric-card mediana">
+          <span class="stat-tag emerald">&tilde;x Mediana (P50)</span>
+          <div class="stat-main-val" style="color: #34d399;">0.50 h</div>
+          <p class="stat-detail">Punto medio de la distribución (30 min). El 50% de los revisores resuelve su gestión en 30 minutos o menos.</p>
+          <div class="stat-subrow">
+            <span style="color: #94a3b8;">Carga Mediana:</span>
+            <strong style="color: #34d399;">15.0 casos/rev</strong>
+          </div>
+          <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
+            <span style="color: #94a3b8;">Aprobación P50:</span>
+            <strong style="color: #34d399;">99.3%</strong>
+          </div>
+        </div>
+
+        <!-- Tarjeta 3: MODA / RANGO MODAL -->
+        <div class="stat-metric-card moda">
+          <span class="stat-tag purple">Mo Moda / Modal</span>
+          <div class="stat-main-val" style="color: #c084fc;">0 - 15 min</div>
+          <p class="stat-detail">Tramo modal más frecuente: <strong>48 revisores (38.1%)</strong> operan en dictamen rápido &le; 15 min.</p>
+          <div class="stat-subrow">
+            <span style="color: #94a3b8;">Moda Aprobación:</span>
+            <strong style="color: #c084fc;">100% (38 rev)</strong>
+          </div>
+          <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
+            <span style="color: #94a3b8;">Rango Carga:</span>
+            <strong style="color: #c084fc;">0 - 50 casos</strong>
+          </div>
+        </div>
+
+        <!-- Tarjeta 4: DISPERSIÓN & ATÍPICOS -->
+        <div class="stat-metric-card dispersion">
+          <span class="stat-tag amber">&Delta; Rango &amp; Atípicos</span>
+          <div class="stat-main-val" style="color: #fbbf24;">0.01 - 23.9 h</div>
+          <p class="stat-detail">Rango de variación. Los revisores en Q1 (alta productividad) promedian 0.59h vs casos trabados en cola.</p>
+          <div class="stat-subrow">
+            <span style="color: #94a3b8;">Top Performer:</span>
+            <strong style="color: #fbbf24;">MKNAJERA (488)</strong>
+          </div>
+          <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
+            <span style="color: #94a3b8;">Velocidad Top:</span>
+            <strong style="color: #fbbf24;">CDMARTINEZ (0.38h)</strong>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Gráficos de Performance de Revisores -->
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <!-- Gráfico Distribución Modal -->
+        <div class="chart-box">
+          <div class="chart-title">
+            <span>Distribución Frecuencial / Modal de Tiempos (126 Revisores)</span>
+            <span class="pill" style="font-size: 0.6rem;">Histograma Modal</span>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="chartModalTiempos"></canvas>
+          </div>
+        </div>
+
+        <!-- Gráfico de Cuadrantes de Revisores -->
+        <div class="chart-box">
+          <div class="chart-title">
+            <span>Distribución por Cuadrantes Operativos de Revisores</span>
+            <span class="pill" style="font-size: 0.6rem;">Matriz Volumen vs Tiempo</span>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="chartCuadrantesRevisores"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla Comparativa de Top Revisores con Estadísticas Individuales -->
+      <div>
+        <div class="table-controls">
+          <input type="text" id="revisorSearch" class="search-input" placeholder="Buscar por ID de Revisor (ej. MKNAJERA, AMVELIZM)..." onkeyup="filterRevisoresTable()" />
+          <select id="regionalFilter" class="filter-select" onchange="filterRevisoresTable()">
+            <option value="ALL">Todas las Regionales</option>
+            <option value="CENTRAL">Regional Central</option>
+            <option value="SUR">Regional Sur</option>
+            <option value="OCCIDENTE">Regional Occidente</option>
+            <option value="NORORIENTE">Regional Nororiente</option>
+          </select>
+          <select id="cuadranteFilter" class="filter-select" onchange="filterRevisoresTable()">
+            <option value="ALL">Todos los Cuadrantes</option>
+            <option value="Q1">Q1: Alta Productividad &amp; Agilidad</option>
+            <option value="Q2">Q2: Alta Carga &amp; Detallado</option>
+            <option value="Q3">Q3: Carga Moderada</option>
+          </select>
+        </div>
+
+        <div class="table-responsive">
+          <table id="revisoresTable">
+            <thead>
+              <tr>
+                <th>ID Revisor</th>
+                <th>Regional</th>
+                <th>Total Gestiones</th>
+                <th>% Aprobadas</th>
+                <th>Tiempo Promedio</th>
+                <th>Desviación vs Mediana</th>
+                <th>Prod. Diaria</th>
+                <th>Cuadrante Operativo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>MKNAJERA</strong></td>
+                <td>SUR</td>
+                <td>488</td>
+                <td><span style="color: #34d399;">99.2%</span></td>
+                <td>0.59 h (35 min)</td>
+                <td><span style="color: #34d399;">+0.09 h (&approx; Mediana)</span></td>
+                <td>7.2 c/d</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>AMVELIZM</strong></td>
+                <td>NORORIENTE</td>
+                <td>477</td>
+                <td><span style="color: #34d399;">98.3%</span></td>
+                <td>1.47 h (88 min)</td>
+                <td><span style="color: #fbbf24;">+0.97 h (&gt; Mediana)</span></td>
+                <td>7.5 c/d</td>
+                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
+              </tr>
+              <tr>
+                <td><strong>ERCORZAN</strong></td>
+                <td>CENTRAL</td>
+                <td>469</td>
+                <td><span style="color: #34d399;">99.4%</span></td>
+                <td>1.82 h (109 min)</td>
+                <td><span style="color: #fbbf24;">+1.32 h (&gt; Media)</span></td>
+                <td>6.3 c/d</td>
+                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
+              </tr>
+              <tr>
+                <td><strong>LRGARCIAS</strong></td>
+                <td>OCCIDENTE</td>
+                <td>452</td>
+                <td><span style="color: #34d399;">99.1%</span></td>
+                <td>0.45 h (27 min)</td>
+                <td><span style="color: #34d399;">-0.05 h (&lt; Mediana)</span></td>
+                <td>6.9 c/d</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>CDMARTINEZ</strong></td>
+                <td>CENTRAL</td>
+                <td>448</td>
+                <td><span style="color: #34d399;">99.6%</span></td>
+                <td>0.38 h (23 min)</td>
+                <td><span style="color: #34d399;">-0.12 h (Modal Rápido)</span></td>
+                <td>7.1 c/d</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>HALEGRIAR</strong></td>
+                <td>SUR</td>
+                <td>412</td>
+                <td><span style="color: #34d399;">98.8%</span></td>
+                <td>0.52 h (31 min)</td>
+                <td><span style="color: #34d399;">+0.02 h (&approx; Mediana)</span></td>
+                <td>6.4 c/d</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>JPMENDEZ</strong></td>
+                <td>CENTRAL</td>
+                <td>385</td>
+                <td><span style="color: #34d399;">97.9%</span></td>
+                <td>2.10 h (126 min)</td>
+                <td><span style="color: #f87171;">+1.60 h (&gt; Media)</span></td>
+                <td>5.8 c/d</td>
+                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
+              </tr>
+              <tr>
+                <td><strong>MAGONZALEZ</strong></td>
+                <td>NORORIENTE</td>
+                <td>340</td>
+                <td><span style="color: #34d399;">99.1%</span></td>
+                <td>0.28 h (17 min)</td>
+                <td><span style="color: #c084fc;">-0.22 h (Rango Modal)</span></td>
+                <td>5.5 c/d</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: RELACIÓN GESTIONES VS ATENCIONES (RETRABAJO) -->
+    <section id="retrabajo" class="section-card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">3. Relación Gestiones vs. Atenciones (Índice de Re-trabajo)</h2>
+          <p class="section-desc">Identificación de expedientes que requirieron múltiples rondas de revisión por rechazos previos o documentación incompleta.</p>
+        </div>
+      </div>
+
+      <!-- Resumen de Re-trabajo -->
+      <div class="grid-3" style="margin-bottom: 1.5rem;">
+        <div class="rework-card">
+          <div class="rework-header">
+            <span class="rework-badge badge-green">1 Atención (FTR)</span>
+            <strong style="color: #34d399;">72.1%</strong>
+          </div>
+          <div style="font-size: 1.35rem; font-weight: 900; color: #ffffff;">131,519 casos</div>
+          <span style="font-size: 0.75rem; color: #94a3b8;">Resueltos en el 1er intento sin re-trabajo</span>
+        </div>
+
+        <div class="rework-card">
+          <div class="rework-header">
+            <span class="rework-badge badge-yellow">2 Atenciones</span>
+            <strong style="color: #fbbf24;">18.4%</strong>
+          </div>
+          <div style="font-size: 1.35rem; font-weight: 900; color: #ffffff;">33,564 casos</div>
+          <span style="font-size: 0.75rem; color: #94a3b8;">Subsanados tras 1 rechazo o aclaración</span>
+        </div>
+
+        <div class="rework-card">
+          <div class="rework-header">
+            <span class="rework-badge badge-red">&ge; 3 Atenciones</span>
+            <strong style="color: #f87171;">9.5%</strong>
+          </div>
+          <div style="font-size: 1.35rem; font-weight: 900; color: #ffffff;">17,329 casos</div>
+          <span style="font-size: 0.75rem; color: #94a3b8;">Reincidentes críticos (consumen el 24% del esfuerzo)</span>
+        </div>
+      </div>
+
+      <!-- Tabla / Buscador de Auditoría Rápida -->
+      <div>
+        <div class="table-controls">
+          <input type="text" id="tableSearch" class="search-input" placeholder="Buscar por NIT, Revisor o Expediente..." onkeyup="filterAuditTable()" />
+          <select id="statusFilter" class="filter-select" onchange="filterAuditTable()">
+            <option value="ALL">Todos los Estados</option>
+            <option value="Aprobado">Aprobados</option>
+            <option value="Rechazado">Rechazados</option>
+            <option value="En Trámite">En Trámite</option>
+          </select>
+        </div>
+
+        <div class="table-responsive">
+          <table id="auditTable">
+            <thead>
+              <tr>
+                <th>Expediente</th>
+                <th>NIT Contribuyente</th>
+                <th>Tipo de Trámite</th>
+                <th>Atenciones</th>
+                <th>Tiempo Hábil</th>
+                <th>SLA &le; 3d</th>
+                <th>Estado Final</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>EXP-2026-008412</strong></td>
+                <td>4819203-K</td>
+                <td>Actualización RTU Digital</td>
+                <td><span class="rework-badge badge-green">1</span></td>
+                <td>2.4 h</td>
+                <td><span style="color: #34d399;">&check; Cumple</span></td>
+                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td><strong>EXP-2026-008413</strong></td>
+                <td>1029384-5</td>
+                <td>Inscripción Persona Individual</td>
+                <td><span class="rework-badge badge-yellow">2</span></td>
+                <td>9.1 h</td>
+                <td><span style="color: #34d399;">&check; Cumple</span></td>
+                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td><strong>EXP-2026-008414</strong></td>
+                <td>7729104-1</td>
+                <td>Cambio de Domicilio Fiscal</td>
+                <td><span class="rework-badge badge-red">3</span></td>
+                <td>32.8 h</td>
+                <td><span style="color: #f87171;">&cross; Excedido</span></td>
+                <td><span class="status-pill status-rechazado">Rechazado</span></td>
+              </tr>
+              <tr>
+                <td><strong>EXP-2026-008415</strong></td>
+                <td>6618290-3</td>
+                <td>Cese de Actividades</td>
+                <td><span class="rework-badge badge-green">1</span></td>
+                <td>1.8 h</td>
+                <td><span style="color: #34d399;">&check; Cumple</span></td>
+                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td><strong>EXP-2026-008416</strong></td>
+                <td>3391024-8</td>
+                <td>Actualización de Régimen IVA</td>
+                <td><span class="rework-badge badge-green">1</span></td>
+                <td>4.5 h</td>
+                <td><span style="color: #34d399;">&check; Cumple</span></td>
+                <td><span class="status-pill status-proceso">En Trámite</span></td>
+              </tr>
+              <tr>
+                <td><strong>EXP-2026-008417</strong></td>
+                <td>9928103-2</td>
+                <td>Inscripción Jurídica Mercantil</td>
+                <td><span class="rework-badge badge-yellow">2</span></td>
+                <td>14.2 h</td>
+                <td><span style="color: #34d399;">&check; Cumple</span></td>
+                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td><strong>EXP-2026-008418</strong></td>
+                <td>5519201-9</td>
+                <td>Afiliación FEL</td>
+                <td><span class="rework-badge badge-red">4</span></td>
+                <td>48.5 h</td>
+                <td><span style="color: #f87171;">&cross; Excedido</span></td>
+                <td><span class="status-pill status-rechazado">Rechazado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: DICTAMEN EJECUTIVO & PLAN DE ACCIÓN -->
+    <section id="dictamen" class="section-card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">4. Dictamen Ejecutivo &amp; Hallazgos Concretos</h2>
+          <p class="section-desc">Conclusiones de auditoría operacional y recomendaciones directas para la Intendencia de Atención al Contribuyente.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="finding-card amber">
+          <div class="finding-title">1. Disparidad entre Media (&mu;=1.56h) y Mediana (~x=0.50h)</div>
+          <div class="finding-text">
+            La <strong>media aritmética (1.56 h)</strong> está inflada por casos complejos o trabados. La <strong>mediana (0.50 h / 30 min)</strong> demuestra que el 50% de los revisores resuelve con alta agilidad cuando el expediente no presenta inconsistencias.
+          </div>
+        </div>
+
+        <div class="finding-card red">
+          <div class="finding-title">2. Falta de Causal Documentada en Rechazos (51.4%)</div>
+          <div class="finding-text">
+            Más de la mitad de los 18,614 rechazos no registraron una causal tipificada en el sistema, lo que genera confusión en el contribuyente y provoca re-envíos innecesarios.
+          </div>
+        </div>
+
+        <div class="finding-card emerald">
+          <div class="finding-title">3. Concentración de Esfuerzo en Re-trabajo (27.9%)</div>
+          <div class="finding-text">
+            El 27.9% de expedientes que requieren 2 o más atenciones consumen el 54% de la capacidad operativa total de los revisores.
+          </div>
+        </div>
+
+        <div class="finding-card">
+          <div class="finding-title">4. Plan de Acción Inmediato</div>
+          <div class="finding-text">
+            <strong>A.</strong> Estandarizar pautas de revisión tomando como benchmark el rango modal (0-15 min).<br />
+            <strong>B.</strong> Obligatoriedad de catálogo de causales al rechazar trámites.<br />
+            <strong>C.</strong> Validación previa automática de DPI y documentos antes de ingresar al buzón.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Superintendencia de Administración Tributaria (SAT) Guatemala &bull; Dirección de Inteligencia Operacional</p>
+    </div>
+  </footer>
+
+  <!-- Scripts de Gráficos y Filtrado -->
+  <script is:inline>
+    // 1. Inicialización de Gráficos con Chart.js
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Gráfico 1: Histograma Modal de Tiempos
+      var ctxModal = document.getElementById('chartModalTiempos');
+      if (ctxModal && window.Chart) {
+        new Chart(ctxModal, {
+          type: 'bar',
+          data: {
+            labels: ['0 - 15 min (Modal)', '15 - 30 min', '30 - 60 min', '1 - 2 horas', '> 2 horas'],
+            datasets: [{
+              label: 'Cantidad de Revisores',
+              data: [48, 30, 22, 17, 9],
+              backgroundColor: ['#a855f7', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: '#94a3b8', font: { size: 11 } }
+              },
+              y: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', stepSize: 10 }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    var total = 126;
+                    var pct = ((context.raw / total) * 100).toFixed(1);
+                    return context.raw + ' revisores (' + pct + '% del equipo)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico 2: Cuadrantes Operativos de Revisores
+      var ctxCuad = document.getElementById('chartCuadrantesRevisores');
+      if (ctxCuad && window.Chart) {
+        new Chart(ctxCuad, {
+          type: 'doughnut',
+          data: {
+            labels: [
+              'Q1: Alta Prod. & Ágiles (38 rev)',
+              'Q2: Alta Carga & Detalle (24 rev)',
+              'Q3: Carga Moderada (46 rev)',
+              'Q4: Atípicos / Apoyo (18 rev)'
+            ],
+            datasets: [{
+              data: [38, 24, 46, 18],
+              backgroundColor: ['#10b981', '#3b82f6', '#a855f7', '#f59e0b'],
+              borderColor: '#0b1120',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#94a3b8', font: { size: 10, family: 'system-ui' }, boxWidth: 12 }
+              }
+            },
+            cutout: '60%'
+          }
+        });
+      }
+
+    });
+
+    // 2. Filtro Interactivo de la Tabla de Revisores
+    window.filterRevisoresTable = function() {
+      var searchVal = (document.getElementById('revisorSearch').value || '').toLowerCase().trim();
+      var regVal = document.getElementById('regionalFilter').value;
+      var cuadVal = document.getElementById('cuadranteFilter').value;
+      var rows = document.querySelectorAll('#revisoresTable tbody tr');
+
+      rows.forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        var regText = row.children[1] ? row.children[1].textContent.trim() : '';
+        var cuadText = row.children[7] ? row.children[7].textContent.trim() : '';
+
+        var matchesSearch = text.indexOf(searchVal) !== -1;
+        var matchesReg = (regVal === 'ALL') || (regText === regVal);
+        var matchesCuad = (cuadVal === 'ALL') || (cuadText.indexOf(cuadVal) !== -1);
+
+        if (matchesSearch && matchesReg && matchesCuad) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    };
+
+    // 3. Filtro Interactivo de la Tabla de Auditoría
+    window.filterAuditTable = function() {
+      var searchVal = (document.getElementById('tableSearch').value || '').toLowerCase().trim();
+      var statusVal = document.getElementById('statusFilter').value;
+      var rows = document.querySelectorAll('#auditTable tbody tr');
+
+      rows.forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        var status = row.querySelector('.status-pill') ? row.querySelector('.status-pill').textContent.trim() : '';
+        
+        var matchesSearch = text.indexOf(searchVal) !== -1;
+        var matchesStatus = (statusVal === 'ALL') || (status === statusVal);
+
+        if (matchesSearch && matchesStatus) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>
