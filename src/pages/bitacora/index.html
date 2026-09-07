@@ -818,6 +818,57 @@ Implementar <strong>Weighted Round-Robin</strong> que envíe automáticamente la
           <strong class="text-amber-300">⚡ Carga Neta por Re-trabajo:</strong> Las <span class="font-mono font-bold text-white">22,919 gestiones subsanadas (21.18%)</span> generaron <span class="font-mono font-bold text-emerald-300">56,993 atenciones</span> en lugar de 22,919, agregando <strong class="text-rose-300">34,074 atenciones adicionales</strong> de fricción operativa.
         </div>
       </div>
+
+      <!-- SECCIÓN GRÁFICA INTERACTIVA: GESTIONES VS ATENCIONES -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-2 border-t border-white/10">
+        <!-- Gráfico 1: Barras Comparativas de Multiplicación (8 cols) -->
+        <div class="lg:col-span-8 bg-slate-950/70 p-4 rounded-2xl border border-white/10 space-y-3 flex flex-col justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h5 class="text-xs font-bold text-white flex items-center gap-2">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-sky-400"></i>
+                Gráfico Comparativo: Gestiones Únicas vs. Total de Atenciones Generadas
+              </h5>
+              <p class="text-[11px] text-slate-400 mt-0.5">Relación $1 \to N$: cómo cada ronda multiplica el volumen de atenciones en el equipo humano</p>
+            </div>
+            <span class="text-[10px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30 px-2.5 py-0.5 rounded-full font-bold self-start sm:self-auto">
+              108,229 Gestiones $\to$ 142,303 Atenciones
+            </span>
+          </div>
+          <div class="relative h-64 sm:h-72">
+            <canvas id="chartGestionesVsAtenciones"></canvas>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-2 text-[10px] text-slate-400 border-t border-white/5 pt-2">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-sky-400"></span> <strong>Gestiones Aprobadas</strong> (Expedientes únicos)</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-400"></span> <strong>Atenciones Generadas</strong> (Revisiones humanas)</span>
+            <span class="text-amber-300 font-mono font-bold">Multiplicador: 1x, 2x, 3x, 4x, 5x</span>
+          </div>
+        </div>
+
+        <!-- Gráfico 2: Dona de Distribución de la Carga de Trabajo (4 cols) -->
+        <div class="lg:col-span-4 bg-slate-950/70 p-4 rounded-2xl border border-white/10 space-y-3 flex flex-col justify-between">
+          <div>
+            <h5 class="text-xs font-bold text-white flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+              Composición de la Carga de Trabajo
+            </h5>
+            <p class="text-[11px] text-slate-400 mt-0.5">Atenciones directas limpias vs. Atenciones por re-trabajo</p>
+          </div>
+          <div class="relative h-56 sm:h-60 flex items-center justify-center">
+            <canvas id="chartDonutCargaAtenciones"></canvas>
+          </div>
+          <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 text-[10px] text-slate-300 space-y-1">
+            <div class="flex justify-between items-center">
+              <span class="text-emerald-300 font-semibold">🟢 1ª Atención Limpia:</span>
+              <span class="font-mono font-bold text-white">85,310 (60.0%)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-rose-300 font-semibold">🔴 Re-trabajo (≥2 atenciones):</span>
+              <span class="font-mono font-bold text-rose-300">56,993 (40.0%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1459,6 +1510,10 @@ Bitácora de Estados y Línea de Tiempo Secuencial
           headerBtn.classList.add('active');
           headerBtn.setAttribute('aria-selected', 'true');
         }
+      }
+
+      if (targetTabId === 'tab-bitacora-buscador') {
+        setTimeout(initGestionesVsAtencionesCharts, 100);
       }
 
       // Sincronizar dock de navegación móvil
@@ -2287,6 +2342,164 @@ Bitácora de Estados y Línea de Tiempo Secuencial
 
     window.queryDirectGestion = queryDirectGestion;
 
+    // Inicializar Gráficos de Gestiones vs Atenciones
+    let gChartGestionesVsAtenciones = null;
+    let gChartDonutCarga = null;
+
+    function initGestionesVsAtencionesCharts() {
+      if (typeof Chart === 'undefined') {
+        setTimeout(initGestionesVsAtencionesCharts, 300);
+        return;
+      }
+
+      // 1. Gráfico de Barras Agrupadas: Gestiones Únicas vs Atenciones Generadas
+      const ctxBar = document.getElementById('chartGestionesVsAtenciones');
+      if (ctxBar && !gChartGestionesVsAtenciones) {
+        gChartGestionesVsAtenciones = new Chart(ctxBar, {
+          type: 'bar',
+          data: {
+            labels: ['1 Atención (Directa)', '2 Atenciones (1 Rechazo)', '3 Atenciones (2 Rechazos)', '4 Atenciones (3 Rechazos)', '5 Atenciones (4 Rechazos)'],
+            datasets: [
+              {
+                label: 'Gestiones Aprobadas (Expedientes Únicos)',
+                data: [85310, 15152, 5152, 1840, 775],
+                backgroundColor: 'rgba(56, 189, 248, 0.85)', // Sky 400
+                borderColor: '#38bdf8',
+                borderWidth: 1.5,
+                borderRadius: 6,
+                barPercentage: 0.75,
+                categoryPercentage: 0.8
+              },
+              {
+                label: 'Total Atenciones Generadas (Revisiones Humanas)',
+                data: [85310, 30304, 15456, 7360, 3875],
+                backgroundColor: 'rgba(52, 211, 153, 0.9)', // Emerald 400
+                borderColor: '#34d399',
+                borderWidth: 1.5,
+                borderRadius: 6,
+                barPercentage: 0.75,
+                categoryPercentage: 0.8
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                titleColor: '#fff',
+                bodyColor: '#cbd5e1',
+                borderColor: 'rgba(255, 255, 255, 0.15)',
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                  label: function(context) {
+                    const label = context.dataset.label || '';
+                    const val = context.raw.toLocaleString();
+                    return `  ${label}: ${val}`;
+                  },
+                  afterBody: function(contexts) {
+                    const idx = contexts[0].dataIndex;
+                    const mults = ['1x (Directo sin re-trabajo)', '2x (+15,152 atenciones extra)', '3x (+10,304 atenciones extra)', '4x (+5,520 atenciones extra)', '5x (+3,100 atenciones extra)'];
+                    return `\n⚡ Impacto: ${mults[idx]}`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  color: '#94a3b8',
+                  font: {
+                    size: 10,
+                    family: 'monospace'
+                  }
+                }
+              },
+              y: {
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.06)',
+                  drawBorder: false
+                },
+                ticks: {
+                  color: '#94a3b8',
+                  font: {
+                    size: 10,
+                    family: 'monospace'
+                  },
+                  callback: function(value) {
+                    return (value / 1000) + 'k';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Gráfico de Dona: Distribución de la Carga de Trabajo
+      const ctxDonut = document.getElementById('chartDonutCargaAtenciones');
+      if (ctxDonut && !gChartDonutCarga) {
+        gChartDonutCarga = new Chart(ctxDonut, {
+          type: 'doughnut',
+          data: {
+            labels: ['1ª Atención Directa (Limpia)', 'Re-trabajo (2 a 5 Atenciones)'],
+            datasets: [{
+              data: [85310, 56993],
+              backgroundColor: [
+                'rgba(52, 211, 153, 0.9)', // Emerald
+                'rgba(244, 63, 94, 0.85)'   // Rose
+              ],
+              borderColor: '#0f172a',
+              borderWidth: 3,
+              hoverOffset: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                titleColor: '#fff',
+                bodyColor: '#cbd5e1',
+                borderColor: 'rgba(255, 255, 255, 0.15)',
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const val = context.raw.toLocaleString();
+                    const total = 142303;
+                    const pct = ((context.raw / total) * 100).toFixed(1);
+                    return `  ${label}: ${val} (${pct}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
     function initTabFromHash() {
       const hash = window.location.hash.replace('#', '');
       if (hash && document.getElementById(hash)) {
@@ -2298,6 +2511,7 @@ Bitácora de Estados y Línea de Tiempo Secuencial
     function onInit() {
       loadBitacoraData();
       initTabFromHash();
+      initGestionesVsAtencionesCharts();
     }
 
     if (document.readyState === 'loading') {
