@@ -1,0 +1,224 @@
+{
+  "resumen": {
+    "total_nuevas": 181345,
+    "total_reingresos": 47369,
+    "total_demanda": 228714,
+    "total_atendidas": 182116,
+    "total_aprobadas": 107979,
+    "total_rechazos": 74137,
+    "tasa_cobertura_global": 79.6,
+    "presion_reingreso_pct": 20.7
+  },
+  "semanas": [
+    {
+      "semana": "Sem 01",
+      "nuevas": 4306,
+      "reingresos": 201,
+      "demanda": 4507,
+      "atendidas": 730,
+      "aprobadas": 430,
+      "rechazos": 300,
+      "cobertura": 16.2
+    },
+    {
+      "semana": "Sem 02",
+      "nuevas": 21642,
+      "reingresos": 3715,
+      "demanda": 25357,
+      "atendidas": 14378,
+      "aprobadas": 8181,
+      "rechazos": 6197,
+      "cobertura": 56.7
+    },
+    {
+      "semana": "Sem 03",
+      "nuevas": 18072,
+      "reingresos": 4421,
+      "demanda": 22493,
+      "atendidas": 20305,
+      "aprobadas": 11452,
+      "rechazos": 8853,
+      "cobertura": 90.3
+    },
+    {
+      "semana": "Sem 04",
+      "nuevas": 16406,
+      "reingresos": 4259,
+      "demanda": 20665,
+      "atendidas": 17234,
+      "aprobadas": 10459,
+      "rechazos": 6775,
+      "cobertura": 83.4
+    },
+    {
+      "semana": "Sem 05",
+      "nuevas": 14357,
+      "reingresos": 3282,
+      "demanda": 17639,
+      "atendidas": 13234,
+      "aprobadas": 7904,
+      "rechazos": 5330,
+      "cobertura": 75.0
+    },
+    {
+      "semana": "Sem 06",
+      "nuevas": 12095,
+      "reingresos": 3526,
+      "demanda": 15621,
+      "atendidas": 13379,
+      "aprobadas": 7817,
+      "rechazos": 5562,
+      "cobertura": 85.6
+    },
+    {
+      "semana": "Sem 07",
+      "nuevas": 11348,
+      "reingresos": 3436,
+      "demanda": 14784,
+      "atendidas": 13053,
+      "aprobadas": 7926,
+      "rechazos": 5127,
+      "cobertura": 88.3
+    },
+    {
+      "semana": "Sem 08",
+      "nuevas": 10811,
+      "reingresos": 2734,
+      "demanda": 13545,
+      "atendidas": 10347,
+      "aprobadas": 6224,
+      "rechazos": 4123,
+      "cobertura": 76.4
+    },
+    {
+      "semana": "Sem 09",
+      "nuevas": 10426,
+      "reingresos": 3222,
+      "demanda": 13648,
+      "atendidas": 11369,
+      "aprobadas": 6560,
+      "rechazos": 4809,
+      "cobertura": 83.3
+    },
+    {
+      "semana": "Sem 10",
+      "nuevas": 10454,
+      "reingresos": 3088,
+      "demanda": 13542,
+      "atendidas": 11212,
+      "aprobadas": 6483,
+      "rechazos": 4729,
+      "cobertura": 82.8
+    },
+    {
+      "semana": "Sem 11",
+      "nuevas": 9719,
+      "reingresos": 2944,
+      "demanda": 12663,
+      "atendidas": 10418,
+      "aprobadas": 6145,
+      "rechazos": 4273,
+      "cobertura": 82.3
+    },
+    {
+      "semana": "Sem 12",
+      "nuevas": 9178,
+      "reingresos": 2916,
+      "demanda": 12094,
+      "atendidas": 10736,
+      "aprobadas": 6251,
+      "rechazos": 4485,
+      "cobertura": 88.8
+    },
+    {
+      "semana": "Sem 13",
+      "nuevas": 1577,
+      "reingresos": 834,
+      "demanda": 2411,
+      "atendidas": 3366,
+      "aprobadas": 2052,
+      "rechazos": 1314,
+      "cobertura": 139.6
+    },
+    {
+      "semana": "Sem 17",
+      "nuevas": 1943,
+      "reingresos": 323,
+      "demanda": 2266,
+      "atendidas": 706,
+      "aprobadas": 272,
+      "rechazos": 434,
+      "cobertura": 31.2
+    },
+    {
+      "semana": "Sem 18",
+      "nuevas": 8725,
+      "reingresos": 2166,
+      "demanda": 10891,
+      "atendidas": 7368,
+      "aprobadas": 4149,
+      "rechazos": 3219,
+      "cobertura": 67.7
+    },
+    {
+      "semana": "Sem 19",
+      "nuevas": 7713,
+      "reingresos": 2308,
+      "demanda": 10021,
+      "atendidas": 9338,
+      "aprobadas": 5927,
+      "rechazos": 3411,
+      "cobertura": 93.2
+    },
+    {
+      "semana": "Sem 20",
+      "nuevas": 374,
+      "reingresos": 306,
+      "demanda": 680,
+      "atendidas": 1449,
+      "aprobadas": 931,
+      "rechazos": 518,
+      "cobertura": 213.1
+    },
+    {
+      "semana": "Sem 24",
+      "nuevas": 3115,
+      "reingresos": 881,
+      "demanda": 3996,
+      "atendidas": 2348,
+      "aprobadas": 1339,
+      "rechazos": 1009,
+      "cobertura": 58.8
+    },
+    {
+      "semana": "Sem 25",
+      "nuevas": 5421,
+      "reingresos": 1658,
+      "demanda": 7079,
+      "atendidas": 6991,
+      "aprobadas": 4764,
+      "rechazos": 2227,
+      "cobertura": 98.8
+    },
+    {
+      "semana": "Sem 30",
+      "nuevas": 3039,
+      "reingresos": 736,
+      "demanda": 3775,
+      "atendidas": 1246,
+      "aprobadas": 331,
+      "rechazos": 915,
+      "cobertura": 33.0
+    },
+    {
+      "semana": "Sem 31",
+      "nuevas": 624,
+      "reingresos": 413,
+      "demanda": 1037,
+      "atendidas": 2909,
+      "aprobadas": 2382,
+      "rechazos": 527,
+      "cobertura": 280.5
+    }
+  ]
+}

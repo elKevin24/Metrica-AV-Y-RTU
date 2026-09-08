@@ -1,0 +1,543 @@
+---
+// ForensicView.astro - Master-Detail Granular Audit View (con datos reales)
+---
+
+<div class="bg-white border border-slate-200 shadow-2xs rounded-2xl flex flex-col h-[calc(100vh-170px)] min-h-[550px] overflow-hidden">
+  
+  <!-- Forensic Toolbar -->
+  <div class="h-14 border-b border-slate-200 bg-slate-50/80 flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 gap-2 shrink-0">
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+      <div class="relative w-64 sm:w-80">
+        <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+        <input 
+          id="forensicSearch"
+          type="text" 
+          placeholder="Buscar ID expediente (Ej. 20261AV...)" 
+          class="w-full text-xs border border-slate-200 bg-white rounded-xl pl-9 pr-3 py-1.5 focus:outline-blue-500 font-mono shadow-2xs"
+          oninput="filterForensicCases()"
+        />
+      </div>
+      <div class="w-px h-4 bg-slate-300 hidden sm:block"></div>
+      
+      <!-- Filtros -->
+      <select id="forensicRegion" onchange="filterForensicCases()" class="text-xs border border-slate-200 bg-white rounded-lg px-2 py-1.5 focus:outline-blue-500 font-medium shadow-2xs">
+        <option value="TODAS">Todas las Regiones</option>
+      </select>
+      
+      <select id="forensicEstado" onchange="filterForensicCases()" class="text-xs border border-slate-200 bg-white rounded-lg px-2 py-1.5 focus:outline-blue-500 font-medium shadow-2xs">
+        <option value="TODOS">Todos los Estados</option>
+      </select>
+
+      <label class="hidden md:flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer font-medium shrink-0">
+        <input type="checkbox" id="forensicBottleneck" onchange="filterForensicCases()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+        Solo cuellos de botella (&gt;8h)
+      </label>
+    </div>
+
+    <div id="forensicStats" class="text-[11px] text-slate-400 font-mono shrink-0">
+      Cargando datos...
+    </div>
+  </div>
+
+  <!-- Master-Detail Body -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- MASTER: Compact Expediente Table -->
+    <div class="w-full md:w-3/5 border-r border-slate-200 flex flex-col bg-white">
+      <div id="forensicTableWrap" class="overflow-y-auto flex-1">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-slate-50 sticky top-0 shadow-2xs z-10">
+            <tr>
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 cursor-pointer hover:text-blue-600" onclick="sortForensicTable('numerogestion')">
+                ID Gestión <span id="sort-numerogestion" class="text-slate-300">↕</span>
+              </th>
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 cursor-pointer hover:text-blue-600" onclick="sortForensicTable('tramite')">
+                Trámite <span id="sort-tramite" class="text-slate-300">↕</span>
+              </th>
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 cursor-pointer hover:text-blue-600 text-right" onclick="sortForensicTable('t_cola_h')">
+                T. Cola <span id="sort-t_cola_h" class="text-slate-300">↕</span>
+              </th>
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">
+                Estado
+              </th>
+            </tr>
+          </thead>
+          <tbody id="forensicTbody" class="text-xs divide-y divide-slate-100">
+            <tr><td colspan="4" class="px-4 py-8 text-center text-slate-400 text-xs">Cargando expedientes...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="forensicPagination" class="h-10 border-t border-slate-200 bg-slate-50 flex items-center justify-between px-3 text-[10px] text-slate-500 font-medium">
+        <span id="forensicPageInfo">—</span>
+        <div class="flex items-center gap-1">
+          <button onclick="forensicPrevPage()" class="px-2 py-1 rounded bg-white border border-slate-200 hover:bg-slate-100 font-bold">← Ant</button>
+          <span id="forensicPageNum" class="px-2 py-1 font-mono font-bold text-blue-700">1</span>
+          <button onclick="forensicNextPage()" class="px-2 py-1 rounded bg-white border border-slate-200 hover:bg-slate-100 font-bold">Sig →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAIL: Timeline Audit -->
+    <div id="forensicDetail" class="w-full md:w-2/5 flex flex-col bg-slate-50/50">
+      <div id="detailHeader" class="p-3 border-b border-slate-200 bg-white shadow-2xs shrink-0">
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Trazabilidad de Expediente</div>
+        <div class="font-mono text-sm font-bold text-slate-800 flex items-center justify-between">
+          <span id="detailId">Seleccione un expediente</span>
+          <span id="detailBadge" class="hidden text-[11px] font-sans font-semibold px-2 py-0.5 rounded border"></span>
+        </div>
+      </div>
+      
+      <div id="detailTimeline" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="flex flex-col items-center justify-center h-full text-center text-slate-400 space-y-3">
+          <i data-lucide="mouse-pointer-click" class="w-10 h-10 text-slate-300"></i>
+          <div>
+            <p class="text-sm font-semibold text-slate-500">Seleccione un expediente</p>
+            <p class="text-xs text-slate-400 mt-1">Haga clic en una fila de la tabla para ver la trazabilidad completa</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  // ─── STATE ──────────────────────────────────────────────────────────
+  let allCases = [];
+  let filteredCases = [];
+  let currentPage = 1;
+  const PAGE_SIZE = 50;
+  let sortField = 't_cola_h';
+  let sortAsc = false;
+  let selectedId = null;
+
+  // ─── LOAD DATA ──────────────────────────────────────────────────────
+  async function loadForensicData() {
+    try {
+      const res = await fetch('/data/forensic_cases.json');
+      if (!res.ok) throw new Error('Failed to load forensic data');
+      allCases = await res.json();
+      populateForensicFilters();
+      filterForensicCases();
+    } catch (err) {
+      console.error('[ForensicView] Error loading data:', err);
+      document.getElementById('forensicStats').textContent = 'Error cargando datos';
+      document.getElementById('forensicTbody').innerHTML = 
+        '<tr><td colspan="4" class="px-4 py-8 text-center text-red-400 text-xs">Error al cargar datos forenses. Ejecute etl_forensic.py primero.</td></tr>';
+    }
+  }
+
+  // ─── POPULATE FILTERS ───────────────────────────────────────────────
+  function populateForensicFilters() {
+    const regiones = new Set();
+    const estados = new Set();
+    allCases.forEach(c => {
+      if (c.region) regiones.add(c.region);
+      if (c.estado) estados.add(c.estado);
+    });
+
+    const selReg = document.getElementById('forensicRegion');
+    Array.from(regiones).sort().forEach(r => {
+      const validRegiones = ['CENTRAL', 'OCCIDENTE', 'NORORIENTE', 'SUR'];
+      if (validRegiones.includes(r)) {
+        selReg.innerHTML += `<option value="${r}">${r.charAt(0) + r.slice(1).toLowerCase()}</option>`;
+      }
+    });
+
+    const selEst = document.getElementById('forensicEstado');
+    const ordenEstados = ['APROBADA', 'CANCELADA', 'NO CONFIRMADA', 'CREADA', 'RECHAZADA CON REQUERIMIENTO'];
+    ordenEstados.forEach(e => {
+      if (estados.has(e)) {
+        selEst.innerHTML += `<option value="${e}">${e.charAt(0) + e.slice(1).toLowerCase()}</option>`;
+      }
+    });
+  }
+
+  // ─── FILTER ─────────────────────────────────────────────────────────
+  window.filterForensicCases = function() {
+    const query = (document.getElementById('forensicSearch').value || '').toLowerCase().trim();
+    const region = document.getElementById('forensicRegion').value;
+    const estado = document.getElementById('forensicEstado').value;
+    const bottleneck = document.getElementById('forensicBottleneck').checked;
+
+    filteredCases = allCases.filter(c => {
+      if (query && !(c.numerogestion || '').toLowerCase().includes(query)) return false;
+      if (region !== 'TODAS' && c.region !== region) return false;
+      if (estado !== 'TODOS' && c.estado !== estado) return false;
+      if (bottleneck && (!c.t_cola_h || c.t_cola_h <= 8)) return false;
+      return true;
+    });
+
+    currentPage = 1;
+    sortTable();
+    updateForensicStats();
+    renderForensicTable();
+  };
+
+  // ─── SORT ───────────────────────────────────────────────────────────
+  window.sortForensicTable = function(field) {
+    if (sortField === field) {
+      sortAsc = !sortAsc;
+    } else {
+      sortField = field;
+      sortAsc = field === 'numerogestion'; // ASC para IDs, DESC para tiempos
+    }
+    sortTable();
+    renderForensicTable();
+    updateSortIndicators();
+  };
+
+  function sortTable() {
+    filteredCases.sort((a, b) => {
+      let va = a[sortField];
+      let vb = b[sortField];
+      if (va == null) va = sortAsc ? Infinity : -Infinity;
+      if (vb == null) vb = sortAsc ? Infinity : -Infinity;
+      if (typeof va === 'string') va = va.toLowerCase();
+      if (typeof vb === 'string') vb = vb.toLowerCase();
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      return 0;
+    });
+  }
+
+  function updateSortIndicators() {
+    document.querySelectorAll('[id^="sort-"]').forEach(el => el.textContent = '↕');
+    const active = document.getElementById('sort-' + sortField);
+    if (active) active.textContent = sortAsc ? '▲' : '▼';
+  }
+
+  // ─── RENDER TABLE ───────────────────────────────────────────────────
+  function renderForensicTable() {
+    const tbody = document.getElementById('forensicTbody');
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageData = filteredCases.slice(start, start + PAGE_SIZE);
+
+    if (pageData.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-8 text-center text-slate-400 text-xs">No se encontraron expedientes con los filtros aplicados</td></tr>';
+    } else {
+      tbody.innerHTML = pageData.map(c => {
+        const id = c.numerogestion || '';
+        const tramite = c.tramite || '-';
+        const colaH = c.t_cola_h;
+        const estado = c.estado || '-';
+        const isSelected = id === selectedId;
+
+        // Badge de estado
+        let estadoBadge = '';
+        if (estado === 'APROBADA') {
+          estadoBadge = '<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold text-[10px]">Aprobada</span>';
+        } else if (estado.includes('RECHAZADA')) {
+          estadoBadge = '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-md font-bold text-[10px]">Rechazada</span>';
+        } else if (estado.includes('CANCELADA')) {
+          estadoBadge = '<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-bold text-[10px]">Cancelada</span>';
+        } else if (estado === 'CREADA') {
+          estadoBadge = '<span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md font-bold text-[10px]">Creada</span>';
+        } else if (estado === 'NO CONFIRMADA') {
+          estadoBadge = '<span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">No Confirm.</span>';
+        } else {
+          estadoBadge = `<span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">${estado}</span>`;
+        }
+
+        // Tiempo de cola con color
+        let colaDisplay = '-';
+        let colaClass = 'text-slate-500';
+        if (colaH != null) {
+          colaDisplay = colaH >= 1 ? colaH.toFixed(1) + 'h' : (colaH * 60).toFixed(0) + 'm';
+          if (colaH > 24) colaClass = 'text-red-600 font-bold';
+          else if (colaH > 8) colaClass = 'text-amber-600 font-bold';
+          else colaClass = 'text-emerald-600';
+        }
+
+        const rowBg = isSelected ? 'bg-blue-50/80 hover:bg-blue-50' : 'hover:bg-slate-50';
+        const borderL = isSelected ? 'border-l-3 border-blue-600' : 'border-l-3 border-transparent';
+
+        return `
+          <tr class="${rowBg} cursor-pointer transition-colors" onclick="selectForensicCase('${id.replace(/'/g, "\\'")}')">
+            <td class="px-3 py-2.5 font-mono font-semibold ${isSelected ? 'text-blue-900' : 'text-slate-700'} ${borderL}">${id}</td>
+            <td class="px-3 py-2.5 text-slate-600 truncate max-w-[140px]">${tramite}</td>
+            <td class="px-3 py-2.5 text-right font-mono ${colaClass}">${colaDisplay}</td>
+            <td class="px-3 py-2.5 text-center">${estadoBadge}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Paginación
+    const totalPages = Math.max(1, Math.ceil(filteredCases.length / PAGE_SIZE));
+    const startItem = filteredCases.length > 0 ? start + 1 : 0;
+    const endItem = Math.min(start + PAGE_SIZE, filteredCases.length);
+    document.getElementById('forensicPageInfo').textContent = `Mostrando ${startItem}-${endItem} de ${filteredCases.length.toLocaleString()}`;
+    document.getElementById('forensicPageNum').textContent = currentPage;
+  }
+
+  // ─── PAGINATION ─────────────────────────────────────────────────────
+  window.forensicPrevPage = function() {
+    if (currentPage > 1) {
+      currentPage--;
+      renderForensicTable();
+      document.getElementById('forensicTableWrap').scrollTop = 0;
+    }
+  };
+
+  window.forensicNextPage = function() {
+    const totalPages = Math.ceil(filteredCases.length / PAGE_SIZE);
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderForensicTable();
+      document.getElementById('forensicTableWrap').scrollTop = 0;
+    }
+  };
+
+  // ─── STATS ──────────────────────────────────────────────────────────
+  function updateForensicStats() {
+    const total = filteredCases.length;
+    const conRechazo = filteredCases.filter(c => c.tiene_rechazo === 1).length;
+    const aprobadas = filteredCases.filter(c => c.es_ftr === 1).length;
+    const subsanadas = filteredCases.filter(c => c.es_subsanada === 1).length;
+    const avgCola = filteredCases.reduce((s, c) => s + (c.t_cola_h || 0), 0) / (total || 1);
+
+    document.getElementById('forensicStats').innerHTML = `
+      <span class="font-bold text-slate-700">${total.toLocaleString()}</span> expedientes
+      <span class="mx-1">•</span>
+      <span class="text-emerald-600 font-bold">${aprobadas.toLocaleString()}</span> FTR
+      <span class="mx-1">•</span>
+      <span class="text-rose-600 font-bold">${conRechazo.toLocaleString()}</span> rechazos
+      <span class="mx-1">•</span>
+      Cola avg: <span class="font-bold text-slate-700">${avgCola.toFixed(1)}h</span>
+    `;
+  }
+
+  // ─── SELECT CASE → TIMELINE ─────────────────────────────────────────
+  window.selectForensicCase = function(id) {
+    selectedId = id;
+    const c = allCases.find(x => x.numerogestion === id);
+    if (!c) return;
+
+    renderForensicTable(); // Re-render to highlight selection
+
+    // Header
+    document.getElementById('detailId').textContent = id;
+    const badge = document.getElementById('detailBadge');
+    badge.classList.remove('hidden');
+    if (c.es_ftr === 1) {
+      badge.textContent = 'FTR (1ra vez)';
+      badge.className = 'text-[11px] font-sans font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200';
+    } else if (c.es_subsanada === 1) {
+      badge.textContent = 'Subsanada';
+      badge.className = 'text-[11px] font-sans font-semibold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200';
+    } else if (c.tiene_rechazo === 1) {
+      badge.textContent = 'Rechazada';
+      badge.className = 'text-[11px] font-sans font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200';
+    } else {
+      badge.textContent = c.estado || '-';
+      badge.className = 'text-[11px] font-sans font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200';
+    }
+
+    // Timeline
+    renderTimeline(c);
+  };
+
+  function renderTimeline(c) {
+    const container = document.getElementById('detailTimeline');
+    let html = '';
+
+    // Helper: format date
+    function fmtDate(iso) {
+      if (!iso) return null;
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return null;
+      const day = d.getDate().toString().padStart(2, '0');
+      const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      const mon = months[d.getMonth()];
+      const h = d.getHours().toString().padStart(2, '0');
+      const m = d.getMinutes().toString().padStart(2, '0');
+      return `${day} ${mon} ${h}:${m}`;
+    }
+
+    // Helper: time diff in human-readable
+    function fmtDiff(d1, d2) {
+      if (!d1 || !d2) return null;
+      const diff = (new Date(d2) - new Date(d1)) / 1000; // seconds
+      if (diff < 0) return null;
+      const h = Math.floor(diff / 3600);
+      const m = Math.floor((diff % 3600) / 60);
+      if (h > 0) return `${h}h ${m}m`;
+      return `${m}m`;
+    }
+
+    // Step 1: Creación
+    const fCreacion = fmtDate(c.fecha_creacion);
+    if (fCreacion) {
+      html += timelineStep('slate', 'Ingreso al Sistema', fCreacion, 
+        `Gestión: ${c.tramite || '-'} | Región: ${c.region || '-'}`);
+    }
+
+    // Delay: Cola de servidor
+    if (c.fecha_creacion && c.fecha_asignacion && c.t_cola_h != null) {
+      const colaH = c.t_cola_h;
+      let delayColor = 'amber';
+      if (colaH > 24) delayColor = 'rose';
+      else if (colaH > 8) delayColor = 'amber';
+      else delayColor = 'emerald';
+
+      html += timelineDelay(delayColor, `${c.t_cola_h.toFixed(1)}h en cola de servidor`,
+        `Creación → Asignación: ${fmtDiff(c.fecha_creacion, c.fecha_asignacion) || c.t_cola_h.toFixed(1) + 'h'}`);
+    }
+
+    // Step 2: Asignación
+    const fAsign = fmtDate(c.fecha_asignacion);
+    if (fAsign) {
+      html += timelineStep('blue', 'Asignación a Revisor', fAsign,
+        `Revisor recibió el expediente para evaluación`);
+    }
+
+    // Step 3: Revisión / Dictamen
+    const fRevision = fmtDate(c.fecha_revision);
+    if (fRevision && c.fecha_asignacion) {
+      const duracionPantalla = fmtDiff(c.fecha_asignacion, c.fecha_revision);
+      html += timelineStep('indigo', 'Revisión en Bandeja', fRevision,
+        `Tiempo activo: ${duracionPantalla || '-'}`);
+    }
+
+    // Step 4: Rechazo (si aplica)
+    if (c.tiene_rechazo === 1 && c.fecha_rechazo) {
+      const fRechazo = fmtDate(c.fecha_rechazo);
+      html += timelineStep('rose', 'Dictamen de Rechazo', fRechazo,
+        c.motivo ? `Motivo: ${c.motivo}` : 'Sin motivo registrado');
+      
+      if (c.macro) {
+        html += `
+          <div class="flex gap-3 -my-1">
+            <div class="flex flex-col items-center">
+              <div class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold flex items-center gap-1">
+                Macro: ${formatMacro(c.macro)}
+              </div>
+            </div>
+          </div>`;
+      }
+    }
+
+    // Step 5: Subsanación (si aplica)
+    if (c.es_subsanada === 1 && c.fecha_finaliza) {
+      const fFinal = fmtDate(c.fecha_finaliza);
+      html += timelineStep('cyan', 'Subsanación Exitosa', fFinal,
+        'Expediente corregido y aprobado en segunda ronda');
+    }
+
+    // Step 6: Finalización
+    const fFinaliza = fmtDate(c.fecha_finaliza);
+    if (fFinaliza && c.es_subsanada !== 1) {
+      let finalColor = 'emerald';
+      let finalTitle = 'Dictamen Final: Aprobado';
+      if (c.estado === 'APROBADA') {
+        finalColor = 'emerald';
+        finalTitle = 'Dictamen Final: Aprobado';
+      } else if (c.estado && c.estado.includes('RECHAZADA')) {
+        finalColor = 'rose';
+        finalTitle = 'Dictamen Final: Rechazado';
+      } else if (c.estado && c.estado.includes('CANCELADA')) {
+        finalColor = 'amber';
+        finalTitle = 'Dictamen Final: Cancelado';
+      } else {
+        finalColor = 'slate';
+        finalTitle = `Estado: ${c.estado || '-'}`;
+      }
+
+      html += timelineStep(finalColor, finalTitle, fFinaliza,
+        `Ciclo total: ${c.t_total_h != null ? c.t_total_h.toFixed(1) + 'h' : '-'}`);
+
+      // Final summary badge
+      let badgeColor = 'emerald';
+      if (c.estado && c.estado.includes('RECHAZADA')) badgeColor = 'rose';
+      else if (c.estado && c.estado.includes('CANCELADA')) badgeColor = 'amber';
+
+      html += `
+        <div class="mt-4 p-3 bg-${badgeColor}-50 border border-${badgeColor}-200 rounded-xl text-center">
+          <div class="text-[10px] font-bold text-${badgeColor}-800 uppercase tracking-wider">Resumen del Expediente</div>
+          <div class="grid grid-cols-3 gap-3 mt-2 text-xs">
+            <div>
+              <div class="text-[10px] text-slate-500">Cola</div>
+              <div class="font-mono font-bold text-slate-800">${c.t_cola_h != null ? c.t_cola_h.toFixed(1) + 'h' : '-'}</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-500">Ciclo Total</div>
+              <div class="font-mono font-bold text-slate-800">${c.t_total_h != null ? c.t_total_h.toFixed(1) + 'h' : '-'}</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-500">Eventos</div>
+              <div class="font-mono font-bold text-slate-800">${c.n_eventos || '-'}</div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    if (!html) {
+      html = `
+        <div class="flex flex-col items-center justify-center h-full text-center text-slate-400 space-y-3">
+          <i data-lucide="file-question" class="w-10 h-10 text-slate-300"></i>
+          <div>
+            <p class="text-sm font-semibold text-slate-500">Sin datos de trazabilidad</p>
+            <p class="text-xs text-slate-400 mt-1">Este expediente no tiene fechas registradas</p>
+          </div>
+        </div>`;
+    }
+
+    container.innerHTML = html;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function timelineStep(color, title, dateStr, detail) {
+    return `
+      <div class="flex gap-3">
+        <div class="flex flex-col items-center">
+          <div class="w-3 h-3 bg-${color}-500 rounded-full mt-1"></div>
+          <div class="w-px h-full bg-slate-200 my-1"></div>
+        </div>
+        <div class="pb-2">
+          <div class="text-[10px] font-bold text-slate-400">${dateStr}</div>
+          <div class="text-xs font-bold text-slate-800 mt-0.5">${title}</div>
+          <div class="text-[11px] text-slate-500">${detail}</div>
+        </div>
+      </div>`;
+  }
+
+  function timelineDelay(color, text, detail) {
+    return `
+      <div class="flex gap-3 -my-1">
+        <div class="flex flex-col items-center">
+          <div class="w-px h-10 border-l-2 border-dashed border-${color}-400"></div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="bg-${color}-50 text-${color}-700 border border-${color}-200 text-[10px] font-bold px-2 py-0.5 rounded-lg shadow-2xs flex items-center gap-1">
+            <i data-lucide="clock" class="w-3 h-3 text-${color}-500"></i> ${text}
+          </span>
+          ${detail ? `<span class="text-[10px] text-slate-400 pl-1">${detail}</span>` : ''}
+        </div>
+      </div>`;
+  }
+
+  function formatMacro(macro) {
+    const labels = {
+      'DOCUMENTACION_DPI': 'Documentación/DPI',
+      'VIDEO_CONFIRMACION': 'Video Confirmación',
+      'SISTEMA_REGLAS_DURAS': 'Sistema/Reglas',
+      'DATOS_INCONSISTENTES': 'Datos Inconsistentes',
+      'REPRESENTACION_LEGAL': 'Rep. Legal',
+      'SIN_MOTIVO': 'Sin Motivo',
+      'OTROS': 'Otros'
+    };
+    return labels[macro] || macro;
+  }
+
+  // ─── INIT ───────────────────────────────────────────────────────────
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadForensicData);
+  } else {
+    loadForensicData();
+  }
+})();
+</script>

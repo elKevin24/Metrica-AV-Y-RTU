@@ -1,0 +1,39 @@
+---
+// ChartCard.astro - Container Card for Chart Visualizations
+interface Props {
+  title: string;
+  subtitle?: string;
+  chartId: string;
+  height?: string;
+  badge?: string;
+  colSpan?: string;
+}
+
+const {
+  title,
+  subtitle,
+  chartId,
+  height = 'h-[320px]',
+  badge,
+  colSpan = ''
+} = Astro.props;
+---
+
+<div class={`bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-4 sm:p-5 flex flex-col ${height} ${colSpan} hover:shadow-sm transition-shadow`}>
+  <div class="flex justify-between items-center mb-3">
+    <div>
+      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">{title}</h3>
+      {subtitle && <p class="text-[11px] text-slate-400 mt-0.5">{subtitle}</p>}
+    </div>
+
+    {badge && (
+      <span class="text-[10px] bg-slate-100 text-slate-600 border border-slate-200/80 px-2 py-0.5 rounded-md font-semibold">
+        {badge}
+      </span>
+    )}
+  </div>
+
+  <div class="flex-1 relative w-full h-full min-h-0">
+    <canvas id={chartId}></canvas>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+---
+// Header.astro - Modern Top Navigation & Ribbon Control Header
+---
+
+<header class="h-14 bg-white/90 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-6 shrink-0 z-10 shadow-xs select-none">
+  <!-- Left Side: Title & Context -->
+  <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
+      <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+      </div>
+      <h2 class="text-xs sm:text-sm font-bold text-slate-800 tracking-tight">
+        Atención al Contribuyente 360°
+      </h2>
+    </div>
+    
+    <span class="hidden md:inline-block w-px h-4 bg-slate-200"></span>
+    
+    <span class="hidden md:flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
+      <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i>
+      Datos Auditados 2026
+    </span>
+  </div>
+
+  <!-- Right Side: Command Palette Launcher & Actions -->
+  <div class="flex items-center gap-2 sm:gap-3">
+    <!-- Command Palette Launcher (Ctrl+K) -->
+    <button 
+      onclick="toggleCommandPalette()" 
+      class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-600 rounded-xl text-xs font-medium transition-all group"
+      title="Buscar vista o métrica (Ctrl+K)"
+    >
+      <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 transition-colors"></i>
+      <span class="hidden sm:inline">Buscar...</span>
+      <kbd class="hidden sm:inline-block bg-white text-slate-500 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-200 shadow-2xs font-semibold">⌘K</kbd>
+    </button>
+
+    <div class="w-px h-4 bg-slate-200 hidden sm:block"></div>
+
+    <!-- Status Refresh Tag -->
+    <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/60 text-emerald-700 px-2.5 py-1 rounded-xl text-[11px] font-semibold">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+      <span class="hidden sm:inline">Actualizado:</span> 08:00 AM
+    </div>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+{
+  "total_gestiones": 104523,
+  "total_filas_log": 823047,
+  "ciclos_retrabajo": 1.45,
+  "tiempos_promedio": {
+    "cola_horas": 9.49,
+    "bandeja_min": 2.35,
+    "pantalla_min": 0.97
+  },
+  "estados": {
+    "Aprobada": 82000,
+    "Rechazada": 18000,
+    "En Proceso": 14876
+  },
+  "cuadrantes": {
+    "Q1": 38,
+    "Q2": 24,
+    "Q3": 46,
+    "Q4": 18
+  },
+  "casos_criticos": []
+}
