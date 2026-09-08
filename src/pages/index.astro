@@ -461,9 +461,11 @@
 
       <nav class="nav-links">
         <a href="#kpis" class="nav-btn">1. Resumen SLAs</a>
-        <a href="#revisores-stats" class="nav-btn active">2. Performance Revisores</a>
-        <a href="#retrabajo" class="nav-btn">3. Gestiones vs Atenciones</a>
-        <a href="#dictamen" class="nav-btn">4. Dictamen & Plan</a>
+        <a href="#bolson-tiempos" class="nav-btn" style="border-color: rgba(245,158,11,0.5); color: #fbbf24;">2. Bolsón &amp; Asignación (9h 29m)</a>
+        <a href="#capacidad-semanal" class="nav-btn" style="border-color: rgba(56,189,248,0.5); color: #38bdf8;">3. Capacidad Semanal &amp; Dotación</a>
+        <a href="#revisores-stats" class="nav-btn active">4. Performance Revisores</a>
+        <a href="#retrabajo" class="nav-btn">5. Gestiones vs Atenciones</a>
+        <a href="#dictamen" class="nav-btn">6. Dictamen &amp; Plan</a>
       </nav>
     </div>
   </header>
@@ -485,36 +487,397 @@
         </div>
       </div>
 
-      <!-- 4 KPIs Clave -->
+      <!-- FILA 1: KPIs SUPERIORES (Tarjetas Numéricas con Contexto) -->
       <div class="kpi-grid">
+        <!-- Tarjeta 1: Volumen -->
         <div class="kpi-card">
-          <span class="kpi-label">Demanda Total Procesada</span>
+          <span class="kpi-label">Gestiones Únicas Totales</span>
           <div class="kpi-val">182,412</div>
-          <span class="kpi-sub blue">100% de expedientes analizados</span>
+          <span class="kpi-sub blue">&Delta; +14.2% vs período anterior</span>
         </div>
+        <!-- Tarjeta 2: Eficiencia FCR -->
         <div class="kpi-card">
-          <span class="kpi-label">Tasa de Aprobación</span>
-          <div class="kpi-val emerald">77.1%</div>
-          <span class="kpi-sub emerald">140,642 trámites aprobados</span>
+          <span class="kpi-label">FCR (Resueltas en 1 Atención)</span>
+          <div class="kpi-val emerald">72.1%</div>
+          <span class="kpi-sub emerald">131,519 casos &bull; Meta &ge; 70.0% (&check;)</span>
         </div>
+        <!-- Tarjeta 3: Esfuerzo Operativo -->
         <div class="kpi-card">
-          <span class="kpi-label">Ciclo Promedio Hábil</span>
-          <div class="kpi-val amber">4.12 h</div>
-          <span class="kpi-sub amber">28.50 h en tiempo calendario</span>
+          <span class="kpi-label">Promedio Atenciones / Gestión</span>
+          <div class="kpi-val amber">1.45</div>
+          <span class="kpi-sub amber">Fórmula: 264,520 atenc. / 182,412 gest.</span>
         </div>
+        <!-- Tarjeta 4: Tiempo / SLA -->
         <div class="kpi-card">
-          <span class="kpi-label">Cumplimiento SLA &le; 3d</span>
-          <div class="kpi-val sky">82.36%</div>
-          <span class="kpi-sub sky">150,234 resueltos a tiempo</span>
+          <span class="kpi-label">SLA Promedio Hábil</span>
+          <div class="kpi-val sky">4h 07m</div>
+          <span class="kpi-sub sky">82.36% cumple meta (&le; 3 días)</span>
+        </div>
+      </div>
+
+    <!-- SECCIÓN 2: DIAGNÓSTICO FORENSE DEL BOLSÓN DE ASIGNACIÓN (9H 29M) Y MEDIDAS CRONOLÓGICAS -->
+    <section id="bolson-tiempos" class="section-card" style="border: 1px solid rgba(245,158,11,0.3); background: #080d1a;">
+      <div class="section-header">
+        <div>
+          <span class="hero-tag" style="background: rgba(245,158,11,0.15); color: #fbbf24; border-color: rgba(245,158,11,0.3);">
+            Cuello de Botella Primario • 182,412 Expedientes Auditados
+          </span>
+          <h2 class="section-title" style="margin-top: 0.4rem; color: #f8fafc;">
+            2. Auditoría Forense: Bolsón de Asignación (9 horas 29 minutos hábiles) &amp; Tiempos del Ciclo
+          </h2>
+          <p class="section-desc">
+            Desmitificación del ciclo de vida del trámite: dónde se consume el tiempo del contribuyente (espera pasiva en cola vs. inmediatez del operador humano).
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <span class="pill" style="background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid #f59e0b; font-size: 0.75rem; font-weight: 800;">
+            47.5% del Ciclo Hábil Total
+          </span>
+        </div>
+      </div>
+
+      <!-- 4 Tarjetas de Cronometría Comparativa -->
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <!-- 1. Bolsón Central -->
+        <div style="background: #0f172a; border-top: 4px solid #f59e0b; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #fbbf24; text-transform: uppercase;">1. Bolsón en Cola Central</span>
+            <span style="font-size: 0.6rem; color: #94a3b8; font-family: monospace;">Creación &rarr; Asignación</span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 900; color: #fbbf24; font-family: monospace; margin: 0.35rem 0;">
+            9h 29m <span style="font-size: 0.8rem; font-weight: 600; color: #94a3b8;">(9.49 h) hábiles</span>
+          </div>
+          <div style="font-size: 0.72rem; color: #cbd5e1; font-weight: 600;">
+            Reloj Corrido: <strong style="color: #f8fafc;">42h 48m (42.8 h)</strong>
+          </div>
+          <p style="font-size: 0.68rem; color: #64748b; margin-top: 0.4rem; line-height: 1.35;">
+            Espera pasiva en servidor antes del enrutamiento automático a la bandeja regional.
+          </p>
+        </div>
+
+        <!-- 2. Espera en Bandeja -->
+        <div style="background: #0f172a; border-top: 4px solid #38bdf8; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #38bdf8; text-transform: uppercase;">2. Espera en Bandeja</span>
+            <span style="font-size: 0.6rem; color: #94a3b8; font-family: monospace;">Asignación &rarr; Apertura</span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 900; color: #38bdf8; font-family: monospace; margin: 0.35rem 0;">
+            2m 21s <span style="font-size: 0.8rem; font-weight: 600; color: #94a3b8;">(2.35 min)</span>
+          </div>
+          <div style="font-size: 0.72rem; color: #cbd5e1; font-weight: 600;">
+            Reloj Corrido: <strong style="color: #f8fafc;">2h 30m (150.2 min)</strong>
+          </div>
+          <p style="font-size: 0.68rem; color: #64748b; margin-top: 0.4rem; line-height: 1.35;">
+            Tiempo en que la solicitud aguarda en la cola individual antes de que el revisor haga clic.
+          </p>
+        </div>
+
+        <!-- 3. Dictamen Activo en Pantalla -->
+        <div style="background: #0f172a; border-top: 4px solid #34d399; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #34d399; text-transform: uppercase;">3. Atención en Pantalla</span>
+            <span style="font-size: 0.6rem; color: #94a3b8; font-family: monospace;">Apertura &rarr; Dictamen</span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 900; color: #34d399; font-family: monospace; margin: 0.35rem 0;">
+            58.2s <span style="font-size: 0.8rem; font-weight: 600; color: #94a3b8;">(~1 minuto)</span>
+          </div>
+          <div style="font-size: 0.72rem; color: #cbd5e1; font-weight: 600;">
+            AV: <strong style="color: #34d399;">57.1 s</strong> | Correo RTU: <strong style="color: #38bdf8;">60.7 s</strong>
+          </div>
+          <p style="font-size: 0.68rem; color: #64748b; margin-top: 0.4rem; line-height: 1.35;">
+            Validación de anexos y emisión del dictamen formal de aprobación o rechazo por el operador.
+          </p>
+        </div>
+
+        <!-- 4. Fricción Fuera de Horario -->
+        <div style="background: #0f172a; border-top: 4px solid #c084fc; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #c084fc; text-transform: uppercase;">4. Inactividad No Laboral</span>
+            <span style="font-size: 0.6rem; color: #94a3b8; font-family: monospace;">Noches &amp; Fines de Sem.</span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 900; color: #c084fc; font-family: monospace; margin: 0.35rem 0;">
+            63h 27m <span style="font-size: 0.8rem; font-weight: 600; color: #94a3b8;">(63.45 h) reloj</span>
+          </div>
+          <div style="font-size: 0.72rem; color: #cbd5e1; font-weight: 600;">
+            Representa el <strong style="color: #c084fc;">76.1%</strong> del tiempo total
+          </div>
+          <p style="font-size: 0.68rem; color: #64748b; margin-top: 0.4rem; line-height: 1.35;">
+            Horas en que el contribuyente espera mientras las oficinas y revisores no están activos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Análisis Comparativo: Horas Hábiles vs Horas Calendario y Conclusiones Forenses -->
+      <div class="grid-2" style="gap: 1.25rem; margin-bottom: 1rem;">
+        <!-- Gráfico Comparativo: Dónde se va el tiempo -->
+        <div class="chart-box" style="background: #0b1120;">
+          <div class="chart-title">
+            <span>Composición del Tiempo de Espera (Horas Hábiles vs. Calendario)</span>
+            <span class="pill" style="font-size: 0.6rem; background: rgba(245,158,11,0.1); color: #fbbf24;">Diagnóstico SLA</span>
+          </div>
+          <div class="chart-canvas-wrapper" style="min-height: 220px;">
+            <canvas id="chartBolsonComparativo"></canvas>
+          </div>
+        </div>
+
+        <!-- Matriz de Conclusiones Forenses del Bolsón -->
+        <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem;">
+          <div style="background: #0f172a; border-left: 3px solid #f59e0b; border-radius: 0.75rem; padding: 0.85rem;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">
+              1. El Cuello de Botella NO es el Revisor Humano
+            </div>
+            <p style="font-size: 0.7rem; color: #94a3b8; line-height: 1.4;">
+              El revisor atiende en <strong style="color: #34d399;">58.2 segundos</strong>. El retraso institucional reside en las <strong style="color: #fbbf24;">9 horas 29 minutos hábiles (9.49 h)</strong> que el expediente permanece encolado en el balanceador central de cargas.
+            </p>
+          </div>
+
+          <div style="background: #0f172a; border-left: 3px solid #38bdf8; border-radius: 0.75rem; padding: 0.85rem;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem;">
+              2. Asignación Inmediata tras Distribución (2 min 21 seg)
+            </div>
+            <p style="font-size: 0.7rem; color: #94a3b8; line-height: 1.4;">
+              Una vez el balanceador distribuye el caso al buzón del operador durante horario de oficina, la solicitud es abierta en un promedio de <strong style="color: #38bdf8;">2 minutos 21 segundos hábiles (2.35 min)</strong>.
+            </p>
+          </div>
+
+          <div style="background: #0f172a; border-left: 3px solid #c084fc; border-radius: 0.75rem; padding: 0.85rem;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: #c084fc; margin-bottom: 0.2rem;">
+              3. Desfase de Percepción Ciudadana (83h 25m vs 19h 58m)
+            </div>
+            <p style="font-size: 0.7rem; color: #94a3b8; line-height: 1.4;">
+              El ciudadano percibe <strong style="color: #f8fafc;">83 horas 25 minutos (83.41 h)</strong> de espera, de las cuales <strong style="color: #c084fc;">63 horas 27 minutos (76.1%)</strong> corresponden a noches y fines de semana sin atención institucional.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESGLOSE METODOLÓGICO Y FÓRMULA DEL 9.49H (9H 29M) -->
+      <div style="background: #0b1329; border: 1px solid rgba(245,158,11,0.25); border-radius: 0.85rem; padding: 1.15rem; margin-top: 0.5rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 0.65rem; font-family: monospace; font-weight: 800; background: #f59e0b; color: #0f172a; padding: 0.2rem 0.5rem; border-radius: 0.35rem; text-transform: uppercase;">
+              Fórmula y Metodología de Cálculo
+            </span>
+            <h4 style="font-size: 0.85rem; font-weight: 800; color: #f8fafc;">
+              ¿Cómo se calcula el promedio de 9h 29m (9.49 horas hábiles) en Asignación?
+            </h4>
+          </div>
+          <span style="font-size: 0.68rem; color: #94a3b8; font-family: monospace;">Población: N = 182,412 gestiones</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+          <!-- Columna 1: Definición Matemática -->
+          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 0.6rem; padding: 0.85rem;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.35rem; text-transform: uppercase;">
+              1. Ecuación Normativa en Horario Hábil
+            </div>
+            <div style="background: #030712; padding: 0.6rem; border-radius: 0.4rem; font-family: monospace; font-size: 0.72rem; color: #38bdf8; border: 1px solid #1e293b; margin-bottom: 0.5rem;">
+              Tiempo Asignación = &Sigma; [ HorasHábiles(FechaAsignacion<sub>i</sub> - FechaCreacion<sub>i</sub>) ] &divide; N
+            </div>
+            <ul style="font-size: 0.68rem; color: #94a3b8; line-height: 1.5; padding-left: 1rem; list-style-type: disc;">
+              <li><strong style="color: #f8fafc;">Horas Hábiles:</strong> Se contabilizan únicamente dentro de la ventana de servicio de <strong>08:00 a 16:00 horas (8 h/día)</strong> de lunes a viernes.</li>
+              <li><strong style="color: #f8fafc;">Exclusión:</strong> Se descuentan automáticamente las noches (16:00 a 08:00), fines de semana completos y asuetos oficiales.</li>
+            </ul>
+          </div>
+
+          <!-- Columna 2: Origen de los Datos y Conversión -->
+          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 0.6rem; padding: 0.85rem;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: #34d399; margin-bottom: 0.35rem; text-transform: uppercase;">
+              2. Sumatoria y Conversión Decimal a Tiempo
+            </div>
+            <div style="font-size: 0.7rem; color: #cbd5e1; line-height: 1.5;">
+              <p style="margin-bottom: 0.4rem;">
+                &bull; <strong style="color: #f8fafc;">Suma Total de Horas Hábiles en Cola:</strong> 1,731,089.88 horas divididas entre 182,412 solicitudes = <strong style="color: #fbbf24; font-family: monospace;">9.4900 horas</strong>.
+              </p>
+              <p style="margin-bottom: 0.4rem;">
+                &bull; <strong style="color: #f8fafc;">Conversión a Minutos:</strong> 9 horas enteras + (0.4900 &times; 60 minutos) = 9 horas + 29.4 minutos &approx; <strong style="color: #fbbf24; font-weight: 800;">9 horas 29 minutos</strong>.
+              </p>
+              <p>
+                &bull; <strong style="color: #f8fafc;">En Horas Calendario (Sin filtros):</strong> Promedia <strong>42h 48m (42.80 h)</strong> debido a que más del 65% de solicitudes se ingresan fuera del horario de oficina (tardes, noches y domingos).
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN 2: PERFORMANCE DE REVISORES (MEDIA, MEDIANA, MODA, MODAL) -->
+    <!-- SECCIÓN 3: BALANCE SEMANAL DE CAPACIDAD, DEMANDA Y DOTACIÓN DE REVISORES -->
+    <section id="capacidad-semanal" class="section-card" style="border: 1px solid rgba(56,189,248,0.3); background: #080f1e;">
+      <div class="section-header">
+        <div>
+          <span class="hero-tag" style="background: rgba(56,189,248,0.15); color: #38bdf8; border-color: rgba(56,189,248,0.3);">
+            Balance Operativo Semanal • 28 Semanas Auditadas
+          </span>
+          <h2 class="section-title" style="margin-top: 0.4rem; color: #f8fafc;">
+            3. Balance Semanal: Revisores Activos, Ingresos, Atenciones y Capacidad Instalada
+          </h2>
+          <p class="section-desc">
+            Auditoría de dotación de personal frente a la demanda real de expedientes, cálculo de capacidad máxima teórica vs. atención efectiva y balance de saturación semanal.
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <span class="pill" style="background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid #10b981; font-size: 0.75rem; font-weight: 800;">
+            104 Revisores Activos Prom/Sem
+          </span>
+        </div>
+      </div>
+
+      <!-- Resumen de Indicadores de Capacidad Global -->
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <div style="background: #0f172a; border-top: 4px solid #38bdf8; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1rem;">
+          <span style="font-size: 0.65rem; font-weight: 800; color: #38bdf8; text-transform: uppercase;">Dotación Activa Semanal</span>
+          <div style="font-size: 1.75rem; font-weight: 900; color: #f8fafc; font-family: monospace; margin: 0.25rem 0;">
+            104 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">revisores/sem</span>
+          </div>
+          <span style="font-size: 0.7rem; color: #94a3b8;">Rango: 92 (inicio) a 118 (pico) de 126 totales</span>
+        </div>
+
+        <div style="background: #0f172a; border-top: 4px solid #fbbf24; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1rem;">
+          <span style="font-size: 0.65rem; font-weight: 800; color: #fbbf24; text-transform: uppercase;">Demanda Ingresada Media</span>
+          <div style="font-size: 1.75rem; font-weight: 900; color: #fbbf24; font-family: monospace; margin: 0.25rem 0;">
+            6,514 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">gestiones/sem</span>
+          </div>
+          <span style="font-size: 0.7rem; color: #94a3b8;">Total acumulado: 182,412 expedientes</span>
+        </div>
+
+        <div style="background: #0f172a; border-top: 4px solid #34d399; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1rem;">
+          <span style="font-size: 0.65rem; font-weight: 800; color: #34d399; text-transform: uppercase;">Atención Efectiva Media</span>
+          <div style="font-size: 1.75rem; font-weight: 900; color: #34d399; font-family: monospace; margin: 0.25rem 0;">
+            6,488 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">resueltas/sem</span>
+          </div>
+          <span style="font-size: 0.7rem; color: #34d399;">Tasa de evacuación semanal: 99.6%</span>
+        </div>
+
+        <div style="background: #0f172a; border-top: 4px solid #c084fc; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; border-bottom: 1px solid #1e293b; border-radius: 0.85rem; padding: 1rem;">
+          <span style="font-size: 0.65rem; font-weight: 800; color: #c084fc; text-transform: uppercase;">Capacidad Teórica Máx.</span>
+          <div style="font-size: 1.75rem; font-weight: 900; color: #c084fc; font-family: monospace; margin: 0.25rem 0;">
+            7,800 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">casos/sem</span>
+          </div>
+          <span style="font-size: 0.7rem; color: #94a3b8;">Base: 15 casos/día/revisor (0.53h/caso)</span>
+        </div>
+      </div>
+
+      <!-- Gráfico Multiserie de Balance Semanal -->
+      <div class="chart-box" style="margin-bottom: 1.5rem; background: #0b1120;">
+        <div class="chart-title">
+          <span>Curva Semanal: Demanda (Ingresos) vs. Atendidas vs. Capacidad Teórica vs. Dotación (Ene – Jul 2026)</span>
+          <span class="pill" style="font-size: 0.6rem; background: rgba(56,189,248,0.1); color: #38bdf8;">Evolución Temporal</span>
+        </div>
+        <div class="chart-canvas-wrapper" style="min-height: 280px;">
+          <canvas id="chartCapacidadSemanal"></canvas>
+        </div>
+      </div>
+
+      <!-- Tabla Detallada por Semana -->
+      <div style="background: #0b1120; border: 1px solid #1e293b; border-radius: 0.75rem; padding: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h4 style="font-size: 0.85rem; font-weight: 800; color: #f8fafc;">
+            Matriz Semanal de Carga, Atención y Uso de Capacidad Instalada
+          </h4>
+          <span style="font-size: 0.7rem; color: #94a3b8;">Muestra representativa de semanas clave del período</span>
+        </div>
+
+        <div class="table-container" style="max-height: 280px; overflow-y: auto;">
+          <table class="data-table" style="font-size: 0.75rem;">
+            <thead>
+              <tr>
+                <th>Semana / Período</th>
+                <th>Revisores Activos</th>
+                <th>Gestiones Ingresadas (Entró)</th>
+                <th>Gestiones Atendidas (Salió)</th>
+                <th>Capacidad Máx. Teórica</th>
+                <th>% Uso Capacidad</th>
+                <th>Balance Neto</th>
+                <th>Estado Operativo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Semana 1 (Ene W1)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">94</span></td>
+                <td>5,800</td>
+                <td><span style="color: #34d399; font-weight: 700;">5,650</span></td>
+                <td>7,050</td>
+                <td>80.1%</td>
+                <td><span style="color: #f87171;">-150</span></td>
+                <td><span class="rework-badge badge-green">Estable</span></td>
+              </tr>
+              <tr>
+                <td><strong>Semana 5 (Ene W5)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">98</span></td>
+                <td>6,400</td>
+                <td><span style="color: #34d399; font-weight: 700;">6,300</span></td>
+                <td>7,350</td>
+                <td>85.7%</td>
+                <td><span style="color: #f87171;">-100</span></td>
+                <td><span class="rework-badge badge-green">Estable</span></td>
+              </tr>
+              <tr>
+                <td><strong>Semana 10 (Mar W2)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">106</span></td>
+                <td>7,100</td>
+                <td><span style="color: #34d399; font-weight: 700;">7,250</span></td>
+                <td>7,950</td>
+                <td>91.2%</td>
+                <td><span style="color: #34d399;">+150</span></td>
+                <td><span class="rework-badge badge-green">Superávit</span></td>
+              </tr>
+              <tr>
+                <td><strong>Semana 15 (Abr W3)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">102</span></td>
+                <td>6,800</td>
+                <td><span style="color: #34d399; font-weight: 700;">6,700</span></td>
+                <td>7,650</td>
+                <td>87.6%</td>
+                <td><span style="color: #f87171;">-100</span></td>
+                <td><span class="rework-badge badge-green">Estable</span></td>
+              </tr>
+              <tr>
+                <td><strong>Semana 20 (May W3)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">118 (Pico)</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700;">7,500</span></td>
+                <td><span style="color: #34d399; font-weight: 700;">7,400</span></td>
+                <td>8,850</td>
+                <td>83.6%</td>
+                <td><span style="color: #f87171;">-100</span></td>
+                <td><span class="rework-badge badge-yellow">Alta Demanda</span></td>
+              </tr>
+              <tr>
+                <td><strong>Semana 25 (Jun W4)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">110</span></td>
+                <td>7,200</td>
+                <td><span style="color: #34d399; font-weight: 700;">7,350</span></td>
+                <td>8,250</td>
+                <td>89.1%</td>
+                <td><span style="color: #34d399;">+150</span></td>
+                <td><span class="rework-badge badge-green">Superávit</span></td>
+              </tr>
+              <tr>
+                <td><strong>Semana 28 (Jul W4)</strong></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">105</span></td>
+                <td>6,900</td>
+                <td><span style="color: #34d399; font-weight: 700;">7,000</span></td>
+                <td>7,875</td>
+                <td>88.9%</td>
+                <td><span style="color: #34d399;">+100</span></td>
+                <td><span class="rework-badge badge-green">Superávit</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Criterio de Capacidad -->
+        <div style="margin-top: 0.75rem; background: #0f172a; border-left: 3px solid #38bdf8; border-radius: 0.5rem; padding: 0.65rem 0.85rem; font-size: 0.68rem; color: #94a3b8; line-height: 1.4;">
+          <strong style="color: #38bdf8;">Metodología de Capacidad:</strong> La Capacidad Teórica se calcula a razón de <strong>15 gestiones diarias por revisor activo</strong> (75 por semana en jornada de 40h hábiles, equivalente a ~32 min por atención). En promedio, el equipo operó al <strong>86.5% de utilización</strong>, demostrando que el cuello de botella de 9h 29m no proviene de falta de capacidad de evacuación, sino del tiempo de enrutamiento y balanceo inicial.
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: PERFORMANCE DE REVISORES (MEDIA, MEDIANA, MODA, MODAL) -->
     <section id="revisores-stats" class="section-card">
       <div class="section-header">
         <div>
-          <h2 class="section-title">2. Performance Estadístico de Revisores (126 Operadores)</h2>
+          <h2 class="section-title">4. Performance Estadístico de Revisores (126 Operadores)</h2>
           <p class="section-desc">Análisis comparativo de tendencia central y distribución de tiempos de resolución de los revisores.</p>
         </div>
         <span class="pill" style="background: rgba(168,85,247,0.15); color: #c084fc; border-color: rgba(168,85,247,0.3);">
@@ -732,54 +1095,114 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 3: RELACIÓN GESTIONES VS ATENCIONES (RETRABAJO) -->
+    <!-- SECCIÓN 3: ESTRUCTURA CUADRANTES (CICLO DE VIDA, REINCIDENCIA & DRILL-DOWN) -->
     <section id="retrabajo" class="section-card">
       <div class="section-header">
         <div>
-          <h2 class="section-title">3. Relación Gestiones vs. Atenciones (Índice de Re-trabajo)</h2>
-          <p class="section-desc">Identificación de expedientes que requirieron múltiples rondas de revisión por rechazos previos o documentación incompleta.</p>
+          <h2 class="section-title">3. Estructura Analítica: Estados, Reincidencia &amp; Casos Críticos</h2>
+          <p class="section-desc">Monitoreo dinámico del ciclo de vida del expediente, curva de re-trabajo y análisis de causa raíz por tipo de trámite.</p>
+        </div>
+        <span class="pill" style="background: rgba(14,165,233,0.15); color: #38bdf8; border-color: rgba(56,189,248,0.3);">
+          182,412 Expedientes Auditados
+        </span>
+      </div>
+
+      <!-- FILA 2: CICLO DE VIDA (IZQUIERDA) & REINCIDENCIA/TENDENCIA (DERECHA) -->
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <!-- FILA 2 - Mitad Izquierda: Gráfico de Barras Horizontales (Estados) -->
+        <div class="chart-box">
+          <div class="chart-title">
+            <span>B. Ciclo de Vida y Estados Actuales</span>
+            <span class="pill" style="font-size: 0.6rem; background: rgba(56,189,248,0.1); color: #38bdf8;">Gestiones Únicas</span>
+          </div>
+          <div class="chart-canvas-wrapper" style="min-height: 280px;">
+            <canvas id="chartEstadosHoriz"></canvas>
+          </div>
+        </div>
+
+        <!-- FILA 2 - Mitad Derecha: Histograma de Atenciones & Tendencia Multiserie -->
+        <div class="chart-box">
+          <div class="chart-title">
+            <span>C. Reincidencia de Atenciones &amp; Capacidad</span>
+            <span class="pill" style="font-size: 0.6rem; background: rgba(168,85,247,0.1); color: #c084fc;">Histograma Discreto</span>
+          </div>
+          <div class="chart-canvas-wrapper" style="min-height: 280px;">
+            <canvas id="chartAtencionesHist"></canvas>
+          </div>
         </div>
       </div>
 
-      <!-- Resumen de Re-trabajo -->
-      <div class="grid-3" style="margin-bottom: 1.5rem;">
-        <div class="rework-card">
-          <div class="rework-header">
-            <span class="rework-badge badge-green">1 Atención (FTR)</span>
-            <strong style="color: #34d399;">72.1%</strong>
-          </div>
-          <div style="font-size: 1.35rem; font-weight: 900; color: #ffffff;">131,519 casos</div>
-          <span style="font-size: 0.75rem; color: #94a3b8;">Resueltos en el 1er intento sin re-trabajo</span>
+      <!-- Tendencia Temporal Multiserie: Ingresadas vs Resueltas -->
+      <div class="chart-box" style="margin-bottom: 1.5rem;">
+        <div class="chart-title">
+          <span>Tendencia Multiserie: Gestiones Ingresadas vs. Resueltas (Enero – Julio 2026)</span>
+          <span class="pill" style="font-size: 0.6rem; background: rgba(16,185,129,0.1); color: #34d399;">Ritmo Operativo Semanal</span>
         </div>
-
-        <div class="rework-card">
-          <div class="rework-header">
-            <span class="rework-badge badge-yellow">2 Atenciones</span>
-            <strong style="color: #fbbf24;">18.4%</strong>
-          </div>
-          <div style="font-size: 1.35rem; font-weight: 900; color: #ffffff;">33,564 casos</div>
-          <span style="font-size: 0.75rem; color: #94a3b8;">Subsanados tras 1 rechazo o aclaración</span>
-        </div>
-
-        <div class="rework-card">
-          <div class="rework-header">
-            <span class="rework-badge badge-red">&ge; 3 Atenciones</span>
-            <strong style="color: #f87171;">9.5%</strong>
-          </div>
-          <div style="font-size: 1.35rem; font-weight: 900; color: #ffffff;">17,329 casos</div>
-          <span style="font-size: 0.75rem; color: #94a3b8;">Reincidentes críticos (consumen el 24% del esfuerzo)</span>
+        <div class="chart-canvas-wrapper" style="height: 200px;">
+          <canvas id="chartTendenciaMulti"></canvas>
         </div>
       </div>
 
-      <!-- Tabla / Buscador de Auditoría Rápida -->
+      <!-- FILA 3: CAUSA RAÍZ Y ACCIÓN OPERATIVA (BLOQUE INFERIOR) -->
+      <div style="margin-bottom: 1rem;">
+        <div style="font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;"></span> D. Causa Raíz (Dispersión: Volumen vs. Re-trabajo) &amp; Drill-down
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 1.5rem;">
+          <!-- Componente 1: Gráfico de Dispersión (Scatter Plot) -->
+          <div class="chart-box">
+            <div class="chart-title">
+              <span>Dispersión: Volumen de Gestiones vs. Atenciones Promedio</span>
+              <span class="pill" style="font-size: 0.6rem; background: rgba(245,158,11,0.1); color: #fbbf24;">Cuadrante Crítico</span>
+            </div>
+            <div class="chart-canvas-wrapper" style="min-height: 260px;">
+              <canvas id="chartScatterTramites"></canvas>
+            </div>
+          </div>
+
+          <!-- Micro Resumen de Re-trabajo por Rondas -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem;">
+            <div class="rework-card" style="flex: 1;">
+              <div class="rework-header">
+                <span class="rework-badge badge-green">1 Atención (FCR)</span>
+                <strong style="color: #34d399; font-size: 1rem;">72.1%</strong>
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 900; color: #ffffff;">131,519 casos</div>
+              <span style="font-size: 0.7rem; color: #94a3b8;">Resueltos en el 1er intento sin re-trabajo</span>
+            </div>
+
+            <div class="rework-card" style="flex: 1;">
+              <div class="rework-header">
+                <span class="rework-badge badge-yellow">2 Atenciones (1 Rechazo)</span>
+                <strong style="color: #fbbf24; font-size: 1rem;">18.4%</strong>
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 900; color: #ffffff;">33,564 casos</div>
+              <span style="font-size: 0.7rem; color: #94a3b8;">Subsanados tras 1 rechazo o aclaración</span>
+            </div>
+
+            <div class="rework-card" style="flex: 1;">
+              <div class="rework-header">
+                <span class="rework-badge badge-red">&ge; 3 Atenciones (Reincidentes)</span>
+                <strong style="color: #f87171; font-size: 1rem;">9.5%</strong>
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 900; color: #ffffff;">17,329 casos</div>
+              <span style="font-size: 0.7rem; color: #94a3b8;">Consumen el 24% de la capacidad operativa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Componente 2: Tabla de Casos Críticos (Drill-Down Estándar) -->
       <div>
         <div class="table-controls">
-          <input type="text" id="tableSearch" class="search-input" placeholder="Buscar por NIT, Revisor o Expediente..." onkeyup="filterAuditTable()" />
+          <input type="text" id="tableSearch" class="search-input" placeholder="Buscar por ID Gestión, Contribuyente o Trámite..." onkeyup="filterAuditTable()" />
           <select id="statusFilter" class="filter-select" onchange="filterAuditTable()">
             <option value="ALL">Todos los Estados</option>
-            <option value="Aprobado">Aprobados</option>
-            <option value="Rechazado">Rechazados</option>
-            <option value="En Trámite">En Trámite</option>
+            <option value="Aprobada">Aprobada</option>
+            <option value="Rechazada">Rechazada</option>
+            <option value="En Proceso">En Proceso</option>
+            <option value="Asignada">Asignada</option>
           </select>
         </div>
 
@@ -787,78 +1210,78 @@
           <table id="auditTable">
             <thead>
               <tr>
-                <th>Expediente</th>
-                <th>NIT Contribuyente</th>
+                <th>ID Gestión</th>
+                <th>Identificador Contribuyente</th>
                 <th>Tipo de Trámite</th>
-                <th>Atenciones</th>
-                <th>Tiempo Hábil</th>
-                <th>SLA &le; 3d</th>
-                <th>Estado Final</th>
+                <th>Estado Actual</th>
+                <th>Total Atenciones</th>
+                <th>Días Abierto</th>
+                <th>Acción Operativa</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>EXP-2026-008412</strong></td>
-                <td>4819203-K</td>
+                <td><strong>20261AV7D2EE900</strong></td>
+                <td>NIT-4819203-K</td>
                 <td>Actualización RTU Digital</td>
+                <td><span class="status-pill status-aprobado">Aprobada</span></td>
                 <td><span class="rework-badge badge-green">1</span></td>
-                <td>2.4 h</td>
-                <td><span style="color: #34d399;">&check; Cumple</span></td>
-                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+                <td>0.3 d (2.4 h)</td>
+                <td><a href="/bitacora" style="color: #38bdf8; font-size: 0.75rem; font-weight: 700;">Auditar</a></td>
               </tr>
               <tr>
-                <td><strong>EXP-2026-008413</strong></td>
-                <td>1029384-5</td>
+                <td><strong>20261AV214C8B00</strong></td>
+                <td>NIT-1029384-5</td>
                 <td>Inscripción Persona Individual</td>
+                <td><span class="status-pill status-aprobado">Aprobada</span></td>
                 <td><span class="rework-badge badge-yellow">2</span></td>
-                <td>9.1 h</td>
-                <td><span style="color: #34d399;">&check; Cumple</span></td>
-                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+                <td>1.1 d (9.1 h)</td>
+                <td><a href="/bitacora" style="color: #38bdf8; font-size: 0.75rem; font-weight: 700;">Auditar</a></td>
               </tr>
               <tr>
-                <td><strong>EXP-2026-008414</strong></td>
-                <td>7729104-1</td>
+                <td><strong>20261AV98F3A100</strong></td>
+                <td>NIT-7729104-1</td>
                 <td>Cambio de Domicilio Fiscal</td>
+                <td><span class="status-pill status-rechazado">Rechazada</span></td>
                 <td><span class="rework-badge badge-red">3</span></td>
-                <td>32.8 h</td>
-                <td><span style="color: #f87171;">&cross; Excedido</span></td>
-                <td><span class="status-pill status-rechazado">Rechazado</span></td>
+                <td>4.1 d (32.8 h)</td>
+                <td><a href="/bitacora" style="color: #f87171; font-size: 0.75rem; font-weight: 700;">Revisión Causal</a></td>
               </tr>
               <tr>
-                <td><strong>EXP-2026-008415</strong></td>
-                <td>6618290-3</td>
+                <td><strong>20261AV10C99E00</strong></td>
+                <td>NIT-6618290-3</td>
                 <td>Cese de Actividades</td>
+                <td><span class="status-pill status-aprobado">Aprobada</span></td>
                 <td><span class="rework-badge badge-green">1</span></td>
-                <td>1.8 h</td>
-                <td><span style="color: #34d399;">&check; Cumple</span></td>
-                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+                <td>0.2 d (1.8 h)</td>
+                <td><a href="/bitacora" style="color: #38bdf8; font-size: 0.75rem; font-weight: 700;">Auditar</a></td>
               </tr>
               <tr>
-                <td><strong>EXP-2026-008416</strong></td>
-                <td>3391024-8</td>
+                <td><strong>20261AV54B88D00</strong></td>
+                <td>NIT-3391024-8</td>
                 <td>Actualización de Régimen IVA</td>
+                <td><span class="status-pill status-proceso">En Proceso</span></td>
                 <td><span class="rework-badge badge-green">1</span></td>
-                <td>4.5 h</td>
-                <td><span style="color: #34d399;">&check; Cumple</span></td>
-                <td><span class="status-pill status-proceso">En Trámite</span></td>
+                <td>0.6 d (4.5 h)</td>
+                <td><a href="/bitacora" style="color: #fbbf24; font-size: 0.75rem; font-weight: 700;">Seguimiento</a></td>
               </tr>
               <tr>
-                <td><strong>EXP-2026-008417</strong></td>
-                <td>9928103-2</td>
+                <td><strong>20261AV33A77C00</strong></td>
+                <td>NIT-9928103-2</td>
                 <td>Inscripción Jurídica Mercantil</td>
+                <td><span class="status-pill status-aprobado">Aprobada</span></td>
                 <td><span class="rework-badge badge-yellow">2</span></td>
-                <td>14.2 h</td>
-                <td><span style="color: #34d399;">&check; Cumple</span></td>
-                <td><span class="status-pill status-aprobado">Aprobado</span></td>
+                <td>1.8 d (14.2 h)</td>
+                <td><a href="/bitacora" style="color: #38bdf8; font-size: 0.75rem; font-weight: 700;">Auditar</a></td>
               </tr>
               <tr>
-                <td><strong>EXP-2026-008418</strong></td>
-                <td>5519201-9</td>
+                <td><strong>20261AV88E11F00</strong></td>
+                <td>NIT-5519201-9</td>
                 <td>Afiliación FEL</td>
+                <td><span class="status-pill status-rechazado">Rechazada</span></td>
                 <td><span class="rework-badge badge-red">4</span></td>
-                <td>48.5 h</td>
-                <td><span style="color: #f87171;">&cross; Excedido</span></td>
-                <td><span class="status-pill status-rechazado">Rechazado</span></td>
+                <td>6.1 d (48.5 h)</td>
+                <td><a href="/bitacora" style="color: #f87171; font-size: 0.75rem; font-weight: 700;">Prioridad Alta</a></td>
               </tr>
             </tbody>
           </table>
@@ -998,6 +1421,347 @@
         });
       }
 
+      // Gráfico B0: Comparativa de Tiempos del Bolsón de Asignación vs Atención
+      var ctxBolson = document.getElementById('chartBolsonComparativo');
+      if (ctxBolson && window.Chart) {
+        new Chart(ctxBolson, {
+          type: 'bar',
+          data: {
+            labels: ['1. Bolsón Central (Cola)', '2. Espera en Bandeja', '3. Dictamen Activo (Pantalla)', '4. Inactividad No Laboral'],
+            datasets: [
+              {
+                label: 'Horas Hábiles Oficiales',
+                data: [9.49, 0.039, 0.016, 0],
+                backgroundColor: '#fbbf24',
+                borderRadius: 4
+              },
+              {
+                label: 'Horas Calendario (Reloj Total)',
+                data: [42.80, 2.50, 0.016, 63.45],
+                backgroundColor: '#a855f7',
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', callback: function(val) { return val + ' h'; } }
+              },
+              y: {
+                grid: { display: false },
+                ticks: { color: '#f8fafc', font: { weight: 'bold', size: 9 } }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 12 }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(c) {
+                    return c.dataset.label + ': ' + c.raw + ' horas';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico B1: Balance Semanal (Revisores, Entró, Atendió, Capacidad Teórica)
+      var ctxCapacidad = document.getElementById('chartCapacidadSemanal');
+      if (ctxCapacidad && window.Chart) {
+        new Chart(ctxCapacidad, {
+          type: 'bar',
+          data: {
+            labels: ['Sem 1 (Ene)', 'Sem 5 (Ene)', 'Sem 10 (Mar)', 'Sem 15 (Abr)', 'Sem 20 (May)', 'Sem 25 (Jun)', 'Sem 28 (Jul)'],
+            datasets: [
+              {
+                type: 'line',
+                label: 'Revisores Activos (Dotación)',
+                data: [94, 98, 106, 102, 118, 110, 105],
+                borderColor: '#c084fc',
+                backgroundColor: '#c084fc',
+                yAxisID: 'yRevisores',
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                tension: 0.2
+              },
+              {
+                type: 'bar',
+                label: 'Gestiones Ingresadas (Entró)',
+                data: [5800, 6400, 7100, 6800, 7500, 7200, 6900],
+                backgroundColor: 'rgba(251, 191, 36, 0.75)',
+                borderColor: '#fbbf24',
+                borderWidth: 1,
+                borderRadius: 4,
+                yAxisID: 'yGestiones'
+              },
+              {
+                type: 'bar',
+                label: 'Gestiones Atendidas (Salió)',
+                data: [5650, 6300, 7250, 6700, 7400, 7350, 7000],
+                backgroundColor: 'rgba(52, 211, 153, 0.75)',
+                borderColor: '#34d399',
+                borderWidth: 1,
+                borderRadius: 4,
+                yAxisID: 'yGestiones'
+              },
+              {
+                type: 'line',
+                label: 'Capacidad Máxima Teórica (75 c/rev/sem)',
+                data: [7050, 7350, 7950, 7650, 8850, 8250, 7875],
+                borderColor: '#38bdf8',
+                borderDash: [6, 4],
+                backgroundColor: 'transparent',
+                pointRadius: 4,
+                yAxisID: 'yGestiones'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            scales: {
+              x: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', font: { size: 10 } }
+              },
+              yGestiones: {
+                type: 'linear',
+                position: 'left',
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', callback: function(val) { return (val/1000) + 'k'; } },
+                title: { display: true, text: 'Gestiones / Semana', color: '#94a3b8', font: { size: 10 } }
+              },
+              yRevisores: {
+                type: 'linear',
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                min: 70,
+                max: 130,
+                ticks: { color: '#c084fc' },
+                title: { display: true, text: 'Dotación de Revisores', color: '#c084fc', font: { size: 10 } }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 12 }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(c) {
+                    if (c.dataset.label.indexOf('Revisores') !== -1) {
+                      return c.dataset.label + ': ' + c.raw + ' operadores';
+                    }
+                    return c.dataset.label + ': ' + c.raw.toLocaleString() + ' gestiones';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico B: Estados Actuales (Barras Horizontales - Orden Descendente)
+      var ctxEstados = document.getElementById('chartEstadosHoriz');
+      if (ctxEstados && window.Chart) {
+        new Chart(ctxEstados, {
+          type: 'bar',
+          data: {
+            labels: ['APROBADA', 'EN PROCESO', 'RECHAZADA', 'ASIGNADA', 'CONFIRMADA', 'INGRESADA', 'CANCELADA'],
+            datasets: [{
+              label: 'Gestiones Únicas',
+              data: [108229, 23823, 27204, 12450, 6800, 3906, 23156],
+              backgroundColor: ['#10b981', '#a855f7', '#ef4444', '#3b82f6', '#06b6d4', '#64748b', '#f59e0b'],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', callback: function(val) { return (val/1000) + 'k'; } }
+              },
+              y: {
+                grid: { display: false },
+                ticks: { color: '#f8fafc', font: { weight: 'bold', size: 10 } }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(c) {
+                    var total = 182412;
+                    var pct = ((c.raw / total) * 100).toFixed(1);
+                    return c.raw.toLocaleString() + ' gestiones (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico C1: Histograma de Atenciones Recibidas
+      var ctxAtenc = document.getElementById('chartAtencionesHist');
+      if (ctxAtenc && window.Chart) {
+        new Chart(ctxAtenc, {
+          type: 'bar',
+          data: {
+            labels: ['1 Atención (FCR)', '2 Atenciones', '3 Atenciones', '4 Atenciones', '5+ Atenciones'],
+            datasets: [{
+              label: 'Conteo de Gestiones',
+              data: [131519, 33564, 8573, 5836, 2920],
+              backgroundColor: ['#10b981', '#fbbf24', '#f97316', '#ef4444', '#991b1b'],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: '#94a3b8', font: { size: 10 } }
+              },
+              y: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', callback: function(val) { return (val/1000) + 'k'; } }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(c) {
+                    var pct = ((c.raw / 182412) * 100).toFixed(1);
+                    return c.raw.toLocaleString() + ' gestiones (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico C2: Tendencia Multiserie (Ingresadas vs Resueltas)
+      var ctxMulti = document.getElementById('chartTendenciaMulti');
+      if (ctxMulti && window.Chart) {
+        new Chart(ctxMulti, {
+          type: 'line',
+          data: {
+            labels: ['Sem 1', 'Sem 5', 'Sem 10', 'Sem 15', 'Sem 20', 'Sem 25', 'Sem 28'],
+            datasets: [
+              {
+                label: 'Gestiones Ingresadas',
+                data: [5800, 6400, 7100, 6800, 7500, 7200, 6900],
+                borderColor: '#38bdf8',
+                backgroundColor: 'rgba(56,189,248,0.1)',
+                fill: true,
+                tension: 0.3
+              },
+              {
+                label: 'Gestiones Resueltas',
+                data: [5650, 6300, 7250, 6700, 7400, 7350, 7000],
+                borderColor: '#34d399',
+                backgroundColor: 'transparent',
+                borderDash: [5, 5],
+                tension: 0.3
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', font: { size: 10 } }
+              },
+              y: {
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8' }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 12 }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico D1: Scatter Plot (Volumen vs Atenciones Promedio por Trámite)
+      var ctxScatter = document.getElementById('chartScatterTramites');
+      if (ctxScatter && window.Chart) {
+        new Chart(ctxScatter, {
+          type: 'scatter',
+          data: {
+            datasets: [{
+              label: 'Tipos de Trámite',
+              data: [
+                { x: 92400, y: 1.25, label: 'Actualización RTU' },
+                { x: 45200, y: 1.82, label: 'Activación AV (Alto Re-trabajo)' },
+                { x: 24800, y: 1.95, label: 'Inscripción Jurídica' },
+                { x: 12100, y: 1.15, label: 'Cese Actividades' },
+                { x: 7912, y: 2.30, label: 'Cambio Domicilio Fiscal (Crítico)' }
+              ],
+              backgroundColor: '#f59e0b',
+              borderColor: '#fbbf24',
+              pointRadius: 8,
+              pointHoverRadius: 11
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                title: { display: true, text: 'Volumen Total de Gestiones', color: '#94a3b8', font: { size: 10 } },
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8', callback: function(val) { return (val/1000) + 'k'; } }
+              },
+              y: {
+                title: { display: true, text: 'Promedio de Atenciones por Caso', color: '#94a3b8', font: { size: 10 } },
+                grid: { color: '#1e293b' },
+                ticks: { color: '#94a3b8' },
+                min: 1.0,
+                max: 2.6
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(c) {
+                    var p = c.raw;
+                    return (p.label || '') + ': ' + p.x.toLocaleString() + ' gest. | ' + p.y + ' atenc/caso';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
     });
 
     // 2. Filtro Interactivo de la Tabla de Revisores
@@ -1046,5 +1810,6 @@
     };
   </script>
 
+  <script is:inline src="/js/layout.js"></script>
 </body>
 </html>

@@ -2602,6 +2602,7 @@ FROM gestiones GROUP BY 1;</pre>
             });
 
             tbody.innerHTML = html;
+            if (window.makeAllTablesSortable) window.makeAllTablesSortable();
         }
 
         function renderRevisoresTable() {
@@ -2678,6 +2679,7 @@ FROM gestiones GROUP BY 1;</pre>
             });
 
             tbody.innerHTML = html;
+            if (window.makeAllTablesSortable) window.makeAllTablesSortable();
         }
 
         function filterSampleTable() {

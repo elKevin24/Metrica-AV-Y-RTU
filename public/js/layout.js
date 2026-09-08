@@ -191,12 +191,156 @@
     }
   }, { passive: true });
 
-  // Inicializar Lucide al cargar el documento
+  // 9. Motor Universal de Tablas Ordenables (Click en encabezados)
+  window.makeTableSortable = function(table) {
+    if (!table || table.dataset.sortableInitialized === 'true') return;
+    table.dataset.sortableInitialized = 'true';
+
+    var thead = table.querySelector('thead');
+    if (!thead) return;
+
+    var headers = thead.querySelectorAll('th');
+    headers.forEach(function(th, colIndex) {
+      // Ignorar columnas de acción explícitas si no son ordenables
+      var thText = th.textContent.trim().toLowerCase();
+      if (thText === 'acción' || thText === 'acciones' || thText === 'ver' || th.classList.contains('no-sort')) {
+        return;
+      }
+
+      th.style.cursor = 'pointer';
+      th.style.userSelect = 'none';
+      th.setAttribute('title', 'Clic para ordenar por ' + th.textContent.trim());
+
+      // Crear o asegurar contenedor de indicador
+      if (!th.querySelector('.sort-indicator')) {
+        var indicator = document.createElement('span');
+        indicator.className = 'sort-indicator';
+        indicator.style.marginLeft = '6px';
+        indicator.style.fontSize = '10px';
+        indicator.style.opacity = '0.4';
+        indicator.innerHTML = '⇅';
+        th.appendChild(indicator);
+      }
+
+      th.addEventListener('click', function() {
+        var currentOrder = th.dataset.order || 'none';
+        var newOrder = (currentOrder === 'asc') ? 'desc' : 'asc';
+
+        // Reset all other headers in this table
+        headers.forEach(function(h) {
+          h.dataset.order = 'none';
+          var ind = h.querySelector('.sort-indicator');
+          if (ind) {
+            ind.innerHTML = '⇅';
+            ind.style.opacity = '0.35';
+            ind.style.color = '';
+          }
+        });
+
+        // Set active header
+        th.dataset.order = newOrder;
+        var activeInd = th.querySelector('.sort-indicator');
+        if (activeInd) {
+          activeInd.innerHTML = (newOrder === 'asc') ? '▲' : '▼';
+          activeInd.style.opacity = '1';
+          activeInd.style.color = '#38bdf8';
+        }
+
+        sortTableByColumn(table, colIndex, newOrder);
+      });
+    });
+  };
+
+  function parseCellVal(val) {
+    if (!val) return '';
+    var clean = val.trim();
+
+    // Eliminar emojis o insignias iniciales (#1, 🥇, 🥈, 🥉, etc.)
+    clean = clean.replace(/^[🥇🥈🥉#\s\d+Reg()]+/, '').trim() || clean;
+
+    // Detectar porcentajes: '98.5%' -> 98.5
+    if (/%$/.test(clean)) {
+      var p = parseFloat(clean.replace('%', '').replace(',', '.').trim());
+      if (!isNaN(p)) return p;
+    }
+
+    // Detectar números con formato de coma/punto: 12,169 -> 12169, 1.47 h -> 1.47, 35 min -> 35
+    var numMatch = clean.match(/^-?[\d,.]+/);
+    if (numMatch) {
+      var numStr = numMatch[0];
+      // Si tiene comas de miles: 12,169 -> 12169
+      if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(numStr)) {
+        numStr = numStr.replace(/,/g, '');
+      } else if (numStr.indexOf(',') !== -1 && numStr.indexOf('.') === -1) {
+        numStr = numStr.replace(',', '.');
+      }
+      var num = parseFloat(numStr);
+      if (!isNaN(num)) return num;
+    }
+
+    // Detectar fechas tipo YYYY-MM-DD o DD/MM/YYYY
+    var dateVal = Date.parse(clean);
+    if (!isNaN(dateVal) && isNaN(Number(clean))) return dateVal;
+
+    return clean.toLowerCase();
+  }
+
+  function sortTableByColumn(table, colIndex, order) {
+    var tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    if (rows.length <= 1) return;
+
+    // Guardar filas que no deben ordenarse (e.g. subtotales o empty states)
+    var normalRows = rows.filter(function(r) { return !r.classList.contains('no-sort-row'); });
+
+    normalRows.sort(function(rowA, rowB) {
+      var cellA = rowA.children[colIndex] ? rowA.children[colIndex].innerText || rowA.children[colIndex].textContent : '';
+      var cellB = rowB.children[colIndex] ? rowB.children[colIndex].innerText || rowB.children[colIndex].textContent : '';
+
+      var vA = parseCellVal(cellA);
+      var vB = parseCellVal(cellB);
+
+      if (typeof vA === 'number' && typeof vB === 'number') {
+        return (order === 'asc') ? (vA - vB) : (vB - vA);
+      }
+
+      var sA = String(vA);
+      var sB = String(vB);
+      return (order === 'asc') ? sA.localeCompare(sB, 'es', { numeric: true }) : sB.localeCompare(sA, 'es', { numeric: true });
+    });
+
+    normalRows.forEach(function(row) {
+      tbody.appendChild(row);
+    });
+  }
+
+  // Auto-inicializar tablas ordenables en la página
+  window.makeAllTablesSortable = function() {
+    var tables = document.querySelectorAll('table');
+    tables.forEach(function(tbl) {
+      window.makeTableSortable(tbl);
+    });
+  };
+
+  // Observador de mutación para tablas renderizadas asíncronamente
+  function observeDynamicTables() {
+    window.makeAllTablesSortable();
+    var observer = new MutationObserver(function() {
+      window.makeAllTablesSortable();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // Inicializar Lucide y Tablas al cargar el documento
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof window.renderIcons === 'function') window.renderIcons();
+      observeDynamicTables();
     });
   } else {
     if (typeof window.renderIcons === 'function') window.renderIcons();
+    observeDynamicTables();
   }
 })();
