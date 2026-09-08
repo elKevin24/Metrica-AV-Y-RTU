@@ -5,3 +5,4 @@ dist/
 .vite_cache/
 .ds_store
 *.log
+src/data/
