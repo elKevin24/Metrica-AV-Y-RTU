@@ -394,9 +394,9 @@
 
     // 13. chartSpeedVsRechazo (Scatter Velocidad vs Rechazo de Operadores)
     const ctxScatterRech = getCtx('chartSpeedVsRechazo');
-    if (ctxScatterRech && window.DATA?.revisores) {
+    if (ctxScatterRech && res?.revisores && res.revisores.length > 0) {
       destroyChart('chartSpeedVsRechazo');
-      const pts = window.DATA.revisores.slice(0, 60).map(r => ({
+      const pts = res.revisores.slice(0, 60).map(r => ({
         x: r.tiempo_prom_min,
         y: r.pct_rech,
         label: r.id
@@ -433,9 +433,9 @@
 
     // 14. chartVolumeVsSpeed (Volumen vs Velocidad)
     const ctxVolSpeed = getCtx('chartVolumeVsSpeed');
-    if (ctxVolSpeed && window.DATA?.revisores) {
+    if (ctxVolSpeed && res?.revisores && res.revisores.length > 0) {
       destroyChart('chartVolumeVsSpeed');
-      const ptsVol = window.DATA.revisores.slice(0, 60).map(r => ({
+      const ptsVol = res.revisores.slice(0, 60).map(r => ({
         x: r.tiempo_prom_min,
         y: r.total,
         label: r.id
@@ -471,9 +471,9 @@
 
     // 15. chartOperadores (Ranking Top 15 Productividad)
     const ctxOperadores = getCtx('chartOperadores');
-    if (ctxOperadores && window.DATA?.revisores) {
+    if (ctxOperadores && res?.revisores && res.revisores.length > 0) {
       destroyChart('chartOperadores');
-      const top15 = window.DATA.revisores.slice(0, 15);
+      const top15 = res.revisores.slice(0, 15);
       chartInstances['chartOperadores'] = new Chart(ctxOperadores, {
         type: 'bar',
         data: {

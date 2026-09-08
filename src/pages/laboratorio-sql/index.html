@@ -44,7 +44,7 @@ Laboratorio SQL & Explorador ROLAP
 Ejecuta consultas analíticas ad-hoc sin restricciones dimensionales directamente sobre los <strong class="text-white">182,412 expedientes</strong> procesados de Agencia Virtual y RTU Digital con visualización en tabla paginada o gráfica ejecutiva.
 </p> </div> <!-- Estado del Motor SQL en el Cliente --> <div id="sqlEngineStatusCard" class="bg-slate-800/80 backdrop-blur-xs border border-slate-700/80 rounded-2xl p-4 min-w-[240px] text-right space-y-1"> <div class="flex items-center justify-end gap-2 text-xs text-slate-400"> <span id="engineStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> <span id="engineStatusText" class="font-mono text-amber-300">Cargando base analítica...</span> </div> <div class="text-lg font-black text-white font-mono" id="engineRowsCount">182,412 filas</div> <div class="text-[10px] text-slate-400" id="engineTablesInfo">Tablas: maestro_expedientes • cubo_av</div> </div> </div> <!-- Área Principal de Trabajo: Editor y Esquema --> <div class="grid grid-cols-1 lg:grid-cols-4 gap-6" id="rolapWorkspaceGrid"> <!-- Panel Izquierdo: Catálogo de Consultas y Explorador de Columnas (1 Col) --> <div class="lg:col-span-1 space-y-4" id="leftCatalogPanel"> <!-- Tarjeta de Consultas Predeterminadas --> <div id="cardTemplates" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3"> <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5"> <i data-lucide="book-open" class="w-4 h-4 text-blue-600"></i> Consultas Predefinidas
 </h3> <p class="text-[11px] text-slate-500 leading-snug">Selecciona un template para cargar y ejecutar su SQL analítico:</p> <div class="space-y-1.5" id="templateList"> <button id="btnTemplate0" onclick="loadSqlTemplate(0)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>1. Resumen 360° por Región</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate1" onclick="loadSqlTemplate(1)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>2. Cuello de Botella por Hora</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate2" onclick="loadSqlTemplate(2)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>3. Top FTR por Revisor (&gt;100)</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate3" onclick="loadSqlTemplate(3)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>4. Top 10 Causales de Rechazo</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate4" onclick="loadSqlTemplate(4)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>5. Ciclo por Región & Tipo Persona</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate5" onclick="loadSqlTemplate(5)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>6. Casos Críticos Fuera SLA (&gt;40h)</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate6" onclick="loadSqlTemplate(6)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200 transition flex items-center justify-between"> <span>7. Fact Table ROLAP (cubo_av)</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> <button id="btnTemplate7" onclick="loadSqlTemplate(7)" class="w-full text-left p-2 rounded-xl text-xs font-semibold bg-indigo-50/80 hover:bg-indigo-100 text-indigo-900 border border-indigo-200/80 hover:border-indigo-300 transition flex items-center justify-between"> <span class="flex items-center gap-1.5"> <i data-lucide="calculator" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i> <span>8. Proyección Revisores & Capacidad</span> </span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i> </button> </div> </div> <!-- Diccionario y Esquema de Tablas --> <div id="cardSchemaDict" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3"> <div class="space-y-1.5"> <div class="flex items-center justify-between"> <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5"> <i data-lucide="database" class="w-4 h-4 text-indigo-600"></i> Esquema SQL
-</h3> <span class="text-[10px] text-slate-400 font-mono" id="schemaCountBadge">21 columnas</span> </div> <label for="tableSelectorSelect" class="text-[11px] font-semibold text-slate-600 block">Tabla seleccionada:</label> <select id="tableSelectorSelect" onchange="switchSchemaTable(this.value)" class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-bold focus:outline-blue-500"> <option value="maestro_expedientes">maestro_expedientes (182k filas)</option> <option value="cubo_av">cubo_av (13.6k ROLAP)</option> <option value="operadores_productividad">operadores_productividad (1,120 filas)</option> <option value="taxonomia">taxonomia (26 motivos)</option> <option value="muestra_expedientes">muestra_expedientes (500 casos)</option> </select> </div> <input type="text" id="columnFilterInput" oninput="filterColumnsList()" placeholder="Buscar columna..." class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-blue-500"> <div class="max-h-56 overflow-y-auto space-y-1 font-mono text-[11px] pr-1" id="columnListContainer"> <!-- Rellenado dinámicamente --> </div> <div class="text-[10px] text-slate-400 text-center italic">Haz click en una columna para insertarla en el editor</div> </div> </div> <!-- Panel Derecho: Editor SQL y Resultados (3 Cols) --> <div class="lg:col-span-3 space-y-4" id="rightEditorPanel"> <!-- Editor SQL --> <div id="sqlEditorContainer" class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden flex flex-col"> <div class="bg-slate-800/80 px-4 py-2.5 border-b border-slate-700 flex items-center justify-between flex-wrap gap-2"> <div class="flex items-center gap-2 text-xs font-mono text-slate-300"> <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> <span>Consola SQL ROLAP</span> <span class="text-slate-500">|</span> <span class="text-[11px] text-slate-400">Atajo: <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Ctrl</kbd> + <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Enter</kbd></span> </div> <div class="flex items-center gap-2"> <button id="btnClearEditor" onclick="clearEditor()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
+</h3> <span class="text-[10px] text-slate-400 font-mono" id="schemaCountBadge">21 columnas</span> </div> <label for="tableSelectorSelect" class="text-[11px] font-semibold text-slate-600 block">Tabla seleccionada:</label> <select id="tableSelectorSelect" onchange="switchSchemaTable(this.value)" class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-bold focus:outline-blue-500"> <option value="maestro_expedientes">maestro_expedientes (182k filas)</option> <option value="cubo_av">cubo_av (13.6k ROLAP)</option> <option value="operadores_productividad">operadores_productividad (1,120 filas)</option> <option value="taxonomia">taxonomia (26 motivos)</option> </select> </div> <input type="text" id="columnFilterInput" oninput="filterColumnsList()" placeholder="Buscar columna..." class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-blue-500"> <div class="max-h-56 overflow-y-auto space-y-1 font-mono text-[11px] pr-1" id="columnListContainer"> <!-- Rellenado dinámicamente --> </div> <div class="text-[10px] text-slate-400 text-center italic">Haz click en una columna para insertarla en el editor</div> </div> </div> <!-- Panel Derecho: Editor SQL y Resultados (3 Cols) --> <div class="lg:col-span-3 space-y-4" id="rightEditorPanel"> <!-- Editor SQL --> <div id="sqlEditorContainer" class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden flex flex-col"> <div class="bg-slate-800/80 px-4 py-2.5 border-b border-slate-700 flex items-center justify-between flex-wrap gap-2"> <div class="flex items-center gap-2 text-xs font-mono text-slate-300"> <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> <span>Consola SQL ROLAP</span> <span class="text-slate-500">|</span> <span class="text-[11px] text-slate-400">Atajo: <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Ctrl</kbd> + <kbd class="bg-slate-700 text-slate-200 px-1 py-0.5 rounded text-[10px]">Enter</kbd></span> </div> <div class="flex items-center gap-2"> <button id="btnClearEditor" onclick="clearEditor()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
 Limpiar
 </button> <button id="btnResetDefaultSql" onclick="resetDefaultQuery()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition">
 Restablecer
@@ -245,17 +245,6 @@ ORDER BY Demanda_Diaria_Promedio DESC;`
         { name: 'Macro_Familia', type: 'VARCHAR', desc: 'Nombre de macro familia de rechazo' },
         { name: 'ID_Sub', type: 'VARCHAR', desc: 'Código de subcategoría' },
         { name: 'Subcategoria', type: 'VARCHAR', desc: 'Descripción del motivo de rechazo' }
-      ],
-      muestra_expedientes: [
-        { name: 'NoGestion', type: 'VARCHAR', desc: 'Número único de gestión' },
-        { name: 'NIT', type: 'VARCHAR', desc: 'NIT del contribuyente' },
-        { name: 'Gestion', type: 'VARCHAR', desc: 'Tipo de trámite' },
-        { name: 'Region', type: 'VARCHAR', desc: 'Regional SAT' },
-        { name: 'FechaCreacion', type: 'VARCHAR', desc: 'Fecha y hora de creación' },
-        { name: 'FechaFinaliza', type: 'VARCHAR', desc: 'Fecha y hora de finalización' },
-        { name: 'Estado', type: 'VARCHAR', desc: 'Estado del expediente' },
-        { name: 'U1', type: 'VARCHAR', desc: 'Operador asignado' },
-        { name: 'TipoPersona', type: 'VARCHAR', desc: 'INDIVIDUAL o JURIDICA' }
       ]
     };
 
@@ -296,153 +285,13 @@ ORDER BY Demanda_Diaria_Promedio DESC;`
           return (a !== null && a !== undefined) ? a : b;
         };
 
-        statusText.textContent = 'Descargando Cubo AV...';
-
-        // Descargar cubo con fallback gzip -> json plano
-        let rawData;
-        try {
-          const gzUrl = `${baseUrl}/data/cubo_av.json.gz`.replace(/\/\//g, '/');
-          const resGz = await fetch(gzUrl);
-          if (resGz.ok && typeof DecompressionStream !== 'undefined') {
-            const ds = new DecompressionStream('gzip');
-            const decompressed = resGz.body.pipeThrough(ds);
-            const resp = new Response(decompressed);
-            rawData = await resp.json();
-          } else {
-            throw new Error('GZIP no disponible');
-          }
-        } catch (e) {
-          const jsonUrl = `${baseUrl}/data/cubo_av.json`.replace(/\/\//g, '/');
-          const res = await fetch(jsonUrl);
-          rawData = await res.json();
-        }
-
-        if (!rawData || !rawData.rows) {
-          throw new Error('Estructura de datos del cubo inválida.');
-        }
-
-        statusText.textContent = 'Indexando 182,412 expedientes...';
-
-        const cols = rawData.cols;
-        const casosIdx = cols.indexOf('Casos');
-        const regIdx = cols.indexOf('Region');
-        const estIdx = cols.indexOf('Estado');
-        const u1Idx = cols.indexOf('U1');
-        const gestIdx = cols.indexOf('Gestion');
-        const mesIdx = cols.indexOf('Mes');
-        const tipoPIdx = cols.indexOf('TipoPersona');
-        const mfIdx = cols.indexOf('MacroFamilia');
-        const subcatIdx = cols.indexOf('ID_Subcategoria');
-        const ftrIdx = cols.indexOf('AprobDirectas');
-        const aprSubIdx = cols.indexOf('AprobSubsanadas');
-        const rechIdx = cols.indexOf('Rechazos');
-        const nconfIdx = cols.indexOf('NoConfirmadas');
-        const buzonHabIdx = cols.indexOf('Suma_Buzon_Hab_Sec');
-        const nBuzonIdx = cols.indexOf('N_Buzon_Hab');
-        const cicloHabIdx = cols.indexOf('Suma_Ciclo_Hab_Sec');
-        const nCicloIdx = cols.indexOf('N_Ciclo_Hab');
-        const atFinalIdx = cols.indexOf('Suma_Atencion_Final_Sec');
-        const nAtFinalIdx = cols.indexOf('N_Atencion_Final');
-        const sla8Idx = cols.indexOf('SLA_8h');
-        const sla40Idx = cols.indexOf('Fuera_SLA_40h');
-
-        const hoursPool = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-        const maestro = [];
-        let idCounter = 1;
-
-        // Reconstrucción granular de los 182,412 expedientes
-        for (const r of rawData.rows) {
-          const count = r[casosIdx];
-          if (count <= 0) continue;
-
-          const avgBuzon = r[nBuzonIdx] > 0 ? r[buzonHabIdx] / r[nBuzonIdx] : 0;
-          const avgCiclo = r[nCicloIdx] > 0 ? r[cicloHabIdx] / r[nCicloIdx] : 0;
-          const avgAtencion = r[nAtFinalIdx] > 0 ? r[atFinalIdx] / r[nAtFinalIdx] : 0;
-
-          const numFTR = r[ftrIdx] || 0;
-          const numAprSub = r[aprSubIdx] || 0;
-          const numRech = r[rechIdx] || 0;
-          const numNoConf = r[nconfIdx] || 0;
-          const numSla8 = r[sla8Idx] || 0;
-          const numFuera40 = r[sla40Idx] || 0;
-
-          for (let k = 0; k < count; k++) {
-            const isFTR = k < numFTR ? 1 : 0;
-            const isAprSub = (k >= numFTR && k < (numFTR + numAprSub)) ? 1 : 0;
-            const isAprobada = (isFTR || isAprSub) ? 1 : 0;
-            const isRechazo = k < numRech ? 1 : 0;
-            const isNoConf = k < numNoConf ? 1 : 0;
-            const isSla8 = k < numSla8 ? 1 : 0;
-            const isFuera40 = k < numFuera40 ? 1 : 0;
-            const h = hoursPool[(idCounter + k) % hoursPool.length];
-
-            maestro.push({
-              NoGestion: '2026' + r[mesIdx] + 'AV' + (idCounter++).toString(16).toUpperCase().padStart(8, '0'),
-              Region: r[regIdx],
-              Gestion: r[gestIdx],
-              Estado: isAprobada ? 'APROBADA' : (isRechazo ? 'RECHAZADA' : (isNoConf ? 'NO CONFIRMADA' : r[estIdx])),
-              U1: r[u1Idx],
-              TipoPersona: r[tipoPIdx],
-              MacroFamilia: r[mfIdx],
-              ID_Subcategoria: r[subcatIdx],
-              Es_Aprobada: isAprobada,
-              Aprobada_Directa: isFTR,
-              Aprobada_Subsanada: isAprSub,
-              Es_Rechazo: isRechazo,
-              Es_NoConfirmada: isNoConf,
-              Buzon_Hab_Sec: avgBuzon,
-              Ciclo_Hab_Sec: avgCiclo,
-              Atencion_Final_Sec: avgAtencion,
-              SLA_8h: isSla8,
-              Fuera_SLA_40h: isFuera40,
-              Hora_Creacion: h,
-              Mes: r[mesIdx],
-              FechaCreacion: '2026-0' + r[mesIdx] + '-15 ' + String(h).padStart(2, '0') + ':30:00'
-            });
-          }
-        }
-
-        // Crear tabla maestro_expedientes
-        window.alasql('DROP TABLE IF EXISTS maestro_expedientes');
-        window.alasql('CREATE TABLE maestro_expedientes');
-        window.alasql.tables.maestro_expedientes.data = maestro;
-
-        // Crear tabla cubo_av
-        const cuboObjects = rawData.rows.map(r => {
-          const obj = {};
-          for (let i = 0; i < cols.length; i++) obj[cols[i]] = r[i];
-          return obj;
-        });
-        window.alasql('DROP TABLE IF EXISTS cubo_av');
-        window.alasql('CREATE TABLE cubo_av');
-        window.alasql.tables.cubo_av.data = cuboObjects;
-
-        // Crear tabla operadores_productividad
-        if (rawData.operadores_productividad_8h) {
-          window.alasql('DROP TABLE IF EXISTS operadores_productividad');
-          window.alasql('CREATE TABLE operadores_productividad');
-          window.alasql.tables.operadores_productividad.data = rawData.operadores_productividad_8h;
-        }
-
-        // Crear tabla taxonomia
-        if (rawData.taxonomia) {
-          window.alasql('DROP TABLE IF EXISTS taxonomia');
-          window.alasql('CREATE TABLE taxonomia');
-          window.alasql.tables.taxonomia.data = rawData.taxonomia;
-        }
-
-        // Crear tabla muestra_expedientes
-        if (rawData.dataset_muestral_500) {
-          window.alasql('DROP TABLE IF EXISTS muestra_expedientes');
-          window.alasql('CREATE TABLE muestra_expedientes');
-          window.alasql.tables.muestra_expedientes.data = rawData.dataset_muestral_500;
-        }
-
-        isInitialized = true;
-        statusText.textContent = 'Motor SQL Listo';
-        statusText.className = 'font-mono text-emerald-400 font-bold';
-        statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
-        engineDetails.textContent = `Tablas: maestro (182k) • cubo_av (13.6k)`;
+// Fuente Excel (src/data/*.xlsx) pendiente de reconstrucción del pipeline.
+        // Los cubos OLAP fueron retirados del proyecto; el motor queda sin tablas.
+        isInitialized = false;
+        statusText.textContent = 'Sin datos (fuente Excel pendiente)';
+        statusText.className = 'font-mono text-amber-400 font-bold';
+        statusDot.className = 'w-2 h-2 rounded-full bg-amber-500';
+        engineDetails.textContent = 'Tablas: pendiente de reconstrucción desde src/data/*.xlsx';
 
         renderColumnsList();
         const urlParams = new URLSearchParams(window.location.search);

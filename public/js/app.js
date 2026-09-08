@@ -8,20 +8,15 @@
   let currentTab = 'macro';
 
   window.initOlapApp = function() {
-    if (!window.DATA || !window.DATA.loaded) return;
-
-    // Inicializar filtros
-    window.applyFilters();
-
-    // Inicializar Lucide si está cargado
+    // Andamiaje UI: el pipeline de datos se reconstruye desde los Excel fuente
     if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
       lucide.createIcons();
     }
   };
 
-  // 1. Aplicación Reactiva de Filtros
+  // 1. Aplicación Reactiva de Filtros (andamiaje: pipeline reconstruido desde Excel)
   window.applyFilters = function() {
-    if (!window.DATA || !window.DATA.loaded || !window.DATA.cubo) return;
+    if (!window.DATA || !window.DATA.cubo || typeof window.processOlapFilters !== 'function') return;
 
     const topBar = document.getElementById('topProgressBar');
     if (topBar) {
@@ -32,20 +27,19 @@
     const reg = document.getElementById('selRegion')?.value || 'TODAS';
     const ges = document.getElementById('selGestion')?.value || 'TODAS';
     const tip = document.getElementById('selTipoPersona')?.value || 'TODOS';
-    const anio = document.getElementById('selAnio')?.value || 'TODOS';
     const tri = document.getElementById('selTrimestre')?.value || 'TODOS';
     const mes = document.getElementById('selMes')?.value || 'TODOS';
     const est = document.getElementById('selEstado')?.value || 'TODOS';
     const mac = document.getElementById('selMacro')?.value || 'TODAS';
 
-    // Procesar datos ROLAP
+    // Procesar datos ROLAP (cubo OLAP 2026)
     const result = window.processOlapFilters(
       window.DATA.cubo,
       'HUMANAS',
       reg,
       ges,
       tip,
-      anio,
+      '2026', // Solo data 2026
       tri,
       mes,
       est,
@@ -71,7 +65,7 @@
 
       summaryEl.innerText = activeFilters.length > 0
         ? `Filtros: ${activeFilters.join(', ')}`
-        : 'Todos los Trámites (Sin Filtros)';
+        : 'Todos los Trámites 2026 (Sin Filtros)';
     }
 
     if (topBar) {
@@ -84,7 +78,7 @@
 
   // 2. Reseteo de Filtros
   window.resetFilters = function() {
-    const ids = ['selRegion', 'selGestion', 'selTipoPersona', 'selAnio', 'selTrimestre', 'selMes', 'selEstado', 'selMacro'];
+    const ids = ['selRegion', 'selGestion', 'selTipoPersona', 'selTrimestre', 'selMes', 'selEstado', 'selMacro'];
     ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
@@ -97,10 +91,6 @@
   };
 
   // 3. Manejadores de Fechas y Tiempo
-  window.onAnioChange = function() {
-    window.applyFilters();
-  };
-
   window.onTrimestreChange = function() {
     const tri = document.getElementById('selTrimestre')?.value || 'TODOS';
     const selMes = document.getElementById('selMes');

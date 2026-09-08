@@ -1749,32 +1749,13 @@ Bitácora de Estados y Línea de Tiempo Secuencial
 
     async function loadBitacoraData() {
       const topBar = document.getElementById('topProgressBar');
-      try {
-        if (topBar) {
-          topBar.style.width = '65%';
-          topBar.style.opacity = '1';
-        }
-        const res = await fetch(`${baseUrl}/data/cubo_bitacora.json`);
-        if (!res.ok) throw new Error('Error al cargar cubo_bitacora.json');
-        gBitacoraData = await res.json();
-        if (gBitacoraData && gBitacoraData.operadores_productividad_8h) {
-          renderProductividad(gBitacoraData.operadores_productividad_8h);
-        }
-        if (gBitacoraData && gBitacoraData.dataset_muestral_500) {
-          renderBitacoraAuditTable(gBitacoraData.dataset_muestral_500);
-        }
-        if (topBar) {
-          topBar.style.width = '100%';
-          setTimeout(() => {
-            topBar.style.opacity = '0';
-          }, 350);
-        }
-      } catch (err) {
-        console.error('Error cargando datos de bitácora:', err);
-        if (topBar) {
-          topBar.style.backgroundColor = '#f43f5e';
-          topBar.style.width = '100%';
-        }
+      // Fuente Excel (src/data/*.xlsx) pendiente de reconstrucción del pipeline.
+      // Los cubos OLAP fueron retirados; los renders quedan vacíos hasta rehidratar.
+      if (topBar) {
+        topBar.style.width = '100%';
+        setTimeout(() => {
+          topBar.style.opacity = '0';
+        }, 350);
       }
     }
 
@@ -2133,16 +2114,7 @@ Bitácora de Estados y Línea de Tiempo Secuencial
         let nit = '-';
         let gestion = '-';
         let region = '-';
-        
-        if (gBitacoraData && gBitacoraData.dataset_muestral_500) {
-          const matchedSample = gBitacoraData.dataset_muestral_500.find(r => r.NoGestion.toLowerCase() === inputVal.toLowerCase());
-          if (matchedSample) {
-            nit = matchedSample.NIT || matchedSample.nit || '-';
-            gestion = matchedSample.Gestion || '-';
-            region = matchedSample.Region || '-';
-          }
-        }
-        
+
         if (gestion === '-') {
           gestion = inputVal.includes('AV') ? 'ACTIVACIÓN DE AGENCIA VIRTUAL' : 'CAMBIO DE CORREO ELECTRÓNICO';
           region = 'CENTRAL';

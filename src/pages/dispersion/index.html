@@ -993,32 +993,13 @@ FROM gestiones GROUP BY 1;</pre>
         };
 
         async function init() {
-            try {
-                const [resTiempos, resRevisores] = await Promise.all([
-                    fetch('/data/dispersion_tiempos.json'),
-                    fetch('/data/dispersion_revisores.json')
-                ]);
-                rawData = await resTiempos.json();
-                revisoresData = await resRevisores.json();
+            // Fuente de datos (src/data/*.xlsx) pendiente de reconstrucción del pipeline.
+            // Los JSON de dispersión fueron retirados; la UI queda a la espera de datos.
+            rawData = null;
+            revisoresData = null;
 
-                // Poblar datalist de revisores
-                if (revisoresData && revisoresData.revisores) {
-                    const datalist = document.getElementById('revisoresList');
-                    if (datalist) {
-                        datalist.innerHTML = revisoresData.revisores
-                            .map(r => `<option value="${r.revisor}">${r.revisor} (${r.regional} - ${r.total} gestiones)</option>`)
-                            .join('');
-                    }
-                }
-
-                applyFilters();
-                applyRevisorFilters();
-
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            } catch (err) {
-                console.error('Error cargando datos de dispersión', err);
+            if (window.lucide) {
+                window.lucide.createIcons();
             }
         }
 

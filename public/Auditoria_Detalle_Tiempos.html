@@ -219,8 +219,7 @@
     </main>
 
     <!-- Scripts Modulares -->
-    <script src="js/data.js"></script>
-    <script src="js/olap_engine.js"></script>
+    <!-- data.js/olap_engine.js retirados: pipeline OLAP fuera (fuente Excel en src/data/*.xlsx) -->
     <script>
         let dtInstance = null;
 
@@ -382,14 +381,11 @@
         }
 
         $(document).ready(function() {
+            // Andamiaje UI: el Datatable queda a la espera de la reconstrucción del pipeline
+            // desde la fuente Excel (src/data/*.xlsx). Con DATA ausente la tabla permanece vacía.
             if (window.DATA && window.DATA.loaded) {
                 populateFilterDropdowns();
                 renderDataTablesAudit();
-            } else {
-                document.addEventListener('data:ready', function() {
-                    populateFilterDropdowns();
-                    renderDataTablesAudit();
-                });
             }
         });
     </script>
