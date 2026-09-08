@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-ETL Forense: Genera forensic_cases.json desde los Excel de AV.
-Salida: public/data/forensic_cases.json
-
-Genera un archivo JSON con expedientes individuales para la vista
-Master-Detail del ForensicView en el dashboard SAT Guatemala.
+ETL Forense: Genera forensic_cases.json Y chunks paginados desde los Excel de AV.
+Salida: 
+  - public/data/forensic_cases.json (archivo completo)
+  - public/data/forensic/index.json (índice de chunks)
+  - public/data/forensic/chunk_NNN.json (chunks de 5000 registros)
 """
 import pandas as pd
 import numpy as np
@@ -14,10 +14,11 @@ from datetime import datetime
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'src', 'data')
 OUT_DIR = os.path.join(BASE_DIR, 'public', 'data')
+CHUNK_DIR = os.path.join(OUT_DIR, 'forensic')
+CHUNK_SIZE = 5000
 
 
 def load_all_excels():
-    """Carga todos los Excel, normaliza columnas y concatena."""
     files = sorted(glob.glob(os.path.join(DATA_DIR, '*.xlsx')))
     if not files:
         print("ERROR: No se encontraron archivos Excel en", DATA_DIR)
@@ -28,7 +29,6 @@ def load_all_excels():
         print(f"  Cargando: {os.path.basename(f)}")
         df = pd.read_excel(f, engine='openpyxl')
         df.columns = [c.strip().lower() for c in df.columns]
-        # Renombrar columnas duplicadas
         cols = []
         seen = {}
         for c in df.columns:
@@ -54,7 +54,6 @@ def load_all_excels():
 
 
 def build_forensic_cases(full):
-    """Construye registros individuales de expedientes para la vista forense."""
     print("\n  Construyendo expedientes individuales...")
 
     fc = 'fechacreacion' if 'fechacreacion' in full.columns else None
@@ -65,43 +64,30 @@ def build_forensic_cases(full):
 
     group = full.groupby('numerogestion')
 
-    # Dimensiones
     master = group.agg({
         'gestion': 'first',
         'region_contribuyente': 'first',
-    }).rename(columns={
-        'region_contribuyente': 'region',
-    })
+    }).rename(columns={'region_contribuyente': 'region'})
 
-    # Estado final
     if fc:
         sorted_df = full.sort_values(by=fc)
         master['estado'] = sorted_df.groupby('numerogestion')['estadoactual'].last()
     else:
         master['estado'] = group['estadoactual'].last()
 
-    # Fechas clave
-    if fc:
-        master['fecha_creacion'] = group[fc].min()
-    if fa:
-        master['fecha_asignacion'] = group[fa].min()
-    if fr:
-        master['fecha_revision'] = group[fr].min()
-    if ff:
-        master['fecha_finaliza'] = group[ff].min()
-    if frc:
-        master['fecha_rechazo'] = group[frc].min()
+    if fc: master['fecha_creacion'] = group[fc].min()
+    if fa: master['fecha_asignacion'] = group[fa].min()
+    if fr: master['fecha_revision'] = group[fr].min()
+    if ff: master['fecha_finaliza'] = group[ff].min()
+    if frc: master['fecha_rechazo'] = group[frc].min()
 
-    # Motivo de rechazo
     if 'motivorechazo' in full.columns:
         master['motivo_rechazo'] = group['motivorechazo'].first()
 
     master['n_eventos'] = group.size()
 
-    # Medidas derivadas
-    master['es_atendida'] = (
-        master['fecha_asignacion'].notna() & master['fecha_revision'].notna()
-    ).astype(int)
+    # Medidas
+    master['es_atendida'] = (master['fecha_asignacion'].notna() & master['fecha_revision'].notna()).astype(int)
 
     if 'fecha_creacion' in master.columns and 'fecha_asignacion' in master.columns:
         delta = master['fecha_asignacion'] - master['fecha_creacion']
@@ -119,95 +105,77 @@ def build_forensic_cases(full):
     master['es_subsanada'] = ((master['estado'].str.upper() == 'APROBADA') & (master['tiene_rechazo'] == 1)).astype(int)
     master['es_ftr'] = ((master['estado'].str.upper() == 'APROBADA') & (master['tiene_rechazo'] == 0)).astype(int)
 
-    # Clasificar motivo de rechazo
     def clasificar_motivo(motivo):
         if pd.isna(motivo) or str(motivo).strip() == '':
             return 'SIN_MOTIVO'
         m = str(motivo).upper()
-        if any(k in m for k in ['DPI', 'DOCUMENT', 'IDENTIF', 'PASAPORTE']):
-            return 'DOCUMENTACION_DPI'
-        elif any(k in m for k in ['VIDEO', 'CONFIRM', 'BIOMETR']):
-            return 'VIDEO_CONFIRMACION'
-        elif any(k in m for k in ['SISTEMA', 'MAC', 'BLOQU', 'REGLA', 'AUTOMAT']):
-            return 'SISTEMA_REGLAS_DURAS'
-        elif any(k in m for k in ['DATO', 'INCONSIST', 'DIRECC', 'CORREO', 'TELEFONO']):
-            return 'DATOS_INCONSISTENTES'
-        elif any(k in m for k in ['REPRESENT', 'LEGAL', 'PODER', 'MANDAT']):
-            return 'REPRESENTACION_LEGAL'
+        if any(k in m for k in ['DPI', 'DOCUMENT', 'IDENTIF', 'PASAPORTE']): return 'DOCUMENTACION_DPI'
+        elif any(k in m for k in ['VIDEO', 'CONFIRM', 'BIOMETR']): return 'VIDEO_CONFIRMACION'
+        elif any(k in m for k in ['SISTEMA', 'MAC', 'BLOQU', 'REGLA', 'AUTOMAT']): return 'SISTEMA_REGLAS_DURAS'
+        elif any(k in m for k in ['DATO', 'INCONSIST', 'DIRECC', 'CORREO', 'TELEFONO']): return 'DATOS_INCONSISTENTES'
+        elif any(k in m for k in ['REPRESENT', 'LEGAL', 'PODER', 'MANDAT']): return 'REPRESENTACION_LEGAL'
         return 'OTROS'
 
-    if 'motivo_rechazo' in master.columns:
-        master['macro_rechazo'] = master['motivo_rechazo'].apply(clasificar_motivo)
-    else:
-        master['macro_rechazo'] = 'SIN_MOTIVO'
-
-    # Normalizar
+    master['macro_rechazo'] = master['motivo_rechazo'].apply(clasificar_motivo) if 'motivo_rechazo' in master.columns else 'SIN_MOTIVO'
     master['estado_norm'] = master['estado'].str.upper().str.strip()
     master['region_norm'] = master['region'].str.upper().str.strip()
     master['gestion_norm'] = master['gestion'].str.upper().str.strip()
 
-    print(f"  Expedientes únicos: {len(master):,}")
+    # Solo atendidos
+    master = master[master['es_atendida'] == 1].copy()
+    print(f"  Expedientes atendidos: {len(master):,}")
     return master
 
 
-def export(master):
-    """Exporta expedientes individuales a JSON."""
-    print("\n  Exportando forensic_cases.json...")
+def export_all(master):
+    """Exporta JSON completo + chunks paginados."""
+    print("\n  Exportando datos forenses...")
     os.makedirs(OUT_DIR, exist_ok=True)
+    os.makedirs(CHUNK_DIR, exist_ok=True)
 
     if master.index.name == 'numerogestion':
         master = master.reset_index()
 
-    # Seleccionar columnas relevantes
-    export_cols = []
-    col_map = {}
+    # Serializar a registros comprimidos
+    records = []
+    for _, row in master.iterrows():
+        r = {'i': row.get('numerogestion', ''), 't': row.get('gestion', ''), 'r': row.get('region_norm', ''), 'e': row.get('estado_norm', '')}
+        if row.get('macro_rechazo') and row['macro_rechazo'] != 'SIN_MOTIVO':
+            r['m'] = row['macro_rechazo']
+        for src, dst in [('fecha_creacion','fc'),('fecha_asignacion','fa'),('fecha_revision','fr'),('fecha_finaliza','ff'),('fecha_rechazo','frz')]:
+            v = row.get(src)
+            if pd.notna(v) and v is not None:
+                r[dst] = str(v)[:19]
+        if pd.notna(row.get('t_cola_h')): r['tc'] = round(float(row['t_cola_h']), 1)
+        if pd.notna(row.get('t_total_h')): r['tt'] = round(float(row['t_total_h']), 1)
+        if row.get('tiene_rechazo'): r['cr'] = 1
+        if row.get('es_subsanada'): r['sb'] = 1
+        if row.get('es_ftr'): r['ft'] = 1
+        if row.get('n_eventos') and row['n_eventos'] > 1: r['ne'] = int(row['n_eventos'])
+        records.append(r)
 
-    if 'numerogestion' in master.columns:
-        export_cols.append('numerogestion')
+    # 1. Archivo completo
+    full_path = os.path.join(OUT_DIR, 'forensic_cases.json')
+    with open(full_path, 'w') as f:
+        json.dump(records, f, ensure_ascii=False, separators=(',', ':'))
+    size_mb = os.path.getsize(full_path) / (1024 * 1024)
+    print(f"  ✅ Archivo completo: {full_path} ({size_mb:.1f} MB)")
 
-    for src, dst in [('gestion', 'tramite'), ('region_norm', 'region'),
-                      ('estado_norm', 'estado'), ('motivo_rechazo', 'motivo'),
-                      ('macro_rechazo', 'macro')]:
-        if src in master.columns:
-            export_cols.append(src)
-            col_map[src] = dst
+    # 2. Chunks paginados
+    chunks = [records[i:i+CHUNK_SIZE] for i in range(0, len(records), CHUNK_SIZE)]
+    for i, chunk in enumerate(chunks):
+        path = os.path.join(CHUNK_DIR, f'chunk_{i:03d}.json')
+        with open(path, 'w') as f:
+            json.dump(chunk, f, ensure_ascii=False, separators=(',', ':'))
 
-    for ts in ['fecha_creacion', 'fecha_asignacion', 'fecha_revision', 'fecha_finaliza', 'fecha_rechazo']:
-        if ts in master.columns:
-            export_cols.append(ts)
+    # 3. Índice
+    index = {'total': len(records), 'chunk_size': CHUNK_SIZE, 'chunks': len(chunks)}
+    with open(os.path.join(CHUNK_DIR, 'index.json'), 'w') as f:
+        json.dump(index, f)
 
-    for m in ['t_cola_h', 't_total_h', 'es_atendida', 'tiene_rechazo', 'es_subsanada', 'es_ftr', 'n_eventos']:
-        if m in master.columns:
-            export_cols.append(m)
-
-    subset = master[export_cols].copy()
-    subset = subset.rename(columns=col_map)
-
-    # Serializar fechas
-    for c in subset.columns:
-        if subset[c].dtype == 'datetime64[ns]':
-            subset[c] = subset[c].dt.strftime('%Y-%m-%dT%H:%M:%S')
-            subset[c] = subset[c].where(subset[c].notna(), None)
-
-    subset = subset.where(subset.notna(), None)
-
-    records = subset.to_dict(orient='records')
-    out_path = os.path.join(OUT_DIR, 'forensic_cases.json')
-    with open(out_path, 'w', encoding='utf-8') as f:
-        json.dump(records, f, ensure_ascii=False, default=str)
-
-    size_mb = os.path.getsize(out_path) / (1024 * 1024)
-    print(f"  ✅ Expedientes exportados: {out_path}")
-    print(f"     Registros: {len(records):,}")
-    print(f"     Tamaño: {size_mb:.2f} MB")
-
-    # Estadísticas resumen
-    regiones = subset['region'].value_counts().to_dict() if 'region' in subset.columns else {}
-    estados = subset['estado'].value_counts().to_dict() if 'estado' in subset.columns else {}
-    print(f"\n  Por región: {regiones}")
-    print(f"  Por estado: {estados}")
-
-    return records
+    size_chunks = sum(os.path.getsize(os.path.join(CHUNK_DIR, f'chunk_{i:03d}.json')) for i in range(len(chunks)))
+    print(f"  ✅ Chunks: {len(chunks)} archivos ({size_chunks/1024/1024:.1f} MB total, ~{size_chunks/len(chunks)/1024:.0f} KB c/u)")
+    print(f"  ✅ Índice: {CHUNK_DIR}/index.json")
 
 
 if __name__ == '__main__':
@@ -217,7 +185,7 @@ if __name__ == '__main__':
 
     full = load_all_excels()
     master = build_forensic_cases(full)
-    export(master)
+    export_all(master)
 
     print("\n" + "=" * 60)
     print("  ✅ ETL Forense completado")

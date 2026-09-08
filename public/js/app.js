@@ -14,81 +14,10 @@
     }
   };
 
-  // 1. Aplicación Reactiva de Filtros (andamiaje: pipeline reconstruido desde Excel)
-  window.applyFilters = function() {
-    if (!window.DATA || !window.DATA.cubo || typeof window.processOlapFilters !== 'function') return;
-
-    const topBar = document.getElementById('topProgressBar');
-    if (topBar) {
-      topBar.style.width = '40%';
-      topBar.style.opacity = '1';
-    }
-
-    const reg = document.getElementById('selRegion')?.value || 'TODAS';
-    const ges = document.getElementById('selGestion')?.value || 'TODAS';
-    const tip = document.getElementById('selTipoPersona')?.value || 'TODOS';
-    const tri = document.getElementById('selTrimestre')?.value || 'TODOS';
-    const mes = document.getElementById('selMes')?.value || 'TODOS';
-    const est = document.getElementById('selEstado')?.value || 'TODOS';
-    const mac = document.getElementById('selMacro')?.value || 'TODAS';
-
-    // Procesar datos ROLAP (cubo OLAP 2026)
-    const result = window.processOlapFilters(
-      window.DATA.cubo,
-      'HUMANAS',
-      reg,
-      ges,
-      tip,
-      '2026', // Solo data 2026
-      tri,
-      mes,
-      est,
-      mac
-    );
-
-    // Actualizar DOM
-    if (typeof window.updateOlapDom === 'function') {
-      window.updateOlapDom(result);
-    }
-
-    // Actualizar resumen móvil de filtros
-    const summaryEl = document.getElementById('mobileFilterSummary');
-    if (summaryEl) {
-      const activeFilters = [];
-      if (reg !== 'TODAS') activeFilters.push(reg);
-      if (ges !== 'TODAS') activeFilters.push(ges.split(' ')[0]);
-      if (tip !== 'TODOS') activeFilters.push(tip);
-      if (tri !== 'TODOS') activeFilters.push(tri);
-      if (mes !== 'TODOS') activeFilters.push(`M${mes}`);
-      if (est !== 'TODOS') activeFilters.push(est);
-      if (mac !== 'TODAS') activeFilters.push(mac.replace('RECHAZOS_', ''));
-
-      summaryEl.innerText = activeFilters.length > 0
-        ? `Filtros: ${activeFilters.join(', ')}`
-        : 'Todos los Trámites 2026 (Sin Filtros)';
-    }
-
-    if (topBar) {
-      topBar.style.width = '100%';
-      setTimeout(() => {
-        topBar.style.opacity = '0';
-      }, 250);
-    }
-  };
-
-  // 2. Reseteo de Filtros
-  window.resetFilters = function() {
-    const ids = ['selRegion', 'selGestion', 'selTipoPersona', 'selTrimestre', 'selMes', 'selEstado', 'selMacro'];
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        if (el.options && el.options.length > 0) {
-          el.selectedIndex = 0;
-        }
-      }
-    });
-    window.applyFilters();
-  };
+  // 1-2. Filtros unificados → olap-engine.js (window.applyFilters / window.resetFilters)
+  //      Definidos en public/js/olap-engine.js; aquí SOLO conveniencia de alias.
+  window.applyFilters = window.applyFilters || function() {};
+  window.resetFilters = window.resetFilters || function() {};
 
   // 3. Manejadores de Fechas y Tiempo
   window.onTrimestreChange = function() {

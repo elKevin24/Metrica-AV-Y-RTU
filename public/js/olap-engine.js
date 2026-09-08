@@ -114,6 +114,7 @@
     const gestionCounts = {};
     const macroCounts = {};
     const mesCounts = {};
+    const regionBreakdown = {};
 
     for (let i = 0; i < filtered.length; i++) {
       const c = filtered[i];
@@ -129,6 +130,17 @@
       tTotalSum += (c.t_total_sum || 0);
       tTotalCount += (c.t_total_count || 0);
       nEventosSum += (c.n_eventos_sum || 0);
+
+      // Desglose por región (totales, aprobadas, rechazos, cola)
+      if (c.region && c.region !== 'DESCONOCIDO' && c.region !== 'AP_MS_SAT_EN_LINEA' && c.region !== 'NO CONFIRMADA') {
+        const rb = regionBreakdown[c.region] = regionBreakdown[c.region] || { total: 0, aprobadas: 0, subsanadas: 0, con_rechazo: 0, t_cola_sum: 0, t_cola_count: 0 };
+        rb.total += t;
+        rb.aprobadas += (c.aprobadas || 0);
+        rb.subsanadas += (c.subsanadas || 0);
+        rb.con_rechazo += (c.con_rechazo || 0);
+        rb.t_cola_sum += (c.t_cola_sum || 0);
+        rb.t_cola_count += (c.t_cola_count || 0);
+      }
 
       // Agrupaciones
       const rawEst = c.est || 'OTROS';
@@ -192,6 +204,8 @@
       gestionCounts,
       macroCounts,
       mesCounts,
+      rows: filtered,
+      regionBreakdown,
     };
   };
 
@@ -204,7 +218,7 @@
       rechDocDpi: 0, rechVideo: 0, rechDatos: 0, rechRepLegal: 0,
       avgColaH: 0, avgTotalH: 0,
       estadoCounts: {}, regionCounts: {}, gestionCounts: {},
-      macroCounts: {}, mesCounts: {},
+      macroCounts: {}, mesCounts: {}, rows: [], regionBreakdown: {},
     };
   }
 
@@ -265,8 +279,9 @@
   window.updateOlapDom = function(r) {
     if (!r) return;
 
-    // Emitir evento para KpiSummary island
+    // Emitir eventos: KPI resumen + render por-página
     document.dispatchEvent(new CustomEvent('olap:kpi', { detail: r }));
+    document.dispatchEvent(new CustomEvent('olap:filtered', { detail: r }));
     window.__lastKpi = r;
 
     // ── Tarjetas KPI en index.astro ──
@@ -310,6 +325,10 @@
     setText('kpiCobertura', fmt(noSubsanadas));
     setText('kpiCoberturaBadge', pct(noSubsanadas, r.totalRechazos) + '% de rechazos');
     setText('kpiCoberturaCtx', 'Expedientes que no continuaron trámite');
+
+    // ── Donut Center del Dashboard Gerencial (index.astro) ──
+    setText('donutCenterTotal', fmt(r.totalCasos));
+    setText('donutCenterPct', `${fmt(r.totalAprobados)} Aprobadas`);
 
     // ── Elementos legacy de historico/index.html ──
     setText('kpiFTRCnt', fmt(r.totalAprobLimpias));
