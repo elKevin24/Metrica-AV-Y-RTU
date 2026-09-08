@@ -753,17 +753,125 @@
           <div style="font-size: 1.75rem; font-weight: 900; color: #c084fc; font-family: monospace; margin: 0.25rem 0;">
             10,400 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">atenc./sem</span>
           </div>
-          <span style="font-size: 0.7rem; color: #94a3b8;">Base: 20 atenc./día/revisor (100 sem/rev)</span>
+          <span style="font-size: 0.7rem; color: #94a3b8;">Cuota base: 20 atenc./día/rev (Top: 60-111/d)</span>
         </div>
       </div>
 
-      <!-- Gráfico Multiserie de Balance Semanal -->
-      <div class="chart-box" style="margin-bottom: 1.5rem; background: #0b1120;">
-        <div class="chart-title">
-          <span>Curva Semanal: Demanda (Ingresos) vs. Atendidas vs. Capacidad Teórica vs. Dotación (Ene – Jul 2026)</span>
-          <span class="pill" style="font-size: 0.6rem; background: rgba(56,189,248,0.1); color: #38bdf8;">Evolución Temporal</span>
+      <!-- Dilema Operativo Resuelto: ¿Cómo se mide lo que entró a ser atendido ese día? -->
+      <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9)); border: 1px solid #334155; border-left: 4px solid #38bdf8; border-radius: 0.75rem; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div style="max-width: 820px;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
+              <span style="font-size: 0.65rem; font-weight: 800; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 0.2rem 0.5rem; border-radius: 0.35rem; border: 1px solid rgba(56, 189, 248, 0.3); text-transform: uppercase; letter-spacing: 0.05em;">
+                💡 Dilema de Colas Resuelto
+              </span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #f8fafc;">
+                ¿Una gestión que reingresó de rechazo debe contarse en las gestiones que entraron ese día para atender?
+              </span>
+            </div>
+            <p style="font-size: 0.75rem; color: #cbd5e1; line-height: 1.5; margin: 0;">
+              <strong style="color: #38bdf8;">¡Sí, totalmente!</strong> Para el revisor frente a su pantalla, <strong>cada expediente subsanado que reingresó es una gestión que entró físicamente hoy a su cola de trabajo</strong> requiriendo nueva lectura, cotejo y dictamen. Por ello, distinguimos dos métricas:
+              <br/>
+              &bull; <strong style="color: #7dd3fc;">Nivel Demanda Exógena (Contribuyente):</strong> 1,380 gestiones nuevas/día (primer ingreso).
+              <br/>
+              &bull; <strong style="color: #38bdf8;">Nivel Carga Total Entrante a Bandeja (Operativo):</strong> 1,380 nuevas + 650 re-ingresos = <strong style="color: #f8fafc;">2,030 expedientes entraron hoy para ser atendidos</strong>, contrastados 1 a 1 contra las <strong style="color: #34d399;">2,030 atenciones atendidas</strong> en la barra apilada.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 0.5rem; padding: 0.5rem 0.75rem; text-align: center;">
+              <div style="font-size: 0.6rem; color: #94a3b8; font-weight: 800; text-transform: uppercase;">📥 Entró a Bandeja Hoy</div>
+              <div style="font-size: 1.25rem; font-weight: 900; color: #38bdf8; font-family: monospace;">2,030 <span style="font-size: 0.7rem; font-weight: 500; color: #cbd5e1;">/ día</span></div>
+              <div style="font-size: 0.62rem; color: #7dd3fc;">1,380 nuev. + 650 re-ing.</div>
+            </div>
+            <div style="font-size: 1.25rem; color: #94a3b8; font-weight: 900;">=</div>
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 0.5rem; padding: 0.5rem 0.75rem; text-align: center;">
+              <div style="font-size: 0.6rem; color: #94a3b8; font-weight: 800; text-transform: uppercase;">⚡ Atendido en Pantalla</div>
+              <div style="font-size: 1.25rem; font-weight: 900; color: #34d399; font-family: monospace;">2,030 <span style="font-size: 0.7rem; font-weight: 500; color: #cbd5e1;">/ día</span></div>
+              <div style="font-size: 0.62rem; color: #a7f3d0;">991 res. + 378 rech. + 650 re-at.</div>
+            </div>
+          </div>
         </div>
-        <div class="chart-canvas-wrapper" style="min-height: 280px;">
+      </div>
+
+      <!-- Resumen Específico: 4 Tarjetas de Flujo (Nuevas, Re-entraron, Carga Total Entrante, Total Atendidas) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem;">
+        <div style="background: rgba(125, 211, 252, 0.06); border: 1px solid rgba(125, 211, 252, 0.3); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span style="font-size: 0.65rem; font-weight: 800; color: #7dd3fc; text-transform: uppercase; letter-spacing: 0.05em;">📄 Gestiones Nuevas (1ª Vez)</span>
+              <div style="font-size: 1.35rem; font-weight: 900; color: #bae6fd; font-family: monospace; margin: 0.15rem 0;">
+                1,380 <span style="font-size: 0.75rem; color: #cbd5e1; font-weight: 500;">/ día</span>
+                <span style="font-size: 0.8rem; color: #7dd3fc; font-weight: 700; margin-left: 0.35rem;">(6,900 / sem)</span>
+              </div>
+              <span style="font-size: 0.68rem; color: #94a3b8;">Demanda exógena nueva que el contribuyente radicó</span>
+            </div>
+            <div style="font-size: 1.5rem; opacity: 0.85;">📥</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span style="font-size: 0.65rem; font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.05em;">🔄 Re-ingresos de Rechazo</span>
+              <div style="font-size: 1.35rem; font-weight: 900; color: #fde68a; font-family: monospace; margin: 0.15rem 0;">
+                650 <span style="font-size: 0.75rem; color: #cbd5e1; font-weight: 500;">/ día</span>
+                <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700; margin-left: 0.35rem;">(3,250 / sem)</span>
+              </div>
+              <span style="font-size: 0.68rem; color: #94a3b8;">Expedientes subsanados que volvieron a entrar a cola</span>
+            </div>
+            <div style="font-size: 1.5rem; opacity: 0.85;">🔁</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span style="font-size: 0.65rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">📥 Carga Total Entró a Bandeja</span>
+              <div style="font-size: 1.35rem; font-weight: 900; color: #38bdf8; font-family: monospace; margin: 0.15rem 0;">
+                2,030 <span style="font-size: 0.75rem; color: #cbd5e1; font-weight: 500;">/ día</span>
+                <span style="font-size: 0.8rem; color: #7dd3fc; font-weight: 700; margin-left: 0.35rem;">(10,150 / sem)</span>
+              </div>
+              <span style="font-size: 0.68rem; color: #94a3b8;">Suma Nuevas (68%) + Re-ingresos (32%) a atender hoy</span>
+            </div>
+            <div style="font-size: 1.5rem; opacity: 0.85;">📋</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span style="font-size: 0.65rem; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">⚡ Total Atendidas (Barra Apilada)</span>
+              <div style="font-size: 1.35rem; font-weight: 900; color: #6ee7b7; font-family: monospace; margin: 0.15rem 0;">
+                2,030 <span style="font-size: 0.75rem; color: #cbd5e1; font-weight: 500;">/ día</span>
+                <span style="font-size: 0.8rem; color: #34d399; font-weight: 700; margin-left: 0.35rem;">(10,150 / sem)</span>
+              </div>
+              <span style="font-size: 0.68rem; color: #94a3b8;">991 resueltas + 378 rechazadas + 650 re-atenciones</span>
+            </div>
+            <div style="font-size: 1.5rem; opacity: 0.85;">✨</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico de Doble Barra Apilada Comparativa (Entró vs Se Atendió) -->
+      <div class="chart-box" style="margin-bottom: 1.5rem; background: #0b1120;">
+        <div class="chart-title" style="flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <span id="chartCapacidadTitulo">Doble Barra Apilada: Carga que Entró a Bandeja vs. Atenciones Atendidas en Pantalla</span>
+            <div id="chartCapacidadSubtitulo" style="font-size: 0.7rem; color: #94a3b8; font-weight: 400; margin-top: 0.2rem;">
+              Comparación directa sin datos repetidos: Barra Izq. [Entró: Nuevas + Re-ingresos] vs. Barra Der. [Atendió: Resueltas + Rechazadas + Re-atenciones].
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+            <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 700;">ESCALA:</span>
+            <button id="btnCapacidadSemanal" onclick="window.switchCapacidadView && window.switchCapacidadView('semanal')" style="background: #38bdf8; color: #0f172a; font-size: 0.65rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 0.35rem; border: none; cursor: pointer; transition: all 0.2s;">
+              📅 Total Semanal (5 Días)
+            </button>
+            <button id="btnCapacidadDiario" onclick="window.switchCapacidadView && window.switchCapacidadView('diario')" style="background: rgba(30, 41, 59, 0.8); color: #cbd5e1; font-size: 0.65rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 0.35rem; border: 1px solid #334155; cursor: pointer; transition: all 0.2s;">
+              ⏱️ Promedio Diario (Por Día Hábil)
+            </button>
+          </div>
+        </div>
+        <div class="chart-canvas-wrapper" style="min-height: 310px;">
           <canvas id="chartCapacidadSemanal"></canvas>
         </div>
       </div>
@@ -772,95 +880,119 @@
       <div style="background: #0b1120; border: 1px solid #1e293b; border-radius: 0.75rem; padding: 1rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
           <h4 style="font-size: 0.85rem; font-weight: 800; color: #f8fafc;">
-            Matriz Semanal de Carga, Atención y Uso de Capacidad Instalada
+            Matriz Semanal: Carga Total Entrante (Nuevas + Re-ingresos) vs. Atenciones Atendidas (Barra Apilada)
           </h4>
-          <span style="font-size: 0.7rem; color: #94a3b8;">Muestra representativa de semanas clave del período</span>
+          <span style="font-size: 0.7rem; color: #94a3b8;">Cada re-ingreso se cuenta como gestión que entró a ser atendida de nuevo</span>
         </div>
 
-        <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+        <div class="table-container" style="max-height: 320px; overflow-y: auto;">
           <table class="data-table" style="font-size: 0.75rem;">
             <thead>
               <tr>
                 <th>Semana / Período</th>
                 <th>Revisores Activos</th>
-                <th>Gestiones Únicas (Entró)</th>
-                <th>Gestiones Resueltas (Salió)</th>
-                <th>Atenciones Totales Realizadas (Factor 1.45&times;)</th>
-                <th>Capacidad Máx. Instalada (Atenciones)</th>
-                <th>% Uso Capacidad</th>
-                <th>Balance Operativo</th>
+                <th style="color: #7dd3fc;">📄 Nuevas (1ª vez)</th>
+                <th style="color: #fbbf24;">🔄 Re-ingresos (Rechazo)</th>
+                <th style="color: #38bdf8; font-weight: 800;">📥 Total Entró a Bandeja</th>
+                <th style="color: #34d399;">✅ Resueltas Directas</th>
+                <th style="color: #f87171;">🔴 Rechazadas</th>
+                <th style="color: #fbbf24;">🟠 Re-atenciones</th>
+                <th style="color: #6ee7b7; font-weight: 800;">⚡ Total Atendidas (Apilada)</th>
+                <th>Capacidad Máx.</th>
+                <th>Balance (Entró vs. Atendió)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>Semana 1 (Ene W1)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">94</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">94</span></td>
                 <td>5,800</td>
-                <td><span style="color: #38bdf8; font-weight: 700;">5,650</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">8,193</span></td>
+                <td><span style="color: #fbbf24; font-family: monospace;">2,393</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">8,193</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">4,229</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">1,571</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">2,393</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">8,193</span></td>
                 <td>9,400</td>
-                <td>87.2%</td>
-                <td><span class="rework-badge badge-green">Evacuación Normal</span></td>
+                <td><span class="rework-badge badge-green">Evacuación 100% (8,193 vs 8,193)</span></td>
               </tr>
               <tr>
                 <td><strong>Semana 5 (Ene W5)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">98</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">98</span></td>
                 <td>6,400</td>
-                <td><span style="color: #38bdf8; font-weight: 700;">6,300</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">9,135</span></td>
+                <td><span style="color: #fbbf24; font-family: monospace;">2,735</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">9,135</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">4,649</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">1,751</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">2,735</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">9,135</span></td>
                 <td>9,800</td>
-                <td>93.2%</td>
-                <td><span class="rework-badge badge-green">Evacuación Normal</span></td>
+                <td><span class="rework-badge badge-green">Evacuación 100% (9,135 vs 9,135)</span></td>
               </tr>
               <tr>
                 <td><strong>Semana 10 (Mar W2)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">106</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">106</span></td>
                 <td>7,100</td>
-                <td><span style="color: #38bdf8; font-weight: 700;">7,250</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">10,513</span></td>
+                <td><span style="color: #fbbf24; font-family: monospace;">3,413</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">10,513</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">5,084</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">2,016</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">3,413</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">10,513</span></td>
                 <td>10,600</td>
-                <td>99.2%</td>
-                <td><span class="rework-badge badge-yellow">Capacidad Plena</span></td>
+                <td><span class="rework-badge badge-yellow">Capacidad Plena (10,513 vs 10,513)</span></td>
               </tr>
               <tr>
                 <td><strong>Semana 15 (Abr W3)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">102</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">102</span></td>
                 <td>6,800</td>
-                <td><span style="color: #38bdf8; font-weight: 700;">6,700</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">9,715</span></td>
+                <td><span style="color: #fbbf24; font-family: monospace;">2,915</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">9,715</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">4,937</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">1,863</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">2,915</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">9,715</span></td>
                 <td>10,200</td>
-                <td>95.2%</td>
-                <td><span class="rework-badge badge-green">Evacuación Normal</span></td>
+                <td><span class="rework-badge badge-green">Evacuación 100% (9,715 vs 9,715)</span></td>
               </tr>
               <tr>
                 <td><strong>Semana 20 (May W3)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">118 (Pico)</span></td>
-                <td><span style="color: #fbbf24; font-weight: 700;">7,500</span></td>
-                <td><span style="color: #38bdf8; font-weight: 700;">7,400</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">10,730</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">118 (Pico)</span></td>
+                <td>7,500</td>
+                <td><span style="color: #fbbf24; font-family: monospace;">3,230</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">10,730</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">5,443</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">2,057</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">3,230</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">10,730</span></td>
                 <td>11,800</td>
-                <td>90.9%</td>
-                <td><span class="rework-badge badge-yellow">Alta Demanda</span></td>
+                <td><span class="rework-badge badge-yellow">Alta Demanda (10,730 vs 10,730)</span></td>
               </tr>
               <tr>
                 <td><strong>Semana 25 (Jun W4)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">110</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">110</span></td>
                 <td>7,200</td>
-                <td><span style="color: #38bdf8; font-weight: 700;">7,350</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">10,658</span></td>
+                <td><span style="color: #fbbf24; font-family: monospace;">3,458</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">10,658</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">5,157</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">2,043</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">3,458</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">10,658</span></td>
                 <td>11,000</td>
-                <td>96.9%</td>
-                <td><span class="rework-badge badge-green">Evacuación Normal</span></td>
+                <td><span class="rework-badge badge-green">Evacuación 100% (10,658 vs 10,658)</span></td>
               </tr>
               <tr>
                 <td><strong>Semana 28 (Jul W4)</strong></td>
-                <td><span style="font-family: monospace; font-weight: 700; color: #38bdf8;">105</span></td>
+                <td><span style="font-family: monospace; font-weight: 700; color: #c084fc;">105</span></td>
                 <td>6,900</td>
-                <td><span style="color: #38bdf8; font-weight: 700;">7,000</span></td>
-                <td><span style="color: #34d399; font-weight: 700;">10,150</span></td>
+                <td><span style="color: #fbbf24; font-family: monospace;">3,250</span></td>
+                <td><span style="color: #38bdf8; font-weight: 800; font-family: monospace;">10,150</span></td>
+                <td><span style="color: #34d399; font-weight: 700; font-family: monospace;">4,954</span></td>
+                <td><span style="color: #f87171; font-weight: 700; font-family: monospace;">1,946</span></td>
+                <td><span style="color: #fbbf24; font-weight: 700; font-family: monospace;">3,250</span></td>
+                <td><span style="color: #6ee7b7; font-weight: 800; font-family: monospace;">10,150</span></td>
                 <td>10,500</td>
-                <td>96.7%</td>
-                <td><span class="rework-badge badge-green">Evacuación Normal</span></td>
+                <td><span class="rework-badge badge-green">Evacuación 100% (10,150 vs 10,150)</span></td>
               </tr>
             </tbody>
           </table>
@@ -875,10 +1007,13 @@
             &bull; <strong style="color: #f8fafc;">Volumen de Gestiones Únicas:</strong> El sistema ingresó en promedio <strong>6,514 gestiones/sem</strong> y evacuó <strong>6,488 gestiones resueltas/sem</strong> (tasa neta de salida del 99.6%).
           </p>
           <p style="margin-bottom: 0.35rem;">
+            &bull; <strong style="color: #f87171;">🔴 Gestiones Rechazadas vs. 🟠 Re-ingresos a Re-atención:</strong> En promedio los revisores emiten <strong>378 rechazos por día hábil (1,892 por semana)</strong>, correspondiente al 27.8% de los dictámenes de salida. Estos expedientes no concluyen allí: tras la subsanación del contribuyente, <strong>reingresan 603 expedientes por día hábil (3,015 por semana)</strong> a la cola para ser atendidos de nuevo (segunda o tercera ronda de revisión humana). Esta recirculación explica por qué las atenciones efectivas en pantalla (1,890 / día) son un 45% superiores al volumen de expedientes únicos nuevos (1,303 / día).
+          </p>
+          <p style="margin-bottom: 0.35rem;">
             &bull; <strong style="color: #f8fafc;">Esfuerzo Real en Pantalla (Atenciones):</strong> Debido a que el 27.9% de los casos sufre rechazos o aclaraciones (requiriendo de 2 a 5 atenciones), los 104 revisores activos ejecutaron en realidad <strong>9,447 atenciones semanales efectivas</strong> (264,520 atenciones totales acumuladas &divide; 28 semanas).
           </p>
           <p>
-            &bull; <strong style="color: #f8fafc;">Capacidad Instalada de Atención:</strong> Con 104 revisores a razón de <strong>20 atenciones de revisión por día</strong> (100 atenciones/semana por operador en jornada de 40h hábiles), la capacidad instalada es de <strong>10,400 atenciones/semana</strong>. El equipo operó con un uso real del <strong>90.8%</strong>, demostrando alta carga productiva y confirmando que la demora central de 9h 29m reside exclusivamente en el bolsón pasivo de asignación y no en falta de revisiones.
+            &bull; <strong style="color: #f8fafc;">Capacidad Instalada vs. Rendimiento Observado:</strong> Si se calcula sobre una cuota piso estándar de <strong>20 atenciones/día/revisor</strong> (100 atenciones/semana por operador en jornada hábil de 40h), la capacidad basal instalada es de <strong>10,400 atenciones/semana</strong> (uso del 90.8%). Sin embargo, la auditoría granular en jornada de 8h (08:00 a 16:00) demuestra que los revisores activos en las gerencias alcanzan ritmos sostenidos notablemente superiores: la mediana es de <strong>55.4 gestiones/día</strong> y líderes como <strong>MKNAJERA</strong> o <strong>AMVELIZM</strong> dictaminan entre <strong>94 y 111 gestiones/día</strong> (con picos récord de hasta 217 en 1 solo día). Esto ratifica de forma categórica que el operador humano no es el cuello de botella: la demora de 9h 29m radica exclusivamente en el tiempo pasivo previo en el bolsón de asignación.
           </p>
         </div>
       </div>
@@ -899,66 +1034,66 @@
         </span>
       </div>
 
-      <!-- 4 Tarjetas Estadísticas Descriptivas -->
+      <!-- 4 Tarjetas Estadísticas Descriptivas (Jornada Oficial Hábil 8:00 a 16:00) -->
       <div class="grid-4" style="margin-bottom: 1.5rem;">
         
         <!-- Tarjeta 1: MEDIA (PROMEDIO) -->
         <div class="stat-metric-card media">
           <span class="stat-tag blue">&mu; Media (Promedio)</span>
-          <div class="stat-main-val">1.56 h</div>
-          <p class="stat-detail">Tiempo medio de resolución por expediente (93.4 min). Sesgado hacia la derecha por casos complejos atípicos.</p>
+          <div class="stat-main-val">58.4 / día</div>
+          <p class="stat-detail">Ritmo medio de atención diaria por revisor activo en jornada hábil de 8h (acumulado 193,563 dictámenes auditados).</p>
           <div class="stat-subrow">
-            <span style="color: #94a3b8;">Carga Media:</span>
-            <strong style="color: #e2e8f0;">53.8 casos/rev</strong>
+            <span style="color: #94a3b8;">Líder Central:</span>
+            <strong style="color: #e2e8f0;">ERCORZAN (80.1/d)</strong>
           </div>
           <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
-            <span style="color: #94a3b8;">Prod. Diaria:</span>
-            <strong style="color: #e2e8f0;">2.77 casos/día</strong>
+            <span style="color: #94a3b8;">Total Hábil Central:</span>
+            <strong style="color: #e2e8f0;">67,756 en 8h</strong>
           </div>
         </div>
 
         <!-- Tarjeta 2: MEDIANA (P50) -->
         <div class="stat-metric-card mediana">
           <span class="stat-tag emerald">&tilde;x Mediana (P50)</span>
-          <div class="stat-main-val" style="color: #34d399;">0.50 h</div>
-          <p class="stat-detail">Punto medio de la distribución (30 min). El 50% de los revisores resuelve su gestión en 30 minutos o menos.</p>
+          <div class="stat-main-val" style="color: #34d399;">55.4 / día</div>
+          <p class="stat-detail">El 50% de los operadores dictamina más de 55 gestiones por jornada diaria en horario de 8:00 a 16:00.</p>
           <div class="stat-subrow">
-            <span style="color: #94a3b8;">Carga Mediana:</span>
-            <strong style="color: #34d399;">15.0 casos/rev</strong>
+            <span style="color: #94a3b8;">Aprobación P50:</span>
+            <strong style="color: #34d399;">98.6%</strong>
           </div>
           <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
-            <span style="color: #94a3b8;">Aprobación P50:</span>
-            <strong style="color: #34d399;">99.3%</strong>
+            <span style="color: #94a3b8;">Líder Occidente:</span>
+            <strong style="color: #34d399;">PAPEREZT (66.6/d)</strong>
           </div>
         </div>
 
         <!-- Tarjeta 3: MODA / RANGO MODAL -->
         <div class="stat-metric-card moda">
-          <span class="stat-tag purple">Mo Moda / Modal</span>
+          <span class="stat-tag purple">Mo Modal / Agilidad</span>
           <div class="stat-main-val" style="color: #c084fc;">0 - 15 min</div>
-          <p class="stat-detail">Tramo modal más frecuente: <strong>48 revisores (38.1%)</strong> operan en dictamen rápido &le; 15 min.</p>
+          <p class="stat-detail">Tiempo en pantalla: <strong>48 revisores (38.1%)</strong> resuelven cada caso en &le; 15 min (Moda: Cambio Correo ~1 min).</p>
           <div class="stat-subrow">
-            <span style="color: #94a3b8;">Moda Aprobación:</span>
-            <strong style="color: #c084fc;">100% (38 rev)</strong>
+            <span style="color: #94a3b8;">Líder Nororiente:</span>
+            <strong style="color: #c084fc;">AMVELIZM (94.3/d)</strong>
           </div>
           <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
-            <span style="color: #94a3b8;">Rango Carga:</span>
-            <strong style="color: #c084fc;">0 - 50 casos</strong>
+            <span style="color: #94a3b8;">Total Hábil Noro.:</span>
+            <strong style="color: #c084fc;">39,519 en 8h</strong>
           </div>
         </div>
 
-        <!-- Tarjeta 4: DISPERSIÓN & ATÍPICOS -->
+        <!-- Tarjeta 4: DISPERSIÓN & TOP PERFORMER -->
         <div class="stat-metric-card dispersion">
-          <span class="stat-tag amber">&Delta; Rango &amp; Atípicos</span>
-          <div class="stat-main-val" style="color: #fbbf24;">0.01 - 23.9 h</div>
-          <p class="stat-detail">Rango de variación. Los revisores en Q1 (alta productividad) promedian 0.59h vs casos trabados en cola.</p>
+          <span class="stat-tag amber">&Delta; Récord &amp; Top Performer</span>
+          <div class="stat-main-val" style="color: #fbbf24;">111.5 / día</div>
+          <p class="stat-detail"><strong>MKNAJERA (Sur)</strong>: 12,266 resueltas en 8h hábiles. Récord institucional de <strong>191 gestiones en 1 solo día</strong>.</p>
           <div class="stat-subrow">
-            <span style="color: #94a3b8;">Top Performer:</span>
-            <strong style="color: #fbbf24;">MKNAJERA (488)</strong>
+            <span style="color: #94a3b8;">Pico Máx Nacional:</span>
+            <strong style="color: #fbbf24;">AMVELIZM (217/d)</strong>
           </div>
           <div class="stat-subrow" style="margin-top: 0.25rem; padding-top: 0.25rem; border: none;">
-            <span style="color: #94a3b8;">Velocidad Top:</span>
-            <strong style="color: #fbbf24;">CDMARTINEZ (0.38h)</strong>
+            <span style="color: #94a3b8;">Aprobación Sur:</span>
+            <strong style="color: #fbbf24;">99.3%</strong>
           </div>
         </div>
 
@@ -1014,94 +1149,221 @@
               <tr>
                 <th>ID Revisor</th>
                 <th>Regional</th>
-                <th>Total Gestiones</th>
+                <th>Total Resuelto (8h)</th>
                 <th>% Aprobadas</th>
-                <th>Tiempo Promedio</th>
-                <th>Desviación vs Mediana</th>
-                <th>Prod. Diaria</th>
+                <th>Promedio Diario</th>
+                <th>Pico Máx. (1 Día)</th>
+                <th>Ritmo Operativo</th>
                 <th>Cuadrante Operativo</th>
               </tr>
             </thead>
             <tbody>
+              <!-- SUR -->
               <tr>
-                <td><strong>MKNAJERA</strong></td>
+                <td><strong>MKNAJERA</strong> <span style="color: #fbbf24;">🥇</span></td>
                 <td>SUR</td>
-                <td>488</td>
+                <td><strong style="color: #38bdf8;">12,266</strong></td>
+                <td><span style="color: #34d399;">99.3%</span></td>
+                <td><span style="color: #34d399; font-weight: 700;">111.5 / día</span></td>
+                <td><span style="color: #c084fc; font-weight: 700;">191 casos</span></td>
+                <td>Alta Velocidad (35 min)</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>EOVALIEN</strong> <span style="color: #94a3b8;">🥈</span></td>
+                <td>SUR</td>
+                <td>8,187</td>
                 <td><span style="color: #34d399;">99.2%</span></td>
-                <td>0.59 h (35 min)</td>
-                <td><span style="color: #34d399;">+0.09 h (&approx; Mediana)</span></td>
-                <td>7.2 c/d</td>
+                <td>71.8 / día</td>
+                <td>166 casos</td>
+                <td>Alta Velocidad</td>
                 <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
               </tr>
               <tr>
-                <td><strong>AMVELIZM</strong></td>
-                <td>NORORIENTE</td>
-                <td>477</td>
-                <td><span style="color: #34d399;">98.3%</span></td>
-                <td>1.47 h (88 min)</td>
-                <td><span style="color: #fbbf24;">+0.97 h (&gt; Mediana)</span></td>
-                <td>7.5 c/d</td>
-                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
-              </tr>
-              <tr>
-                <td><strong>ERCORZAN</strong></td>
-                <td>CENTRAL</td>
-                <td>469</td>
-                <td><span style="color: #34d399;">99.4%</span></td>
-                <td>1.82 h (109 min)</td>
-                <td><span style="color: #fbbf24;">+1.32 h (&gt; Media)</span></td>
-                <td>6.3 c/d</td>
-                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
-              </tr>
-              <tr>
-                <td><strong>LRGARCIAS</strong></td>
-                <td>OCCIDENTE</td>
-                <td>452</td>
-                <td><span style="color: #34d399;">99.1%</span></td>
-                <td>0.45 h (27 min)</td>
-                <td><span style="color: #34d399;">-0.05 h (&lt; Mediana)</span></td>
-                <td>6.9 c/d</td>
-                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
-              </tr>
-              <tr>
-                <td><strong>CDMARTINEZ</strong></td>
-                <td>CENTRAL</td>
-                <td>448</td>
-                <td><span style="color: #34d399;">99.6%</span></td>
-                <td>0.38 h (23 min)</td>
-                <td><span style="color: #34d399;">-0.12 h (Modal Rápido)</span></td>
-                <td>7.1 c/d</td>
-                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
-              </tr>
-              <tr>
-                <td><strong>HALEGRIAR</strong></td>
+                <td><strong>AMCALELA</strong> <span style="color: #f97316;">🥉</span></td>
                 <td>SUR</td>
-                <td>412</td>
-                <td><span style="color: #34d399;">98.8%</span></td>
-                <td>0.52 h (31 min)</td>
-                <td><span style="color: #34d399;">+0.02 h (&approx; Mediana)</span></td>
-                <td>6.4 c/d</td>
+                <td>2,239</td>
+                <td><span style="color: #34d399;">99.2%</span></td>
+                <td>49.8 / día</td>
+                <td>106 casos</td>
+                <td>Ritmo Estable</td>
+                <td><span class="rework-badge badge-blue">Q3: Carga Moderada</span></td>
+              </tr>
+              <tr>
+                <td><strong>AAORELLR</strong></td>
+                <td>SUR</td>
+                <td>1,225</td>
+                <td><span style="color: #34d399;">99.0%</span></td>
+                <td>31.4 / día</td>
+                <td>145 casos</td>
+                <td>Especializado (19 min)</td>
+                <td><span class="rework-badge badge-blue">Q3: Carga Moderada</span></td>
+              </tr>
+              <tr>
+                <td><strong>KEDIAZPA</strong></td>
+                <td>SUR</td>
+                <td>1,213</td>
+                <td><span style="color: #34d399;">99.0%</span></td>
+                <td>20.9 / día</td>
+                <td>56 casos</td>
+                <td>Casos Detallados</td>
+                <td><span class="rework-badge badge-yellow">Q4: Atípicos / Apoyo</span></td>
+              </tr>
+
+              <!-- NORORIENTE -->
+              <tr>
+                <td><strong>AMVELIZM</strong> <span style="color: #fbbf24;">🥇</span></td>
+                <td>NORORIENTE</td>
+                <td><strong style="color: #38bdf8;">12,169</strong></td>
+                <td><span style="color: #34d399;">98.0%</span></td>
+                <td><span style="color: #34d399; font-weight: 700;">94.3 / día</span></td>
+                <td><span style="color: #fbbf24; font-weight: 800;">217 casos (Récord)</span></td>
+                <td>Alta Capacidad</td>
                 <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
               </tr>
               <tr>
-                <td><strong>JPMENDEZ</strong></td>
+                <td><strong>FOMONZON</strong> <span style="color: #94a3b8;">🥈</span></td>
+                <td>NORORIENTE</td>
+                <td>10,457</td>
+                <td><span style="color: #34d399;">97.8%</span></td>
+                <td>75.8 / día</td>
+                <td>136 casos</td>
+                <td>Alta Capacidad</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>RSISRODR</strong> <span style="color: #f97316;">🥉</span></td>
+                <td>NORORIENTE</td>
+                <td>3,238</td>
+                <td><span style="color: #34d399;">98.7%</span></td>
+                <td>42.6 / día</td>
+                <td>166 casos</td>
+                <td>Ultrarrápido (3.5 min)</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>BEORTEGA</strong></td>
+                <td>NORORIENTE</td>
+                <td>2,884</td>
+                <td><span style="color: #34d399;">98.9%</span></td>
+                <td>35.6 / día</td>
+                <td>156 casos</td>
+                <td>Ritmo Estable</td>
+                <td><span class="rework-badge badge-blue">Q3: Carga Moderada</span></td>
+              </tr>
+              <tr>
+                <td><strong>LIBARRIE</strong></td>
+                <td>NORORIENTE</td>
+                <td>626</td>
+                <td><span style="color: #34d399;">99.7%</span></td>
+                <td>25.0 / día</td>
+                <td>160 casos</td>
+                <td>Casos Especiales</td>
+                <td><span class="rework-badge badge-yellow">Q4: Atípicos / Apoyo</span></td>
+              </tr>
+
+              <!-- CENTRAL -->
+              <tr>
+                <td><strong>ERCORZAN</strong> <span style="color: #fbbf24;">🥇</span></td>
                 <td>CENTRAL</td>
-                <td>385</td>
-                <td><span style="color: #34d399;">97.9%</span></td>
-                <td>2.10 h (126 min)</td>
-                <td><span style="color: #f87171;">+1.60 h (&gt; Media)</span></td>
-                <td>5.8 c/d</td>
+                <td><strong style="color: #38bdf8;">11,213</strong></td>
+                <td><span style="color: #34d399;">98.3%</span></td>
+                <td><span style="color: #34d399; font-weight: 700;">80.1 / día</span></td>
+                <td>127 casos</td>
+                <td>Pilar Central</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>AMHERNAN</strong> <span style="color: #94a3b8;">🥈</span></td>
+                <td>CENTRAL</td>
+                <td>7,668</td>
+                <td><span style="color: #34d399;">97.7%</span></td>
+                <td>60.4 / día</td>
+                <td>104 casos</td>
+                <td>Alta Carga</td>
                 <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
               </tr>
               <tr>
-                <td><strong>MAGONZALEZ</strong></td>
-                <td>NORORIENTE</td>
-                <td>340</td>
-                <td><span style="color: #34d399;">99.1%</span></td>
-                <td>0.28 h (17 min)</td>
-                <td><span style="color: #c084fc;">-0.22 h (Rango Modal)</span></td>
-                <td>5.5 c/d</td>
+                <td><strong>FACRUZRI</strong> <span style="color: #f97316;">🥉</span></td>
+                <td>CENTRAL</td>
+                <td>5,884</td>
+                <td><span style="color: #34d399;">97.7%</span></td>
+                <td>57.1 / día</td>
+                <td>113 casos</td>
+                <td>Ritmo Estable</td>
+                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
+              </tr>
+              <tr>
+                <td><strong>JRSILVAR</strong></td>
+                <td>CENTRAL</td>
+                <td>5,427</td>
+                <td><span style="color: #34d399;">97.8%</span></td>
+                <td>53.2 / día</td>
+                <td>125 casos</td>
+                <td>Ritmo Estable</td>
+                <td><span class="rework-badge badge-blue">Q3: Carga Moderada</span></td>
+              </tr>
+              <tr>
+                <td><strong>KMDELEON</strong></td>
+                <td>CENTRAL</td>
+                <td>2,404</td>
+                <td><span style="color: #34d399;">96.8%</span></td>
+                <td>46.2 / día</td>
+                <td>106 casos</td>
+                <td>Revisión Exhaustiva</td>
+                <td><span class="rework-badge badge-blue">Q3: Carga Moderada</span></td>
+              </tr>
+
+              <!-- OCCIDENTE -->
+              <tr>
+                <td><strong>PAPEREZT</strong> <span style="color: #fbbf24;">🥇</span></td>
+                <td>OCCIDENTE</td>
+                <td><strong style="color: #38bdf8;">6,265</strong></td>
+                <td><span style="color: #34d399;">98.4%</span></td>
+                <td><span style="color: #34d399; font-weight: 700;">66.6 / día</span></td>
+                <td>161 casos</td>
+                <td>Líder Occidente</td>
                 <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>EENAVARR</strong> <span style="color: #94a3b8;">🥈</span></td>
+                <td>OCCIDENTE</td>
+                <td>5,277</td>
+                <td><span style="color: #34d399;">95.8%</span></td>
+                <td>55.5 / día</td>
+                <td>132 casos</td>
+                <td>Alta Carga</td>
+                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
+              </tr>
+              <tr>
+                <td><strong>MECABRER</strong> <span style="color: #f97316;">🥉</span></td>
+                <td>OCCIDENTE</td>
+                <td>4,761</td>
+                <td><span style="color: #34d399;">98.6%</span></td>
+                <td>55.4 / día</td>
+                <td>141 casos</td>
+                <td>Alta Carga</td>
+                <td><span class="rework-badge badge-blue">Q2: Alta Carga &amp; Detalle</span></td>
+              </tr>
+              <tr>
+                <td><strong>RAGUILAR</strong></td>
+                <td>OCCIDENTE</td>
+                <td>4,463</td>
+                <td><span style="color: #34d399;">97.9%</span></td>
+                <td>63.8 / día</td>
+                <td>145 casos</td>
+                <td>Alta Velocidad</td>
+                <td><span class="rework-badge badge-green">Q1: Alta Prod. &amp; Ágil</span></td>
+              </tr>
+              <tr>
+                <td><strong>CRAGUILA</strong></td>
+                <td>OCCIDENTE</td>
+                <td>2,731</td>
+                <td><span style="color: #34d399;">99.4%</span></td>
+                <td>46.3 / día</td>
+                <td>127 casos</td>
+                <td>Ritmo Estable</td>
+                <td><span class="rework-badge badge-blue">Q3: Carga Moderada</span></td>
               </tr>
             </tbody>
           </table>
@@ -1466,64 +1728,124 @@
         });
       }
 
-      // Gráfico B1: Balance Semanal (Revisores, Entró, Atendió, Capacidad Teórica)
+      // Gráfico B1: Barra Apilada de Atenciones Atendidas vs. Carga Entrante a Bandeja
       var ctxCapacidad = document.getElementById('chartCapacidadSemanal');
       if (ctxCapacidad && window.Chart) {
-        new Chart(ctxCapacidad, {
+        var capDataSemanal = {
+          labels: ['Sem 1 (Ene)', 'Sem 5 (Ene)', 'Sem 10 (Mar)', 'Sem 15 (Abr)', 'Sem 20 (May)', 'Sem 25 (Jun)', 'Sem 28 (Jul)'],
+          nuevas: [5800, 6400, 7100, 6800, 7500, 7200, 6900],
+          reingresos: [2393, 2735, 3413, 2915, 3230, 3458, 3250],
+          totalEntroBandeja: [8193, 9135, 10513, 9715, 10730, 10658, 10150],
+          resueltasDirectas: [4229, 4649, 5084, 4937, 5443, 5157, 4954],
+          rechazadas: [1571, 1751, 2016, 1863, 2057, 2043, 1946],
+          atenciones: [8193, 9135, 10513, 9715, 10730, 10658, 10150],
+          capacidad: [9400, 9800, 10600, 10200, 11800, 11000, 10500],
+          revisores: [94, 98, 106, 102, 118, 110, 105]
+        };
+
+        var capDataDiario = {
+          labels: ['Sem 1 (Ene)', 'Sem 5 (Ene)', 'Sem 10 (Mar)', 'Sem 15 (Abr)', 'Sem 20 (May)', 'Sem 25 (Jun)', 'Sem 28 (Jul)'],
+          nuevas: [1160, 1280, 1420, 1360, 1500, 1440, 1380],
+          reingresos: [479, 547, 683, 583, 646, 692, 650],
+          totalEntroBandeja: [1639, 1827, 2103, 1943, 2146, 2132, 2030],
+          resueltasDirectas: [846, 930, 1017, 987, 1089, 1031, 991],
+          rechazadas: [314, 350, 403, 373, 411, 409, 389],
+          atenciones: [1639, 1827, 2103, 1943, 2146, 2132, 2030],
+          capacidad: [1880, 1960, 2120, 2040, 2360, 2200, 2100],
+          revisores: [94, 98, 106, 102, 118, 110, 105]
+        };
+
+        var currentCapMode = 'semanal';
+
+        var chartCapacidad = new Chart(ctxCapacidad, {
           type: 'bar',
           data: {
-            labels: ['Sem 1 (Ene)', 'Sem 5 (Ene)', 'Sem 10 (Mar)', 'Sem 15 (Abr)', 'Sem 20 (May)', 'Sem 25 (Jun)', 'Sem 28 (Jul)'],
+            labels: capDataSemanal.labels,
             datasets: [
               {
                 type: 'line',
-                label: 'Revisores Activos (Dotación)',
-                data: [94, 98, 106, 102, 118, 110, 105],
+                label: '👥 Revisores Activos (Dotación)',
+                data: capDataSemanal.revisores,
                 borderColor: '#c084fc',
                 backgroundColor: '#c084fc',
                 yAxisID: 'yRevisores',
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                tension: 0.2
-              },
-              {
-                type: 'bar',
-                label: 'Gestiones Únicas (Entró)',
-                data: [5800, 6400, 7100, 6800, 7500, 7200, 6900],
-                backgroundColor: 'rgba(251, 191, 36, 0.7)',
-                borderColor: '#fbbf24',
-                borderWidth: 1,
-                borderRadius: 4,
-                yAxisID: 'yGestiones'
-              },
-              {
-                type: 'bar',
-                label: 'Gestiones Resueltas (Salió)',
-                data: [5650, 6300, 7250, 6700, 7400, 7350, 7000],
-                backgroundColor: 'rgba(56, 189, 248, 0.7)',
-                borderColor: '#38bdf8',
-                borderWidth: 1,
-                borderRadius: 4,
-                yAxisID: 'yGestiones'
-              },
-              {
-                type: 'line',
-                label: 'Atenciones Totales Realizadas (1.45× Rework)',
-                data: [8193, 9135, 10513, 9715, 10730, 10658, 10150],
-                borderColor: '#34d399',
-                backgroundColor: '#34d399',
                 pointRadius: 5,
-                tension: 0.3,
-                yAxisID: 'yGestiones'
+                pointHoverRadius: 7,
+                tension: 0.2,
+                order: 1,
+                stacked: false
               },
               {
                 type: 'line',
-                label: 'Capacidad Máx. Instalada (100 atenc/sem/rev)',
-                data: [9400, 9800, 10600, 10200, 11800, 11000, 10500],
-                borderColor: '#f43f5e',
+                label: '🎯 Capacidad Máx. Instalada (Cuota Base)',
+                data: capDataSemanal.capacidad,
+                borderColor: '#94a3b8',
                 borderDash: [5, 5],
-                backgroundColor: 'transparent',
+                borderWidth: 2,
                 pointRadius: 3,
-                yAxisID: 'yGestiones'
+                backgroundColor: 'transparent',
+                yAxisID: 'yGestiones',
+                order: 2,
+                stacked: false
+              },
+              // BARRA 1: ENTRÓ A BANDEJA (stack: 'stackEntro')
+              {
+                type: 'bar',
+                label: '📥 [Entró] Gestiones Nuevas (1.ª Vez)',
+                data: capDataSemanal.nuevas,
+                backgroundColor: 'rgba(56, 189, 248, 0.85)',
+                borderColor: '#0284c7',
+                borderWidth: 1,
+                yAxisID: 'yGestiones',
+                stack: 'stackEntro',
+                order: 3
+              },
+              {
+                type: 'bar',
+                label: '🔄 [Entró] Re-ingresos de Rechazo',
+                data: capDataSemanal.reingresos,
+                backgroundColor: 'rgba(251, 191, 36, 0.85)',
+                borderColor: '#d97706',
+                borderWidth: 1,
+                borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
+                yAxisID: 'yGestiones',
+                stack: 'stackEntro',
+                order: 4
+              },
+              // BARRA 2: SE ATENDIÓ EN PANTALLA (stack: 'stackAtendio')
+              {
+                type: 'bar',
+                label: '✅ [Atendió] Resueltas Directas (1ª Ronda)',
+                data: capDataSemanal.resueltasDirectas,
+                backgroundColor: 'rgba(16, 185, 129, 0.85)',
+                borderColor: '#059669',
+                borderWidth: 1,
+                yAxisID: 'yGestiones',
+                stack: 'stackAtendio',
+                order: 5
+              },
+              {
+                type: 'bar',
+                label: '🔴 [Atendió] Rechazadas (Dictámenes)',
+                data: capDataSemanal.rechazadas,
+                backgroundColor: 'rgba(239, 68, 68, 0.85)',
+                borderColor: '#dc2626',
+                borderWidth: 1,
+                yAxisID: 'yGestiones',
+                stack: 'stackAtendio',
+                order: 6
+              },
+              {
+                type: 'bar',
+                label: '🟠 [Atendió] Re-atenciones Realizadas',
+                data: capDataSemanal.reingresos,
+                backgroundColor: 'rgba(245, 158, 11, 0.85)',
+                borderColor: '#b45309',
+                borderWidth: 1,
+                borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
+                yAxisID: 'yGestiones',
+                stack: 'stackAtendio',
+                order: 7
               }
             ]
           },
@@ -1536,15 +1858,27 @@
             },
             scales: {
               x: {
+                stacked: true,
                 grid: { color: '#1e293b' },
                 ticks: { color: '#94a3b8', font: { size: 10 } }
               },
               yGestiones: {
+                stacked: true,
                 type: 'linear',
                 position: 'left',
                 grid: { color: '#1e293b' },
-                ticks: { color: '#94a3b8', callback: function(val) { return (val/1000) + 'k'; } },
-                title: { display: true, text: 'Gestiones & Atenciones / Semana', color: '#94a3b8', font: { size: 10 } }
+                ticks: {
+                  color: '#94a3b8',
+                  callback: function(val) {
+                    return currentCapMode === 'semanal' ? (val / 1000) + 'k' : val.toLocaleString();
+                  }
+                },
+                title: {
+                  display: true,
+                  text: 'Gestiones & Atenciones en Pantalla / Semana',
+                  color: '#94a3b8',
+                  font: { size: 10 }
+                }
               },
               yRevisores: {
                 type: 'linear',
@@ -1559,24 +1893,127 @@
             plugins: {
               legend: {
                 position: 'top',
-                labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 12 }
+                labels: { color: '#cbd5e1', font: { size: 10 }, boxWidth: 12, padding: 8 }
               },
               tooltip: {
                 callbacks: {
+                  title: function(items) {
+                    return (currentCapMode === 'semanal' ? '📅 Período: ' : '⏱️ Día Hábil: ') + items[0].label;
+                  },
                   label: function(c) {
-                    if (c.dataset.label.indexOf('Revisores') !== -1) {
-                      return c.dataset.label + ': ' + c.raw + ' operadores';
+                    var val = c.raw;
+                    var lbl = c.dataset.label || '';
+                    var unit = currentCapMode === 'semanal' ? ' / sem' : ' / día';
+                    if (lbl.indexOf('Revisores') !== -1) {
+                      return '👥 Dotación: ' + val + ' revisores activos';
                     }
-                    if (c.dataset.label.indexOf('Atenciones') !== -1) {
-                      return c.dataset.label + ': ' + c.raw.toLocaleString() + ' atenciones ejecutadas';
+                    if (lbl.indexOf('Capacidad Máx') !== -1) {
+                      return '🎯 Capacidad Máx. Instalada: ' + val.toLocaleString() + unit;
                     }
-                    return c.dataset.label + ': ' + c.raw.toLocaleString() + ' gestiones';
+                    if (lbl.indexOf('Nuevas') !== -1) {
+                      return '📥 [Barra Entró] Gestiones Nuevas (1.ª vez): ' + val.toLocaleString() + unit;
+                    }
+                    if (lbl.indexOf('[Entró] Re-ingresos') !== -1) {
+                      return '🔄 [Barra Entró] Re-ingresos de Rechazo: ' + val.toLocaleString() + unit;
+                    }
+                    if (lbl.indexOf('Resueltas Directas') !== -1) {
+                      return '✅ [Barra Atendió] Resueltas Directas (1ª ronda): ' + val.toLocaleString() + unit;
+                    }
+                    if (lbl.indexOf('Rechazadas') !== -1) {
+                      return '🔴 [Barra Atendió] Rechazadas (Dictamen emitido): ' + val.toLocaleString() + unit;
+                    }
+                    if (lbl.indexOf('Re-atenciones') !== -1) {
+                      return '🟠 [Barra Atendió] Re-atenciones Realizadas (Subsanados): ' + val.toLocaleString() + unit;
+                    }
+                    return lbl + ': ' + val.toLocaleString();
+                  },
+                  footer: function(items) {
+                    var entroSum = 0;
+                    var atendioSum = 0;
+                    items.forEach(function(it) {
+                      var l = it.dataset.label || '';
+                      if (l.indexOf('[Entró]') !== -1) {
+                        entroSum += it.raw;
+                      }
+                      if (l.indexOf('[Atendió]') !== -1) {
+                        atendioSum += it.raw;
+                      }
+                    });
+                    var unit = currentCapMode === 'semanal' ? ' / sem' : ' / día';
+                    var lines = [];
+                    if (entroSum > 0) {
+                      lines.push('📥 TOTAL ENTRÓ A BANDEJA (Barra Izq): ' + entroSum.toLocaleString() + unit);
+                    }
+                    if (atendioSum > 0) {
+                      lines.push('⚡ TOTAL ATENDIDO EN PANTALLA (Barra Der): ' + atendioSum.toLocaleString() + unit);
+                    }
+                    if (entroSum > 0 && atendioSum > 0) {
+                      lines.push('⚖️ BALANCE OPERATIVO: 100% Evacuado (Sin acumulación en cola)');
+                    }
+                    return lines;
                   }
                 }
               }
             }
           }
         });
+
+        // Función interactiva para conmutar entre vista Semanal y Diaria
+        window.switchCapacidadView = function(mode) {
+          currentCapMode = mode;
+          var isDiario = (mode === 'diario');
+          var d = isDiario ? capDataDiario : capDataSemanal;
+
+          // Actualizar datasets en orden
+          chartCapacidad.data.datasets[0].data = d.revisores;
+          chartCapacidad.data.datasets[1].data = d.capacidad;
+          chartCapacidad.data.datasets[2].data = d.nuevas;
+          chartCapacidad.data.datasets[3].data = d.reingresos;
+          chartCapacidad.data.datasets[4].data = d.resueltasDirectas;
+          chartCapacidad.data.datasets[5].data = d.rechazadas;
+          chartCapacidad.data.datasets[6].data = d.reingresos;
+
+          // Actualizar etiquetas de ejes
+          chartCapacidad.options.scales.yGestiones.title.text = isDiario
+            ? 'Gestiones & Atenciones en Pantalla / Día Hábil'
+            : 'Gestiones & Atenciones en Pantalla / Semana';
+
+          // Actualizar UI de botones
+          var btnSem = document.getElementById('btnCapacidadSemanal');
+          var btnDia = document.getElementById('btnCapacidadDiario');
+          if (btnSem && btnDia) {
+            if (isDiario) {
+              btnDia.style.background = '#38bdf8';
+              btnDia.style.color = '#0f172a';
+              btnDia.style.border = 'none';
+              btnSem.style.background = 'rgba(30, 41, 59, 0.8)';
+              btnSem.style.color = '#cbd5e1';
+              btnSem.style.border = '1px solid #334155';
+            } else {
+              btnSem.style.background = '#38bdf8';
+              btnSem.style.color = '#0f172a';
+              btnSem.style.border = 'none';
+              btnDia.style.background = 'rgba(30, 41, 59, 0.8)';
+              btnDia.style.color = '#cbd5e1';
+              btnDia.style.border = '1px solid #334155';
+            }
+          }
+
+          var titleEl = document.getElementById('chartCapacidadTitulo');
+          var subEl = document.getElementById('chartCapacidadSubtitulo');
+          if (titleEl) {
+            titleEl.textContent = isDiario
+              ? 'Doble Barra Apilada Diaria: Carga que Entró vs. Atenciones Atendidas (por Día Hábil)'
+              : 'Doble Barra Apilada Semanal: Carga que Entró vs. Atenciones Atendidas';
+          }
+          if (subEl) {
+            subEl.textContent = isDiario
+              ? 'Promedio diario por día hábil: Barra Izq. [Entró: 1,380 nuevas + 650 re-ingresos = 2,030] vs. Barra Der. [Atendió: 991 res. + 378 rech. + 650 re-at. = 2,030].'
+              : 'Comparación directa sin datos repetidos: Barra Izq. [Entró: Nuevas + Re-ingresos] vs. Barra Der. [Atendió: Resueltas + Rechazadas + Re-atenciones].';
+          }
+
+          chartCapacidad.update();
+        };
       }
 
       // Gráfico B: Estados Actuales (Barras Horizontales - Orden Descendente)
