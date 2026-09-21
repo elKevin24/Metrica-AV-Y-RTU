@@ -29,7 +29,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1159
+      "total_expedientes": 1159,
+      "max_dia": 106,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SLVASQUC",
@@ -57,7 +61,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "SUR",
-      "total_expedientes": 1000
+      "total_expedientes": 1000,
+      "max_dia": 103,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CVSANDOM",
@@ -85,7 +93,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1396
+      "total_expedientes": 1396,
+      "max_dia": 136,
+      "min_dia": 27,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VRREYESR",
@@ -113,7 +125,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1402
+      "total_expedientes": 1402,
+      "max_dia": 136,
+      "min_dia": 29,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DHSOLISP",
@@ -141,7 +157,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1053
+      "total_expedientes": 1053,
+      "max_dia": 102,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DPGOMEZ",
@@ -169,7 +189,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1045
+      "total_expedientes": 1045,
+      "max_dia": 105,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DFCRUZV",
@@ -197,7 +221,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "SUR",
-      "total_expedientes": 1044
+      "total_expedientes": 1044,
+      "max_dia": 108,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DRESCOBG",
@@ -225,7 +253,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1373
+      "total_expedientes": 1373,
+      "max_dia": 142,
+      "min_dia": 27,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "HGGOMEZG",
@@ -253,7 +285,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1295
+      "total_expedientes": 1295,
+      "max_dia": 126,
+      "min_dia": 21,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "RESANDOG",
@@ -281,7 +317,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1213
+      "total_expedientes": 1213,
+      "max_dia": 116,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "RDCRUZV",
@@ -309,12 +349,16 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 996
+      "total_expedientes": 996,
+      "max_dia": 91,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "RAGUILAR",
       "tipo": "PLANTA",
-      "regional": "CENTRAL",
+      "regional": "OCCIDENTE",
       "total": 1322,
       "aprobadas": 870,
       "rechazadas": 452,
@@ -328,21 +372,25 @@
       "tiempo_max_min": 1.9,
       "tiempo_min_sec": 1.4,
       "tiempo_min_min": 0.02,
-      "prom_diario": 63,
+      "prom_diario": 55.1,
       "cuadrante": "Q2",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 12,
       "ranking_velocidad_regional": 4,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1322
+      "total_expedientes": 1322,
+      "max_dia": 145,
+      "min_dia": 23,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "MKNAJERA",
       "tipo": "PLANTA",
-      "regional": "OCCIDENTE",
+      "regional": "SUR",
       "total": 1299,
       "aprobadas": 948,
       "rechazadas": 351,
@@ -356,16 +404,20 @@
       "tiempo_max_min": 1.87,
       "tiempo_min_sec": 2,
       "tiempo_min_min": 0.03,
-      "prom_diario": 61.9,
+      "prom_diario": 52,
       "cuadrante": "Q2",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 13,
       "ranking_velocidad_regional": 4,
-      "dias_activos": 21,
+      "dias_activos": 25,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1299
+      "total_expedientes": 1299,
+      "max_dia": 191,
+      "min_dia": 25,
+      "dias_habiles": 25,
+      "dias_finde": 4
     },
     {
       "revisor": "HFVALDEV",
@@ -393,12 +445,16 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 992
+      "total_expedientes": 992,
+      "max_dia": 100,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "AMHERNAN",
       "tipo": "PLANTA",
-      "regional": "SUR",
+      "regional": "CENTRAL",
       "total": 1077,
       "aprobadas": 681,
       "rechazadas": 396,
@@ -412,16 +468,20 @@
       "tiempo_max_min": 1.98,
       "tiempo_min_sec": 1.8,
       "tiempo_min_min": 0.03,
-      "prom_diario": 51.3,
+      "prom_diario": 49,
       "cuadrante": "Q2",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 15,
       "ranking_velocidad_regional": 3,
-      "dias_activos": 21,
+      "dias_activos": 22,
       "tiempo_prom_horas": 0.01,
       "regional_nombre": "SUR",
-      "total_expedientes": 1077
+      "total_expedientes": 1077,
+      "max_dia": 104,
+      "min_dia": 24,
+      "dias_habiles": 22,
+      "dias_finde": 1
     },
     {
       "revisor": "ERCORZAN",
@@ -440,16 +500,20 @@
       "tiempo_max_min": 1.91,
       "tiempo_min_sec": 1.5,
       "tiempo_min_min": 0.03,
-      "prom_diario": 54,
+      "prom_diario": 49.3,
       "cuadrante": "Q1",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 16,
       "ranking_velocidad_regional": 6,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1134
+      "total_expedientes": 1134,
+      "max_dia": 127,
+      "min_dia": 25,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "VGVASQUR",
@@ -477,7 +541,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 987
+      "total_expedientes": 987,
+      "max_dia": 98,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SJAGUIL",
@@ -505,7 +573,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1260
+      "total_expedientes": 1260,
+      "max_dia": 118,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "LAMARTIM",
@@ -533,7 +605,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1345
+      "total_expedientes": 1345,
+      "max_dia": 132,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "ESPEREZM",
@@ -561,7 +637,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1198
+      "total_expedientes": 1198,
+      "max_dia": 123,
+      "min_dia": 21,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "LMGARCIG",
@@ -589,7 +669,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1093
+      "total_expedientes": 1093,
+      "max_dia": 114,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "PCFIGUER",
@@ -617,7 +701,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1437
+      "total_expedientes": 1437,
+      "max_dia": 144,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "HPFIGUEV",
@@ -645,7 +733,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 945
+      "total_expedientes": 945,
+      "max_dia": 91,
+      "min_dia": 17,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "HEGARC_29",
@@ -673,7 +765,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 40
+      "total_expedientes": 40,
+      "max_dia": 29,
+      "min_dia": 8,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "PJMEJIAP",
@@ -701,12 +797,16 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1210
+      "total_expedientes": 1210,
+      "max_dia": 120,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "JRSILVAR",
       "tipo": "PLANTA",
-      "regional": "NORORIENTE",
+      "regional": "CENTRAL",
       "total": 1072,
       "aprobadas": 790,
       "rechazadas": 282,
@@ -720,21 +820,25 @@
       "tiempo_max_min": 1.95,
       "tiempo_min_sec": 3.1,
       "tiempo_min_min": 0.05,
-      "prom_diario": 51,
+      "prom_diario": 42.9,
       "cuadrante": "Q2",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 26,
       "ranking_velocidad_regional": 6,
-      "dias_activos": 21,
+      "dias_activos": 25,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1072
+      "total_expedientes": 1072,
+      "max_dia": 125,
+      "min_dia": 25,
+      "dias_habiles": 25,
+      "dias_finde": 4
     },
     {
       "revisor": "AMVELIZM",
       "tipo": "PLANTA",
-      "regional": "CENTRAL",
+      "regional": "NORORIENTE",
       "total": 1032,
       "aprobadas": 893,
       "rechazadas": 139,
@@ -748,16 +852,20 @@
       "tiempo_max_min": 1.89,
       "tiempo_min_sec": 2.7,
       "tiempo_min_min": 0.05,
-      "prom_diario": 49.1,
+      "prom_diario": 39.7,
       "cuadrante": "Q1",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 27,
       "ranking_velocidad_regional": 10,
-      "dias_activos": 21,
+      "dias_activos": 26,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1032
+      "total_expedientes": 1032,
+      "max_dia": 217,
+      "min_dia": 22,
+      "dias_habiles": 26,
+      "dias_finde": 5
     },
     {
       "revisor": "CDMEJIAL",
@@ -785,7 +893,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 850
+      "total_expedientes": 850,
+      "max_dia": 79,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FACRUZRI",
@@ -804,16 +916,20 @@
       "tiempo_max_min": 2,
       "tiempo_min_sec": 10.6,
       "tiempo_min_min": 0.18,
-      "prom_diario": 52,
+      "prom_diario": 47.4,
       "cuadrante": "Q1",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 29,
       "ranking_velocidad_regional": 11,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1091
+      "total_expedientes": 1091,
+      "max_dia": 113,
+      "min_dia": 24,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "FFMONT_55",
@@ -841,7 +957,11 @@
       "dias_activos": 3,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 52
+      "total_expedientes": 52,
+      "max_dia": 27,
+      "min_dia": 6,
+      "dias_habiles": 3,
+      "dias_finde": 0
     },
     {
       "revisor": "HEMONTEV",
@@ -869,7 +989,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1124
+      "total_expedientes": 1124,
+      "max_dia": 119,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CVSAND68",
@@ -897,7 +1021,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1238
+      "total_expedientes": 1238,
+      "max_dia": 127,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "GGESCOBP",
@@ -925,12 +1053,16 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1413
+      "total_expedientes": 1413,
+      "max_dia": 134,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "EENAVARR",
       "tipo": "PLANTA",
-      "regional": "NORORIENTE",
+      "regional": "OCCIDENTE",
       "total": 1160,
       "aprobadas": 885,
       "rechazadas": 275,
@@ -944,16 +1076,20 @@
       "tiempo_max_min": 1.97,
       "tiempo_min_sec": 1.9,
       "tiempo_min_min": 0.03,
-      "prom_diario": 55.2,
+      "prom_diario": 50.4,
       "cuadrante": "Q1",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 34,
       "ranking_velocidad_regional": 8,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1160
+      "total_expedientes": 1160,
+      "max_dia": 132,
+      "min_dia": 21,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "PCPALACM",
@@ -981,7 +1117,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1121
+      "total_expedientes": 1121,
+      "max_dia": 101,
+      "min_dia": 21,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "MECABRER",
@@ -1000,16 +1140,20 @@
       "tiempo_max_min": 1.86,
       "tiempo_min_sec": 0.9,
       "tiempo_min_min": 0.02,
-      "prom_diario": 66.6,
+      "prom_diario": 58.3,
       "cuadrante": "Q1",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 36,
       "ranking_velocidad_regional": 8,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1399
+      "total_expedientes": 1399,
+      "max_dia": 141,
+      "min_dia": 28,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "HHGARC_01",
@@ -1037,7 +1181,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 237
+      "total_expedientes": 237,
+      "max_dia": 23,
+      "min_dia": 6,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "MVDELA_54",
@@ -1065,7 +1213,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 82
+      "total_expedientes": 82,
+      "max_dia": 24,
+      "min_dia": 7,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "KMDELEON",
@@ -1084,16 +1236,20 @@
       "tiempo_max_min": 1.98,
       "tiempo_min_sec": 6.7,
       "tiempo_min_min": 0.11,
-      "prom_diario": 65,
+      "prom_diario": 59.4,
       "cuadrante": "Q3",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 39,
       "ranking_velocidad_regional": 16,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1366
+      "total_expedientes": 1366,
+      "max_dia": 106,
+      "min_dia": 28,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "FGPACHEG",
@@ -1121,12 +1277,16 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1406
+      "total_expedientes": 1406,
+      "max_dia": 140,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FOMONZON",
       "tipo": "PLANTA",
-      "regional": "OCCIDENTE",
+      "regional": "NORORIENTE",
       "total": 1397,
       "aprobadas": 1095,
       "rechazadas": 302,
@@ -1140,16 +1300,20 @@
       "tiempo_max_min": 1.95,
       "tiempo_min_sec": 0.9,
       "tiempo_min_min": 0.02,
-      "prom_diario": 66.5,
+      "prom_diario": 55.9,
       "cuadrante": "Q3",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 41,
       "ranking_velocidad_regional": 9,
-      "dias_activos": 21,
+      "dias_activos": 25,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1397
+      "total_expedientes": 1397,
+      "max_dia": 136,
+      "min_dia": 29,
+      "dias_habiles": 25,
+      "dias_finde": 4
     },
     {
       "revisor": "GGLOPE_59",
@@ -1177,12 +1341,16 @@
       "dias_activos": 16,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 252
+      "total_expedientes": 252,
+      "max_dia": 24,
+      "min_dia": 5,
+      "dias_habiles": 16,
+      "dias_finde": 0
     },
     {
       "revisor": "RSISRODR",
       "tipo": "PLANTA",
-      "regional": "CENTRAL",
+      "regional": "NORORIENTE",
       "total": 1236,
       "aprobadas": 1036,
       "rechazadas": 200,
@@ -1196,16 +1364,20 @@
       "tiempo_max_min": 1.97,
       "tiempo_min_sec": 2.3,
       "tiempo_min_min": 0.04,
-      "prom_diario": 58.9,
+      "prom_diario": 51.5,
       "cuadrante": "Q3",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 43,
       "ranking_velocidad_regional": 19,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1236
+      "total_expedientes": 1236,
+      "max_dia": 166,
+      "min_dia": 23,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "SHCRUZL",
@@ -1233,12 +1405,16 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 960
+      "total_expedientes": 960,
+      "max_dia": 90,
+      "min_dia": 15,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "AMCALELA",
       "tipo": "PLANTA",
-      "regional": "OCCIDENTE",
+      "regional": "SUR",
       "total": 1347,
       "aprobadas": 1020,
       "rechazadas": 327,
@@ -1252,21 +1428,25 @@
       "tiempo_max_min": 1.99,
       "tiempo_min_sec": 8.7,
       "tiempo_min_min": 0.14,
-      "prom_diario": 64.1,
+      "prom_diario": 58.6,
       "cuadrante": "Q3",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 45,
       "ranking_velocidad_regional": 10,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1347
+      "total_expedientes": 1347,
+      "max_dia": 106,
+      "min_dia": 22,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "EOVALIEN",
       "tipo": "PLANTA",
-      "regional": "CENTRAL",
+      "regional": "SUR",
       "total": 1145,
       "aprobadas": 960,
       "rechazadas": 185,
@@ -1280,21 +1460,25 @@
       "tiempo_max_min": 1.98,
       "tiempo_min_sec": 7.2,
       "tiempo_min_min": 0.12,
-      "prom_diario": 54.5,
+      "prom_diario": 47.7,
       "cuadrante": "Q3",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 46,
       "ranking_velocidad_regional": 21,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1145
+      "total_expedientes": 1145,
+      "max_dia": 166,
+      "min_dia": 24,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "PAPEREZT",
       "tipo": "PLANTA",
-      "regional": "CENTRAL",
+      "regional": "OCCIDENTE",
       "total": 1064,
       "aprobadas": 757,
       "rechazadas": 307,
@@ -1308,16 +1492,20 @@
       "tiempo_max_min": 1.93,
       "tiempo_min_sec": 7.1,
       "tiempo_min_min": 0.12,
-      "prom_diario": 50.7,
+      "prom_diario": 44.3,
       "cuadrante": "Q4",
       "casos_muestra": 38,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 47,
       "ranking_velocidad_regional": 22,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1064
+      "total_expedientes": 1064,
+      "max_dia": 161,
+      "min_dia": 21,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "AEAGUILC",
@@ -1345,7 +1533,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1047
+      "total_expedientes": 1047,
+      "max_dia": 95,
+      "min_dia": 17,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VCHERNAR",
@@ -1373,7 +1565,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1090
+      "total_expedientes": 1090,
+      "max_dia": 112,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "EACHAVEP",
@@ -1401,7 +1597,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1393
+      "total_expedientes": 1393,
+      "max_dia": 131,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "LMPALACP",
@@ -1429,7 +1629,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1327
+      "total_expedientes": 1327,
+      "max_dia": 138,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_VASQ_16",
@@ -1457,7 +1661,11 @@
       "dias_activos": 1,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 27
+      "total_expedientes": 27,
+      "max_dia": 27,
+      "min_dia": 27,
+      "dias_habiles": 1,
+      "dias_finde": 0
     },
     {
       "revisor": "BEORTEGA",
@@ -1476,16 +1684,20 @@
       "tiempo_max_min": 1.97,
       "tiempo_min_sec": 3,
       "tiempo_min_min": 0.05,
-      "prom_diario": 66.6,
+      "prom_diario": 58.3,
       "cuadrante": "Q3",
       "casos_muestra": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 53,
       "ranking_velocidad_regional": 9,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1399
+      "total_expedientes": 1399,
+      "max_dia": 156,
+      "min_dia": 30,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "VFHERNAC",
@@ -1513,7 +1725,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1052
+      "total_expedientes": 1052,
+      "max_dia": 111,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FMGONZ_17",
@@ -1541,7 +1757,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 87
+      "total_expedientes": 87,
+      "max_dia": 25,
+      "min_dia": 7,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "SAROSA_42",
@@ -1569,7 +1789,11 @@
       "dias_activos": 12,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 183
+      "total_expedientes": 183,
+      "max_dia": 22,
+      "min_dia": 5,
+      "dias_habiles": 12,
+      "dias_finde": 0
     },
     {
       "revisor": "PGROSALC",
@@ -1597,7 +1821,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1129
+      "total_expedientes": 1129,
+      "max_dia": 108,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CESANDOC",
@@ -1625,7 +1853,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 927
+      "total_expedientes": 927,
+      "max_dia": 80,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "LPGONZAP",
@@ -1653,7 +1885,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 952
+      "total_expedientes": 952,
+      "max_dia": 95,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SRCACER",
@@ -1681,7 +1917,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1405
+      "total_expedientes": 1405,
+      "max_dia": 132,
+      "min_dia": 29,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SMNAVARC",
@@ -1700,16 +1940,20 @@
       "tiempo_max_min": 2.05,
       "tiempo_min_sec": 25.6,
       "tiempo_min_min": 0.43,
-      "prom_diario": 65.7,
+      "prom_diario": 60,
       "cuadrante": "Q4",
       "casos_muestra": 0,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 61,
       "ranking_velocidad_regional": 28,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1380
+      "total_expedientes": 1380,
+      "max_dia": 148,
+      "min_dia": 26,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "PGMORALG",
@@ -1728,16 +1972,20 @@
       "tiempo_max_min": 2.34,
       "tiempo_min_sec": 38,
       "tiempo_min_min": 0.63,
-      "prom_diario": 69,
+      "prom_diario": 60.3,
       "cuadrante": "Q4",
       "casos_muestra": 0,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 62,
       "ranking_velocidad_regional": 29,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1448
+      "total_expedientes": 1448,
+      "max_dia": 157,
+      "min_dia": 22,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "VJGONZAC",
@@ -1765,7 +2013,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1347
+      "total_expedientes": 1347,
+      "max_dia": 133,
+      "min_dia": 21,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_VALD_04",
@@ -1793,7 +2045,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 199
+      "total_expedientes": 199,
+      "max_dia": 24,
+      "min_dia": 5,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "RHMEJIAC",
@@ -1821,7 +2077,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1243
+      "total_expedientes": 1243,
+      "max_dia": 120,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "LPDELAGC",
@@ -1849,7 +2109,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1120
+      "total_expedientes": 1120,
+      "max_dia": 100,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "MHCASTIV",
@@ -1877,7 +2141,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1148
+      "total_expedientes": 1148,
+      "max_dia": 110,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DGDIAZ_18",
@@ -1905,7 +2173,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 232
+      "total_expedientes": 232,
+      "max_dia": 23,
+      "min_dia": 5,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_CAST_40",
@@ -1933,7 +2205,11 @@
       "dias_activos": 16,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 242
+      "total_expedientes": 242,
+      "max_dia": 23,
+      "min_dia": 6,
+      "dias_habiles": 16,
+      "dias_finde": 0
     },
     {
       "revisor": "DMSOLISP",
@@ -1961,7 +2237,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1329
+      "total_expedientes": 1329,
+      "max_dia": 125,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "PHREYE_05",
@@ -1989,7 +2269,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 202
+      "total_expedientes": 202,
+      "max_dia": 25,
+      "min_dia": 5,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "AVESCOBL",
@@ -2017,7 +2301,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1320
+      "total_expedientes": 1320,
+      "max_dia": 125,
+      "min_dia": 25,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CCBARR_13",
@@ -2045,7 +2333,11 @@
       "dias_activos": 6,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 101
+      "total_expedientes": 101,
+      "max_dia": 25,
+      "min_dia": 5,
+      "dias_habiles": 6,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_GOME_28",
@@ -2073,7 +2365,11 @@
       "dias_activos": 18,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 274
+      "total_expedientes": 274,
+      "max_dia": 22,
+      "min_dia": 7,
+      "dias_habiles": 18,
+      "dias_finde": 0
     },
     {
       "revisor": "DSCRUZM",
@@ -2101,7 +2397,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 864
+      "total_expedientes": 864,
+      "max_dia": 77,
+      "min_dia": 14,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "EGVASQUP",
@@ -2129,7 +2429,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1152
+      "total_expedientes": 1152,
+      "max_dia": 122,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "JJGONZAC",
@@ -2157,7 +2461,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 877
+      "total_expedientes": 877,
+      "max_dia": 76,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "ELSOLISV",
@@ -2185,7 +2493,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1240
+      "total_expedientes": 1240,
+      "max_dia": 125,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VFMARTIR",
@@ -2213,7 +2525,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 925
+      "total_expedientes": 925,
+      "max_dia": 78,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "HVMEJIA",
@@ -2241,7 +2557,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1125
+      "total_expedientes": 1125,
+      "max_dia": 118,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DALOPE_14",
@@ -2269,7 +2589,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 38
+      "total_expedientes": 38,
+      "max_dia": 28,
+      "min_dia": 6,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "JMHERNAM",
@@ -2297,7 +2621,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1228
+      "total_expedientes": 1228,
+      "max_dia": 122,
+      "min_dia": 26,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FMCRUZC",
@@ -2325,7 +2653,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 871
+      "total_expedientes": 871,
+      "max_dia": 71,
+      "min_dia": 13,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FHCALDEG",
@@ -2353,7 +2685,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1303
+      "total_expedientes": 1303,
+      "max_dia": 128,
+      "min_dia": 25,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "JSLOPEZC",
@@ -2381,7 +2717,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 870
+      "total_expedientes": 870,
+      "max_dia": 80,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_MEND_52",
@@ -2409,7 +2749,11 @@
       "dias_activos": 18,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 274
+      "total_expedientes": 274,
+      "max_dia": 24,
+      "min_dia": 6,
+      "dias_habiles": 18,
+      "dias_finde": 0
     },
     {
       "revisor": "AJPALACV",
@@ -2437,7 +2781,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1220
+      "total_expedientes": 1220,
+      "max_dia": 123,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VEGARCI",
@@ -2465,7 +2813,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 983
+      "total_expedientes": 983,
+      "max_dia": 94,
+      "min_dia": 14,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SFFLOR_46",
@@ -2493,7 +2845,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 82
+      "total_expedientes": 82,
+      "max_dia": 24,
+      "min_dia": 6,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "FFGUZMAV",
@@ -2521,7 +2877,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1023
+      "total_expedientes": 1023,
+      "max_dia": 93,
+      "min_dia": 15,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DVCHAVEC",
@@ -2549,7 +2909,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 896
+      "total_expedientes": 896,
+      "max_dia": 83,
+      "min_dia": 17,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "RESANDOL",
@@ -2568,16 +2932,20 @@
       "tiempo_max_min": 2.23,
       "tiempo_min_sec": 61,
       "tiempo_min_min": 1.02,
-      "prom_diario": 67.6,
+      "prom_diario": 61.7,
       "cuadrante": "Q4",
       "casos_muestra": 0,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 92,
       "ranking_velocidad_regional": 18,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1419
+      "total_expedientes": 1419,
+      "max_dia": 145,
+      "min_dia": 20,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "SVGARCIG",
@@ -2605,7 +2973,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1105
+      "total_expedientes": 1105,
+      "max_dia": 104,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "MRPINEDG",
@@ -2633,7 +3005,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1059
+      "total_expedientes": 1059,
+      "max_dia": 97,
+      "min_dia": 17,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "LDESCOBC",
@@ -2661,7 +3037,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1106
+      "total_expedientes": 1106,
+      "max_dia": 108,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CGHERNAM",
@@ -2689,7 +3069,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1311
+      "total_expedientes": 1311,
+      "max_dia": 132,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "AMPERE_30",
@@ -2717,7 +3101,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 232
+      "total_expedientes": 232,
+      "max_dia": 24,
+      "min_dia": 5,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "MLCHAVEL",
@@ -2745,7 +3133,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1406
+      "total_expedientes": 1406,
+      "max_dia": 143,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "RLPALAC",
@@ -2773,7 +3165,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1334
+      "total_expedientes": 1334,
+      "max_dia": 145,
+      "min_dia": 28,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VDNAVARC",
@@ -2801,7 +3197,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1055
+      "total_expedientes": 1055,
+      "max_dia": 111,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "ASCACERL",
@@ -2829,7 +3229,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1139
+      "total_expedientes": 1139,
+      "max_dia": 111,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "GCSOLISC",
@@ -2857,7 +3261,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1370
+      "total_expedientes": 1370,
+      "max_dia": 143,
+      "min_dia": 26,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "RAAGUILM",
@@ -2885,7 +3293,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 943
+      "total_expedientes": 943,
+      "max_dia": 81,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "DMGONZAV",
@@ -2913,7 +3325,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "SUR",
-      "total_expedientes": 1395
+      "total_expedientes": 1395,
+      "max_dia": 141,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "MLMARTIP",
@@ -2941,7 +3357,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.02,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1081
+      "total_expedientes": 1081,
+      "max_dia": 106,
+      "min_dia": 15,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FPREYESG",
@@ -2969,7 +3389,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 967
+      "total_expedientes": 967,
+      "max_dia": 91,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VHROSALR",
@@ -2988,16 +3412,20 @@
       "tiempo_max_min": 2.26,
       "tiempo_min_sec": 62.1,
       "tiempo_min_min": 1.03,
-      "prom_diario": 68,
+      "prom_diario": 59.5,
       "cuadrante": "Q3",
       "casos_muestra": 0,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 107,
       "ranking_velocidad_regional": 17,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "SUR",
-      "total_expedientes": 1429
+      "total_expedientes": 1429,
+      "max_dia": 149,
+      "min_dia": 30,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "JHRODRI",
@@ -3025,7 +3453,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1197
+      "total_expedientes": 1197,
+      "max_dia": 115,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "AGPINE_15",
@@ -3053,7 +3485,11 @@
       "dias_activos": 17,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 269
+      "total_expedientes": 269,
+      "max_dia": 26,
+      "min_dia": 5,
+      "dias_habiles": 17,
+      "dias_finde": 0
     },
     {
       "revisor": "CAPALACV",
@@ -3081,7 +3517,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1260
+      "total_expedientes": 1260,
+      "max_dia": 125,
+      "min_dia": 23,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CPPACHEV",
@@ -3109,7 +3549,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1103
+      "total_expedientes": 1103,
+      "max_dia": 108,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SCCACERR",
@@ -3137,7 +3581,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1155
+      "total_expedientes": 1155,
+      "max_dia": 115,
+      "min_dia": 21,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_NAVA_56",
@@ -3165,7 +3613,11 @@
       "dias_activos": 10,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 159
+      "total_expedientes": 159,
+      "max_dia": 25,
+      "min_dia": 6,
+      "dias_habiles": 10,
+      "dias_finde": 0
     },
     {
       "revisor": "SFMEJIAP",
@@ -3193,7 +3645,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1356
+      "total_expedientes": 1356,
+      "max_dia": 140,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FVCHAV_33",
@@ -3221,7 +3677,11 @@
       "dias_activos": 4,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 66
+      "total_expedientes": 66,
+      "max_dia": 24,
+      "min_dia": 6,
+      "dias_habiles": 4,
+      "dias_finde": 0
     },
     {
       "revisor": "HDLOPE_11",
@@ -3249,7 +3709,11 @@
       "dias_activos": 12,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 182
+      "total_expedientes": 182,
+      "max_dia": 24,
+      "min_dia": 7,
+      "dias_habiles": 12,
+      "dias_finde": 0
     },
     {
       "revisor": "CFGARCIM",
@@ -3277,7 +3741,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1189
+      "total_expedientes": 1189,
+      "max_dia": 115,
+      "min_dia": 22,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "VGSOLISG",
@@ -3305,7 +3773,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1349
+      "total_expedientes": 1349,
+      "max_dia": 142,
+      "min_dia": 26,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "GRBARRIG",
@@ -3333,7 +3805,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 968
+      "total_expedientes": 968,
+      "max_dia": 85,
+      "min_dia": 14,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "PCCRUZM",
@@ -3361,7 +3837,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 1031
+      "total_expedientes": 1031,
+      "max_dia": 108,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "PVCAST_35",
@@ -3389,7 +3869,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 86
+      "total_expedientes": 86,
+      "max_dia": 25,
+      "min_dia": 7,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "EGBARRIV",
@@ -3417,7 +3901,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 890
+      "total_expedientes": 890,
+      "max_dia": 73,
+      "min_dia": 14,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FMDIAZC",
@@ -3445,7 +3933,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1177
+      "total_expedientes": 1177,
+      "max_dia": 109,
+      "min_dia": 17,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "HRGOMEZ",
@@ -3473,7 +3965,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 900
+      "total_expedientes": 900,
+      "max_dia": 73,
+      "min_dia": 13,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "MJMENDEL",
@@ -3492,16 +3988,20 @@
       "tiempo_max_min": 2.49,
       "tiempo_min_sec": 70.5,
       "tiempo_min_min": 1.18,
-      "prom_diario": 68.2,
+      "prom_diario": 59.7,
       "cuadrante": "Q3",
       "casos_muestra": 0,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 125,
       "ranking_velocidad_regional": 28,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1432
+      "total_expedientes": 1432,
+      "max_dia": 156,
+      "min_dia": 23,
+      "dias_habiles": 24,
+      "dias_finde": 3
     },
     {
       "revisor": "FSMORALC",
@@ -3529,7 +4029,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 984
+      "total_expedientes": 984,
+      "max_dia": 93,
+      "min_dia": 20,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "SGPEREZG",
@@ -3557,7 +4061,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 964
+      "total_expedientes": 964,
+      "max_dia": 88,
+      "min_dia": 17,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "REMEJIA",
@@ -3585,7 +4093,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 951
+      "total_expedientes": 951,
+      "max_dia": 87,
+      "min_dia": 19,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "GSBARRIC",
@@ -3613,7 +4125,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 921
+      "total_expedientes": 921,
+      "max_dia": 86,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_VALD_32",
@@ -3641,7 +4157,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "SUR",
-      "total_expedientes": 225
+      "total_expedientes": 225,
+      "max_dia": 22,
+      "min_dia": 5,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "ECPINEDP",
@@ -3669,7 +4189,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1353
+      "total_expedientes": 1353,
+      "max_dia": 137,
+      "min_dia": 24,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FEBARRIM",
@@ -3697,7 +4221,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 1203
+      "total_expedientes": 1203,
+      "max_dia": 121,
+      "min_dia": 18,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "CGCRUZM",
@@ -3725,7 +4253,11 @@
       "dias_activos": 21,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1126
+      "total_expedientes": 1126,
+      "max_dia": 102,
+      "min_dia": 16,
+      "dias_habiles": 21,
+      "dias_finde": 0
     },
     {
       "revisor": "FAHERNA",
@@ -3744,16 +4276,20 @@
       "tiempo_max_min": 2.3,
       "tiempo_min_sec": 83.3,
       "tiempo_min_min": 1.39,
-      "prom_diario": 67.9,
+      "prom_diario": 62,
       "cuadrante": "Q4",
       "casos_muestra": 0,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 134,
       "ranking_velocidad_regional": 33,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 1426
+      "total_expedientes": 1426,
+      "max_dia": 145,
+      "min_dia": 26,
+      "dias_habiles": 23,
+      "dias_finde": 2
     },
     {
       "revisor": "PSCORD_49",
@@ -3781,7 +4317,11 @@
       "dias_activos": 8,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 134
+      "total_expedientes": 134,
+      "max_dia": 24,
+      "min_dia": 7,
+      "dias_habiles": 8,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_GUZM_12",
@@ -3809,7 +4349,11 @@
       "dias_activos": 8,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 131
+      "total_expedientes": 131,
+      "max_dia": 23,
+      "min_dia": 5,
+      "dias_habiles": 8,
+      "dias_finde": 0
     },
     {
       "revisor": "AJPALA_53",
@@ -3837,7 +4381,11 @@
       "dias_activos": 17,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 269
+      "total_expedientes": 269,
+      "max_dia": 23,
+      "min_dia": 6,
+      "dias_habiles": 17,
+      "dias_finde": 0
     },
     {
       "revisor": "EFMART_07",
@@ -3865,7 +4413,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 81
+      "total_expedientes": 81,
+      "max_dia": 23,
+      "min_dia": 6,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_MEND_48",
@@ -3893,7 +4445,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "SUR",
-      "total_expedientes": 34
+      "total_expedientes": 34,
+      "max_dia": 27,
+      "min_dia": 6,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "PVGUZM_19",
@@ -3921,7 +4477,11 @@
       "dias_activos": 8,
       "tiempo_prom_horas": 0.03,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 128
+      "total_expedientes": 128,
+      "max_dia": 24,
+      "min_dia": 5,
+      "dias_habiles": 8,
+      "dias_finde": 0
     },
     {
       "revisor": "SAHERN_31",
@@ -3949,7 +4509,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 33
+      "total_expedientes": 33,
+      "max_dia": 24,
+      "min_dia": 7,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "HACAST_37",
@@ -3977,7 +4541,11 @@
       "dias_activos": 16,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 252
+      "total_expedientes": 252,
+      "max_dia": 24,
+      "min_dia": 6,
+      "dias_habiles": 16,
+      "dias_finde": 0
     },
     {
       "revisor": "GRSAND_39",
@@ -4005,7 +4573,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 33
+      "total_expedientes": 33,
+      "max_dia": 26,
+      "min_dia": 7,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "JMCALD_26",
@@ -4033,7 +4605,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 226
+      "total_expedientes": 226,
+      "max_dia": 23,
+      "min_dia": 5,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "DFSAND_50",
@@ -4061,7 +4637,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "SUR",
-      "total_expedientes": 207
+      "total_expedientes": 207,
+      "max_dia": 24,
+      "min_dia": 6,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "HGGONZ_45",
@@ -4089,7 +4669,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 228
+      "total_expedientes": 228,
+      "max_dia": 22,
+      "min_dia": 6,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "ALDELA_34",
@@ -4117,7 +4701,11 @@
       "dias_activos": 3,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "SUR",
-      "total_expedientes": 51
+      "total_expedientes": 51,
+      "max_dia": 24,
+      "min_dia": 6,
+      "dias_habiles": 3,
+      "dias_finde": 0
     },
     {
       "revisor": "ALMEJI_58",
@@ -4145,7 +4733,11 @@
       "dias_activos": 3,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 55
+      "total_expedientes": 55,
+      "max_dia": 27,
+      "min_dia": 7,
+      "dias_habiles": 3,
+      "dias_finde": 0
     },
     {
       "revisor": "CJCRUZ_41",
@@ -4173,7 +4765,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "SUR",
-      "total_expedientes": 236
+      "total_expedientes": 236,
+      "max_dia": 26,
+      "min_dia": 6,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "RCFLOR_02",
@@ -4201,7 +4797,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 199
+      "total_expedientes": 199,
+      "max_dia": 24,
+      "min_dia": 7,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "VEMORA_51",
@@ -4229,7 +4829,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 202
+      "total_expedientes": 202,
+      "max_dia": 25,
+      "min_dia": 6,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "RMCHAV_21",
@@ -4257,7 +4861,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "SUR",
-      "total_expedientes": 42
+      "total_expedientes": 42,
+      "max_dia": 31,
+      "min_dia": 8,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "PGGARC_47",
@@ -4285,7 +4893,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "SUR",
-      "total_expedientes": 79
+      "total_expedientes": 79,
+      "max_dia": 23,
+      "min_dia": 5,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_SALA_24",
@@ -4313,7 +4925,11 @@
       "dias_activos": 1,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 25
+      "total_expedientes": 25,
+      "max_dia": 25,
+      "min_dia": 25,
+      "dias_habiles": 1,
+      "dias_finde": 0
     },
     {
       "revisor": "MMFIGU_57",
@@ -4341,7 +4957,11 @@
       "dias_activos": 1,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 20
+      "total_expedientes": 20,
+      "max_dia": 20,
+      "min_dia": 20,
+      "dias_habiles": 1,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_GONZ_44",
@@ -4369,7 +4989,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.04,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 204
+      "total_expedientes": 204,
+      "max_dia": 26,
+      "min_dia": 5,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "DMMORA_27",
@@ -4397,7 +5021,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.05,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 37
+      "total_expedientes": 37,
+      "max_dia": 29,
+      "min_dia": 6,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_FIGU_36",
@@ -4425,7 +5053,11 @@
       "dias_activos": 16,
       "tiempo_prom_horas": 0.05,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 241
+      "total_expedientes": 241,
+      "max_dia": 22,
+      "min_dia": 5,
+      "dias_habiles": 16,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_HERN_60",
@@ -4453,7 +5085,11 @@
       "dias_activos": 4,
       "tiempo_prom_horas": 0.05,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 65
+      "total_expedientes": 65,
+      "max_dia": 26,
+      "min_dia": 7,
+      "dias_habiles": 4,
+      "dias_finde": 0
     },
     {
       "revisor": "FSDIAZ_03",
@@ -4481,7 +5117,11 @@
       "dias_activos": 12,
       "tiempo_prom_horas": 0.05,
       "regional_nombre": "SUR",
-      "total_expedientes": 185
+      "total_expedientes": 185,
+      "max_dia": 23,
+      "min_dia": 5,
+      "dias_habiles": 12,
+      "dias_finde": 0
     },
     {
       "revisor": "EFCORD_38",
@@ -4509,7 +5149,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.05,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 200
+      "total_expedientes": 200,
+      "max_dia": 24,
+      "min_dia": 7,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "HFAGUI_23",
@@ -4537,7 +5181,11 @@
       "dias_activos": 12,
       "tiempo_prom_horas": 0.05,
       "regional_nombre": "SUR",
-      "total_expedientes": 191
+      "total_expedientes": 191,
+      "max_dia": 26,
+      "min_dia": 5,
+      "dias_habiles": 12,
+      "dias_finde": 0
     },
     {
       "revisor": "SEDELA_25",
@@ -4565,7 +5213,11 @@
       "dias_activos": 6,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 104
+      "total_expedientes": 104,
+      "max_dia": 28,
+      "min_dia": 6,
+      "dias_habiles": 6,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_PINE_08",
@@ -4593,7 +5245,11 @@
       "dias_activos": 6,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "SUR",
-      "total_expedientes": 91
+      "total_expedientes": 91,
+      "max_dia": 25,
+      "min_dia": 7,
+      "dias_habiles": 6,
+      "dias_finde": 0
     },
     {
       "revisor": "FJDIAZ_62",
@@ -4621,7 +5277,11 @@
       "dias_activos": 7,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 114
+      "total_expedientes": 114,
+      "max_dia": 26,
+      "min_dia": 6,
+      "dias_habiles": 7,
+      "dias_finde": 0
     },
     {
       "revisor": "DLHERN_06",
@@ -4649,7 +5309,11 @@
       "dias_activos": 16,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "OCCIDENTE",
-      "total_expedientes": 249
+      "total_expedientes": 249,
+      "max_dia": 25,
+      "min_dia": 7,
+      "dias_habiles": 16,
+      "dias_finde": 0
     },
     {
       "revisor": "HDCAST_43",
@@ -4677,7 +5341,11 @@
       "dias_activos": 5,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 84
+      "total_expedientes": 84,
+      "max_dia": 27,
+      "min_dia": 7,
+      "dias_habiles": 5,
+      "dias_finde": 0
     },
     {
       "revisor": "EJCHAV_09",
@@ -4705,7 +5373,11 @@
       "dias_activos": 15,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 239
+      "total_expedientes": 239,
+      "max_dia": 24,
+      "min_dia": 5,
+      "dias_habiles": 15,
+      "dias_finde": 0
     },
     {
       "revisor": "APOYO_CABR_20",
@@ -4733,7 +5405,11 @@
       "dias_activos": 13,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "SUR",
-      "total_expedientes": 203
+      "total_expedientes": 203,
+      "max_dia": 23,
+      "min_dia": 5,
+      "dias_habiles": 13,
+      "dias_finde": 0
     },
     {
       "revisor": "HAMORA_10",
@@ -4761,7 +5437,11 @@
       "dias_activos": 7,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "CENTRAL",
-      "total_expedientes": 109
+      "total_expedientes": 109,
+      "max_dia": 25,
+      "min_dia": 7,
+      "dias_habiles": 7,
+      "dias_finde": 0
     },
     {
       "revisor": "HSNAVA_22",
@@ -4789,7 +5469,11 @@
       "dias_activos": 2,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "NORORIENTE",
-      "total_expedientes": 38
+      "total_expedientes": 38,
+      "max_dia": 27,
+      "min_dia": 8,
+      "dias_habiles": 2,
+      "dias_finde": 0
     },
     {
       "revisor": "VHRAMI_61",
@@ -4817,7 +5501,11 @@
       "dias_activos": 16,
       "tiempo_prom_horas": 0.06,
       "regional_nombre": "SUR",
-      "total_expedientes": 249
+      "total_expedientes": 249,
+      "max_dia": 22,
+      "min_dia": 5,
+      "dias_habiles": 16,
+      "dias_finde": 0
     }
   ]
 }

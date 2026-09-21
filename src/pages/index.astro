@@ -1286,10 +1286,10 @@ const formatMinutesToTime = (minDecimal: number) => {
                   </div>
                   <div>
                     <h4 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                      <span>Lista de Revisores y Desglose de Atenciones</span>
+                      <span>Lista de Revisores y Volumen de Atenciones</span>
                       <span id="revisoresBadgeCount" class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">172 Revisores</span>
                     </h4>
-                    <p class="text-[11px] text-slate-500">Desglose nominal de atenciones, resoluciones directas vs subsanadas, rechazos y tiempos medios de atención.</p>
+                    <p class="text-[11px] text-slate-500">Volumen total de atenciones en el mes, promedio diario, rango (máx/mín) y días activos (21 días hábiles estándar + guardias de fin de semana hasta 26 días).</p>
                   </div>
                 </div>
 
@@ -1356,68 +1356,67 @@ const formatMinutesToTime = (minDecimal: number) => {
                     class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer w-full text-xs">
                     <option value="total_desc">Total Atenciones (Mayor ▼)</option>
                     <option value="total_asc">Total Atenciones (Menor ▲)</option>
-                    <option value="aprobadas_desc">Aprobadas (Mayor ▼)</option>
-                    <option value="pct_desc">% Aprobación (Mayor ▼)</option>
-                    <option value="tiempo_asc">Tiempo Promedio (Más Rápido ⚡)</option>
+                    <option value="dias_activos_desc">Días Activos (Mayor ▼)</option>
+                    <option value="dias_activos_asc">Días Activos (Menor ▲)</option>
+                    <option value="max_dia_desc">Mayor en 1 Día (Máx ▼)</option>
+                    <option value="min_dia_desc">Menor en 1 Día (Mín ▼)</option>
                     <option value="prom_diario_desc">Promedio Diario (Mayor ▼)</option>
+                    <option value="revisor_asc">Revisor (A - Z)</option>
                   </select>
                 </div>
               </div>
 
-              <!-- Resumen de Totales Filtrados -->
-              <div id="revisoresSummaryBar" class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5 text-xs">
-                <div class="bg-slate-50 p-2 rounded-xl border border-slate-100 flex justify-between items-center">
-                  <span class="text-slate-500 text-[11px]">Revisores:</span>
+              <!-- Resumen Minimalista de Totales Filtrados -->
+              <div id="revisoresSummaryBar" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-0.5 text-xs">
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center">
+                  <span class="text-slate-500 text-[11px] font-medium">Revisores:</span>
                   <span id="kpiRevCount" class="font-bold font-mono text-slate-800">172</span>
                 </div>
-                <div class="bg-blue-50/50 p-2 rounded-xl border border-blue-100 flex justify-between items-center">
-                  <span class="text-blue-700 text-[11px]">Total Atenciones:</span>
-                  <span id="kpiRevAtenciones" class="font-bold font-mono text-blue-900">183,054</span>
+                <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-100 flex justify-between items-center">
+                  <span class="text-blue-700 text-[11px] font-medium">Total Atenciones:</span>
+                  <span id="kpiRevAtenciones" class="font-black font-mono text-blue-900">137,474</span>
                 </div>
-                <div class="bg-emerald-50/50 p-2 rounded-xl border border-emerald-100 flex justify-between items-center">
-                  <span class="text-emerald-700 text-[11px]">Aprobaciones:</span>
-                  <span id="kpiRevAprobadas" class="font-bold font-mono text-emerald-900">146,443 (80.0%)</span>
+                <div class="bg-indigo-50/60 p-2.5 rounded-xl border border-indigo-100 flex justify-between items-center">
+                  <span class="text-indigo-700 text-[11px] font-medium">Promedio Diario:</span>
+                  <span id="kpiRevPromDiario" class="font-bold font-mono text-indigo-900">53.2 / día</span>
                 </div>
-                <div class="bg-amber-50/50 p-2 rounded-xl border border-amber-100 flex justify-between items-center">
-                  <span class="text-amber-700 text-[11px]">Tiempo Promedio:</span>
-                  <span id="kpiRevTiempo" class="font-bold font-mono text-amber-900">1.83 seg</span>
+                <div class="bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-100 flex justify-between items-center">
+                  <span class="text-emerald-700 text-[11px] font-medium">Máx en 1 Día:</span>
+                  <span id="kpiRevMaxDia" class="font-bold font-mono text-emerald-900">217 exp</span>
+                </div>
+                <div class="bg-amber-50/60 p-2.5 rounded-xl border border-amber-100 flex justify-between items-center">
+                  <span class="text-amber-700 text-[11px] font-medium">Mín en 1 Día:</span>
+                  <span id="kpiRevMinDia" class="font-bold font-mono text-amber-900">5 exp</span>
                 </div>
               </div>
 
-              <!-- Tabla de Revisores y Atenciones -->
-              <div class="overflow-x-auto max-h-[520px] rounded-xl border border-slate-200">
+              <!-- Tabla Minimalista de Revisores y Atenciones -->
+              <div class="overflow-x-auto max-h-[520px] rounded-xl border border-slate-200 shadow-2xs">
                 <table class="w-full text-left border-collapse text-xs">
                   <thead class="bg-slate-900 text-white font-semibold sticky top-0 z-10 shadow-xs text-[11px]">
                     <tr>
-                      <th class="py-2.5 px-3 w-10 text-center">#</th>
-                      <th class="py-2.5 px-3 cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('revisor')">
+                      <th class="py-3 px-3 w-12 text-center text-slate-400">#</th>
+                      <th class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('revisor')">
                         <span>Revisor</span> <span class="text-slate-400 text-[10px]">⇅</span>
                       </th>
-                      <th class="py-2.5 px-2.5 text-center cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('regional')">
+                      <th class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('regional')">
                         <span>Regional</span> <span class="text-slate-400 text-[10px]">⇅</span>
                       </th>
-                      <th class="py-2.5 px-2 text-center">Tipo</th>
-                      <th class="py-2.5 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('total')">
-                        <span>Total Atenciones</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th class="py-3 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800 transition-colors bg-slate-800/80" onclick="handleRevisoresColSort('total')">
+                        <span>Total Atenciones</span> <span class="text-blue-300 text-[10px]">⇅</span>
                       </th>
-                      <th class="py-2.5 px-3 text-right font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('aprobadas')">
-                        <span>Aprobadas</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th class="py-3 px-3 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('prom_diario')">
+                        <span>Promedio / Día</span> <span class="text-slate-400 text-[10px]">⇅</span>
                       </th>
-                      <th class="py-2.5 px-3 text-right text-emerald-100 hidden md:table-cell">Directas</th>
-                      <th class="py-2.5 px-3 text-right text-amber-300 hidden md:table-cell">Subsanadas</th>
-                      <th class="py-2.5 px-3 text-right font-bold text-rose-300 cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('rechazadas')">
-                        <span>Rechazos</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th class="py-3 px-3 text-right font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('max_dia')">
+                        <span>Mayor en 1 Día (Máx)</span> <span class="text-emerald-400 text-[10px]">▲</span>
                       </th>
-                      <th class="py-2.5 px-3 text-right font-bold text-cyan-300 cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('pct_aprobadas')">
-                        <span>% Aprob.</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th class="py-3 px-3 text-right font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('min_dia')">
+                        <span>Menor en 1 Día (Mín)</span> <span class="text-amber-400 text-[10px]">▼</span>
                       </th>
-                      <th class="py-2.5 px-3 text-right font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('tiempo_prom_sec')">
-                        <span>⏱️ T. Prom.</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th class="py-3 px-3 text-center text-slate-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('dias_activos')">
+                        <span>Días Activos</span> <span class="text-slate-400 text-[10px]">⇅</span>
                       </th>
-                      <th class="py-2.5 px-3 text-right font-semibold text-slate-300 cursor-pointer select-none hover:bg-slate-800" onclick="handleRevisoresColSort('prom_diario')">
-                        <span>⚡ Casos/Día</span> <span class="text-slate-400 text-[10px]">⇅</span>
-                      </th>
-                      <th class="py-2.5 px-2.5 text-center text-slate-300 hidden sm:table-cell">Días</th>
                     </tr>
                   </thead>
                   <tbody id="tbodyRevisoresAtenciones" class="divide-y divide-slate-100 text-slate-700 font-mono bg-white">
@@ -3079,14 +3078,20 @@ const formatMinutesToTime = (minDecimal: number) => {
         const kpiAtenciones = document.getElementById('kpiRevAtenciones');
         if (kpiAtenciones) kpiAtenciones.textContent = totalAtenciones.toLocaleString();
 
-        const totalAprobadas = list.reduce((acc, r) => acc + (r.aprobadas || 0), 0);
-        const pctAprob = totalAtenciones > 0 ? ((totalAprobadas / totalAtenciones) * 100).toFixed(1) : '0.0';
-        const kpiAprobadas = document.getElementById('kpiRevAprobadas');
-        if (kpiAprobadas) kpiAprobadas.textContent = `${totalAprobadas.toLocaleString()} (${pctAprob}%)`;
+        const avgDiario = list.length > 0 
+          ? (list.reduce((acc, r) => acc + (r.prom_diario || 0), 0) / list.length).toFixed(1) 
+          : '0.0';
+        const kpiProm = document.getElementById('kpiRevPromDiario');
+        if (kpiProm) kpiProm.textContent = `${avgDiario} / día`;
 
-        const avgSec = list.length > 0 ? (list.reduce((acc, r) => acc + (r.tiempo_prom_sec || 0), 0) / list.length).toFixed(1) : '1.8';
-        const kpiTiempo = document.getElementById('kpiRevTiempo');
-        if (kpiTiempo) kpiTiempo.textContent = `${avgSec} seg (${(avgSec / 60).toFixed(2)} min)`;
+        const globalMax = list.length > 0 ? Math.max(...list.map(r => r.max_dia || 0)) : 0;
+        const kpiMax = document.getElementById('kpiRevMaxDia');
+        if (kpiMax) kpiMax.textContent = `${globalMax} exp`;
+
+        const validMins = list.filter(r => r.min_dia != null).map(r => r.min_dia);
+        const globalMin = validMins.length > 0 ? Math.min(...validMins) : 0;
+        const kpiMin = document.getElementById('kpiRevMinDia');
+        if (kpiMin) kpiMin.textContent = `${globalMin} exp`;
       }
 
       function renderRevisoresTablePage() {
@@ -3106,10 +3111,10 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (pageItems.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="12" class="text-center py-10 text-slate-400 font-sans">
+              <td colspan="8" class="text-center py-10 text-slate-400 font-sans">
                 <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
                 <p class="font-medium text-slate-600">No se encontraron revisores que coincidan con los filtros.</p>
-                <button type="button" onclick="resetRevisoresFilters()" class="mt-2 text-xs text-blue-600 font-bold hover:underline">Restablecer filtros</button>
+                <button type="button" onclick="resetRevisoresFilters()" class="mt-2 text-xs text-blue-600 font-bold hover:underline cursor-pointer">Restablecer filtros</button>
               </td>
             </tr>
           `;
@@ -3122,8 +3127,8 @@ const formatMinutesToTime = (minDecimal: number) => {
           const rank = startIdx + i + 1;
           const isPlanta = (r.tipo || '').toUpperCase() === 'PLANTA';
           const tipoBadge = isPlanta 
-            ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-sans font-bold bg-blue-50 text-blue-700 border border-blue-200">Planta</span>`
-            : `<span class="px-2 py-0.5 rounded-md text-[10px] font-sans font-medium bg-slate-100 text-slate-600 border border-slate-200">Apoyo</span>`;
+            ? `<span class="px-1.5 py-0.5 rounded text-[9.5px] font-sans font-semibold bg-blue-50 text-blue-700 border border-blue-200/80">Planta</span>`
+            : `<span class="px-1.5 py-0.5 rounded text-[9.5px] font-sans font-medium bg-slate-100 text-slate-600 border border-slate-200">Apoyo</span>`;
 
           const reg = (r.regional || 'CENTRAL').toUpperCase();
           let regBadgeColor = 'bg-slate-100 text-slate-700 border-slate-200';
@@ -3132,70 +3137,57 @@ const formatMinutesToTime = (minDecimal: number) => {
           else if (reg === 'OCCIDENTE') regBadgeColor = 'bg-indigo-50 text-indigo-700 border-indigo-200';
           else if (reg === 'NORORIENTE') regBadgeColor = 'bg-amber-50 text-amber-700 border-amber-200';
 
-          const pctAprob = typeof r.pct_aprobadas === 'number' ? r.pct_aprobadas.toFixed(1) : (r.pct_aprobadas || '0');
-          const numPct = parseFloat(pctAprob);
-          let pctColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
-          if (numPct < 70) pctColor = 'text-rose-700 bg-rose-50 border-rose-200';
-          else if (numPct < 80) pctColor = 'text-amber-700 bg-amber-50 border-amber-200';
-
           const totalAt = (r.total || 0).toLocaleString();
-          const aprobadas = (r.aprobadas || 0).toLocaleString();
-          const directas = (r.directas || Math.round((r.aprobadas || 0) * 0.8)).toLocaleString();
-          const subsanadas = (r.subsanadas || Math.round((r.aprobadas || 0) * 0.2)).toLocaleString();
-          const rechazadas = (r.rechazadas || 0).toLocaleString();
-          const tiempoSec = r.tiempo_prom_sec != null ? Number(r.tiempo_prom_sec).toFixed(1) : '1.8';
-          const tiempoMin = r.tiempo_prom_min != null ? Number(r.tiempo_prom_min).toFixed(2) : (Number(tiempoSec) / 60).toFixed(2);
-          const promDiario = r.prom_diario != null ? Number(r.prom_diario).toFixed(1) : '15.0';
+          const promDiario = r.prom_diario != null ? Number(r.prom_diario).toFixed(1) : '0.0';
+          const maxDia = (r.max_dia != null ? r.max_dia : Math.round(Number(promDiario) * 1.3)).toLocaleString();
+          const minDia = (r.min_dia != null ? r.min_dia : Math.max(1, Math.round(Number(promDiario) * 0.65))).toLocaleString();
           const dias = r.dias_activos || 21;
 
           return `
-            <tr class="hover:bg-slate-50/80 transition-colors">
-              <td class="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px] font-medium">${rank}</td>
-              <td class="py-2.5 px-3 font-sans font-bold text-slate-900">
-                <div class="flex items-center gap-1.5">
+            <tr class="hover:bg-slate-50/90 transition-colors">
+              <td class="py-3 px-3 text-center text-slate-400 font-mono text-[11px] font-medium">${rank}</td>
+              <td class="py-3 px-3 font-sans font-bold text-slate-900">
+                <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-[10px] font-bold shrink-0 border border-slate-200">
                     ${(r.revisor || 'R').substring(0, 2)}
                   </span>
-                  <span>${r.revisor || 'Sin ID'}</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-xs text-slate-900 tracking-tight">${r.revisor || 'Sin ID'}</span>
+                    ${tipoBadge}
+                  </div>
                 </div>
               </td>
-              <td class="py-2.5 px-2.5 text-center font-sans">
+              <td class="py-3 px-3 font-sans">
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold border ${regBadgeColor}">
                   ${reg}
                 </span>
               </td>
-              <td class="py-2.5 px-2 text-center">
-                ${tipoBadge}
-              </td>
-              <td class="py-2.5 px-3 text-right font-black text-slate-900 font-mono text-[12px] bg-slate-50/30">
+              <td class="py-3 px-3 text-right font-black text-slate-900 font-mono text-xs bg-slate-50/50">
                 ${totalAt}
               </td>
-              <td class="py-2.5 px-3 text-right font-bold text-emerald-700 font-mono">
-                ${aprobadas}
+              <td class="py-3 px-3 text-right font-mono font-bold text-blue-700 text-xs">
+                ${promDiario} <span class="text-[10px] text-slate-400 font-normal">/día</span>
               </td>
-              <td class="py-2.5 px-3 text-right text-slate-600 font-mono text-[11px] hidden md:table-cell">
-                ${directas}
-              </td>
-              <td class="py-2.5 px-3 text-right text-amber-700 font-mono text-[11px] hidden md:table-cell">
-                ${subsanadas}
-              </td>
-              <td class="py-2.5 px-3 text-right font-bold text-rose-700 font-mono">
-                ${rechazadas}
-              </td>
-              <td class="py-2.5 px-3 text-right font-sans">
-                <span class="inline-block px-2 py-0.5 rounded-full text-[11px] font-bold border ${pctColor}">
-                  ${pctAprob}%
+              <td class="py-3 px-3 text-right font-mono font-bold text-emerald-700 text-xs">
+                <span class="inline-flex items-center gap-1">
+                  ${maxDia}
+                  <span class="text-[9.5px] px-1 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Máx</span>
                 </span>
               </td>
-              <td class="py-2.5 px-3 text-right font-mono font-semibold text-slate-800 text-[11px]">
-                <span>${tiempoSec}s</span>
-                <span class="text-slate-400 text-[9.5px] block font-sans">(${tiempoMin}m)</span>
+              <td class="py-3 px-3 text-right font-mono font-bold text-amber-700 text-xs">
+                <span class="inline-flex items-center gap-1">
+                  ${minDia}
+                  <span class="text-[9.5px] px-1 py-0.2 rounded bg-amber-50 text-amber-700 border border-amber-200">Mín</span>
+                </span>
               </td>
-              <td class="py-2.5 px-3 text-right font-mono font-bold text-blue-700 text-[11px]">
-                ${promDiario} <span class="text-[9.5px] text-slate-400 font-normal">/d</span>
-              </td>
-              <td class="py-2.5 px-2.5 text-center font-mono text-slate-600 text-[11px] hidden sm:table-cell">
-                ${dias}d
+              <td class="py-3 px-3 text-center font-mono text-slate-600 text-xs">
+                ${dias > 21 
+                  ? `<span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 text-[11px] inline-flex items-center gap-1" title="${dias} días en el mes (21 hábiles + ${dias - 21}d fines de semana / guardias)">
+                      <span>${dias}d</span>
+                      <span class="text-[9px] text-indigo-500 font-semibold">+${dias - 21}</span>
+                    </span>`
+                  : `<span class="px-2 py-0.5 rounded bg-slate-100/80 text-slate-600 text-[11px] font-medium">${dias}d</span>`
+                }
               </td>
             </tr>
           `;
@@ -3233,7 +3225,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               <button 
                 type="button" 
                 onclick="handleRevisoresGoToPage(${p})" 
-                class="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition ${isActive ? 'bg-amber-500 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'}">
+                class="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition cursor-pointer ${isActive ? 'bg-amber-500 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'}">
                 ${p}
               </button>
             `;
@@ -3263,10 +3255,12 @@ const formatMinutesToTime = (minDecimal: number) => {
       window.handleRevisoresSortChange = function(val) {
         if (val === 'total_desc') { revisoresCurrentSortCol = 'total'; revisoresSortAsc = false; }
         else if (val === 'total_asc') { revisoresCurrentSortCol = 'total'; revisoresSortAsc = true; }
-        else if (val === 'aprobadas_desc') { revisoresCurrentSortCol = 'aprobadas'; revisoresSortAsc = false; }
-        else if (val === 'pct_desc') { revisoresCurrentSortCol = 'pct_aprobadas'; revisoresSortAsc = false; }
-        else if (val === 'tiempo_asc') { revisoresCurrentSortCol = 'tiempo_prom_sec'; revisoresSortAsc = true; }
+        else if (val === 'dias_activos_desc') { revisoresCurrentSortCol = 'dias_activos'; revisoresSortAsc = false; }
+        else if (val === 'dias_activos_asc') { revisoresCurrentSortCol = 'dias_activos'; revisoresSortAsc = true; }
+        else if (val === 'max_dia_desc') { revisoresCurrentSortCol = 'max_dia'; revisoresSortAsc = false; }
+        else if (val === 'min_dia_desc') { revisoresCurrentSortCol = 'min_dia'; revisoresSortAsc = true; }
         else if (val === 'prom_diario_desc') { revisoresCurrentSortCol = 'prom_diario'; revisoresSortAsc = false; }
+        else if (val === 'revisor_asc') { revisoresCurrentSortCol = 'revisor'; revisoresSortAsc = true; }
         applyRevisoresFiltersAndRender();
       };
 
@@ -3275,7 +3269,7 @@ const formatMinutesToTime = (minDecimal: number) => {
           revisoresSortAsc = !revisoresSortAsc;
         } else {
           revisoresCurrentSortCol = col;
-          revisoresSortAsc = (col === 'revisor' || col === 'regional' || col === 'tiempo_prom_sec');
+          revisoresSortAsc = (col === 'revisor' || col === 'regional' || col === 'min_dia');
         }
         applyRevisoresFiltersAndRender();
       };
@@ -3325,21 +3319,16 @@ const formatMinutesToTime = (minDecimal: number) => {
 
       window.exportRevisoresCSV = function() {
         const list = revisoresFilteredData.length > 0 ? revisoresFilteredData : revisoresRawData;
-        const headers = ["Ranking", "Revisor", "Regional", "Tipo", "Total_Atenciones", "Aprobadas", "Directas", "Subsanadas", "Rechazos", "Pct_Aprobacion", "Tiempo_Prom_Seg", "Tiempo_Prom_Min", "Casos_Por_Dia", "Dias_Activos"];
+        const headers = ["Ranking", "Revisor", "Regional", "Tipo", "Total_Atenciones", "Promedio_Diario", "Maximo_Atencion_Dia", "Minimo_Atencion_Dia", "Dias_Activos"];
         const rows = list.map((r, i) => [
           i + 1,
           `"${r.revisor || ''}"`,
           `"${r.regional || ''}"`,
           `"${r.tipo || ''}"`,
           r.total || 0,
-          r.aprobadas || 0,
-          r.directas || 0,
-          r.subsanadas || 0,
-          r.rechazadas || 0,
-          r.pct_aprobadas || 0,
-          r.tiempo_prom_sec || 0,
-          r.tiempo_prom_min || 0,
           r.prom_diario || 0,
+          r.max_dia || 0,
+          r.min_dia || 0,
           r.dias_activos || 0
         ]);
 
