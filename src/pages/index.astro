@@ -1138,82 +1138,10 @@ const formatMinutesToTime = (minDecimal: number) => {
               </div>
             </div>
 
-            <!-- 4 Tarjetas de Métricas Ejecutivas sobre Evaluaciones Humanas -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <!-- KPI 1: Total Evaluaciones Emitidas -->
-              <div class="glass-card p-4 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden group">
-                <div class="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-60"></div>
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Evaluaciones Humanas</span>
-                  <div class="p-2 bg-blue-50/80 text-blue-600 rounded-xl backdrop-blur-xs">
-                    <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-                  </div>
-                </div>
-                <div class="mt-2">
-                  <div class="text-2xl font-bold font-mono text-slate-800 tracking-tight">183,054</div>
-                  <div class="flex items-center gap-1.5 mt-1 text-[11px] text-slate-500">
-                    <span class="font-semibold text-blue-600 font-mono">100%</span>
-                    <span>dictámenes emitidos por revisores</span>
-                  </div>
-                </div>
-              </div>
 
-              <!-- KPI 2: Casos Únicos en 1ª Vuelta -->
-              <div class="glass-card p-4 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden group">
-                <div class="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 opacity-60"></div>
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Casos Evaluados (1ª Vuelta)</span>
-                  <div class="p-2 bg-emerald-50/80 text-emerald-600 rounded-xl backdrop-blur-xs">
-                    <i data-lucide="users" class="w-4 h-4"></i>
-                  </div>
-                </div>
-                <div class="mt-2">
-                  <div class="text-2xl font-bold font-mono text-emerald-600 tracking-tight">135,628</div>
-                  <div class="flex items-center gap-1.5 mt-1 text-[11px] text-slate-500">
-                    <span class="font-semibold text-emerald-700 font-mono">74.1%</span>
-                    <span>expedientes únicos atendidos</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- KPI 3: Re-evaluaciones por Subsanación -->
-              <div class="glass-card p-4 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden group">
-                <div class="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 opacity-60"></div>
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Re-evaluaciones (Retrabajo)</span>
-                  <div class="p-2 bg-amber-50/80 text-amber-600 rounded-xl backdrop-blur-xs">
-                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-                  </div>
-                </div>
-                <div class="mt-2">
-                  <div class="text-2xl font-bold font-mono text-amber-600 tracking-tight">47,426</div>
-                  <div class="flex items-center gap-1.5 mt-1 text-[11px] text-slate-500">
-                    <span class="font-semibold text-amber-700 font-mono">25.9%</span>
-                    <span>segundas/terceras revisiones (1.35x)</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- KPI 4: Desenlace de Evaluaciones (Aprobaciones vs Rechazos) -->
-              <div class="glass-card p-4 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden group">
-                <div class="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-60"></div>
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Desenlace de Evaluaciones</span>
-                  <div class="p-2 bg-purple-50/80 text-purple-600 rounded-xl backdrop-blur-xs">
-                    <i data-lucide="pie-chart" class="w-4 h-4"></i>
-                  </div>
-                </div>
-                <div class="mt-2">
-                  <div class="text-2xl font-bold font-mono text-purple-600 tracking-tight">108,230 <span class="text-xs font-sans font-semibold text-emerald-600">Aprob.</span></div>
-                  <div class="flex items-center justify-between gap-1.5 mt-1 text-[11px] text-slate-500">
-                    <span class="font-semibold text-emerald-700 font-mono">59.1% favorables</span>
-                    <span class="font-semibold text-rose-600 font-mono">74,824 rechazos (40.9%)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <!-- FICHA METODOLÓGICA: CAPACIDAD TEÓRICA INSTALADA (ESTÁNDAR: 100 CASOS/DÍA = 71.4% CAPACIDAD) -->
+            <!-- FICHA METODOLÓGICA: CAPACIDAD TEÓRICA INSTALADA (110 REVISORES DE PLANTA) -->
             <div id="fichaCapacidadTeorica" class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-4">
               <!-- Encabezado Minimalista -->
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
@@ -1222,16 +1150,16 @@ const formatMinutesToTime = (minDecimal: number) => {
                     <i data-lucide="calculator" class="w-4 h-4"></i>
                   </div>
                   <div>
-                    <h4 class="text-sm font-bold text-slate-900 tracking-tight">Capacidad Teórica Instalada</h4>
-                    <p class="text-[11px] text-slate-500">Parámetro analítico: 100 expedientes/día por revisor (71.4% de la jornada de 7h a 3 min/caso)</p>
+                    <h4 class="text-sm font-bold text-slate-900 tracking-tight">Capacidad Teórica Instalada — Plantilla de Planta</h4>
+                    <p class="text-[11px] text-slate-500">Parámetro analítico: 100 expedientes/día por revisor titular de planta (71.4% de jornada). Se aíslan los 110 de planta, excluyendo 62 apoyos esporádicos.</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-2 self-start sm:self-auto">
                   <span class="text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/80 px-2 py-0.5 rounded-md">
                     100 / 140 = 71.4% Capacidad
                   </span>
-                  <span class="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                    172 Revisores
+                  <span class="text-[10px] font-mono font-bold text-indigo-800 bg-indigo-100/70 border border-indigo-200 px-2 py-0.5 rounded-md">
+                    110 Revisores Titulares
                   </span>
                 </div>
               </div>
@@ -1240,31 +1168,31 @@ const formatMinutesToTime = (minDecimal: number) => {
               <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
                 <!-- Fórmula condensada -->
                 <div class="md:col-span-6 bg-slate-900 text-slate-100 rounded-xl p-3 font-mono text-xs border border-slate-800">
-                  <div class="text-[10px] uppercase tracking-wider text-indigo-400 font-bold mb-1">Ecuación Institucional</div>
+                  <div class="text-[10px] uppercase tracking-wider text-indigo-400 font-bold mb-1">Ecuación Institucional (Solo Planta)</div>
                   <div class="text-emerald-400 text-sm font-black tracking-wide">
-                    Capacidad = N<sub>rev</sub> (172) × Días × 100 exp/día
+                    Capacidad Planta = N<sub>planta</sub> (110) × Días × 100 exp/día
                   </div>
                   <div class="text-[10px] text-slate-400 mt-1">
-                    Base: 7h activas (420 min) ÷ 3 min/exp = 140 máx. Al <strong>71.4%</strong> = <strong>100 exp/día</strong> (deja 2h libres de margen).
+                    Base: 7h activas ÷ 3 min/exp = 140 máx. Al <strong>71.4%</strong> = <strong>100 exp/día por analista titular</strong> (deja margen de holgura).
                   </div>
                 </div>
 
                 <!-- Métricas Clave de Capacidad (Diaria, Semanal, Mensual) -->
                 <div class="md:col-span-6 grid grid-cols-3 gap-2">
                   <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-center">
-                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Diaria</span>
-                    <span class="text-base font-black text-slate-900 font-mono">17,200</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Diaria (Planta)</span>
+                    <span class="text-base font-black text-slate-900 font-mono">11,000</span>
                     <span class="text-[9px] text-slate-400 block">vs ~1.2k demanda</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-center">
                     <span class="text-[10px] uppercase font-bold text-slate-500 block">Semanal (5d)</span>
-                    <span class="text-base font-black text-indigo-900 font-mono">86,000</span>
-                    <span class="text-[9px] text-slate-400 block">vs ~6.0k demanda</span>
+                    <span class="text-base font-black text-indigo-900 font-mono">55,000</span>
+                    <span class="text-[9px] text-emerald-600 font-bold block">vs 25.3k pico máx</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-center">
-                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Mensual (21.5d)</span>
-                    <span class="text-base font-black text-emerald-900 font-mono">369,800</span>
-                    <span class="text-[9px] text-emerald-600 font-bold block">Uso real: ~7.0%</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Mensual (21d)</span>
+                    <span class="text-base font-black text-emerald-900 font-mono">231,000</span>
+                    <span class="text-[9px] text-emerald-600 font-bold block">Holgura: 2.1x</span>
                   </div>
                 </div>
               </div>
@@ -1273,7 +1201,126 @@ const formatMinutesToTime = (minDecimal: number) => {
               <div class="text-[11px] text-slate-600 bg-amber-50/60 border border-amber-200/70 p-2.5 rounded-xl flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0"></i>
-                  <span><strong>Conclusión Forense:</strong> Al fijar 100 casos/día (71.4% del techo), la plantilla cubre <strong>14 veces</strong> la demanda nacional (~1,200/día). La congestión en Central es puramente por <strong>distribución geográfica</strong> y no por escasez de personal.</span>
+                  <span><strong>Conclusión Forense:</strong> Al calcular la capacidad <strong>exclusivamente con los 110 revisores de planta</strong>, la capacidad semanal sostenible (<strong>55,000 exp/sem</strong>) superaba por más del doble la semana de mayor avalancha del año (Semana 02 con 25,357 trámites). El embotellamiento fue producto del enrutamiento rígido en colas y no de falta de personal de planta.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GRÁFICO COMBINADO (BARRAS Y LÍNEAS): EVOLUCIÓN SEMANAL DE DEMANDA VS CAPACIDAD Y ATENCIONES -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-4">
+              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold shrink-0 border border-emerald-500/20">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                      <span>Evolución Semanal: Demanda vs Atenciones y Capacidad de Planta</span>
+                      <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full">110 Revisores de Planta</span>
+                    </h4>
+                    <p class="text-[11px] text-slate-500">
+                      Barras apiladas (1ª vuelta vs retrabajo por subsanaciones) superpuestas con la línea de Demanda Total y la Línea de Capacidad Sostenible de Planta (55,000 exp/sem).
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Controles Interactivos de Capas y Visualización -->
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <!-- Modo de Barras (Apiladas / Lado a Lado) -->
+                  <div class="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200/80">
+                    <button 
+                      type="button"
+                      id="btnModoApiladas"
+                      onclick="setCapacidadBarMode('apiladas')" 
+                      class="px-2.5 py-1 text-xs rounded-lg transition bg-white shadow-2xs text-emerald-700 font-bold cursor-pointer">
+                      Apiladas
+                    </button>
+                    <button 
+                      type="button"
+                      id="btnModoAgrupadas"
+                      onclick="setCapacidadBarMode('lado')" 
+                      class="px-2.5 py-1 text-xs rounded-lg transition text-slate-600 hover:text-slate-900 cursor-pointer">
+                      Lado a Lado
+                    </button>
+                  </div>
+
+                  <!-- Toggle de Series / Líneas -->
+                  <div class="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200/80 gap-1">
+                    <button 
+                      type="button"
+                      id="btnToggleDemanda"
+                      onclick="toggleCapacidadSeries(0, 'btnToggleDemanda')" 
+                      class="px-2.5 py-1 text-xs rounded-lg transition bg-white shadow-2xs text-blue-700 font-bold cursor-pointer"
+                      title="Activar / Desactivar línea de Demanda Total">
+                      🔷 Demanda
+                    </button>
+                    <button 
+                      type="button"
+                      id="btnToggleCapacidad"
+                      onclick="toggleCapacidadSeries(4, 'btnToggleCapacidad')" 
+                      class="px-2.5 py-1 text-xs rounded-lg transition bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer"
+                      title="Activar / Desactivar línea de Capacidad de Planta (110 Analistas)">
+                      ➖ Capacidad Planta (110)
+                    </button>
+                    <button 
+                      type="button"
+                      id="btnToggleCobertura"
+                      onclick="toggleCapacidadSeries(1, 'btnToggleCobertura')" 
+                      class="px-2 py-1 text-xs rounded-lg transition text-emerald-700 hover:bg-white/80 opacity-40 line-through cursor-pointer"
+                      title="Activar / Desactivar eje derecho de % de Cobertura">
+                      📈 % Cobertura
+                    </button>
+                  </div>
+
+                  <!-- Filtro por Rango Temporal -->
+                  <select 
+                    id="selectCapacidadPeriodo" 
+                    onchange="filterCapacidadPeriodo(this.value)" 
+                    class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 font-semibold focus:outline-none cursor-pointer">
+                    <option value="TODAS">Todas las Semanas (Sem 01 - 31)</option>
+                    <option value="ENE">Enero (Sem 01 - 04)</option>
+                    <option value="FEB">Febrero (Sem 05 - 08)</option>
+                    <option value="MAR">Marzo (Sem 09 - 13)</option>
+                    <option value="ABR_MAY">Abril - Mayo (Sem 17 - 20)</option>
+                    <option value="JUN_JUL">Junio - Julio (Sem 24 - 31)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Canvas del Gráfico Mixto -->
+              <div class="relative w-full h-80 sm:h-96">
+                <canvas id="chartCapacidadSemanal"></canvas>
+              </div>
+
+              <!-- Leyenda Descriptiva Inferior -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs text-slate-600">
+                <div class="flex items-center gap-2 bg-emerald-50/70 border border-emerald-200/60 p-2 rounded-xl">
+                  <span class="w-3 h-3 rounded bg-emerald-500 shrink-0"></span>
+                  <div class="truncate">
+                    <span class="font-bold text-slate-800 block text-[11px]">1ª Vuelta (Directas)</span>
+                    <span class="text-[10px] text-slate-500 font-mono">135,628 expedientes</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 bg-amber-50/70 border border-amber-200/60 p-2 rounded-xl">
+                  <span class="w-3 h-3 rounded bg-amber-500 shrink-0"></span>
+                  <div class="truncate">
+                    <span class="font-bold text-slate-800 block text-[11px]">Reingresos (Retrabajo)</span>
+                    <span class="text-[10px] text-slate-500 font-mono">47,426 expedientes</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 bg-blue-50/70 border border-blue-200/60 p-2 rounded-xl">
+                  <span class="w-4 h-0.5 bg-blue-600 shrink-0"></span>
+                  <div class="truncate">
+                    <span class="font-bold text-slate-800 block text-[11px]">Demanda Total (Línea)</span>
+                    <span class="text-[10px] text-slate-500 font-mono">228,714 solicitudes</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 bg-indigo-50/70 border border-indigo-200/60 p-2 rounded-xl">
+                  <span class="w-4 h-0.5 border-t-2 border-dashed border-indigo-600 shrink-0"></span>
+                  <div class="truncate">
+                    <span class="font-bold text-slate-800 block text-[11px]">Capacidad Planta Activa</span>
+                    <span class="text-[10px] text-indigo-700 font-mono font-semibold">Dinámica semanal (100 exp/d)</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1486,8 +1533,8 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <thead class="bg-slate-900/90 backdrop-blur-md text-[11px] font-bold text-white uppercase tracking-wider sticky top-0 z-10 border-b border-slate-700">
                     <tr>
                       <th class="py-2.5 px-3">Semana</th>
-                      <th class="py-2.5 px-2.5 text-center">Revisores Act.</th>
-                      <th class="py-2.5 px-3 text-right text-slate-300" title="Capacidad teórica base de 100 expedientes/día (71.4% de 140 máx)">Capacidad (100/d)</th>
+                      <th class="py-2.5 px-2.5 text-center text-indigo-300">Revisores Planta</th>
+                      <th class="py-2.5 px-3 text-right text-indigo-300" title="Capacidad de 100 expedientes/día calculada con los revisores de planta activos cada semana">Cap. Planta Dinámica (100/d)</th>
                       <th class="py-2.5 px-3 text-right bg-slate-800/60">Demanda Total</th>
                       <th class="py-2.5 px-3 text-right text-emerald-300">Dictámenes (1ªV + Reing)</th>
                       <th class="py-2.5 px-3 text-center">Carga Asignada</th>
@@ -1503,10 +1550,10 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <tfoot class="bg-slate-900/90 backdrop-blur-md font-bold text-white border-t-2 border-slate-700 text-xs font-mono">
                     <tr>
                       <td class="py-2.5 px-3 font-sans font-bold">TOTAL / PROMEDIO</td>
-                      <td class="py-2.5 px-2.5 text-center text-slate-300 font-sans">144 prom. / 172 tot.</td>
-                      <td class="py-2.5 px-3 text-right text-slate-300">
-                        <div>1,466,000</div>
-                        <div class="text-[9px] font-sans font-medium text-emerald-300 whitespace-nowrap">Base: 100 exp/día</div>
+                      <td class="py-2.5 px-2.5 text-center text-indigo-300 font-sans font-bold">92 Prom. (110 Total)</td>
+                      <td class="py-2.5 px-3 text-right text-indigo-300">
+                        <div>933,500</div>
+                        <div class="text-[9px] font-sans font-medium text-emerald-300 whitespace-nowrap">Acumulada Dinámica</div>
                       </td>
                       <td class="py-2.5 px-3 text-right bg-slate-800/60 text-slate-200">228,714</td>
                       <td class="py-2.5 px-3 text-right text-emerald-300">
@@ -2440,27 +2487,27 @@ const formatMinutesToTime = (minDecimal: number) => {
       let currentFilteredCapacidadData = null;
       let currentCapacidadScale = 1;
       const capacidadData = [
-        { semana: "Sem 01", mes: "Ene", nuevas: 4306, reingresos: 201, demanda: 4507, atendidas: 734, atendidas_primera: 544, atendidas_reingreso: 190, aprobadas: 431, rechazos: 303, cobertura: 16.3, revisores: 95, capacidad: 47500 },
-        { semana: "Sem 02", mes: "Ene", nuevas: 21642, reingresos: 3715, demanda: 25357, atendidas: 14452, atendidas_primera: 10708, atendidas_reingreso: 3744, aprobadas: 8201, rechazos: 6251, cobertura: 57.0, revisores: 162, capacidad: 81000 },
-        { semana: "Sem 03", mes: "Ene", nuevas: 18072, reingresos: 4421, demanda: 22493, atendidas: 20411, atendidas_primera: 15124, atendidas_reingreso: 5287, aprobadas: 11480, rechazos: 8931, cobertura: 90.7, revisores: 168, capacidad: 84000 },
-        { semana: "Sem 04", mes: "Ene", nuevas: 16406, reingresos: 4259, demanda: 20665, atendidas: 17323, atendidas_primera: 12835, atendidas_reingreso: 4488, aprobadas: 10483, rechazos: 6840, cobertura: 83.8, revisores: 165, capacidad: 82500 },
-        { semana: "Sem 05", mes: "Feb", nuevas: 14357, reingresos: 3282, demanda: 17639, atendidas: 13302, atendidas_primera: 9856, atendidas_reingreso: 3446, aprobadas: 7922, rechazos: 5380, cobertura: 75.4, revisores: 158, capacidad: 79000 },
-        { semana: "Sem 06", mes: "Feb", nuevas: 12095, reingresos: 3526, demanda: 15621, atendidas: 13447, atendidas_primera: 9963, atendidas_reingreso: 3484, aprobadas: 7835, rechazos: 5612, cobertura: 86.1, revisores: 156, capacidad: 78000 },
-        { semana: "Sem 07", mes: "Feb", nuevas: 11348, reingresos: 3436, demanda: 14784, atendidas: 13120, atendidas_primera: 9721, atendidas_reingreso: 3399, aprobadas: 7944, rechazos: 5176, cobertura: 88.7, revisores: 154, capacidad: 77000 },
-        { semana: "Sem 08", mes: "Feb", nuevas: 10811, reingresos: 2734, demanda: 13545, atendidas: 10400, atendidas_primera: 7706, atendidas_reingreso: 2694, aprobadas: 6238, rechazos: 4162, cobertura: 76.8, revisores: 150, capacidad: 75000 },
-        { semana: "Sem 09", mes: "Mar", nuevas: 10426, reingresos: 3222, demanda: 13648, atendidas: 11428, atendidas_primera: 8467, atendidas_reingreso: 2961, aprobadas: 6576, rechazos: 4852, cobertura: 83.7, revisores: 152, capacidad: 76000 },
-        { semana: "Sem 10", mes: "Mar", nuevas: 10454, reingresos: 3088, demanda: 13542, atendidas: 11269, atendidas_primera: 8349, atendidas_reingreso: 2920, aprobadas: 6498, rechazos: 4771, cobertura: 83.2, revisores: 152, capacidad: 76000 },
-        { semana: "Sem 11", mes: "Mar", nuevas: 9719, reingresos: 2944, demanda: 12663, atendidas: 10471, atendidas_primera: 7758, atendidas_reingreso: 2713, aprobadas: 6159, rechazos: 4312, cobertura: 82.7, revisores: 148, capacidad: 74000 },
-        { semana: "Sem 12", mes: "Mar", nuevas: 9178, reingresos: 2916, demanda: 12094, atendidas: 10791, atendidas_primera: 7995, atendidas_reingreso: 2796, aprobadas: 6266, rechazos: 4525, cobertura: 89.2, revisores: 146, capacidad: 73000 },
-        { semana: "Sem 13", mes: "Mar", nuevas: 1577, reingresos: 834, demanda: 2411, atendidas: 3384, atendidas_primera: 2507, atendidas_reingreso: 877, aprobadas: 2057, rechazos: 1327, cobertura: 140.4, revisores: 120, capacidad: 60000 },
-        { semana: "Sem 17", mes: "Abr", nuevas: 1943, reingresos: 323, demanda: 2266, atendidas: 710, atendidas_primera: 526, atendidas_reingreso: 184, aprobadas: 273, rechazos: 437, cobertura: 31.3, revisores: 110, capacidad: 55000 },
-        { semana: "Sem 18", mes: "May", nuevas: 8725, reingresos: 2166, demanda: 10891, atendidas: 7406, atendidas_primera: 5487, atendidas_reingreso: 1919, aprobadas: 4159, rechazos: 3247, cobertura: 68.0, revisores: 145, capacidad: 72500 },
-        { semana: "Sem 19", mes: "May", nuevas: 7713, reingresos: 2308, demanda: 10021, atendidas: 9386, atendidas_primera: 6954, atendidas_reingreso: 2432, aprobadas: 5940, rechazos: 3446, cobertura: 93.7, revisores: 150, capacidad: 75000 },
-        { semana: "Sem 20", mes: "May", nuevas: 374, reingresos: 306, demanda: 680, atendidas: 1456, atendidas_primera: 1079, atendidas_reingreso: 377, aprobadas: 933, rechazos: 523, cobertura: 214.1, revisores: 115, capacidad: 57500 },
-        { semana: "Sem 24", mes: "Jun", nuevas: 3115, reingresos: 881, demanda: 3996, atendidas: 2360, atendidas_primera: 1749, atendidas_reingreso: 611, aprobadas: 1342, rechazos: 1018, cobertura: 59.1, revisores: 135, capacidad: 67500 },
-        { semana: "Sem 25", mes: "Jun", nuevas: 5421, reingresos: 1658, demanda: 7079, atendidas: 7027, atendidas_primera: 5206, atendidas_reingreso: 1821, aprobadas: 4774, rechazos: 2253, cobertura: 99.3, revisores: 148, capacidad: 74000 },
-        { semana: "Sem 30", mes: "Jul", nuevas: 3039, reingresos: 736, demanda: 3775, atendidas: 1253, atendidas_primera: 928, atendidas_reingreso: 325, aprobadas: 333, rechazos: 920, cobertura: 33.2, revisores: 130, capacidad: 65000 },
-        { semana: "Sem 31", mes: "Jul", nuevas: 624, reingresos: 413, demanda: 1037, atendidas: 2924, atendidas_primera: 2166, atendidas_reingreso: 758, aprobadas: 2386, rechazos: 538, cobertura: 282.0, revisores: 142, capacidad: 71000 }
+        { semana: "Sem 01", mes: "Ene", nuevas: 4306, reingresos: 201, demanda: 4507, atendidas: 734, atendidas_primera: 544, atendidas_reingreso: 190, aprobadas: 431, rechazos: 303, cobertura: 16.3, revisores: 61, capacidad: 24400 },
+        { semana: "Sem 02", mes: "Ene", nuevas: 21642, reingresos: 3715, demanda: 25357, atendidas: 14452, atendidas_primera: 10708, atendidas_reingreso: 3744, aprobadas: 8201, rechazos: 6251, cobertura: 57.0, revisores: 104, capacidad: 52000 },
+        { semana: "Sem 03", mes: "Ene", nuevas: 18072, reingresos: 4421, demanda: 22493, atendidas: 20411, atendidas_primera: 15124, atendidas_reingreso: 5287, aprobadas: 11480, rechazos: 8931, cobertura: 90.7, revisores: 107, capacidad: 53500 },
+        { semana: "Sem 04", mes: "Ene", nuevas: 16406, reingresos: 4259, demanda: 20665, atendidas: 17323, atendidas_primera: 12835, atendidas_reingreso: 4488, aprobadas: 10483, rechazos: 6840, cobertura: 83.8, revisores: 106, capacidad: 53000 },
+        { semana: "Sem 05", mes: "Feb", nuevas: 14357, reingresos: 3282, demanda: 17639, atendidas: 13302, atendidas_primera: 9856, atendidas_reingreso: 3446, aprobadas: 7922, rechazos: 5380, cobertura: 75.4, revisores: 101, capacidad: 50500 },
+        { semana: "Sem 06", mes: "Feb", nuevas: 12095, reingresos: 3526, demanda: 15621, atendidas: 13447, atendidas_primera: 9963, atendidas_reingreso: 3484, aprobadas: 7835, rechazos: 5612, cobertura: 86.1, revisores: 100, capacidad: 50000 },
+        { semana: "Sem 07", mes: "Feb", nuevas: 11348, reingresos: 3436, demanda: 14784, atendidas: 13120, atendidas_primera: 9721, atendidas_reingreso: 3399, aprobadas: 7944, rechazos: 5176, cobertura: 88.7, revisores: 98, capacidad: 49000 },
+        { semana: "Sem 08", mes: "Feb", nuevas: 10811, reingresos: 2734, demanda: 13545, atendidas: 10400, atendidas_primera: 7706, atendidas_reingreso: 2694, aprobadas: 6238, rechazos: 4162, cobertura: 76.8, revisores: 96, capacidad: 48000 },
+        { semana: "Sem 09", mes: "Mar", nuevas: 10426, reingresos: 3222, demanda: 13648, atendidas: 11428, atendidas_primera: 8467, atendidas_reingreso: 2961, aprobadas: 6576, rechazos: 4852, cobertura: 83.7, revisores: 97, capacidad: 48500 },
+        { semana: "Sem 10", mes: "Mar", nuevas: 10454, reingresos: 3088, demanda: 13542, atendidas: 11269, atendidas_primera: 8349, atendidas_reingreso: 2920, aprobadas: 6498, rechazos: 4771, cobertura: 83.2, revisores: 97, capacidad: 48500 },
+        { semana: "Sem 11", mes: "Mar", nuevas: 9719, reingresos: 2944, demanda: 12663, atendidas: 10471, atendidas_primera: 7758, atendidas_reingreso: 2713, aprobadas: 6159, rechazos: 4312, cobertura: 82.7, revisores: 95, capacidad: 47500 },
+        { semana: "Sem 12", mes: "Mar", nuevas: 9178, reingresos: 2916, demanda: 12094, atendidas: 10791, atendidas_primera: 7995, atendidas_reingreso: 2796, aprobadas: 6266, rechazos: 4525, cobertura: 89.2, revisores: 93, capacidad: 46500 },
+        { semana: "Sem 13", mes: "Mar", nuevas: 1577, reingresos: 834, demanda: 2411, atendidas: 3384, atendidas_primera: 2507, atendidas_reingreso: 877, aprobadas: 2057, rechazos: 1327, cobertura: 140.4, revisores: 77, capacidad: 23100 },
+        { semana: "Sem 17", mes: "Abr", nuevas: 1943, reingresos: 323, demanda: 2266, atendidas: 710, atendidas_primera: 526, atendidas_reingreso: 184, aprobadas: 273, rechazos: 437, cobertura: 31.3, revisores: 70, capacidad: 35000 },
+        { semana: "Sem 18", mes: "May", nuevas: 8725, reingresos: 2166, demanda: 10891, atendidas: 7406, atendidas_primera: 5487, atendidas_reingreso: 1919, aprobadas: 4159, rechazos: 3247, cobertura: 68.0, revisores: 93, capacidad: 46500 },
+        { semana: "Sem 19", mes: "May", nuevas: 7713, reingresos: 2308, demanda: 10021, atendidas: 9386, atendidas_primera: 6954, atendidas_reingreso: 2432, aprobadas: 5940, rechazos: 3446, cobertura: 93.7, revisores: 96, capacidad: 48000 },
+        { semana: "Sem 20", mes: "May", nuevas: 374, reingresos: 306, demanda: 680, atendidas: 1456, atendidas_primera: 1079, atendidas_reingreso: 377, aprobadas: 933, rechazos: 523, cobertura: 214.1, revisores: 74, capacidad: 37000 },
+        { semana: "Sem 24", mes: "Jun", nuevas: 3115, reingresos: 881, demanda: 3996, atendidas: 2360, atendidas_primera: 1749, atendidas_reingreso: 611, aprobadas: 1342, rechazos: 1018, cobertura: 59.1, revisores: 86, capacidad: 43000 },
+        { semana: "Sem 25", mes: "Jun", nuevas: 5421, reingresos: 1658, demanda: 7079, atendidas: 7027, atendidas_primera: 5206, atendidas_reingreso: 1821, aprobadas: 4774, rechazos: 2253, cobertura: 99.3, revisores: 95, capacidad: 47500 },
+        { semana: "Sem 30", mes: "Jul", nuevas: 3039, reingresos: 736, demanda: 3775, atendidas: 1253, atendidas_primera: 928, atendidas_reingreso: 325, aprobadas: 333, rechazos: 920, cobertura: 33.2, revisores: 83, capacidad: 41500 },
+        { semana: "Sem 31", mes: "Jul", nuevas: 624, reingresos: 413, demanda: 1037, atendidas: 2924, atendidas_primera: 2166, atendidas_reingreso: 758, aprobadas: 2386, rechazos: 538, cobertura: 282.0, revisores: 91, capacidad: 45500 }
       ];
 
       function renderCapacidadTable(scale = currentCapacidadScale) {
@@ -2484,10 +2531,10 @@ const formatMinutesToTime = (minDecimal: number) => {
           const atendidasDiaria = (atendidasSemanal / 5).toFixed(1);
           const holgura = (capacidad / demanda).toFixed(1);
 
-          // Diagnóstico de Capacidad (A 100 diarios, siempre hubo capacidad instalada)
+          // Diagnóstico de Capacidad (A 100 diarios solo con plantilla de planta activa)
           let badgeCapacidad = `
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200" title="Capacidad teórica de plantilla (${capacidad.toLocaleString()} exp/sem) cubría ${holgura}x la demanda ingresada">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Suficiente (${holgura}x)
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200" title="Capacidad de planta (${capacidad.toLocaleString()} exp/sem con ${revisores} analistas) cubría ${holgura}x la demanda ingresada">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Holgura Planta (${holgura}x)
             </span>
           `;
 
@@ -2543,34 +2590,38 @@ const formatMinutesToTime = (minDecimal: number) => {
                 <div class="text-[10px] text-slate-400 font-normal uppercase tracking-wider">${row.mes}</div>
               </td>
               <td class="py-2.5 px-2.5 text-center font-sans font-semibold text-slate-700">
-                <span class="inline-flex items-center gap-1 text-[11px] bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60 font-semibold">
-                  👥 ${revisores}
+                <span class="inline-flex items-center gap-1 text-[11px] bg-indigo-50/80 text-indigo-800 px-2 py-0.5 rounded-md border border-indigo-200/70 font-bold">
+                  👥 ${revisores} Planta
                 </span>
               </td>
-              <td class="py-2.5 px-3 text-right font-mono text-slate-600 bg-slate-50/30 font-semibold">${capacidad.toLocaleString()}</td>
+              <td class="py-2.5 px-3 text-right font-mono text-indigo-900 bg-indigo-50/30 font-bold">${capacidad.toLocaleString()}</td>
               <td class="py-2.5 px-3 text-right ${clsDemanda}">${demanda.toLocaleString()}</td>
               <td class="py-2.5 px-3 text-right ${clsAtendidas}">
                 <div class="font-bold font-mono">${atendidas.toLocaleString()}</div>
                 <div class="text-[9.5px] font-sans font-medium text-slate-500 whitespace-nowrap">
-                  <span class="text-emerald-700 font-semibold" title="Atendidas 1ª Vez">${atendidasPrimera.toLocaleString()}</span> + <span class="text-orange-600 font-semibold" title="Reingresos Atendidos">${atendidasReingreso.toLocaleString()}</span>
+                  <span class="text-emerald-700 font-semibold">${atendidasPrimera.toLocaleString()} 1ªv</span>
+                  <span class="text-slate-400">·</span>
+                  <span class="text-amber-700 font-semibold">${atendidasReingreso.toLocaleString()} reing</span>
                 </div>
               </td>
-              <td class="py-2.5 px-3 text-center font-mono text-[11px]">
-                <span class="text-slate-700 font-medium">${cargaDiaria}/d</span>
-                <span class="text-slate-400 text-[10px]">(${cargaSemanal}/s)</span>
+              <td class="py-2.5 px-3 text-center text-slate-600">
+                <span class="font-bold text-slate-800">${cargaDiaria}</span> <span class="text-[10px] text-slate-400">d</span>
+                <span class="text-slate-300">|</span>
+                <span class="font-mono text-[11px] text-slate-600">${cargaSemanal}</span> <span class="text-[10px] text-slate-400">s</span>
               </td>
-              <td class="py-2.5 px-3 text-center font-mono text-[11px]">
-                <span class="text-emerald-700 font-semibold">${atendidasDiaria}/d</span>
-                <span class="text-slate-400 text-[10px]">(${atendidasSemanal}/s)</span>
+              <td class="py-2.5 px-3 text-center text-emerald-800">
+                <span class="font-bold text-emerald-700">${atendidasDiaria}</span> <span class="text-[10px] text-emerald-600/70">d</span>
+                <span class="text-emerald-200">|</span>
+                <span class="font-mono text-[11px] text-emerald-700">${atendidasSemanal}</span> <span class="text-[10px] text-emerald-600/70">s</span>
               </td>
               <td class="py-2.5 px-3 text-right ${clsBalance}">${balanceFormatted}</td>
               <td class="py-2.5 px-3 text-center ${clsCoberturaCell}">
-                <span class="inline-block px-2 py-0.5 rounded-full text-[11px] border ${badgeColor}">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] border font-mono ${badgeColor}">
                   ${row.cobertura.toFixed(1)}%
                 </span>
                 ${drenaBadge}
               </td>
-              <td class="py-2.5 px-3 text-center font-sans">
+              <td class="py-2.5 px-3 text-center">
                 ${badgeCapacidad}
               </td>
             </tr>
@@ -2677,7 +2728,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                 pointBorderWidth: 2,
                 yAxisID: 'y',
                 order: 1,
-                hidden: true
+                hidden: false
               },
               {
                 type: 'line',
@@ -2724,21 +2775,21 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'line',
-                label: 'Capacidad Normal del Equipo (~100 exp/día por analista)',
+                label: 'Capacidad Planta Activa (~100 exp/d por analista)',
                 data: dataCapacidad,
-                borderColor: '#475569',
+                borderColor: '#6366f1',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
-                borderDash: [5, 4],
+                borderWidth: 2.5,
+                borderDash: [6, 4],
                 tension: 0.1,
-                pointRadius: 0,
-                pointHoverRadius: 5,
+                pointRadius: 2.5,
+                pointHoverRadius: 6,
                 pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#475569',
+                pointBorderColor: '#6366f1',
                 pointBorderWidth: 2,
                 yAxisID: 'y',
                 order: 1,
-                hidden: true
+                hidden: false
               }
             ]
           },
@@ -2780,7 +2831,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const item = (currentFilteredCapacidadData || capacidadData)[idx];
                     if (!item) return '';
                     const cap = item.capacidad != null ? item.capacidad.toLocaleString() : 'N/D';
-                    return `👥 Personal: ${item.revisores} analistas (capacidad: ${cap} exp/sem)`;
+                    return `👥 Revisores de Planta Activos: ${item.revisores} analistas (Capacidad: ${cap} exp/sem)`;
                   },
                   label: function(context) {
                     const rawVal = context.raw != null ? context.raw : 0;
@@ -2797,7 +2848,10 @@ const formatMinutesToTime = (minDecimal: number) => {
                       return ` 🔷 Demanda ingresada: ${rawVal.toLocaleString()} solicitudes`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Capacidad')) {
-                      return ` ➖ Límite normal sostenible: ${rawVal.toLocaleString()} exp/sem`;
+                      const idx = context.dataIndex;
+                      const item = (currentFilteredCapacidadData || capacidadData)[idx];
+                      const rev = item ? item.revisores : 'N/D';
+                      return ` ➖ Capacidad Planta Activa (${rev} analistas × 100/d): ${rawVal.toLocaleString()} exp/sem`;
                     }
                     const lbl = context.dataset.label || 'Valor';
                     return ` ${lbl}: ${rawVal.toLocaleString()} exp.`;
@@ -2820,10 +2874,10 @@ const formatMinutesToTime = (minDecimal: number) => {
                 type: 'linear',
                 display: true,
                 position: 'left',
-                stacked: true,
+                suggestedMax: 62000,
                 title: {
                   display: true,
-                  text: 'Volumen de Dictámenes Semanales',
+                  text: 'Volumen de Expedientes Semanales',
                   font: { size: 10, weight: 'bold' },
                   color: '#64748b'
                 },
@@ -2937,7 +2991,7 @@ const formatMinutesToTime = (minDecimal: number) => {
           btnLado?.classList.add('text-slate-600');
 
           capacidadChartInstance.options.scales.x.stacked = true;
-          capacidadChartInstance.options.scales.y.stacked = true;
+          delete capacidadChartInstance.options.scales.y.stacked;
           capacidadChartInstance.data.datasets[2].stack = 'atendidas';
           capacidadChartInstance.data.datasets[2].borderRadius = { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 };
           capacidadChartInstance.data.datasets[3].stack = 'atendidas';
