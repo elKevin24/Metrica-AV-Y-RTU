@@ -10,11 +10,14 @@
   window.switchTab = function(tabId) {
     if (!tabId) return;
 
+    // Normalizar ID con o sin prefijo 'tab-'
+    var normalizedId = tabId.startsWith('tab-') ? tabId : 'tab-' + tabId;
+
     // Actualizar botones de navegación desktop
     var tabBtns = document.querySelectorAll('#navTabsContainer button[role="tab"], #navTabsContainer .tab-link');
     tabBtns.forEach(function(btn) {
       var controls = btn.getAttribute('aria-controls') || btn.getAttribute('data-tab');
-      if (controls === tabId || btn.getAttribute('href') === '#' + tabId) {
+      if (controls === normalizedId || controls === tabId || btn.getAttribute('href') === '#' + normalizedId || btn.getAttribute('href') === '#' + tabId) {
         btn.classList.add('active');
         btn.classList.remove('text-slate-400');
         btn.classList.add('text-white', 'font-bold');
@@ -29,7 +32,7 @@
     // Actualizar contenidos de pestañas
     var tabContents = document.querySelectorAll('.tab-content');
     tabContents.forEach(function(content) {
-      if (content.id === tabId) {
+      if (content.id === normalizedId || content.id === tabId) {
         content.classList.remove('hidden');
         content.classList.add('active', 'block');
       } else {
@@ -37,6 +40,18 @@
         content.classList.remove('active', 'block');
       }
     });
+
+    // Inicializar y ajustar tabla de auditoría si corresponde
+    if (normalizedId === 'tab-auditoria') {
+      if (typeof window.initTableAuditDirect === 'function') {
+        window.initTableAuditDirect();
+      }
+      setTimeout(function() {
+        if (typeof window.jQuery !== 'undefined' && window.jQuery.fn && window.jQuery.fn.DataTable && window.jQuery.fn.DataTable.isDataTable('#tableAuditDirect')) {
+          window.jQuery('#tableAuditDirect').DataTable().columns.adjust().draw();
+        }
+      }, 100);
+    }
 
     // Notificar redibujado de gráficos si existen
     if (typeof window.resizeAllCharts === 'function') {

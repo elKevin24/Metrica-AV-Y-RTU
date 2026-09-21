@@ -98,6 +98,7 @@ body {
 .dataTables_wrapper {
     padding-top: 0.5rem;
     font-size: 0.75rem;
+    position: relative;
 }
 
 .dataTables_wrapper .dataTables_filter input {
@@ -151,3 +152,181 @@ body {
     font-size: 0.75rem !important;
     padding-top: 0.75rem !important;
 }
+
+/* ─── STICKY HEADER Y SCROLL CONTAINER ─────────────────────────────────── */
+.dt-scroll-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    scrollbar-gutter: stable;
+}
+
+/* Cabeceras fijas al hacer scroll vertical */
+table.dataTable thead th,
+.dt-sticky-table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    background-color: #0F172A !important;
+    color: #F8FAFC !important;
+    border-bottom: 2px solid #334155 !important;
+    box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.2) !important;
+    white-space: nowrap !important;
+}
+
+table.dataTable thead th:hover,
+.dt-sticky-table thead th:hover {
+    background-color: #1E293B !important;
+}
+
+/* Esquina superior izquierda fija (Intersección Cabecera + 1ª Columna) */
+table.dataTable thead th:first-child,
+.dt-sticky-table thead th:first-child {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 30 !important;
+    background-color: #0B1120 !important;
+    border-right: 1px solid #334155 !important;
+    box-shadow: 3px 2px 6px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 1ª Columna fija al hacer scroll horizontal en móvil/desktop */
+table.dataTable tbody td:first-child,
+.dt-sticky-table tbody td:first-child {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 10 !important;
+    background-color: #FFFFFF !important;
+    font-weight: 700;
+    border-right: 1px solid #E2E8F0 !important;
+    box-shadow: 3px 0 6px -2px rgba(15, 23, 42, 0.08) !important;
+}
+
+table.dataTable.stripe tbody tr:nth-child(even) td:first-child,
+.dt-sticky-table tbody tr:nth-child(even) td:first-child {
+    background-color: #F8FAFC !important;
+}
+
+table.dataTable tbody tr:hover td:first-child,
+.dt-sticky-table tbody tr:hover td:first-child {
+    background-color: #EFF6FF !important;
+}
+
+/* ─── RESPONSIVIDAD PARA PANTALLAS PEQUEÑAS (MÓVIL / TABLET) ─────────────── */
+@media (max-width: 640px) {
+    .dataTables_wrapper {
+        font-size: 0.7rem;
+    }
+    
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        float: none !important;
+        text-align: left !important;
+        width: 100% !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        flex: 1;
+        width: 100% !important;
+        margin-left: 0.25rem;
+    }
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin-top: 0.75rem !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.7rem !important;
+        min-width: 32px;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Padding compacto en celdas de la tabla para aprovechar el ancho */
+    table.dataTable th, table.dataTable td,
+    .dt-sticky-table th, .dt-sticky-table td {
+        padding: 0.5rem 0.625rem !important;
+    }
+}
+
+/* ─── MODO TARJETAS RESPONSIVAS PARA MÓVIL (.dt-card-view) ──────────────── */
+.dt-card-view thead {
+    display: none !important;
+}
+
+.dt-card-view tbody tr {
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 1rem !important;
+    padding: 0.875rem !important;
+    margin-bottom: 0.75rem !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+.dt-card-view tbody tr:hover {
+    border-color: #93C5FD !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important;
+}
+
+.dt-card-view tbody td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.4rem 0 !important;
+    border: none !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    font-size: 0.75rem !important;
+    width: 100% !important;
+    text-align: right !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    position: static !important;
+}
+
+.dt-card-view tbody td:last-child {
+    border-bottom: none !important;
+}
+
+.dt-card-view tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748B;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    text-align: left;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Primera celda en modo tarjeta (Cabecera de tarjeta destacada) */
+.dt-card-view tbody td:first-child {
+    background-color: #EFF6FF !important;
+    margin: -0.875rem -0.875rem 0.5rem -0.875rem !important;
+    padding: 0.625rem 0.875rem !important;
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+    border-bottom: 1px solid #DBEAFE !important;
+    font-size: 0.8125rem !important;
+    color: #1D4ED8 !important;
+}
+

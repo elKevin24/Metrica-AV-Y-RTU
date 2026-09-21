@@ -6,4 +6,3 @@ dist/
 .ds_store
 *.log
 src/data/
-public/data/forensic/

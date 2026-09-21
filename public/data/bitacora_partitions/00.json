@@ -1,0 +1,248 @@
+{
+  "20261AV02E90900": [
+    {
+      "s": 1,
+      "e": "SOLICITUD INGRESADA AL SISTEMA",
+      "f": "2026-01-13 10:06:34",
+      "o": "SISTEMA_AV",
+      "m": ""
+    },
+    {
+      "s": 2,
+      "e": "ASIGNADA A BANDEJA DE REVISOR",
+      "f": "2026-01-13 19:17:29",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-01-13 19:17:29"
+    },
+    {
+      "s": 3,
+      "e": "EN REVISI\u00d3N ACTIVA EN PANTALLA",
+      "f": "2026-01-13 19:18:05",
+      "o": "AMVELIZM",
+      "m": "",
+      "r": "2026-01-13 19:18:05"
+    },
+    {
+      "s": 4,
+      "e": "SOLICITUD APROBADA",
+      "f": "2026-01-13 19:18:08",
+      "o": "AMVELIZM",
+      "m": "",
+      "a": "2026-01-13 19:17:29",
+      "r": "2026-01-13 19:18:05",
+      "d": "2026-01-13 19:18:08"
+    }
+  ],
+  "20261AV18279200": [
+    {
+      "s": 1,
+      "e": "SOLICITUD INGRESADA AL SISTEMA",
+      "f": "2026-01-12 21:03:01",
+      "o": "SISTEMA_AV",
+      "m": ""
+    },
+    {
+      "s": 2,
+      "e": "ASIGNADA A BANDEJA DE REVISOR",
+      "f": "2026-01-13 14:39:29",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-01-13 14:39:29"
+    },
+    {
+      "s": 3,
+      "e": "EN REVISI\u00d3N ACTIVA EN PANTALLA",
+      "f": "2026-01-13 14:40:15",
+      "o": "FOMONZON",
+      "m": "",
+      "r": "2026-01-13 14:40:15"
+    },
+    {
+      "s": 4,
+      "e": "SOLICITUD RECHAZADA",
+      "f": "2026-01-13 14:40:47",
+      "o": "FOMONZON",
+      "m": "DOCUMENTACI\u00d3N DPI ILEGIBLE O INCOMPLETA",
+      "a": "2026-01-13 14:39:29",
+      "r": "2026-01-13 14:40:15",
+      "d": "2026-01-13 14:40:47"
+    },
+    {
+      "s": 5,
+      "e": "SUBSANADA POR CONTRIBUYENTE",
+      "f": "2026-01-13 18:22:10",
+      "o": "CONTRIBUYENTE",
+      "m": "Adjunta DPI legible actualizado"
+    },
+    {
+      "s": 6,
+      "e": "RE-ASIGNADA A BANDEJA DE REVISOR",
+      "f": "2026-01-14 08:38:15",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-01-14 08:38:15"
+    },
+    {
+      "s": 7,
+      "e": "EN SEGUNDA REVISI\u00d3N ACTIVA",
+      "f": "2026-01-14 08:39:50",
+      "o": "FOMONZON",
+      "m": "",
+      "r": "2026-01-14 08:39:50"
+    },
+    {
+      "s": 8,
+      "e": "SOLICITUD APROBADA",
+      "f": "2026-01-14 08:40:42",
+      "o": "FOMONZON",
+      "m": "",
+      "a": "2026-01-14 08:38:15",
+      "r": "2026-01-14 08:39:50",
+      "d": "2026-01-14 08:40:42"
+    }
+  ],
+  "20261AV8C176F00": [
+    {
+      "s": 1,
+      "e": "SOLICITUD INGRESADA AL SISTEMA",
+      "f": "2026-01-29 16:47:05",
+      "o": "SISTEMA_AV",
+      "m": ""
+    },
+    {
+      "s": 2,
+      "e": "ASIGNADA A BANDEJA DE REVISOR",
+      "f": "2026-02-01 09:46:15",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-02-01 09:46:15"
+    },
+    {
+      "s": 3,
+      "e": "EN REVISI\u00d3N ACTIVA EN PANTALLA",
+      "f": "2026-02-01 09:47:00",
+      "o": "MKNAJERA",
+      "m": "",
+      "r": "2026-02-01 09:47:00"
+    },
+    {
+      "s": 4,
+      "e": "SOLICITUD RECHAZADA",
+      "f": "2026-02-01 09:47:18",
+      "o": "MKNAJERA",
+      "m": "FOTOGRAF\u00cdA SELFIE CON DPI NO COINCIDE CON REGISTRO RENAP",
+      "a": "2026-02-01 09:46:15",
+      "r": "2026-02-01 09:47:00",
+      "d": "2026-02-01 09:47:18"
+    },
+    {
+      "s": 5,
+      "e": "SUBSANADA POR CONTRIBUYENTE (1\u00aa VEZ)",
+      "f": "2026-02-01 15:10:22",
+      "o": "CONTRIBUYENTE",
+      "m": "Reenv\u00edo de fotograf\u00eda"
+    },
+    {
+      "s": 6,
+      "e": "RE-ASIGNADA A BANDEJA",
+      "f": "2026-02-02 11:20:05",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-02-02 11:20:05"
+    },
+    {
+      "s": 7,
+      "e": "EN REVISI\u00d3N ACTIVA (2\u00aa VEZ)",
+      "f": "2026-02-02 11:21:10",
+      "o": "EOVALIEN",
+      "m": "",
+      "r": "2026-02-02 11:21:10"
+    },
+    {
+      "s": 8,
+      "e": "SOLICITUD RECHAZADA",
+      "f": "2026-02-02 11:21:40",
+      "o": "EOVALIEN",
+      "m": "FIRMA DIGITAL NO COINCIDE CON DOCUMENTO OFICIAL",
+      "a": "2026-02-02 11:20:05",
+      "r": "2026-02-02 11:21:10",
+      "d": "2026-02-02 11:21:40"
+    },
+    {
+      "s": 9,
+      "e": "SUBSANADA POR CONTRIBUYENTE (2\u00aa VEZ)",
+      "f": "2026-02-03 08:30:12",
+      "o": "CONTRIBUYENTE",
+      "m": "Firma corregida"
+    },
+    {
+      "s": 10,
+      "e": "RE-ASIGNADA A BANDEJA",
+      "f": "2026-02-03 13:58:10",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-02-03 13:58:10"
+    },
+    {
+      "s": 11,
+      "e": "EN TERCERA REVISI\u00d3N ACTIVA",
+      "f": "2026-02-03 13:59:15",
+      "o": "MKNAJERA",
+      "m": "",
+      "r": "2026-02-03 13:59:15"
+    },
+    {
+      "s": 12,
+      "e": "SOLICITUD APROBADA",
+      "f": "2026-02-03 13:59:34",
+      "o": "MKNAJERA",
+      "m": "",
+      "a": "2026-02-03 13:58:10",
+      "r": "2026-02-03 13:59:15",
+      "d": "2026-02-03 13:59:34"
+    }
+  ],
+  "20261AV0147B200": [
+    {
+      "s": 1,
+      "e": "SOLICITUD INGRESADA AL SISTEMA",
+      "f": "2026-01-07 18:47:53",
+      "o": "SISTEMA_AV",
+      "m": ""
+    },
+    {
+      "s": 2,
+      "e": "ASIGNADA A BANDEJA DE REVISOR",
+      "f": "2026-01-10 15:46:11",
+      "o": "DISTRIBUIDOR_AUTO",
+      "m": "",
+      "a": "2026-01-10 15:46:11"
+    },
+    {
+      "s": 3,
+      "e": "EN REVISI\u00d3N ACTIVA EN PANTALLA",
+      "f": "2026-01-10 15:47:00",
+      "o": "RSISRODR",
+      "m": "",
+      "r": "2026-01-10 15:47:00"
+    },
+    {
+      "s": 4,
+      "e": "SOLICITUD RECHAZADA",
+      "f": "2026-01-10 15:47:25",
+      "o": "RSISRODR",
+      "m": "DOCUMENTACI\u00d3N DPI VENCIDO O ILEGIBLE",
+      "a": "2026-01-10 15:46:11",
+      "r": "2026-01-10 15:47:00",
+      "d": "2026-01-10 15:47:25"
+    },
+    {
+      "s": 5,
+      "e": "CANCELADA POR EXPIRACI\u00d3N (NO SUBSANADA)",
+      "f": "2026-01-16 10:06:40",
+      "o": "SISTEMA_AV",
+      "m": "Excedi\u00f3 plazo de 5 d\u00edas h\u00e1biles para subsanar observaciones"
+    }
+  ]
+}

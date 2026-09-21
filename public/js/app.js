@@ -107,8 +107,12 @@
       if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
         lucide.createIcons();
       }
+      if (cleanTab === 'auditoria' && typeof window.initTableAuditDirect === 'function') {
+        window.initTableAuditDirect();
+      }
     }, 50);
   };
+
 
   // 5. Paleta de Comandos y Modales
   window.toggleCommandPalette = function() {
@@ -233,4 +237,126 @@
     window.initOlapApp();
   });
 
+  // 6. DataTables de Auditoría Granular con Sticky Header y Cards Responsivas
+  let dtAuditDirectInstance = null;
+  window.initTableAuditDirect = function() {
+    const tableEl = document.getElementById('tableAuditDirect');
+    const tbody = document.getElementById('tbodyAuditDirect');
+    if (!tableEl || !tbody) return;
+    if (tableEl.dataset.initialized === 'true') return;
+
+    fetch('/data/auditoria_muestra.json')
+      .then(r => r.json())
+      .then(data => {
+        if (!data || !data.muestra_expedientes) return;
+        tableEl.dataset.initialized = 'true';
+
+        let html = '';
+        data.muestra_expedientes.forEach(e => {
+          const secFinal = e.Atencion_Final_Sec;
+          const secRech = e.Atencion_Rechazo_Sec;
+          const hrsFinal = (secFinal != null && !isNaN(secFinal)) ? (secFinal / 3600.0).toFixed(4) + ' h' : '-';
+          const hrsRech = (secRech != null && !isNaN(secRech)) ? (secRech / 3600.0).toFixed(4) + ' h' : '-';
+          const ciclo = (e.Ciclo_Habil_Hrs != null && !isNaN(e.Ciclo_Habil_Hrs)) ? Number(e.Ciclo_Habil_Hrs).toFixed(2) + ' h' : '-';
+
+          let badgeRonda = '';
+          if (e.Ronda_Revision === '1RA_DIRECTA') {
+            badgeRonda = '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-2 py-0.5 rounded-full text-[10px] whitespace-nowrap">🟢 1ra Directa</span>';
+          } else if (e.Ronda_Revision === '1RA_RECHAZO') {
+            badgeRonda = '<span class="bg-rose-100 text-rose-800 border border-rose-300 font-bold px-2 py-0.5 rounded-full text-[10px] whitespace-nowrap">🔴 1ra Rechazo</span>';
+          } else if (e.Ronda_Revision === '2DA_SUBSANADA') {
+            badgeRonda = '<span class="bg-blue-100 text-blue-800 border border-blue-300 font-bold px-2 py-0.5 rounded-full text-[10px] whitespace-nowrap">🔵 2da Subsanada</span>';
+          } else {
+            badgeRonda = '<span class="bg-amber-100 text-amber-800 border border-amber-300 font-bold px-2 py-0.5 rounded-full text-[10px] whitespace-nowrap">⚠️ 3ra+ Límite</span>';
+          }
+
+          let badgeEstado = '';
+          if (e.Estado === 'APROBADA') {
+            badgeEstado = '<span class="text-emerald-700 font-bold whitespace-nowrap">Aprobada</span>';
+          } else if (e.Estado && e.Estado.includes('RECHAZADA')) {
+            badgeEstado = '<span class="text-rose-600 font-bold whitespace-nowrap">Rechazada</span>';
+          } else {
+            badgeEstado = `<span class="text-slate-600 font-medium whitespace-nowrap">${e.Estado || '-'}</span>`;
+          }
+
+          const orderFinal = (secFinal != null && !isNaN(secFinal)) ? (secFinal / 3600.0) : 999999;
+          const orderRech = (secRech != null && !isNaN(secRech)) ? (secRech / 3600.0) : 999999;
+          const orderCiclo = (e.Ciclo_Habil_Hrs != null && !isNaN(e.Ciclo_Habil_Hrs)) ? Number(e.Ciclo_Habil_Hrs) : 999999;
+
+          html += `
+            <tr>
+              <td data-label="ID Expediente" class="font-mono font-bold text-blue-700">${e.NumeroGestion}</td>
+              <td data-label="Operador" class="font-bold text-slate-800">${e.Operador}</td>
+              <td data-label="Tipo Trámite" class="text-slate-700">${e.Gestion}</td>
+              <td data-label="Ronda" class="text-center">${badgeRonda}</td>
+              <td data-label="Región" class="text-slate-600 font-medium">${e.Region}</td>
+              <td data-label="Estado">${badgeEstado}</td>
+              <td data-label="Causal Rechazo" class="text-slate-600 max-w-xs truncate" title="${e.MotivoRechazo}">${e.MotivoRechazo || '-'}</td>
+              <td data-label="Tiempo Atención" class="text-right font-mono text-emerald-700 font-bold" data-order="${orderFinal}">${hrsFinal}</td>
+              <td data-label="Tiempo Rechazo" class="text-right font-mono text-rose-600 font-bold" data-order="${orderRech}">${hrsRech}</td>
+              <td data-label="Ciclo Hábil" class="text-right font-mono text-purple-700 font-bold" data-order="${orderCiclo}">${ciclo}</td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+
+        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.DataTable) {
+          if (window.jQuery.fn.DataTable.isDataTable('#tableAuditDirect')) {
+            window.jQuery('#tableAuditDirect').DataTable().destroy();
+          }
+          dtAuditDirectInstance = window.jQuery('#tableAuditDirect').DataTable({
+            pageLength: 25,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+            order: [[7, 'asc']], // Ordenar por Tiempo Atención por defecto
+            columnDefs: [
+              { targets: [7, 8, 9], type: 'num' }
+            ],
+            language: {
+              lengthMenu: "Mostrar _MENU_ expedientes",
+              zeroRecords: "No se encontraron expedientes",
+              info: "Mostrando _START_ a _END_ de _TOTAL_ expedientes",
+              infoEmpty: "Mostrando 0 expedientes",
+              infoFiltered: "(filtrado de _MAX_ expedientes)",
+              search: "Buscar expediente:",
+              paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente →",
+                previous: "← Anterior"
+              }
+            }
+          });
+        }
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      })
+      .catch(err => console.error('Error cargando datos de auditoría:', err));
+  };
+
+  window.toggleAuditDirectView = function(mode) {
+    const table = document.getElementById('tableAuditDirect');
+    const btnTable = document.getElementById('btnAuditDirectTable');
+    const btnCards = document.getElementById('btnAuditDirectCards');
+    if (!table) return;
+
+    if (mode === 'cards') {
+      table.classList.add('dt-card-view');
+      if (btnCards) btnCards.className = 'px-2.5 py-1 rounded-lg transition bg-white text-blue-700 shadow-xs flex items-center gap-1.5 font-bold';
+      if (btnTable) btnTable.className = 'px-2.5 py-1 rounded-lg transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5 font-medium';
+    } else {
+      table.classList.remove('dt-card-view');
+      if (btnTable) btnTable.className = 'px-2.5 py-1 rounded-lg transition bg-white text-blue-700 shadow-xs flex items-center gap-1.5 font-bold';
+      if (btnCards) btnCards.className = 'px-2.5 py-1 rounded-lg transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5 font-medium';
+    }
+  };
+
+  // Inicializar al cargar si se accede directamente a la pestaña de auditoría
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#tab-auditoria' || window.location.hash.includes('auditoria')) {
+      window.switchTab('auditoria');
+    }
+  });
+
 })(window);
+

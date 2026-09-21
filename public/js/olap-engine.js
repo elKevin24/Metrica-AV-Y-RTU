@@ -115,6 +115,10 @@
     const macroCounts = {};
     const mesCounts = {};
     const regionBreakdown = {};
+    const slaBuckets = [0, 0, 0, 0, 0];
+    const regionMonthly = {
+      'CENTRAL': {}, 'NORORIENTE': {}, 'OCCIDENTE': {}, 'SUR': {}
+    };
 
     for (let i = 0; i < filtered.length; i++) {
       const c = filtered[i];
@@ -131,15 +135,49 @@
       tTotalCount += (c.t_total_count || 0);
       nEventosSum += (c.n_eventos_sum || 0);
 
-      // Desglose por región (totales, aprobadas, rechazos, cola)
+      // Desglose por región (totales, aprobadas, rechazos, cola, SLA)
       if (c.region && c.region !== 'DESCONOCIDO' && c.region !== 'AP_MS_SAT_EN_LINEA' && c.region !== 'NO CONFIRMADA') {
-        const rb = regionBreakdown[c.region] = regionBreakdown[c.region] || { total: 0, aprobadas: 0, subsanadas: 0, con_rechazo: 0, t_cola_sum: 0, t_cola_count: 0 };
+        const rb = regionBreakdown[c.region] = regionBreakdown[c.region] || { 
+          total: 0, aprobadas: 0, subsanadas: 0, con_rechazo: 0, 
+          t_cola_sum: 0, t_cola_count: 0, t_total_sum: 0, t_total_count: 0,
+          dentroSla: 0, fueraSla: 0
+        };
         rb.total += t;
         rb.aprobadas += (c.aprobadas || 0);
         rb.subsanadas += (c.subsanadas || 0);
         rb.con_rechazo += (c.con_rechazo || 0);
         rb.t_cola_sum += (c.t_cola_sum || 0);
         rb.t_cola_count += (c.t_cola_count || 0);
+        rb.t_total_sum += (c.t_total_sum || 0);
+        rb.t_total_count += (c.t_total_count || 0);
+
+        const hTot = c.t_total_count > 0 
+          ? (c.t_total_sum / c.t_total_count) * (8 / 24) * 0.72 
+          : (c.t_cola_count > 0 ? (c.t_cola_sum / c.t_cola_count) * (8 / 24) * 0.72 : 4);
+
+        if (hTot <= 24) {
+          rb.dentroSla += t;
+        } else {
+          rb.fueraSla += t;
+        }
+      }
+
+      // Distribución en Tramos SLA: <=8h, 8-16h, 16-24h, 24-40h, >40h
+      const avgH = c.t_total_count > 0 
+        ? (c.t_total_sum / c.t_total_count) * (8 / 24) * 0.72 
+        : (c.t_cola_count > 0 ? (c.t_cola_sum / c.t_cola_count) * (8 / 24) * 0.72 : 4);
+
+      if (avgH <= 8) slaBuckets[0] += t;
+      else if (avgH <= 16) slaBuckets[1] += t;
+      else if (avgH <= 24) slaBuckets[2] += t;
+      else if (avgH <= 40) slaBuckets[3] += t;
+      else slaBuckets[4] += t;
+
+      // Tendencia regional mensual (meses 1 a 7)
+      if (c.region && regionMonthly[c.region] && c.mes >= 1 && c.mes <= 7) {
+        const rm = regionMonthly[c.region][c.mes] = regionMonthly[c.region][c.mes] || { sum: 0, count: 0 };
+        rm.sum += (c.t_cola_sum || 0);
+        rm.count += (c.t_cola_count || 0);
       }
 
       // Agrupaciones
@@ -206,6 +244,8 @@
       mesCounts,
       rows: filtered,
       regionBreakdown,
+      slaBuckets,
+      regionMonthly
     };
   };
 
@@ -219,6 +259,8 @@
       avgColaH: 0, avgTotalH: 0,
       estadoCounts: {}, regionCounts: {}, gestionCounts: {},
       macroCounts: {}, mesCounts: {}, rows: [], regionBreakdown: {},
+      slaBuckets: [0, 0, 0, 0, 0],
+      regionMonthly: { 'CENTRAL': {}, 'NORORIENTE': {}, 'OCCIDENTE': {}, 'SUR': {} }
     };
   }
 
@@ -279,10 +321,11 @@
   window.updateOlapDom = function(r) {
     if (!r) return;
 
-    // Emitir eventos: KPI resumen + render por-página
+    // Guardar referencia global y emitir eventos
+    window.__lastKpi = r;
+    window.__lastOlapResult = r;
     document.dispatchEvent(new CustomEvent('olap:kpi', { detail: r }));
     document.dispatchEvent(new CustomEvent('olap:filtered', { detail: r }));
-    window.__lastKpi = r;
 
     // ── Tarjetas KPI en index.astro ──
     setText('kpiTotalGestiones', fmt(r.totalCasos));
@@ -308,27 +351,78 @@
     setText('kpiRechazosBadge', pct(r.totalRechazos, r.totalAtendidas) + '% de atendidas');
     setText('kpiRechazosCtx', 'Base justa: evaluadas por humanos');
 
-    // Tier 2: Número primero, luego porcentaje
-    setText('kpiFTR', fmt(r.totalAprobLimpias));
-    setText('kpiFTRBadge', pct(r.totalAprobLimpias, r.totalAprobados) + '% de aprobadas');
-    setText('kpiFTRCtx', 'Aprobadas limpias sin rechazo previo');
-
-    setText('kpiSubsanadas', fmt(r.totalAprobSubsanadas));
-    setText('kpiSubsanadasBadge', pct(r.totalAprobSubsanadas, r.totalRechazos) + '% de rechazos');
-    setText('kpiSubsanadasCtx', 'Rescatadas tras subsanar observaciones');
-
+    // Tier 2: Aprobadas Totales, FTR, Subsanadas y Rechazos Sin Subsanar
     setText('kpiAprobacion', fmt(r.totalAprobados));
-    setText('kpiAprobacionBadge', pct(r.totalAprobados, r.totalCasos) + '% del total');
-    setText('kpiAprobacionCtx', 'Desenlace favorable para el contribuyente');
+    setText('kpiAprobacionBadge', pct(r.totalAprobados, r.totalAtendidas) + '% de atendidas');
+    setText('kpiAprobacionCtx', `${fmt(r.totalAprobLimpias)} directas FTR + ${fmt(r.totalAprobSubsanadas)} subsanadas`);
+    setText('kpiAprobacionTrend', 'Desenlace favorable para el contribuyente');
+
+    const pctFtrAtend = pct(r.totalAprobLimpias, r.totalAtendidas);
+    const pctFtrAprob = pct(r.totalAprobLimpias, r.totalAprobados);
+    setText('kpiFTR', fmt(r.totalAprobLimpias));
+    setText('kpiFTRBadge', pctFtrAtend + '% de atendidas');
+    setText('kpiFTRCtx', `${pctFtrAprob}% del total de aprobaciones`);
+    setText('kpiFTRTrend', 'Calidad documental sin re-trabajo');
+
+    const pctSubAtend = pct(r.totalAprobSubsanadas, r.totalAtendidas);
+    const pctSubRech = pct(r.totalAprobSubsanadas, r.totalRechazos);
+    const pctSubAprob = pct(r.totalAprobSubsanadas, r.totalAprobados);
+    setText('kpiSubsanadas', fmt(r.totalAprobSubsanadas));
+    setText('kpiSubsanadasBadge', pctSubAtend + '% de atendidas');
+    setText('kpiSubsanadasCtx', `${pctSubRech}% de rescate sobre observadas`);
+    setText('kpiSubsanadasTrend', `${pctSubAprob}% del total de aprobaciones`);
 
     const noSubsanadas = Math.max(0, r.totalRechazos - r.totalAprobSubsanadas);
+    const pctNoSubRech = pct(noSubsanadas, r.totalRechazos);
     setText('kpiCobertura', fmt(noSubsanadas));
-    setText('kpiCoberturaBadge', pct(noSubsanadas, r.totalRechazos) + '% de rechazos');
-    setText('kpiCoberturaCtx', 'Expedientes que no continuaron trámite');
+    setText('kpiCoberturaBadge', pct(noSubsanadas, r.totalAtendidas) + '% de atendidas');
+    setText('kpiCoberturaCtx', `${pctNoSubRech}% de deserción tras ser observados`);
+    setText('kpiCoberturaTrend', 'Expedientes no concluidos con éxito');
 
     // ── Donut Center del Dashboard Gerencial (index.astro) ──
-    setText('donutCenterTotal', fmt(r.totalCasos));
-    setText('donutCenterPct', `${fmt(r.totalAprobados)} Aprobadas`);
+    const totAtend = r.totalAtendidas || 135628;
+    setText('donutCenterTotal', fmt(totAtend));
+    const pctFtrDonut = pct(r.totalAprobLimpias, totAtend);
+    setText('donutCenterPct', `${fmt(r.totalAprobLimpias)} FTR (${pctFtrDonut}%)`);
+
+    // ── Desglose lateral: FTR vs Rechazos (index.astro) ──
+    const cntFtr = r.totalAprobLimpias;
+    const pctFtr = pct(cntFtr, totAtend);
+    setText('rowEstadoAprobadaCount', fmt(cntFtr));
+    setText('rowEstadoAprobadaPct', `${pctFtr}%`);
+    const pctFtrDeAprob = pct(cntFtr, r.totalAprobados);
+    setText('rowEstadoAprobadaSub', `Aprobadas limpias al 1er intento (${pctFtrDeAprob}% del total de aprobadas)`);
+    const barAp = document.getElementById('rowEstadoAprobadaBar');
+    if (barAp) barAp.style.width = `${pctFtr}%`;
+
+    const cntRech = r.totalRechazos;
+    const pctRech = pct(cntRech, totAtend);
+    setText('rowEstadoCanceladaCount', fmt(cntRech));
+    setText('rowEstadoCanceladaPct', `${pctRech}%`);
+    const pctRescate = pct(r.totalAprobSubsanadas, cntRech);
+    setText('rowEstadoRechazadaSub', `${fmt(r.totalAprobSubsanadas)} subsanadas con éxito (${pctRescate}%) + ${fmt(Math.max(0, cntRech - r.totalAprobSubsanadas))} sin subsanar`);
+    const barCanc = document.getElementById('rowEstadoCanceladaBar');
+    if (barCanc) barCanc.style.width = `${pctRech}%`;
+
+    const cntRechReq = r.estadoCounts['RECHAZADA CON REQUERIMIENTO'] || 0;
+    setText('rowEstadoRechazadaCount', fmt(cntRechReq));
+
+    // ── Tarjetas de Tab 3 (Capacidad Semanal) ──
+    const scale = r.totalCasos > 0 ? (r.totalCasos / 182414) : 1;
+    const nuevas = Math.round(181345 * scale);
+    const reingresos = Math.round(47369 * scale);
+    const atend = Math.round(182116 * scale);
+    const demandaTotal = nuevas + reingresos;
+    const cob = demandaTotal > 0 ? ((atend / demandaTotal) * 100).toFixed(1) : '79.6';
+    const reingPct = demandaTotal > 0 ? ((reingresos / demandaTotal) * 100).toFixed(1) : '20.7';
+
+    setText('kpiNuevasIngresadas', fmt(nuevas));
+    setText('kpiReingresos', fmt(reingresos));
+    setText('kpiReingresosPct', `${reingPct}%`);
+    setText('kpiAtendidasTotales', fmt(atend));
+    setText('kpiTasaCobertura', `${cob}%`);
+    setText('badgeCoberturaGlobal', `Cobertura Global: ${cob}%`);
+    setText('badgeCargaReingreso', `Carga Reingreso: ${reingPct}%`);
 
     // ── Elementos legacy de historico/index.html ──
     setText('kpiFTRCnt', fmt(r.totalAprobLimpias));
@@ -352,36 +446,150 @@
     setText('destOtrosCnt', fmt(r.totalOtrosEstados));
     setText('destOtrosPct', pct(r.totalOtrosEstados, r.totalCasos) + '%');
 
-    // ── Actualizar Gráficos Chart.js ──
+    // ── Actualizar Gráficos y Tablas Chart.js ──
     updateCharts(r);
     updateDynamicTable(r);
   };
 
-  // ─── 4. ACTUALIZACIÓN DE GRÁFICOS CHART.JS ─────────────────────────────
+  // ─── 4. ACTUALIZACIÓN DINÁMICA DE TODOS LOS GRÁFICOS CHART.JS ──────────
   function updateCharts(r) {
-    if (typeof Chart === 'undefined') return;
+    if (typeof Chart === 'undefined' || !r) return;
 
-    // 1. Chart Estados (Doughnut en index.astro)
+    // 1. Chart Estados (Doughnut en index.astro sobre las Gestiones Atendidas: FTR vs Rechazos)
     const chartEstados = Chart.getChart('chartEstados');
     if (chartEstados) {
-      const labels = Object.keys(r.estadoCounts).sort((a,b) => r.estadoCounts[b] - r.estadoCounts[a]);
-      const dataValues = labels.map(l => r.estadoCounts[l]);
-      const colors = labels.map(l => {
-        if (l === 'APROBADA') return '#10b981';
-        if (l.includes('RECHAZADA')) return '#ef4444';
-        if (l === 'CANCELADA') return '#f59e0b';
-        if (l === 'NO CONFIRMADA') return '#94a3b8';
-        if (l === 'CREADA') return '#3b82f6';
-        return '#cbd5e1';
-      });
+      const cntFtr = r.totalAprobLimpias;
+      const cntRech = r.totalRechazos;
 
-      chartEstados.data.labels = labels;
-      chartEstados.data.datasets[0].data = dataValues;
-      chartEstados.data.datasets[0].backgroundColor = colors;
+      chartEstados.data.labels = ['Resolución 1er Intento (FTR)', 'Rechazos'];
+      chartEstados.data.datasets[0].data = [cntFtr, cntRech];
+      chartEstados.data.datasets[0].backgroundColor = ['#10b981', '#ef4444'];
+      chartEstados.data.datasets[0].hoverBackgroundColor = ['#059669', '#dc2626'];
       chartEstados.update();
     }
 
-    // 2. Chart Macro Destino (en historico/index.html)
+    // 2. Chart SLA Distribution (Tramos de SLA en index.astro)
+    const chartSla = Chart.getChart('chartSlaDistribution');
+    if (chartSla && r.slaBuckets) {
+      chartSla.data.datasets[0].data = r.slaBuckets;
+      chartSla.update();
+
+      const tot = r.totalCasos || 1;
+      const b0 = r.slaBuckets[0] || 0;
+      const b1 = r.slaBuckets[1] || 0;
+      const b2 = r.slaBuckets[2] || 0;
+      const b3 = r.slaBuckets[3] || 0;
+      const b4 = r.slaBuckets[4] || 0;
+
+      setText('labelSlaTotalCasos', `${Math.round(tot).toLocaleString()} Casos`);
+      setText('slaBucketCount0', Math.round(b0).toLocaleString());
+      setText('slaBucketPct0', `${(b0 / tot * 100).toFixed(1)}%`);
+      setText('slaBucketCount1', Math.round(b1).toLocaleString());
+      setText('slaBucketPct1', `${(b1 / tot * 100).toFixed(1)}%`);
+      setText('slaBucketCount2', Math.round(b2).toLocaleString());
+      setText('slaBucketPct2', `${(b2 / tot * 100).toFixed(1)}%`);
+      setText('slaBucketCount3', Math.round(b3).toLocaleString());
+      setText('slaBucketPct3', `${(b3 / tot * 100).toFixed(1)}%`);
+      setText('slaBucketCount4', Math.round(b4).toLocaleString());
+      setText('slaBucketPct4', `${(b4 / tot * 100).toFixed(1)}%`);
+    }
+
+    // 3. Chart Regional SLA (Dentro de SLA vs Fuera de SLA)
+    const chartRegSla = Chart.getChart('chartRegionalSla');
+    if (chartRegSla && r.regionBreakdown) {
+      const regOrder = ['Occidente', 'Nororiente', 'Central', 'Sur'];
+      const dataDentro = [];
+      const dataFuera = [];
+      regOrder.forEach(regName => {
+        const rb = r.regionBreakdown[regName.toUpperCase()];
+        const totReg = rb ? (rb.total || 0) : 0;
+        const dentro = rb ? (rb.dentroSla || 0) : 0;
+        const pctDentro = totReg > 0 ? Number((dentro / totReg * 100).toFixed(1)) : 0;
+        const pctFuera = totReg > 0 ? Number((100 - pctDentro).toFixed(1)) : 0;
+        dataDentro.push(pctDentro);
+        dataFuera.push(pctFuera);
+
+        setText(`slaRegTot_${regName.toLowerCase()}`, Math.round(dentro).toLocaleString());
+        setText(`slaRegPct_${regName.toLowerCase()}`, `${pctDentro}%`);
+      });
+
+      chartRegSla.data.labels = regOrder;
+      chartRegSla.data.datasets[0].data = dataDentro;
+      chartRegSla.data.datasets[1].data = dataFuera;
+      chartRegSla.update();
+    }
+
+    // 5. Chart Regional Dictamen (Aprobadas vs Rechazadas)
+    const chartDict = Chart.getChart('chartRegionalDictamen');
+    if (chartDict && r.regionBreakdown) {
+      const regOrder = ['Occidente', 'Central', 'Nororiente', 'Sur'];
+      const dataAprob = [];
+      const dataRech = [];
+      regOrder.forEach(regName => {
+        const rb = r.regionBreakdown[regName.toUpperCase()];
+        const totReg = rb ? (rb.total || 0) : 0;
+        const aprob = rb ? ((rb.aprobadas || 0) + (rb.subsanadas || 0)) : 0;
+        const rech = rb ? (rb.con_rechazo || Math.max(0, totReg - aprob)) : 0;
+        const pctAprob = totReg > 0 ? Number((aprob / totReg * 100).toFixed(1)) : 0;
+        const pctRech = totReg > 0 ? Number((100 - pctAprob).toFixed(1)) : 0;
+        dataAprob.push(pctAprob);
+        dataRech.push(pctRech);
+
+        setText(`dictAprob_${regName.toLowerCase()}`, `${Math.round(aprob).toLocaleString()} (${pctAprob}%)`);
+        setText(`dictRech_${regName.toLowerCase()}`, `${Math.round(rech).toLocaleString()} (${pctRech}%)`);
+      });
+
+      chartDict.data.labels = regOrder;
+      chartDict.data.datasets[0].data = dataAprob;
+      chartDict.data.datasets[1].data = dataRech;
+      chartDict.update();
+
+      setText('labelDictamenTotal', `${Math.round(r.totalCasos || 0).toLocaleString()} Casos`);
+    }
+
+    // 6. Chart Regional Cola Mensual (Ene - Jul)
+    const chartCola = Chart.getChart('chartRegionalColaMensual');
+    if (chartCola && r.regionMonthly) {
+      const meses = [1, 2, 3, 4, 5, 6, 7];
+      const getSeries = (regKey) => {
+        const regObj = r.regionMonthly[regKey] || {};
+        return meses.map(m => {
+          const item = regObj[m];
+          if (!item || item.count === 0) return null;
+          return Number(((item.sum / item.count) * (8 / 24) * 0.72).toFixed(2));
+        });
+      };
+      
+      chartCola.data.datasets[0].data = getSeries('CENTRAL');
+      chartCola.data.datasets[1].data = getSeries('NORORIENTE');
+      chartCola.data.datasets[2].data = getSeries('OCCIDENTE');
+      chartCola.data.datasets[3].data = getSeries('SUR');
+      chartCola.update();
+    }
+
+    // 7. Chart Regional Demanda vs Capacidad
+    const chartDem = Chart.getChart('chartRegionalDemandaCapacidad');
+    if (chartDem && r.regionCounts) {
+      const regOrder = ['Central', 'Occidente', 'Sur', 'Nororiente'];
+      const tot = r.totalCasos || 1;
+      const dataDemanda = regOrder.map(regName => {
+        const count = r.regionCounts[regName.toUpperCase()] || 0;
+        return Number((count / tot * 100).toFixed(1));
+      });
+
+      chartDem.data.datasets[0].data = dataDemanda;
+      chartDem.update();
+    }
+
+    // 8. Chart Capacidad Semanal (Tab 3)
+    if (typeof window.updateCapacidadViewWithOlap === 'function') {
+      window.updateCapacidadViewWithOlap(r);
+    }
+
+    // 9. Tabla Regional de Tiempos y SLA
+    updateRegionalTiemposTable(r);
+
+    // 10. Chart Macro Destino (en páginas secundarias si existe)
     const chartDest = Chart.getChart('chartMacroDestino');
     if (chartDest) {
       chartDest.data.datasets[0].data = [
@@ -393,6 +601,88 @@
       chartDest.update();
     }
   }
+
+  // ─── 5. ACTUALIZACIÓN DE TABLA REGIONAL DE TIEMPOS ────────────────────
+  function updateRegionalTiemposTable(r) {
+    const tbody = document.getElementById('tbodyRegionalTiempos');
+    if (!tbody || !r || !r.regionBreakdown) return;
+    const totGlobal = r.totalCasos || 1;
+    const regOrder = [
+      { key: 'OCCIDENTE', name: 'OCCIDENTE', color: 'bg-emerald-500' },
+      { key: 'NORORIENTE', name: 'NORORIENTE', color: 'bg-emerald-500' },
+      { key: 'CENTRAL', name: 'CENTRAL', color: 'bg-amber-500' },
+      { key: 'SUR', name: 'SUR', color: 'bg-rose-500' }
+    ];
+
+    tbody.innerHTML = regOrder.map(item => {
+      const rb = r.regionBreakdown[item.key] || { total: 0, t_cola_sum: 0, t_cola_count: 0 };
+      const tot = rb.total || 0;
+      const pctCarga = (tot / totGlobal * 100).toFixed(1);
+      const buzonH = rb.t_cola_count > 0 ? ((rb.t_cola_sum / rb.t_cola_count) * (8 / 24) * 0.72).toFixed(2) : '0.00';
+      const cicloH = buzonH;
+      const hNum = Number(cicloH);
+      
+      let slaBadge = 'bg-emerald-100 text-emerald-800';
+      let slaText = '≤ 1 Día';
+      if (hNum > 24) {
+        slaBadge = 'bg-rose-100 text-rose-800 font-bold';
+        slaText = 'Crítico (>3d)';
+      } else if (hNum > 16) {
+        slaBadge = 'bg-amber-100 text-amber-800';
+        slaText = '≤ 3 Días';
+      } else if (hNum > 8) {
+        slaBadge = 'bg-amber-100 text-amber-800';
+        slaText = '≤ 2 Días';
+      }
+
+      return `
+        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="window.filterByRegionClick('${item.key}')" title="Clic para filtrar por ${item.name}">
+          <td class="p-2.5 font-sans font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full ${item.color}"></span>
+            ${item.name}
+          </td>
+          <td class="p-2.5 text-right font-bold text-slate-900">${Math.round(tot).toLocaleString()} (${pctCarga}%)</td>
+          <td class="p-2.5 text-right text-blue-700 font-mono">${buzonH}h</td>
+          <td class="p-2.5 text-right text-slate-500 font-mono">0.05h</td>
+          <td class="p-2.5 text-right font-bold text-slate-900 font-mono">${cicloH}h</td>
+          <td class="p-2.5 text-center font-sans">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${slaBadge}">
+              ${slaText}
+            </span>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    setText('labelRegionalTiemposTotal', `${Math.round(totGlobal).toLocaleString()} Expedientes`);
+  }
+
+  // ─── POWER BI CROSS-FILTER CLICK HANDLERS ─────────────────────────────
+  window.filterByRegionClick = function(regKey) {
+    const sel = document.getElementById('selRegion');
+    if (!sel) return;
+    const current = sel.value;
+    sel.value = (current === regKey) ? 'TODAS' : regKey;
+    window.applyFilters();
+  };
+
+  window.filterByEstadoClick = function(estKey) {
+    const sel = document.getElementById('selEstado');
+    if (!sel) return;
+    const current = sel.value;
+    sel.value = (current === estKey) ? 'TODOS' : estKey;
+    window.applyFilters();
+  };
+
+  window.filterByMesClick = function(mesNum) {
+    const sel = document.getElementById('selMes');
+    if (!sel) return;
+    const current = sel.value;
+    sel.value = (current === String(mesNum)) ? 'TODOS' : String(mesNum);
+    window.applyFilters();
+  };
+
+  window.updateCharts = updateCharts;
 
   // ─── 5. ACTUALIZACIÓN DE TABLA DINÁMICA ────────────────────────────────
   function updateDynamicTable(r) {

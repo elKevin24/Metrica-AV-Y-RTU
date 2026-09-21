@@ -2,28 +2,27 @@
 // ForensicView.astro - Master-Detail Granular Audit View (carga por chunks)
 ---
 
-<div class="bg-white border border-slate-200 shadow-2xs rounded-2xl flex flex-col h-[calc(100vh-170px)] min-h-[550px] overflow-hidden">
+<div class="glass-card rounded-2xl flex flex-col h-auto md:h-[calc(100vh-170px)] min-h-[550px] overflow-hidden transition-all duration-300">
   
   <!-- Forensic Toolbar -->
-  <div class="h-14 border-b border-slate-200 bg-slate-50/80 flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 gap-2 shrink-0">
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-      <div class="relative w-64 sm:w-80">
+  <div class="border-b border-slate-200/60 bg-white/70 backdrop-blur-md flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-3 gap-2.5 shrink-0">
+    <div class="flex flex-wrap items-center gap-2 flex-1 min-w-0">
+      <div class="relative w-full sm:w-72">
         <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
         <input 
           id="forensicSearch"
           type="text" 
-          placeholder="Buscar ID expediente (Ej. 20261AV...)" 
-          class="w-full text-xs border border-slate-200 bg-white rounded-xl pl-9 pr-3 py-1.5 focus:outline-blue-500 font-mono shadow-2xs"
+          placeholder="Buscar ID expediente..." 
+          class="w-full text-xs border border-slate-200/80 bg-white/80 backdrop-blur-md rounded-xl pl-9 pr-3 py-2 sm:py-1.5 focus:outline-blue-500 font-mono shadow-2xs"
           oninput="filterForensicCases()"
         />
       </div>
-      <div class="w-px h-4 bg-slate-300 hidden sm:block"></div>
       
-      <select id="forensicRegion" onchange="filterForensicCases()" class="text-xs border border-slate-200 bg-white rounded-lg px-2 py-1.5 focus:outline-blue-500 font-medium shadow-2xs">
+      <select id="forensicRegion" onchange="filterForensicCases()" class="text-xs border border-slate-200/80 bg-white/80 backdrop-blur-md rounded-xl px-2.5 py-2 sm:py-1.5 focus:outline-blue-500 font-medium shadow-2xs flex-1 sm:flex-none">
         <option value="TODAS">Todas las Regiones</option>
       </select>
       
-      <select id="forensicEstado" onchange="filterForensicCases()" class="text-xs border border-slate-200 bg-white rounded-lg px-2 py-1.5 focus:outline-blue-500 font-medium shadow-2xs">
+      <select id="forensicEstado" onchange="filterForensicCases()" class="text-xs border border-slate-200/80 bg-white/80 backdrop-blur-md rounded-xl px-2.5 py-2 sm:py-1.5 focus:outline-blue-500 font-medium shadow-2xs flex-1 sm:flex-none">
         <option value="TODOS">Todos los Estados</option>
       </select>
 
@@ -33,7 +32,7 @@
       </label>
     </div>
 
-    <div id="forensicStats" class="text-[11px] text-slate-400 font-mono shrink-0">
+    <div id="forensicStats" class="text-[11px] text-slate-500 font-mono shrink-0 flex items-center justify-between sm:justify-end">
       <span class="inline-flex items-center gap-1.5">
         <svg class="animate-spin h-3 w-3 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
         Cargando datos...
@@ -42,24 +41,24 @@
   </div>
 
   <!-- Master-Detail Body -->
-  <div class="flex flex-1 overflow-hidden">
+  <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
     
     <!-- MASTER -->
-    <div class="w-full md:w-3/5 border-r border-slate-200 flex flex-col bg-white">
-      <div id="forensicTableWrap" class="overflow-y-auto flex-1">
+    <div class="w-full md:w-3/5 border-b md:border-b-0 md:border-r border-slate-200/60 flex flex-col bg-white/40 backdrop-blur-md min-h-[360px] md:min-h-0">
+      <div id="forensicTableWrap" class="overflow-y-auto flex-1 min-h-[300px]">
         <table class="w-full text-left border-collapse">
-          <thead class="bg-slate-50 sticky top-0 shadow-2xs z-10">
+          <thead class="bg-white/90 backdrop-blur-md sticky top-0 shadow-2xs z-10 border-b border-slate-200/60">
             <tr>
-              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 cursor-pointer hover:text-blue-600" onclick="sortForensicTable('i')">
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-blue-600" onclick="sortForensicTable('i')">
                 ID Gestión <span id="sort-i" class="text-slate-300">↕</span>
               </th>
-              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 cursor-pointer hover:text-blue-600" onclick="sortForensicTable('t')">
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-blue-600" onclick="sortForensicTable('t')">
                 Trámite <span id="sort-t" class="text-slate-300">↕</span>
               </th>
-              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 cursor-pointer hover:text-blue-600 text-right" onclick="sortForensicTable('tc')">
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-blue-600 text-right" onclick="sortForensicTable('tc')">
                 T. Cola <span id="sort-tc" class="text-slate-300">↕</span>
               </th>
-              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">
+              <th class="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 text-center">
                 Estado
               </th>
             </tr>
@@ -69,19 +68,19 @@
           </tbody>
         </table>
       </div>
-      <div id="forensicPagination" class="h-10 border-t border-slate-200 bg-slate-50 flex items-center justify-between px-3 text-[10px] text-slate-500 font-medium">
+      <div id="forensicPagination" class="h-10 border-t border-slate-200/60 bg-white/60 backdrop-blur-md flex items-center justify-between px-3 text-[10px] text-slate-500 font-medium shrink-0">
         <span id="forensicPageInfo">—</span>
         <div class="flex items-center gap-1">
-          <button onclick="forensicPrevPage()" class="px-2 py-1 rounded bg-white border border-slate-200 hover:bg-slate-100 font-bold">← Ant</button>
+          <button onclick="forensicPrevPage()" class="px-2.5 py-1 rounded-lg bg-white/80 border border-slate-200/80 hover:bg-white font-bold transition-all">← Ant</button>
           <span id="forensicPageNum" class="px-2 py-1 font-mono font-bold text-blue-700">1</span>
-          <button onclick="forensicNextPage()" class="px-2 py-1 rounded bg-white border border-slate-200 hover:bg-slate-100 font-bold">Sig →</button>
+          <button onclick="forensicNextPage()" class="px-2.5 py-1 rounded-lg bg-white/80 border border-slate-200/80 hover:bg-white font-bold transition-all">Sig →</button>
         </div>
       </div>
     </div>
 
     <!-- DETAIL: Timeline -->
-    <div id="forensicDetail" class="w-full md:w-2/5 flex flex-col bg-slate-50/50">
-      <div id="detailHeader" class="p-3 border-b border-slate-200 bg-white shadow-2xs shrink-0">
+    <div id="forensicDetail" class="w-full md:w-2/5 flex flex-col bg-white/20 backdrop-blur-md border-t md:border-t-0 md:border-l border-slate-200/60 min-h-[300px]">
+      <div id="detailHeader" class="p-3 border-b border-slate-200/60 bg-white/60 backdrop-blur-md shadow-2xs shrink-0">
         <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Trazabilidad de Expediente</div>
         <div class="font-mono text-sm font-bold text-slate-800 flex items-center justify-between">
           <span id="detailId">Seleccione un expediente</span>
@@ -118,66 +117,197 @@
   let loadedChunks = 0;
   let totalChunks = 0;
 
-  // ─── LOAD DATA (CHUNKS) ─────────────────────────────────────────────
-  async function loadForensicData() {
-    try {
-      // 1. Load index
-      const idxRes = await fetch('/data/forensic/index.json');
-      if (!idxRes.ok) throw new Error('No index');
-      const idx = await idxRes.json();
-      totalRecords = idx.total;
-      totalChunks = idx.chunks;
+  // ─── LOAD DATA (CHUNKS WITH ROBUST RETRIES & FALLBACK) ─────────────
+  let isLoadingData = false;
 
-      // 2. Load chunks progressively (first 3 chunks immediately, rest async)
+  async function fetchWithRetry(url, retries = 3, delay = 400) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const res = await fetch(url);
+        if (res.ok) return res;
+        if (attempt === retries) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      } catch (err) {
+        if (attempt === retries) throw err;
+        await new Promise(r => setTimeout(r, delay * attempt));
+      }
+    }
+    throw new Error(`Failed to fetch ${url}`);
+  }
+
+  async function loadForensicData() {
+    if (isLoadingData && allCases.length > 0) return;
+    isLoadingData = true;
+
+    const statsEl = document.getElementById('forensicStats');
+    const tbodyEl = document.getElementById('forensicTbody');
+
+    if (statsEl) {
+      statsEl.innerHTML = `
+        <span class="inline-flex items-center gap-1.5 text-blue-600">
+          <svg class="animate-spin h-3 w-3 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+          Iniciando carga forense...
+        </span>
+      `;
+    }
+
+    try {
+      let idx = null;
+      try {
+        const idxRes = await fetchWithRetry('/data/forensic/index.json', 2, 300);
+        idx = await idxRes.json();
+      } catch (idxErr) {
+        console.warn('[ForensicView] No se pudo cargar index.json, usando fallback:', idxErr);
+      }
+
+      if (!idx || !idx.chunks) {
+        // Fallback inmediato con auditoria_muestra.json
+        await loadAuditoriaFallback();
+        isLoadingData = false;
+        return;
+      }
+
+      totalRecords = idx.total || 135628;
+      totalChunks = idx.chunks || 28;
+
+      // Carga del primer lote (chunks iniciales)
       const firstBatch = Math.min(3, totalChunks);
       for (let i = 0; i < firstBatch; i++) {
-        const chunk = await loadChunk(i);
-        allCases = allCases.concat(chunk);
-        loadedChunks++;
+        try {
+          const chunk = await loadChunk(i);
+          if (Array.isArray(chunk) && chunk.length > 0) {
+            allCases = allCases.concat(chunk);
+            loadedChunks++;
+          }
+        } catch (chunkErr) {
+          console.warn(`[ForensicView] Error en chunk inicial ${i}:`, chunkErr);
+        }
+      }
+
+      // Si no se cargó nada en el primer lote, intentar fallback
+      if (allCases.length === 0) {
+        console.warn('[ForensicView] Chunks no disponibles, cargando auditoria_muestra.json');
+        await loadAuditoriaFallback();
+        isLoadingData = false;
+        return;
       }
 
       populateForensicFilters();
       filterForensicCases();
+      updateLoadingStatus();
 
-      // 3. Load remaining chunks in background
-      for (let i = firstBatch; i < totalChunks; i++) {
-        const chunk = await loadChunk(i);
-        allCases = allCases.concat(chunk);
-        loadedChunks++;
-        updateLoadingStatus();
-        // Re-filter if user has a search active
-        if (document.getElementById('forensicSearch').value || 
-            document.getElementById('forensicRegion').value !== 'TODAS' ||
-            document.getElementById('forensicEstado').value !== 'TODOS' ||
-            document.getElementById('forensicBottleneck').checked) {
-          filterForensicCases();
+      // Cargar chunks restantes de manera progresiva en segundo plano
+      (async () => {
+        for (let i = firstBatch; i < totalChunks; i++) {
+          try {
+            const chunk = await loadChunk(i);
+            if (Array.isArray(chunk) && chunk.length > 0) {
+              allCases = allCases.concat(chunk);
+              loadedChunks++;
+              updateLoadingStatus();
+              
+              // Actualizar si el usuario tiene una búsqueda activa
+              const searchVal = document.getElementById('forensicSearch')?.value;
+              const regVal = document.getElementById('forensicRegion')?.value;
+              const estVal = document.getElementById('forensicEstado')?.value;
+              const bneckVal = document.getElementById('forensicBottleneck')?.checked;
+
+              if (searchVal || (regVal && regVal !== 'TODAS') || (estVal && estVal !== 'TODOS') || bneckVal) {
+                filterForensicCases();
+              }
+            }
+          } catch (chunkErr) {
+            console.warn(`[ForensicView] Error no fatal cargando chunk ${i}:`, chunkErr);
+          }
         }
-      }
+        updateForensicStats();
+        isLoadingData = false;
+      })();
 
-      updateForensicStats();
     } catch (err) {
-      console.error('[ForensicView] Error:', err);
-      document.getElementById('forensicStats').textContent = 'Error cargando datos';
-      document.getElementById('forensicTbody').innerHTML = 
-        '<tr><td colspan="4" class="px-4 py-8 text-center text-red-400 text-xs">Error al cargar datos forenses. Ejecute etl_forensic.py primero.</td></tr>';
+      console.warn('[ForensicView] Error durante carga principal, activando recuperación:', err);
+      await loadAuditoriaFallback();
+      isLoadingData = false;
+    }
+  }
+
+  async function loadAuditoriaFallback() {
+    try {
+      const fallbackRes = await fetchWithRetry('/data/auditoria_muestra.json', 3, 500);
+      const fallbackData = await fallbackRes.json();
+      const rawMuestra = fallbackData.muestra_expedientes || [];
+      allCases = rawMuestra.map(m => ({
+        i: m.NumeroGestion || '',
+        t: m.Gestion || '',
+        r: m.Region || '',
+        e: m.Estado || '',
+        fc: m.FC || m.FR || null,
+        fa: m.FA || m.FR || null,
+        fr: m.FR || null,
+        ff: m.FF || null,
+        frz: m.FRech || null,
+        tc: typeof m.Ciclo_Habil_Hrs === 'number' ? m.Ciclo_Habil_Hrs : null,
+        tt: typeof m.Ciclo_Habil_Hrs === 'number' ? m.Ciclo_Habil_Hrs : null,
+        cr: m.FRech ? 1 : 0,
+        sb: m.Ronda_Revision === '2DA_SUBSANADA' ? 1 : 0,
+        ft: (m.Estado === 'APROBADA' && !m.FRech) ? 1 : 0,
+        m: m.MacroFamilia || null,
+        ne: m.Eventos || 4
+      }));
+      totalRecords = allCases.length;
+      totalChunks = 1;
+      loadedChunks = 1;
+      populateForensicFilters();
+      filterForensicCases();
+      updateForensicStats();
+    } catch (fallbackErr) {
+      console.error('[ForensicView] Fallback error:', fallbackErr);
+      const statsEl = document.getElementById('forensicStats');
+      if (statsEl) {
+        statsEl.innerHTML = `
+          <button onclick="window.loadForensicData && window.loadForensicData()" class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 text-xs font-semibold cursor-pointer flex items-center gap-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i> Reintentar
+          </button>
+        `;
+      }
+      const tbodyEl = document.getElementById('forensicTbody');
+      if (tbodyEl) {
+        tbodyEl.innerHTML = `
+          <tr>
+            <td colspan="4" class="px-4 py-8 text-center text-slate-500 text-xs">
+              <p class="font-bold text-slate-700 mb-1">No se pudieron descargar los expedientes en este momento.</p>
+              <button onclick="window.loadForensicData && window.loadForensicData()" class="mt-2 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reintentar Carga
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
   }
 
   async function loadChunk(index) {
     const padded = String(index).padStart(3, '0');
-    const res = await fetch(`/data/forensic/chunk_${padded}.json`);
-    if (!res.ok) throw new Error(`Failed to load chunk ${index}`);
-    return await res.json();
+    const res = await fetchWithRetry(`/data/forensic/chunk_${padded}.json`, 3, 400);
+    const raw = await res.text();
+    const sanitized = raw.replace(/:\s*NaN\b/g, ': null').replace(/:\s*Infinity\b/g, ': null');
+    return JSON.parse(sanitized);
   }
 
+  window.loadForensicData = loadForensicData;
+  window.retryLoadForensic = loadForensicData;
+
   function updateLoadingStatus() {
-    const pct = Math.round((loadedChunks / totalChunks) * 100);
-    document.getElementById('forensicStats').innerHTML = `
-      <span class="inline-flex items-center gap-1.5">
-        <svg class="animate-spin h-3 w-3 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-        ${allCases.length.toLocaleString()} de ${totalRecords.toLocaleString()} (${pct}%)
-      </span>
-    `;
+    const pct = Math.min(100, Math.round((loadedChunks / totalChunks) * 100));
+    const statsEl = document.getElementById('forensicStats');
+    if (statsEl) {
+      statsEl.innerHTML = `
+        <span class="inline-flex items-center gap-1.5 text-slate-600">
+          ${pct < 100 ? `<svg class="animate-spin h-3 w-3 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>` : ''}
+          ${allCases.length.toLocaleString()} expedientes ${pct < 100 ? `(${pct}%)` : 'cargados'}
+        </span>
+      `;
+    }
   }
 
   // ─── POPULATE FILTERS ───────────────────────────────────────────────
@@ -384,6 +514,14 @@
     }
 
     renderTimeline(c);
+
+    // If on mobile screen, smoothly scroll detail view into perspective
+    if (window.innerWidth < 768) {
+      const detailEl = document.getElementById('forensicDetail');
+      if (detailEl) {
+        detailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
   };
 
   function renderTimeline(c) {
@@ -453,9 +591,12 @@
       if (c.e && c.e.includes('RECHAZADA')) bc = 'rose';
       else if (c.e && c.e.includes('CANCELADA')) bc = 'amber';
 
+      const bgCard = bc === 'rose' ? 'bg-rose-50 border-rose-200' : bc === 'amber' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200';
+      const textTitle = bc === 'rose' ? 'text-rose-800' : bc === 'amber' ? 'text-amber-800' : 'text-emerald-800';
+
       html += `
-        <div class="mt-4 p-3 bg-${bc}-50 border border-${bc}-200 rounded-xl text-center">
-          <div class="text-[10px] font-bold text-${bc}-800 uppercase tracking-wider">Resumen del Expediente</div>
+        <div class="mt-4 p-3 ${bgCard} border rounded-xl text-center">
+          <div class="text-[10px] font-bold ${textTitle} uppercase tracking-wider">Resumen del Expediente</div>
           <div class="grid grid-cols-3 gap-3 mt-2 text-xs">
             <div>
               <div class="text-[10px] text-slate-500">Cola</div>
@@ -489,10 +630,11 @@
   }
 
   function tlStep(color, title, dateStr, detail) {
+    const dotColor = color === 'rose' ? 'bg-rose-500' : color === 'emerald' ? 'bg-emerald-500' : color === 'amber' ? 'bg-amber-500' : color === 'indigo' ? 'bg-indigo-500' : color === 'blue' ? 'bg-blue-500' : 'bg-slate-500';
     return `
       <div class="flex gap-3">
         <div class="flex flex-col items-center">
-          <div class="w-3 h-3 bg-${color}-500 rounded-full mt-1"></div>
+          <div class="w-3 h-3 ${dotColor} rounded-full mt-1"></div>
           <div class="w-px h-full bg-slate-200 my-1"></div>
         </div>
         <div class="pb-2">
@@ -504,14 +646,17 @@
   }
 
   function tlDelay(color, text, detail) {
+    const lineClass = color === 'rose' ? 'border-rose-400' : color === 'amber' ? 'border-amber-400' : color === 'emerald' ? 'border-emerald-400' : 'border-slate-300';
+    const badgeClass = color === 'rose' ? 'bg-rose-50 text-rose-700 border-rose-200' : color === 'amber' ? 'bg-amber-50 text-amber-700 border-amber-200' : color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-700 border-slate-200';
+    const iconColor = color === 'rose' ? 'text-rose-500' : color === 'amber' ? 'text-amber-500' : color === 'emerald' ? 'text-emerald-500' : 'text-slate-400';
     return `
       <div class="flex gap-3 -my-1">
         <div class="flex flex-col items-center">
-          <div class="w-px h-10 border-l-2 border-dashed border-${color}-400"></div>
+          <div class="w-px h-10 border-l-2 border-dashed ${lineClass}"></div>
         </div>
         <div class="flex flex-col gap-1">
-          <span class="bg-${color}-50 text-${color}-700 border border-${color}-200 text-[10px] font-bold px-2 py-0.5 rounded-lg shadow-2xs flex items-center gap-1">
-            <i data-lucide="clock" class="w-3 h-3 text-${color}-500"></i> ${text}
+          <span class="${badgeClass} border text-[10px] font-bold px-2 py-0.5 rounded-lg shadow-2xs flex items-center gap-1">
+            <i data-lucide="clock" class="w-3 h-3 ${iconColor}"></i> ${text}
           </span>
           ${detail ? `<span class="text-[10px] text-slate-400 pl-1">${detail}</span>` : ''}
         </div>

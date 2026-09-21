@@ -6,9 +6,9 @@
 
 :root {
   --pbi-canvas: #f8fafc;
-  --pbi-card-bg: #ffffff;
+  --pbi-card-bg: rgba(255, 255, 255, 0.72);
   --pbi-sidebar: #0f172a;
-  --pbi-border: #e2e8f0;
+  --pbi-border: rgba(226, 232, 240, 0.8);
   --pbi-text: #0f172a;
   --pbi-muted: #64748b;
   --pbi-blue: #2563eb;
@@ -21,6 +21,10 @@
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--pbi-canvas);
+  background-image: 
+    radial-gradient(1200px 800px at 10% -10%, rgba(224, 242, 254, 0.5), transparent 60%),
+    radial-gradient(1000px 700px at 90% 90%, rgba(241, 245, 249, 0.9), transparent 60%);
+  background-attachment: fixed;
   color: var(--pbi-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -83,15 +87,55 @@ body {
     scrollbar-width: none;
   }
 
+  /* Frosted Glassmorphism Tokens */
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.03);
+  }
+
+  .glass-card:hover {
+    background-color: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 8px 30px -4px rgba(15, 23, 42, 0.07), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  }
+
+  .glass-panel {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 6px 24px -2px rgba(15, 23, 42, 0.04);
+  }
+
   .glass-header {
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   }
 
   .glass-dark {
-    background-color: rgba(15, 23, 42, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-pill {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+
+  /* DataTables Sticky Header & Mobile Scrolling */
+  .dt-scroll-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
   }
 }
+

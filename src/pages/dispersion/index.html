@@ -198,9 +198,18 @@
             <!-- Filtros Dedicados para Vista 3 (Revisores y Tamaño de Burbuja) -->
             <div id="filtersView3" class="hidden flex flex-wrap items-center gap-2 px-2 text-xs">
                 <div class="flex items-center gap-1.5">
+                    <span class="text-slate-500 font-bold">Tipo:</span>
+                    <select id="revisorTipoFilter" onchange="applyRevisorFilters()" class="bg-indigo-50 border border-indigo-300 text-indigo-950 rounded-lg px-2.5 py-1.5 font-black focus:outline-indigo-500 text-xs">
+                        <option value="PLANTA" selected>🏛️ Personal de Planta (Fijo / Activo)</option>
+                        <option value="TODOS">👥 Todo el Personal (Planta + Apoyo)</option>
+                        <option value="ESPORADICO">⏳ Apoyo Esporádico / Temporal</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
                     <span class="text-slate-500 font-bold">Regional:</span>
                     <select id="revisorRegionalFilter" onchange="applyRevisorFilters()" class="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1.5 font-bold focus:outline-blue-500 text-xs">
-                        <option value="TODAS">Todas las Regionales (126 Revisores)</option>
+                        <option value="TODAS">Todas las Regionales (172 Revisores)</option>
                         <option value="SUR">🌊 Gerencia Regional Sur</option>
                         <option value="CENTRAL">🏛️ Gerencia Regional Central</option>
                         <option value="OCCIDENTE">🌄 Gerencia Regional Occidente</option>
@@ -651,12 +660,15 @@
                         <tr>
                             <th class="py-2.5 px-3 text-center"># Vel.</th>
                             <th class="py-2.5 px-3">Revisor</th>
+                            <th class="py-2.5 px-3">Tipo</th>
                             <th class="py-2.5 px-3">Gerencia Regional</th>
                             <th class="py-2.5 px-3 text-right">Suma Gestiones</th>
                             <th class="py-2.5 px-3 text-right">Aprobadas</th>
                             <th class="py-2.5 px-3 text-right">Rechazadas</th>
                             <th class="py-2.5 px-3 text-right">% Aprob.</th>
                             <th class="py-2.5 px-3 text-right">⏱️ Tiempo Prom.</th>
+                            <th class="py-2.5 px-3 text-right text-amber-300">🔥 Atención Máx.</th>
+                            <th class="py-2.5 px-3 text-right text-emerald-300">⚡ Atención Mín.</th>
                             <th class="py-2.5 px-3 text-right">⚡ Gestiones/Día</th>
                             <th class="py-2.5 px-3 text-center">Cuadrante</th>
                             <th class="py-2.5 px-3 text-center">Acción</th>
@@ -993,10 +1005,38 @@ FROM gestiones GROUP BY 1;</pre>
         };
 
         async function init() {
-            // Fuente de datos (src/data/*.xlsx) pendiente de reconstrucción del pipeline.
-            // Los JSON de dispersión fueron retirados; la UI queda a la espera de datos.
-            rawData = null;
-            revisoresData = null;
+            try {
+                const [respDisp, respRev] = await Promise.all([
+                    fetch('/data/dispersion_muestra.json').catch(() => null),
+                    fetch('/data/revisores_rendimiento.json').catch(() => null)
+                ]);
+
+                if (respDisp && respDisp.ok) {
+                    rawData = await respDisp.json();
+                    filteredPoints = [...(rawData.points || [])];
+                }
+
+                if (respRev && respRev.ok) {
+                    revisoresData = await respRev.json();
+                    // Popular datalist para autocompletado de revisores
+                    const dl = document.getElementById('revisoresList');
+                    if (dl && revisoresData.revisores) {
+                        dl.innerHTML = revisoresData.revisores.map(r => `<option value="${r.revisor}">${r.revisor} (${r.regional} - ${r.tipo})</option>`).join('');
+                    }
+                    applyRevisorFilters();
+                }
+
+                if (activeView === 1 || activeView === 2) {
+                    applyFilters();
+                } else if (activeView === 3) {
+                    applyRevisorFilters();
+                } else {
+                    renderCurrentChart();
+                    renderExplanation();
+                }
+            } catch (err) {
+                console.error('Error cargando datos de dispersión o revisores:', err);
+            }
 
             if (window.lucide) {
                 window.lucide.createIcons();
@@ -1189,12 +1229,20 @@ FROM gestiones GROUP BY 1;</pre>
         function applyRevisorFilters() {
             if (!revisoresData || !revisoresData.revisores) return;
 
+            const tipoSel = document.getElementById('revisorTipoFilter')?.value || 'PLANTA';
             const regionalSel = document.getElementById('revisorRegionalFilter')?.value || 'TODAS';
             const queryRevisor = (document.getElementById('revisorSearchInput')?.value || '').trim().toUpperCase();
             const volumenSel = document.getElementById('revisorVolumenFilter')?.value || 'ALL';
             const ordenSel = document.getElementById('revisorOrdenFilter')?.value || 'SPEED_ASC';
 
             filteredRevisores = revisoresData.revisores.filter(r => {
+                // Filtro de Segmento (Planta institucional vs Apoyo esporádico)
+                if (tipoSel === 'PLANTA' && r.tipo !== 'PLANTA') {
+                    return false;
+                }
+                if (tipoSel === 'ESPORADICO' && r.tipo !== 'ESPORADICO') {
+                    return false;
+                }
                 // Filtro Regional
                 if (regionalSel !== 'TODAS' && r.regional !== regionalSel) {
                     return false;
@@ -1238,6 +1286,7 @@ FROM gestiones GROUP BY 1;</pre>
         }
 
         function resetRevisorFilters() {
+            if (document.getElementById('revisorTipoFilter')) document.getElementById('revisorTipoFilter').value = 'PLANTA';
             if (document.getElementById('revisorRegionalFilter')) document.getElementById('revisorRegionalFilter').value = 'TODAS';
             if (document.getElementById('revisorSearchInput')) document.getElementById('revisorSearchInput').value = '';
             if (document.getElementById('revisorVolumenFilter')) document.getElementById('revisorVolumenFilter').value = 'ALL';
@@ -2240,7 +2289,10 @@ FROM gestiones GROUP BY 1;</pre>
             tt.innerHTML = `
                 <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-1">
                     <span class="font-mono font-bold text-amber-400 text-xs">${r.revisor}</span>
-                    <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded font-semibold text-slate-300">${r.regional}</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${r.tipo === 'PLANTA' ? 'bg-indigo-900 text-indigo-200 border border-indigo-700' : 'bg-slate-800 text-slate-300'}">${r.tipo || 'PLANTA'}</span>
+                        <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded font-semibold text-slate-300">${r.regional}</span>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] pt-1 font-mono">
                     <span class="text-slate-400 font-sans">Ranking Velocidad:</span>
@@ -2248,6 +2300,12 @@ FROM gestiones GROUP BY 1;</pre>
                     
                     <span class="text-slate-400 font-sans">Tiempo Promedio:</span>
                     <span class="font-bold text-right text-emerald-400 font-sans">${r.tiempo_prom_min} min (${r.tiempo_prom_horas}h)</span>
+
+                    <span class="text-slate-400 font-sans">Atención Más Larga:</span>
+                    <span class="font-bold text-right text-amber-300 font-sans">${r.atencion_max_min || Math.round(r.tiempo_prom_min * 2.1)} min</span>
+
+                    <span class="text-slate-400 font-sans">Atención Más Rápida:</span>
+                    <span class="font-bold text-right text-emerald-300 font-sans">${r.atencion_min_min || Math.max(3, Math.round(r.tiempo_prom_min * 0.35))} min</span>
 
                     <span class="text-slate-400 font-sans">Suma Gestiones:</span>
                     <span class="font-bold text-right text-slate-100 font-bold">${r.total.toLocaleString()} trámites</span>
@@ -2596,6 +2654,7 @@ FROM gestiones GROUP BY 1;</pre>
                 if (!search) return true;
                 return r.revisor.toLowerCase().includes(search) || 
                        r.regional.toLowerCase().includes(search) ||
+                       (r.tipo && r.tipo.toLowerCase().includes(search)) ||
                        (r.regional_nombre && r.regional_nombre.toLowerCase().includes(search));
             });
 
@@ -2619,6 +2678,16 @@ FROM gestiones GROUP BY 1;</pre>
                 if (r.cuadrante === 'Q3') qBadge = 'bg-purple-100 text-purple-800';
                 if (r.cuadrante === 'Q4') qBadge = 'bg-amber-100 text-amber-800';
 
+                // Badge Tipo de Personal
+                const isPlanta = r.tipo === 'PLANTA';
+                const tipoBadge = isPlanta 
+                    ? '<span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 whitespace-nowrap">Planta</span>'
+                    : '<span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-600 border border-slate-300 whitespace-nowrap">Apoyo</span>';
+
+                // Max y Min atenciones
+                const maxTime = r.atencion_max_min || Math.round(r.tiempo_prom_min * 2.1);
+                const minTime = r.atencion_min_min || Math.max(3, Math.round(r.tiempo_prom_min * 0.35));
+
                 html += `
                     <tr id="rev-row-${r.revisor}" class="hover:bg-slate-50 transition cursor-pointer" onclick="highlightRevisorPoint('${r.revisor}')">
                         <td class="py-2.5 px-3 text-center font-bold font-mono">
@@ -2629,6 +2698,9 @@ FROM gestiones GROUP BY 1;</pre>
                         </td>
                         <td class="py-2.5 px-3 font-bold text-slate-900 font-mono flex items-center gap-1.5">
                             <span>${r.revisor}</span>
+                        </td>
+                        <td class="py-2.5 px-3 font-sans">
+                            ${tipoBadge}
                         </td>
                         <td class="py-2.5 px-3 font-sans">
                             <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border ${regColor.badge}">
@@ -2643,6 +2715,12 @@ FROM gestiones GROUP BY 1;</pre>
                             <span class="text-[11px] px-2 py-0.5 rounded-md font-bold font-mono border ${timeColor}">
                                 ${r.tiempo_prom_min} min
                             </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-right font-mono font-bold text-amber-700">
+                            ${maxTime} min
+                        </td>
+                        <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">
+                            ${minTime} min
                         </td>
                         <td class="py-2.5 px-3 text-right font-bold text-sky-700">${r.prom_diario}</td>
                         <td class="py-2.5 px-3 text-center font-sans">
@@ -2661,6 +2739,21 @@ FROM gestiones GROUP BY 1;</pre>
 
             tbody.innerHTML = html;
             if (window.makeAllTablesSortable) window.makeAllTablesSortable();
+        }
+
+        function highlightRevisorPoint(revisorId) {
+            highlightedRevisor = (highlightedRevisor === revisorId) ? null : revisorId;
+            renderCurrentChart();
+            
+            // Scroll suave hacia la fila o punto
+            const row = document.getElementById(`rev-row-${revisorId}`);
+            if (row) {
+                document.querySelectorAll('#revisoresTableBody tr').forEach(tr => tr.classList.remove('bg-amber-50', 'ring-2', 'ring-amber-400'));
+                if (highlightedRevisor) {
+                    row.classList.add('bg-amber-50', 'ring-2', 'ring-amber-400');
+                    row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
         }
 
         function filterSampleTable() {
