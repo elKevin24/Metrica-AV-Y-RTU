@@ -3391,20 +3391,15 @@ const formatMinutesToTime = (minDecimal: number) => {
             else tiempoBadgeColor = 'text-amber-700 bg-amber-50 border-amber-200';
           }
 
-          const dias = r.dias_activos || 21;
+          const dias = r.dias_activos || 1;
 
           return `
             <tr class="hover:bg-slate-50/90 transition-colors">
               <td class="py-3 px-3 text-center text-slate-400 font-mono text-[11px] font-medium">${rank}</td>
-              <td class="py-3 px-3 font-sans font-bold text-slate-900">
-                <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-[10px] font-bold shrink-0 border border-slate-200">
-                    ${(r.revisor || 'R').substring(0, 2)}
-                  </span>
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-xs text-slate-900 tracking-tight">${r.revisor || 'Sin ID'}</span>
-                    ${tipoBadge}
-                  </div>
+              <td class="py-3 px-3 font-sans text-slate-900">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs text-slate-900 font-bold tracking-tight">${r.revisor || 'Sin ID'}</span>
+                  ${tipoBadge}
                 </div>
               </td>
               <td class="py-3 px-3 font-sans">
@@ -3437,13 +3432,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                 </span>
               </td>
               <td class="py-3 px-3 text-center font-mono text-slate-600 text-xs">
-                ${dias > 21 
-                  ? `<span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 text-[11px] inline-flex items-center gap-1" title="${dias} días en el mes (21 hábiles + ${dias - 21}d fines de semana / guardias)">
-                      <span>${dias}d</span>
-                      <span class="text-[9px] text-indigo-500 font-semibold">+${dias - 21}</span>
-                    </span>`
-                  : `<span class="px-2 py-0.5 rounded bg-slate-100/80 text-slate-600 text-[11px] font-medium">${dias}d</span>`
-                }
+                <span class="px-2 py-0.5 rounded bg-slate-100/80 text-slate-700 text-[11px] font-medium border border-slate-200/60" title="${dias} días con expedientes atendidos en el período">${dias}d</span>
               </td>
             </tr>
           `;

@@ -22,13 +22,15 @@
       "tiempo_max_min": 1233.22,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 471.4,
+      "prom_diario": 69.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 142,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 1,
-      "ranking_velocidad_regional": 1
+      "ranking_velocidad_regional": 1,
+      "max_dia": 214,
+      "min_dia": 1
     },
     {
       "revisor": "AMVELIZM",
@@ -49,13 +51,15 @@
       "tiempo_max_min": 1051.43,
       "tiempo_min_sec": 17,
       "tiempo_min_min": 0.28,
-      "prom_diario": 420.5,
+      "prom_diario": 69.0,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 128,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 2,
-      "ranking_velocidad_regional": 2
+      "ranking_velocidad_regional": 2,
+      "max_dia": 262,
+      "min_dia": 1
     },
     {
       "revisor": "MKNAJERA",
@@ -76,13 +80,15 @@
       "tiempo_max_min": 177.63,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 412.4,
+      "prom_diario": 71.0,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 122,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 3,
-      "ranking_velocidad_regional": 3
+      "ranking_velocidad_regional": 3,
+      "max_dia": 208,
+      "min_dia": 1
     },
     {
       "revisor": "AMHERNAN",
@@ -103,13 +109,15 @@
       "tiempo_max_min": 5887.72,
       "tiempo_min_sec": 19,
       "tiempo_min_min": 0.32,
-      "prom_diario": 368.9,
+      "prom_diario": 53.1,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 146,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 4,
-      "ranking_velocidad_regional": 4
+      "ranking_velocidad_regional": 4,
+      "max_dia": 192,
+      "min_dia": 1
     },
     {
       "revisor": "FOMONZON",
@@ -130,13 +138,15 @@
       "tiempo_max_min": 157.18,
       "tiempo_min_sec": 19,
       "tiempo_min_min": 0.32,
-      "prom_diario": 326.2,
+      "prom_diario": 50.0,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 137,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 5,
-      "ranking_velocidad_regional": 5
+      "ranking_velocidad_regional": 5,
+      "max_dia": 160,
+      "min_dia": 1
     },
     {
       "revisor": "MECABRER",
@@ -157,13 +167,15 @@
       "tiempo_max_min": 2601.13,
       "tiempo_min_sec": 9,
       "tiempo_min_min": 0.15,
-      "prom_diario": 270.9,
+      "prom_diario": 59.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 95,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 6,
-      "ranking_velocidad_regional": 6
+      "ranking_velocidad_regional": 6,
+      "max_dia": 200,
+      "min_dia": 1
     },
     {
       "revisor": "FACRUZRI",
@@ -184,13 +196,15 @@
       "tiempo_max_min": 1240.53,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 246.1,
+      "prom_diario": 49.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 104,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 7,
-      "ranking_velocidad_regional": 7
+      "ranking_velocidad_regional": 7,
+      "max_dia": 197,
+      "min_dia": 1
     },
     {
       "revisor": "EOVALIEN",
@@ -211,13 +225,15 @@
       "tiempo_max_min": 143.43,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 235.1,
+      "prom_diario": 49.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 99,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 8,
-      "ranking_velocidad_regional": 8
+      "ranking_velocidad_regional": 8,
+      "max_dia": 181,
+      "min_dia": 1
     },
     {
       "revisor": "JRSILVAR",
@@ -238,13 +254,15 @@
       "tiempo_max_min": 5447.38,
       "tiempo_min_sec": 16,
       "tiempo_min_min": 0.27,
-      "prom_diario": 222.2,
+      "prom_diario": 40.2,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 116,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 9,
-      "ranking_velocidad_regional": 9
+      "ranking_velocidad_regional": 9,
+      "max_dia": 191,
+      "min_dia": 1
     },
     {
       "revisor": "BEORTEGA",
@@ -265,13 +283,15 @@
       "tiempo_max_min": 1240.58,
       "tiempo_min_sec": 24,
       "tiempo_min_min": 0.4,
-      "prom_diario": 162.0,
+      "prom_diario": 44.8,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 76,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 10,
-      "ranking_velocidad_regional": 10
+      "ranking_velocidad_regional": 10,
+      "max_dia": 194,
+      "min_dia": 1
     },
     {
       "revisor": "MJMARTIR",
@@ -292,13 +312,15 @@
       "tiempo_max_min": 9872.92,
       "tiempo_min_sec": 17,
       "tiempo_min_min": 0.28,
-      "prom_diario": 153.9,
+      "prom_diario": 28.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 113,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 11,
-      "ranking_velocidad_regional": 11
+      "ranking_velocidad_regional": 11,
+      "max_dia": 204,
+      "min_dia": 1
     },
     {
       "revisor": "EENAVARR",
@@ -319,13 +341,15 @@
       "tiempo_max_min": 79.35,
       "tiempo_min_sec": 10,
       "tiempo_min_min": 0.17,
-      "prom_diario": 153.5,
+      "prom_diario": 32.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 99,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 12,
-      "ranking_velocidad_regional": 12
+      "ranking_velocidad_regional": 12,
+      "max_dia": 120,
+      "min_dia": 1
     },
     {
       "revisor": "RSISRODR",
@@ -346,13 +370,15 @@
       "tiempo_max_min": 2504.83,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 132.7,
+      "prom_diario": 28.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 97,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 13,
-      "ranking_velocidad_regional": 13
+      "ranking_velocidad_regional": 13,
+      "max_dia": 225,
+      "min_dia": 1
     },
     {
       "revisor": "MLRIVERA",
@@ -373,13 +399,15 @@
       "tiempo_max_min": 1061.18,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 119.9,
+      "prom_diario": 25.2,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 100,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 14,
-      "ranking_velocidad_regional": 14
+      "ranking_velocidad_regional": 14,
+      "max_dia": 153,
+      "min_dia": 1
     },
     {
       "revisor": "APMIRAND",
@@ -400,13 +428,15 @@
       "tiempo_max_min": 26.97,
       "tiempo_min_sec": 14,
       "tiempo_min_min": 0.23,
-      "prom_diario": 115.5,
+      "prom_diario": 29.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 82,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 15,
-      "ranking_velocidad_regional": 15
+      "ranking_velocidad_regional": 15,
+      "max_dia": 192,
+      "min_dia": 1
     },
     {
       "revisor": "JLTOJJER",
@@ -427,13 +457,15 @@
       "tiempo_max_min": 1238.15,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 114.3,
+      "prom_diario": 23.3,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 103,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 16,
-      "ranking_velocidad_regional": 16
+      "ranking_velocidad_regional": 16,
+      "max_dia": 89,
+      "min_dia": 1
     },
     {
       "revisor": "VHALVARA",
@@ -454,13 +486,15 @@
       "tiempo_max_min": 3040.43,
       "tiempo_min_sec": 28,
       "tiempo_min_min": 0.47,
-      "prom_diario": 106.4,
+      "prom_diario": 24.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 91,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 17,
-      "ranking_velocidad_regional": 17
+      "ranking_velocidad_regional": 17,
+      "max_dia": 79,
+      "min_dia": 1
     },
     {
       "revisor": "RAGUILAR",
@@ -481,13 +515,15 @@
       "tiempo_max_min": 1436.1,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 102.6,
+      "prom_diario": 40.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 53,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 18,
-      "ranking_velocidad_regional": 18
+      "ranking_velocidad_regional": 18,
+      "max_dia": 150,
+      "min_dia": 1
     },
     {
       "revisor": "JAHUESOF",
@@ -508,13 +544,15 @@
       "tiempo_max_min": 483.63,
       "tiempo_min_sec": 23,
       "tiempo_min_min": 0.38,
-      "prom_diario": 99.1,
+      "prom_diario": 38.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 54,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 19,
-      "ranking_velocidad_regional": 19
+      "ranking_velocidad_regional": 19,
+      "max_dia": 328,
+      "min_dia": 1
     },
     {
       "revisor": "CACHANGC",
@@ -535,13 +573,15 @@
       "tiempo_max_min": 18.5,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 98.7,
+      "prom_diario": 35.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 58,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 20,
-      "ranking_velocidad_regional": 20
+      "ranking_velocidad_regional": 20,
+      "max_dia": 172,
+      "min_dia": 1
     },
     {
       "revisor": "PAPEREZT",
@@ -562,13 +602,15 @@
       "tiempo_max_min": 1074.02,
       "tiempo_min_sec": 13,
       "tiempo_min_min": 0.22,
-      "prom_diario": 97.6,
+      "prom_diario": 24.1,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 85,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 21,
-      "ranking_velocidad_regional": 21
+      "ranking_velocidad_regional": 21,
+      "max_dia": 160,
+      "min_dia": 1
     },
     {
       "revisor": "YCMENDOZ",
@@ -589,13 +631,15 @@
       "tiempo_max_min": 1101.13,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 96.0,
+      "prom_diario": 35.4,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 57,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 22,
-      "ranking_velocidad_regional": 22
+      "ranking_velocidad_regional": 22,
+      "max_dia": 185,
+      "min_dia": 1
     },
     {
       "revisor": "ROBETETA",
@@ -616,13 +660,15 @@
       "tiempo_max_min": 287.72,
       "tiempo_min_sec": 11,
       "tiempo_min_min": 0.18,
-      "prom_diario": 93.4,
+      "prom_diario": 28.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 68,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 23,
-      "ranking_velocidad_regional": 23
+      "ranking_velocidad_regional": 23,
+      "max_dia": 142,
+      "min_dia": 1
     },
     {
       "revisor": "CRAGUILA",
@@ -643,13 +689,15 @@
       "tiempo_max_min": 4265.2,
       "tiempo_min_sec": 17,
       "tiempo_min_min": 0.28,
-      "prom_diario": 87.4,
+      "prom_diario": 29.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 62,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 24,
-      "ranking_velocidad_regional": 24
+      "ranking_velocidad_regional": 24,
+      "max_dia": 138,
+      "min_dia": 1
     },
     {
       "revisor": "VMENDOZA",
@@ -670,13 +718,15 @@
       "tiempo_max_min": 229.18,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 84.9,
+      "prom_diario": 16.4,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 109,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 25,
-      "ranking_velocidad_regional": 25
+      "ranking_velocidad_regional": 25,
+      "max_dia": 81,
+      "min_dia": 1
     },
     {
       "revisor": "EESAMAYO",
@@ -697,13 +747,15 @@
       "tiempo_max_min": 129.53,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 84.3,
+      "prom_diario": 15.8,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 112,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 26,
-      "ranking_velocidad_regional": 26
+      "ranking_velocidad_regional": 26,
+      "max_dia": 51,
+      "min_dia": 1
     },
     {
       "revisor": "AMCALELA",
@@ -724,13 +776,15 @@
       "tiempo_max_min": 30.9,
       "tiempo_min_sec": 30,
       "tiempo_min_min": 0.5,
-      "prom_diario": 77.9,
+      "prom_diario": 32.1,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 51,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 27,
-      "ranking_velocidad_regional": 27
+      "ranking_velocidad_regional": 27,
+      "max_dia": 117,
+      "min_dia": 1
     },
     {
       "revisor": "DRHERRAR",
@@ -751,13 +805,15 @@
       "tiempo_max_min": 3729.08,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 75.7,
+      "prom_diario": 18.1,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 88,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 28,
-      "ranking_velocidad_regional": 28
+      "ranking_velocidad_regional": 28,
+      "max_dia": 87,
+      "min_dia": 1
     },
     {
       "revisor": "REGARCIB",
@@ -778,13 +834,15 @@
       "tiempo_max_min": 2515.05,
       "tiempo_min_sec": 15,
       "tiempo_min_min": 0.25,
-      "prom_diario": 71.1,
+      "prom_diario": 20.8,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 72,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 29,
-      "ranking_velocidad_regional": 29
+      "ranking_velocidad_regional": 29,
+      "max_dia": 182,
+      "min_dia": 1
     },
     {
       "revisor": "JJCOTOMM",
@@ -805,13 +863,15 @@
       "tiempo_max_min": 95.23,
       "tiempo_min_sec": 31,
       "tiempo_min_min": 0.52,
-      "prom_diario": 62.2,
+      "prom_diario": 30.4,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 43,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 30,
-      "ranking_velocidad_regional": 30
+      "ranking_velocidad_regional": 30,
+      "max_dia": 104,
+      "min_dia": 1
     },
     {
       "revisor": "SNSAQUIC",
@@ -832,13 +892,15 @@
       "tiempo_max_min": 266.83,
       "tiempo_min_sec": 33,
       "tiempo_min_min": 0.55,
-      "prom_diario": 56.6,
+      "prom_diario": 29.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 40,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 31,
-      "ranking_velocidad_regional": 31
+      "ranking_velocidad_regional": 31,
+      "max_dia": 175,
+      "min_dia": 1
     },
     {
       "revisor": "MRSALESR",
@@ -859,13 +921,15 @@
       "tiempo_max_min": 914.52,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 53.0,
+      "prom_diario": 24.2,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 46,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 32,
-      "ranking_velocidad_regional": 32
+      "ranking_velocidad_regional": 32,
+      "max_dia": 99,
+      "min_dia": 1
     },
     {
       "revisor": "ERCERNAA",
@@ -886,13 +950,15 @@
       "tiempo_max_min": 64.58,
       "tiempo_min_sec": 24,
       "tiempo_min_min": 0.4,
-      "prom_diario": 50.3,
+      "prom_diario": 34.1,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 31,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 33,
-      "ranking_velocidad_regional": 33
+      "ranking_velocidad_regional": 33,
+      "max_dia": 214,
+      "min_dia": 1
     },
     {
       "revisor": "JENATARE",
@@ -913,13 +979,15 @@
       "tiempo_max_min": 35.82,
       "tiempo_min_sec": 12,
       "tiempo_min_min": 0.2,
-      "prom_diario": 49.7,
+      "prom_diario": 10.4,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 100,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 34,
-      "ranking_velocidad_regional": 34
+      "ranking_velocidad_regional": 34,
+      "max_dia": 57,
+      "min_dia": 1
     },
     {
       "revisor": "ECPARMEN",
@@ -940,13 +1008,15 @@
       "tiempo_max_min": 1139.55,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 49.6,
+      "prom_diario": 23.2,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 45,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 35,
-      "ranking_velocidad_regional": 35
+      "ranking_velocidad_regional": 35,
+      "max_dia": 129,
+      "min_dia": 1
     },
     {
       "revisor": "KDTORRES",
@@ -973,7 +1043,9 @@
       "dias_activos": 21,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 36,
-      "ranking_velocidad_regional": 36
+      "ranking_velocidad_regional": 36,
+      "max_dia": 196,
+      "min_dia": 1
     },
     {
       "revisor": "ABGARCIA",
@@ -994,13 +1066,15 @@
       "tiempo_max_min": 84.2,
       "tiempo_min_sec": 13,
       "tiempo_min_min": 0.22,
-      "prom_diario": 44.0,
+      "prom_diario": 29.8,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 31,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 37,
-      "ranking_velocidad_regional": 37
+      "ranking_velocidad_regional": 37,
+      "max_dia": 183,
+      "min_dia": 1
     },
     {
       "revisor": "YMMORARO",
@@ -1021,13 +1095,15 @@
       "tiempo_max_min": 115.58,
       "tiempo_min_sec": 23,
       "tiempo_min_min": 0.38,
-      "prom_diario": 43.7,
+      "prom_diario": 18.3,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 50,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 38,
-      "ranking_velocidad_regional": 38
+      "ranking_velocidad_regional": 38,
+      "max_dia": 114,
+      "min_dia": 1
     },
     {
       "revisor": "AAORELLR",
@@ -1048,13 +1124,15 @@
       "tiempo_max_min": 23.18,
       "tiempo_min_sec": 30,
       "tiempo_min_min": 0.5,
-      "prom_diario": 43.3,
+      "prom_diario": 22.2,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 41,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 39,
-      "ranking_velocidad_regional": 39
+      "ranking_velocidad_regional": 39,
+      "max_dia": 158,
+      "min_dia": 1
     },
     {
       "revisor": "EFBAUTIS",
@@ -1075,13 +1153,15 @@
       "tiempo_max_min": 17.03,
       "tiempo_min_sec": 12,
       "tiempo_min_min": 0.2,
-      "prom_diario": 42.4,
+      "prom_diario": 27.8,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 32,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 40,
-      "ranking_velocidad_regional": 40
+      "ranking_velocidad_regional": 40,
+      "max_dia": 171,
+      "min_dia": 1
     },
     {
       "revisor": "KMDELEON",
@@ -1102,13 +1182,15 @@
       "tiempo_max_min": 334.23,
       "tiempo_min_sec": 16,
       "tiempo_min_min": 0.27,
-      "prom_diario": 35.0,
+      "prom_diario": 25.4,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 29,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 41,
-      "ranking_velocidad_regional": 41
+      "ranking_velocidad_regional": 41,
+      "max_dia": 101,
+      "min_dia": 1
     },
     {
       "revisor": "JAGUERRC",
@@ -1129,13 +1211,15 @@
       "tiempo_max_min": 1639.12,
       "tiempo_min_sec": 17,
       "tiempo_min_min": 0.28,
-      "prom_diario": 32.3,
+      "prom_diario": 16.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 40,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 42,
-      "ranking_velocidad_regional": 42
+      "ranking_velocidad_regional": 42,
+      "max_dia": 127,
+      "min_dia": 1
     },
     {
       "revisor": "APRUIZMA",
@@ -1156,13 +1240,15 @@
       "tiempo_max_min": 223.2,
       "tiempo_min_sec": 31,
       "tiempo_min_min": 0.52,
-      "prom_diario": 31.1,
+      "prom_diario": 40.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 16,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 43,
-      "ranking_velocidad_regional": 43
+      "ranking_velocidad_regional": 43,
+      "max_dia": 110,
+      "min_dia": 2
     },
     {
       "revisor": "LIBARRIE",
@@ -1183,13 +1269,15 @@
       "tiempo_max_min": 51.07,
       "tiempo_min_sec": 19,
       "tiempo_min_min": 0.32,
-      "prom_diario": 31.1,
+      "prom_diario": 23.4,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 28,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 44,
-      "ranking_velocidad_regional": 44
+      "ranking_velocidad_regional": 44,
+      "max_dia": 255,
+      "min_dia": 1
     },
     {
       "revisor": "BEAVILAV",
@@ -1210,13 +1298,15 @@
       "tiempo_max_min": 65.53,
       "tiempo_min_sec": 21,
       "tiempo_min_min": 0.35,
-      "prom_diario": 30.5,
+      "prom_diario": 23.7,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 27,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 45,
-      "ranking_velocidad_regional": 45
+      "ranking_velocidad_regional": 45,
+      "max_dia": 150,
+      "min_dia": 1
     },
     {
       "revisor": "FMAZATES",
@@ -1237,13 +1327,15 @@
       "tiempo_max_min": 79.65,
       "tiempo_min_sec": 28,
       "tiempo_min_min": 0.47,
-      "prom_diario": 29.2,
+      "prom_diario": 13.6,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 45,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 46,
-      "ranking_velocidad_regional": 46
+      "ranking_velocidad_regional": 46,
+      "max_dia": 68,
+      "min_dia": 1
     },
     {
       "revisor": "ANAMEXOY",
@@ -1264,13 +1356,15 @@
       "tiempo_max_min": 2410.53,
       "tiempo_min_sec": 27,
       "tiempo_min_min": 0.45,
-      "prom_diario": 28.8,
+      "prom_diario": 25.2,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 47,
-      "ranking_velocidad_regional": 47
+      "ranking_velocidad_regional": 47,
+      "max_dia": 144,
+      "min_dia": 1
     },
     {
       "revisor": "EMPEREZM",
@@ -1291,13 +1385,15 @@
       "tiempo_max_min": 81.7,
       "tiempo_min_sec": 41,
       "tiempo_min_min": 0.68,
-      "prom_diario": 26.9,
+      "prom_diario": 17.1,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 33,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 48,
-      "ranking_velocidad_regional": 48
+      "ranking_velocidad_regional": 48,
+      "max_dia": 92,
+      "min_dia": 1
     },
     {
       "revisor": "YNIXCOLI",
@@ -1318,13 +1414,15 @@
       "tiempo_max_min": 16.95,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 26.3,
+      "prom_diario": 14.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 37,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 49,
-      "ranking_velocidad_regional": 49
+      "ranking_velocidad_regional": 49,
+      "max_dia": 54,
+      "min_dia": 1
     },
     {
       "revisor": "HPCARDON",
@@ -1345,13 +1443,15 @@
       "tiempo_max_min": 1095.4,
       "tiempo_min_sec": 21,
       "tiempo_min_min": 0.35,
-      "prom_diario": 24.7,
+      "prom_diario": 17.9,
       "cuadrante": "Q1",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 29,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 50,
-      "ranking_velocidad_regional": 50
+      "ranking_velocidad_regional": 50,
+      "max_dia": 119,
+      "min_dia": 1
     },
     {
       "revisor": "WJPALACI",
@@ -1372,13 +1472,15 @@
       "tiempo_max_min": 37.57,
       "tiempo_min_sec": 40,
       "tiempo_min_min": 0.67,
-      "prom_diario": 23.4,
+      "prom_diario": 13.6,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 36,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 51,
-      "ranking_velocidad_regional": 51
+      "ranking_velocidad_regional": 51,
+      "max_dia": 98,
+      "min_dia": 1
     },
     {
       "revisor": "GAPERUSS",
@@ -1399,13 +1501,15 @@
       "tiempo_max_min": 31.35,
       "tiempo_min_sec": 32,
       "tiempo_min_min": 0.53,
-      "prom_diario": 22.2,
+      "prom_diario": 6.8,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 69,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 52,
-      "ranking_velocidad_regional": 52
+      "ranking_velocidad_regional": 52,
+      "max_dia": 40,
+      "min_dia": 1
     },
     {
       "revisor": "KEDIAZPA",
@@ -1426,13 +1530,15 @@
       "tiempo_max_min": 1685.52,
       "tiempo_min_sec": 46,
       "tiempo_min_min": 0.77,
-      "prom_diario": 22.1,
+      "prom_diario": 10.1,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 46,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 53,
-      "ranking_velocidad_regional": 53
+      "ranking_velocidad_regional": 53,
+      "max_dia": 54,
+      "min_dia": 1
     },
     {
       "revisor": "BMESPINA",
@@ -1453,13 +1559,15 @@
       "tiempo_max_min": 1462.1,
       "tiempo_min_sec": 23,
       "tiempo_min_min": 0.38,
-      "prom_diario": 18.8,
+      "prom_diario": 11.0,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 36,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 54,
-      "ranking_velocidad_regional": 54
+      "ranking_velocidad_regional": 54,
+      "max_dia": 59,
+      "min_dia": 1
     },
     {
       "revisor": "YGLOPEZA",
@@ -1480,13 +1588,15 @@
       "tiempo_max_min": 132.35,
       "tiempo_min_sec": 32,
       "tiempo_min_min": 0.53,
-      "prom_diario": 17.2,
+      "prom_diario": 9.3,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 39,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 55,
-      "ranking_velocidad_regional": 55
+      "ranking_velocidad_regional": 55,
+      "max_dia": 37,
+      "min_dia": 1
     },
     {
       "revisor": "VARIVERA",
@@ -1507,13 +1617,15 @@
       "tiempo_max_min": 4144.1,
       "tiempo_min_sec": 34,
       "tiempo_min_min": 0.57,
-      "prom_diario": 16.8,
+      "prom_diario": 8.4,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 42,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 56,
-      "ranking_velocidad_regional": 56
+      "ranking_velocidad_regional": 56,
+      "max_dia": 56,
+      "min_dia": 1
     },
     {
       "revisor": "JMRAMIRT",
@@ -1534,13 +1646,15 @@
       "tiempo_max_min": 8826.18,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 16.5,
+      "prom_diario": 15.0,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 57,
-      "ranking_velocidad_regional": 57
+      "ranking_velocidad_regional": 57,
+      "max_dia": 129,
+      "min_dia": 1
     },
     {
       "revisor": "MMMARTIV",
@@ -1561,13 +1675,15 @@
       "tiempo_max_min": 2951.35,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 16.4,
+      "prom_diario": 21.5,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 16,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 58,
-      "ranking_velocidad_regional": 58
+      "ranking_velocidad_regional": 58,
+      "max_dia": 77,
+      "min_dia": 1
     },
     {
       "revisor": "AEQUIROA",
@@ -1588,13 +1704,15 @@
       "tiempo_max_min": 57.42,
       "tiempo_min_sec": 13,
       "tiempo_min_min": 0.22,
-      "prom_diario": 15.5,
+      "prom_diario": 19.2,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 17,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 59,
-      "ranking_velocidad_regional": 59
+      "ranking_velocidad_regional": 59,
+      "max_dia": 122,
+      "min_dia": 1
     },
     {
       "revisor": "MDLAMORA",
@@ -1621,7 +1739,9 @@
       "dias_activos": 21,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 60,
-      "ranking_velocidad_regional": 60
+      "ranking_velocidad_regional": 60,
+      "max_dia": 97,
+      "min_dia": 1
     },
     {
       "revisor": "SJGUZMAN",
@@ -1642,13 +1762,15 @@
       "tiempo_max_min": 84.18,
       "tiempo_min_sec": 60,
       "tiempo_min_min": 1.0,
-      "prom_diario": 14.5,
+      "prom_diario": 13.9,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 22,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 61,
-      "ranking_velocidad_regional": 61
+      "ranking_velocidad_regional": 61,
+      "max_dia": 63,
+      "min_dia": 1
     },
     {
       "revisor": "LVPAZPER",
@@ -1669,13 +1791,15 @@
       "tiempo_max_min": 9.72,
       "tiempo_min_sec": 25,
       "tiempo_min_min": 0.42,
-      "prom_diario": 14.1,
+      "prom_diario": 22.8,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 13,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 62,
-      "ranking_velocidad_regional": 62
+      "ranking_velocidad_regional": 62,
+      "max_dia": 59,
+      "min_dia": 1
     },
     {
       "revisor": "BJPEREZS",
@@ -1696,13 +1820,15 @@
       "tiempo_max_min": 13.37,
       "tiempo_min_sec": 29,
       "tiempo_min_min": 0.48,
-      "prom_diario": 13.4,
+      "prom_diario": 20.1,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 14,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 63,
-      "ranking_velocidad_regional": 63
+      "ranking_velocidad_regional": 63,
+      "max_dia": 81,
+      "min_dia": 1
     },
     {
       "revisor": "CDLOZANO",
@@ -1723,13 +1849,15 @@
       "tiempo_max_min": 25.38,
       "tiempo_min_sec": 19,
       "tiempo_min_min": 0.32,
-      "prom_diario": 13.4,
+      "prom_diario": 18.8,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 15,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 64,
-      "ranking_velocidad_regional": 64
+      "ranking_velocidad_regional": 64,
+      "max_dia": 93,
+      "min_dia": 1
     },
     {
       "revisor": "CMCRISTA",
@@ -1750,13 +1878,15 @@
       "tiempo_max_min": 17.82,
       "tiempo_min_sec": 27,
       "tiempo_min_min": 0.45,
-      "prom_diario": 13.2,
+      "prom_diario": 25.2,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 11,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 65,
-      "ranking_velocidad_regional": 65
+      "ranking_velocidad_regional": 65,
+      "max_dia": 68,
+      "min_dia": 1
     },
     {
       "revisor": "WOROSALE",
@@ -1777,13 +1907,15 @@
       "tiempo_max_min": 26.53,
       "tiempo_min_sec": 24,
       "tiempo_min_min": 0.4,
-      "prom_diario": 13.0,
+      "prom_diario": 24.9,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 11,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 66,
-      "ranking_velocidad_regional": 66
+      "ranking_velocidad_regional": 66,
+      "max_dia": 147,
+      "min_dia": 1
     },
     {
       "revisor": "RADELCID",
@@ -1804,13 +1936,15 @@
       "tiempo_max_min": 108.5,
       "tiempo_min_sec": 11,
       "tiempo_min_min": 0.18,
-      "prom_diario": 12.9,
+      "prom_diario": 3.2,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 86,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 67,
-      "ranking_velocidad_regional": 67
+      "ranking_velocidad_regional": 67,
+      "max_dia": 8,
+      "min_dia": 1
     },
     {
       "revisor": "MEHERNAD",
@@ -1831,13 +1965,15 @@
       "tiempo_max_min": 42.42,
       "tiempo_min_sec": 16,
       "tiempo_min_min": 0.27,
-      "prom_diario": 11.4,
+      "prom_diario": 3.4,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 70,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 68,
-      "ranking_velocidad_regional": 68
+      "ranking_velocidad_regional": 68,
+      "max_dia": 11,
+      "min_dia": 1
     },
     {
       "revisor": "FKGUZMAN",
@@ -1858,13 +1994,15 @@
       "tiempo_max_min": 9.22,
       "tiempo_min_sec": 34,
       "tiempo_min_min": 0.57,
-      "prom_diario": 11.1,
+      "prom_diario": 13.7,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 17,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 69,
-      "ranking_velocidad_regional": 69
+      "ranking_velocidad_regional": 69,
+      "max_dia": 125,
+      "min_dia": 1
     },
     {
       "revisor": "VRHERNAND",
@@ -1885,13 +2023,15 @@
       "tiempo_max_min": 901.63,
       "tiempo_min_sec": 58,
       "tiempo_min_min": 0.97,
-      "prom_diario": 10.9,
+      "prom_diario": 9.5,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 24,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 70,
-      "ranking_velocidad_regional": 70
+      "ranking_velocidad_regional": 70,
+      "max_dia": 50,
+      "min_dia": 1
     },
     {
       "revisor": "GWBERGAN",
@@ -1912,13 +2052,15 @@
       "tiempo_max_min": 50.43,
       "tiempo_min_sec": 4,
       "tiempo_min_min": 0.07,
-      "prom_diario": 10.6,
+      "prom_diario": 3.1,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 72,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 71,
-      "ranking_velocidad_regional": 71
+      "ranking_velocidad_regional": 71,
+      "max_dia": 10,
+      "min_dia": 1
     },
     {
       "revisor": "MRCHOCCH",
@@ -1939,13 +2081,15 @@
       "tiempo_max_min": 37.85,
       "tiempo_min_sec": 24,
       "tiempo_min_min": 0.4,
-      "prom_diario": 10.5,
+      "prom_diario": 8.2,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 27,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 72,
-      "ranking_velocidad_regional": 72
+      "ranking_velocidad_regional": 72,
+      "max_dia": 77,
+      "min_dia": 1
     },
     {
       "revisor": "LGCALLEM",
@@ -1966,13 +2110,15 @@
       "tiempo_max_min": 16.55,
       "tiempo_min_sec": 31,
       "tiempo_min_min": 0.52,
-      "prom_diario": 10.0,
+      "prom_diario": 23.2,
       "cuadrante": "Q2",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 73,
-      "ranking_velocidad_regional": 73
+      "ranking_velocidad_regional": 73,
+      "max_dia": 99,
+      "min_dia": 1
     },
     {
       "revisor": "ARBAMACA",
@@ -1993,13 +2139,15 @@
       "tiempo_max_min": 25.25,
       "tiempo_min_sec": 47,
       "tiempo_min_min": 0.78,
-      "prom_diario": 8.3,
+      "prom_diario": 14.6,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 12,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 74,
-      "ranking_velocidad_regional": 74
+      "ranking_velocidad_regional": 74,
+      "max_dia": 72,
+      "min_dia": 1
     },
     {
       "revisor": "HYCHEXTE",
@@ -2020,13 +2168,15 @@
       "tiempo_max_min": 85.85,
       "tiempo_min_sec": 31,
       "tiempo_min_min": 0.52,
-      "prom_diario": 8.0,
+      "prom_diario": 6.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 26,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 75,
-      "ranking_velocidad_regional": 75
+      "ranking_velocidad_regional": 75,
+      "max_dia": 50,
+      "min_dia": 1
     },
     {
       "revisor": "KGALFARO",
@@ -2047,13 +2197,15 @@
       "tiempo_max_min": 6.27,
       "tiempo_min_sec": 40,
       "tiempo_min_min": 0.67,
-      "prom_diario": 7.7,
+      "prom_diario": 5.8,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 28,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 76,
-      "ranking_velocidad_regional": 76
+      "ranking_velocidad_regional": 76,
+      "max_dia": 33,
+      "min_dia": 1
     },
     {
       "revisor": "EYHOMCUC",
@@ -2074,13 +2226,15 @@
       "tiempo_max_min": 8.92,
       "tiempo_min_sec": 25,
       "tiempo_min_min": 0.42,
-      "prom_diario": 7.6,
+      "prom_diario": 7.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 77,
-      "ranking_velocidad_regional": 77
+      "ranking_velocidad_regional": 77,
+      "max_dia": 41,
+      "min_dia": 1
     },
     {
       "revisor": "JRGIROND",
@@ -2101,13 +2255,15 @@
       "tiempo_max_min": 15.85,
       "tiempo_min_sec": 19,
       "tiempo_min_min": 0.32,
-      "prom_diario": 6.9,
+      "prom_diario": 10.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 14,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 78,
-      "ranking_velocidad_regional": 78
+      "ranking_velocidad_regional": 78,
+      "max_dia": 36,
+      "min_dia": 1
     },
     {
       "revisor": "DAHERNAS",
@@ -2128,13 +2284,15 @@
       "tiempo_max_min": 4.53,
       "tiempo_min_sec": 23,
       "tiempo_min_min": 0.38,
-      "prom_diario": 6.6,
+      "prom_diario": 17.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 8,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 79,
-      "ranking_velocidad_regional": 79
+      "ranking_velocidad_regional": 79,
+      "max_dia": 104,
+      "min_dia": 1
     },
     {
       "revisor": "DISARCEN",
@@ -2155,13 +2313,15 @@
       "tiempo_max_min": 13.75,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 6.6,
+      "prom_diario": 15.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 80,
-      "ranking_velocidad_regional": 80
+      "ranking_velocidad_regional": 80,
+      "max_dia": 52,
+      "min_dia": 1
     },
     {
       "revisor": "MNTEJADA",
@@ -2182,13 +2342,15 @@
       "tiempo_max_min": 11.63,
       "tiempo_min_sec": 27,
       "tiempo_min_min": 0.45,
-      "prom_diario": 6.6,
+      "prom_diario": 15.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 81,
-      "ranking_velocidad_regional": 81
+      "ranking_velocidad_regional": 81,
+      "max_dia": 98,
+      "min_dia": 1
     },
     {
       "revisor": "RMLOPEZG",
@@ -2209,13 +2371,15 @@
       "tiempo_max_min": 4.93,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 6.6,
+      "prom_diario": 19.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 7,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 82,
-      "ranking_velocidad_regional": 82
+      "ranking_velocidad_regional": 82,
+      "max_dia": 57,
+      "min_dia": 1
     },
     {
       "revisor": "MVBARRIO",
@@ -2236,13 +2400,15 @@
       "tiempo_max_min": 13.87,
       "tiempo_min_sec": 32,
       "tiempo_min_min": 0.53,
-      "prom_diario": 6.5,
+      "prom_diario": 17.1,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 8,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 83,
-      "ranking_velocidad_regional": 83
+      "ranking_velocidad_regional": 83,
+      "max_dia": 68,
+      "min_dia": 1
     },
     {
       "revisor": "MLLOPEZI",
@@ -2263,13 +2429,15 @@
       "tiempo_max_min": 18.18,
       "tiempo_min_sec": 27,
       "tiempo_min_min": 0.45,
-      "prom_diario": 6.4,
+      "prom_diario": 15.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 84,
-      "ranking_velocidad_regional": 84
+      "ranking_velocidad_regional": 84,
+      "max_dia": 68,
+      "min_dia": 1
     },
     {
       "revisor": "LAMENDEZ",
@@ -2290,13 +2458,15 @@
       "tiempo_max_min": 22.4,
       "tiempo_min_sec": 33,
       "tiempo_min_min": 0.55,
-      "prom_diario": 5.8,
+      "prom_diario": 10.1,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 12,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 85,
-      "ranking_velocidad_regional": 85
+      "ranking_velocidad_regional": 85,
+      "max_dia": 51,
+      "min_dia": 1
     },
     {
       "revisor": "JVQUINON",
@@ -2317,13 +2487,15 @@
       "tiempo_max_min": 16.15,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 5.3,
+      "prom_diario": 10.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 11,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 86,
-      "ranking_velocidad_regional": 86
+      "ranking_velocidad_regional": 86,
+      "max_dia": 29,
+      "min_dia": 1
     },
     {
       "revisor": "AEMONTER",
@@ -2344,13 +2516,15 @@
       "tiempo_max_min": 10.07,
       "tiempo_min_sec": 28,
       "tiempo_min_min": 0.47,
-      "prom_diario": 5.1,
+      "prom_diario": 8.9,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 12,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 87,
-      "ranking_velocidad_regional": 87
+      "ranking_velocidad_regional": 87,
+      "max_dia": 60,
+      "min_dia": 1
     },
     {
       "revisor": "LGAGUIRR",
@@ -2371,13 +2545,15 @@
       "tiempo_max_min": 11.97,
       "tiempo_min_sec": 35,
       "tiempo_min_min": 0.58,
-      "prom_diario": 4.9,
+      "prom_diario": 11.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Activo - Planta Titular",
       "ranking_velocidad_global": 88,
-      "ranking_velocidad_regional": 88
+      "ranking_velocidad_regional": 88,
+      "max_dia": 63,
+      "min_dia": 1
     },
     {
       "revisor": "OAGRAMAJ",
@@ -2398,13 +2574,15 @@
       "tiempo_max_min": 20.53,
       "tiempo_min_sec": 47,
       "tiempo_min_min": 0.78,
-      "prom_diario": 4.2,
+      "prom_diario": 12.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 7,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 89,
-      "ranking_velocidad_regional": 89
+      "ranking_velocidad_regional": 89,
+      "max_dia": 51,
+      "min_dia": 1
     },
     {
       "revisor": "GCCIFUEN",
@@ -2425,13 +2603,15 @@
       "tiempo_max_min": 17.72,
       "tiempo_min_sec": 40,
       "tiempo_min_min": 0.67,
-      "prom_diario": 4.1,
+      "prom_diario": 8.6,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 10,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 90,
-      "ranking_velocidad_regional": 90
+      "ranking_velocidad_regional": 90,
+      "max_dia": 26,
+      "min_dia": 1
     },
     {
       "revisor": "JAIZAGUI",
@@ -2452,13 +2632,15 @@
       "tiempo_max_min": 34.77,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 4.0,
+      "prom_diario": 2.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 37,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 91,
-      "ranking_velocidad_regional": 91
+      "ranking_velocidad_regional": 91,
+      "max_dia": 6,
+      "min_dia": 1
     },
     {
       "revisor": "AYSANTOS",
@@ -2479,13 +2661,15 @@
       "tiempo_max_min": 78.72,
       "tiempo_min_sec": 30,
       "tiempo_min_min": 0.5,
-      "prom_diario": 3.5,
+      "prom_diario": 14.6,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 5,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 92,
-      "ranking_velocidad_regional": 92
+      "ranking_velocidad_regional": 92,
+      "max_dia": 46,
+      "min_dia": 1
     },
     {
       "revisor": "MSMENCHU",
@@ -2506,13 +2690,15 @@
       "tiempo_max_min": 14.63,
       "tiempo_min_sec": 35,
       "tiempo_min_min": 0.58,
-      "prom_diario": 3.5,
+      "prom_diario": 8.1,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 93,
-      "ranking_velocidad_regional": 93
+      "ranking_velocidad_regional": 93,
+      "max_dia": 49,
+      "min_dia": 1
     },
     {
       "revisor": "CALOPEZP",
@@ -2533,13 +2719,15 @@
       "tiempo_max_min": 79.95,
       "tiempo_min_sec": 28,
       "tiempo_min_min": 0.47,
-      "prom_diario": 3.4,
+      "prom_diario": 1.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 42,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 94,
-      "ranking_velocidad_regional": 94
+      "ranking_velocidad_regional": 94,
+      "max_dia": 5,
+      "min_dia": 1
     },
     {
       "revisor": "SYGARCIA",
@@ -2560,13 +2748,15 @@
       "tiempo_max_min": 182.55,
       "tiempo_min_sec": 25,
       "tiempo_min_min": 0.42,
-      "prom_diario": 3.0,
+      "prom_diario": 2.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 31,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 95,
-      "ranking_velocidad_regional": 95
+      "ranking_velocidad_regional": 95,
+      "max_dia": 6,
+      "min_dia": 1
     },
     {
       "revisor": "CHTEPETP",
@@ -2587,13 +2777,15 @@
       "tiempo_max_min": 19.33,
       "tiempo_min_sec": 37,
       "tiempo_min_min": 0.62,
-      "prom_diario": 2.8,
+      "prom_diario": 8.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 7,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 96,
-      "ranking_velocidad_regional": 96
+      "ranking_velocidad_regional": 96,
+      "max_dia": 40,
+      "min_dia": 1
     },
     {
       "revisor": "CVPERALT",
@@ -2614,13 +2806,15 @@
       "tiempo_max_min": 10.83,
       "tiempo_min_sec": 60,
       "tiempo_min_min": 1.0,
-      "prom_diario": 2.8,
+      "prom_diario": 7.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 8,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 97,
-      "ranking_velocidad_regional": 97
+      "ranking_velocidad_regional": 97,
+      "max_dia": 26,
+      "min_dia": 1
     },
     {
       "revisor": "AERODRIL",
@@ -2641,13 +2835,15 @@
       "tiempo_max_min": 41.13,
       "tiempo_min_sec": 51,
       "tiempo_min_min": 0.85,
-      "prom_diario": 2.6,
+      "prom_diario": 13.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 98,
-      "ranking_velocidad_regional": 98
+      "ranking_velocidad_regional": 98,
+      "max_dia": 26,
+      "min_dia": 1
     },
     {
       "revisor": "ARODRIGU",
@@ -2668,13 +2864,15 @@
       "tiempo_max_min": 16.37,
       "tiempo_min_sec": 25,
       "tiempo_min_min": 0.42,
-      "prom_diario": 2.4,
+      "prom_diario": 2.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 22,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 99,
-      "ranking_velocidad_regional": 99
+      "ranking_velocidad_regional": 99,
+      "max_dia": 7,
+      "min_dia": 1
     },
     {
       "revisor": "EGGILRAB",
@@ -2695,13 +2893,15 @@
       "tiempo_max_min": 103.0,
       "tiempo_min_sec": 33,
       "tiempo_min_min": 0.55,
-      "prom_diario": 2.3,
+      "prom_diario": 1.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 36,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 100,
-      "ranking_velocidad_regional": 100
+      "ranking_velocidad_regional": 100,
+      "max_dia": 4,
+      "min_dia": 1
     },
     {
       "revisor": "VMDELEON",
@@ -2722,13 +2922,15 @@
       "tiempo_max_min": 9.25,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 2.3,
+      "prom_diario": 5.4,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 101,
-      "ranking_velocidad_regional": 101
+      "ranking_velocidad_regional": 101,
+      "max_dia": 16,
+      "min_dia": 1
     },
     {
       "revisor": "AMLOPEZF",
@@ -2749,13 +2951,15 @@
       "tiempo_max_min": 5520.25,
       "tiempo_min_sec": 50,
       "tiempo_min_min": 0.83,
-      "prom_diario": 2.2,
+      "prom_diario": 1.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 27,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 102,
-      "ranking_velocidad_regional": 102
+      "ranking_velocidad_regional": 102,
+      "max_dia": 5,
+      "min_dia": 1
     },
     {
       "revisor": "MKVALLAD",
@@ -2776,13 +2980,15 @@
       "tiempo_max_min": 1820.75,
       "tiempo_min_sec": 28,
       "tiempo_min_min": 0.47,
-      "prom_diario": 2.1,
+      "prom_diario": 1.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 30,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 103,
-      "ranking_velocidad_regional": 103
+      "ranking_velocidad_regional": 103,
+      "max_dia": 3,
+      "min_dia": 1
     },
     {
       "revisor": "EMSEBAST",
@@ -2803,13 +3009,15 @@
       "tiempo_max_min": 21.4,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 1.9,
+      "prom_diario": 1.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 26,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 104,
-      "ranking_velocidad_regional": 104
+      "ranking_velocidad_regional": 104,
+      "max_dia": 7,
+      "min_dia": 1
     },
     {
       "revisor": "JAVHERNA",
@@ -2830,13 +3038,15 @@
       "tiempo_max_min": 55.75,
       "tiempo_min_sec": 13,
       "tiempo_min_min": 0.22,
-      "prom_diario": 1.6,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 28,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 105,
-      "ranking_velocidad_regional": 105
+      "ranking_velocidad_regional": 105,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "TJCALDER",
@@ -2857,13 +3067,15 @@
       "tiempo_max_min": 2.55,
       "tiempo_min_sec": 36,
       "tiempo_min_min": 0.6,
-      "prom_diario": 1.6,
+      "prom_diario": 8.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 106,
-      "ranking_velocidad_regional": 106
+      "ranking_velocidad_regional": 106,
+      "max_dia": 14,
+      "min_dia": 1
     },
     {
       "revisor": "SMCABREV",
@@ -2884,13 +3096,15 @@
       "tiempo_max_min": 58.3,
       "tiempo_min_sec": 49,
       "tiempo_min_min": 0.82,
-      "prom_diario": 1.5,
+      "prom_diario": 4.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 8,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 107,
-      "ranking_velocidad_regional": 107
+      "ranking_velocidad_regional": 107,
+      "max_dia": 19,
+      "min_dia": 1
     },
     {
       "revisor": "EYOROZCL",
@@ -2911,13 +3125,15 @@
       "tiempo_max_min": 10.5,
       "tiempo_min_sec": 30,
       "tiempo_min_min": 0.5,
-      "prom_diario": 1.5,
+      "prom_diario": 10.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 108,
-      "ranking_velocidad_regional": 108
+      "ranking_velocidad_regional": 108,
+      "max_dia": 25,
+      "min_dia": 1
     },
     {
       "revisor": "MEPEREZA",
@@ -2938,13 +3154,15 @@
       "tiempo_max_min": 19.62,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 1.4,
+      "prom_diario": 1.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 20,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 109,
-      "ranking_velocidad_regional": 109
+      "ranking_velocidad_regional": 109,
+      "max_dia": 4,
+      "min_dia": 1
     },
     {
       "revisor": "EIGNACIO",
@@ -2965,13 +3183,15 @@
       "tiempo_max_min": 9.03,
       "tiempo_min_sec": 21,
       "tiempo_min_min": 0.35,
-      "prom_diario": 1.4,
+      "prom_diario": 5.8,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 5,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 110,
-      "ranking_velocidad_regional": 110
+      "ranking_velocidad_regional": 110,
+      "max_dia": 14,
+      "min_dia": 1
     },
     {
       "revisor": "YXGOMEZC",
@@ -2992,13 +3212,15 @@
       "tiempo_max_min": 8.95,
       "tiempo_min_sec": 58,
       "tiempo_min_min": 0.97,
-      "prom_diario": 1.4,
+      "prom_diario": 3.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 111,
-      "ranking_velocidad_regional": 111
+      "ranking_velocidad_regional": 111,
+      "max_dia": 12,
+      "min_dia": 1
     },
     {
       "revisor": "AMDOMINE",
@@ -3019,13 +3241,15 @@
       "tiempo_max_min": 4.07,
       "tiempo_min_sec": 40,
       "tiempo_min_min": 0.67,
-      "prom_diario": 1.3,
+      "prom_diario": 3.1,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 9,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 112,
-      "ranking_velocidad_regional": 112
+      "ranking_velocidad_regional": 112,
+      "max_dia": 10,
+      "min_dia": 1
     },
     {
       "revisor": "DMTAHUAL",
@@ -3046,13 +3270,15 @@
       "tiempo_max_min": 22.73,
       "tiempo_min_sec": 47,
       "tiempo_min_min": 0.78,
-      "prom_diario": 1.3,
+      "prom_diario": 1.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 19,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 113,
-      "ranking_velocidad_regional": 113
+      "ranking_velocidad_regional": 113,
+      "max_dia": 4,
+      "min_dia": 1
     },
     {
       "revisor": "GATALEOR",
@@ -3073,13 +3299,15 @@
       "tiempo_max_min": 2.63,
       "tiempo_min_sec": 50,
       "tiempo_min_min": 0.83,
-      "prom_diario": 1.3,
+      "prom_diario": 9.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 114,
-      "ranking_velocidad_regional": 114
+      "ranking_velocidad_regional": 114,
+      "max_dia": 14,
+      "min_dia": 1
     },
     {
       "revisor": "JAYOCPAS",
@@ -3100,13 +3328,15 @@
       "tiempo_max_min": 53.32,
       "tiempo_min_sec": 53,
       "tiempo_min_min": 0.88,
-      "prom_diario": 1.3,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 23,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 115,
-      "ranking_velocidad_regional": 115
+      "ranking_velocidad_regional": 115,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "DMIXCOTC",
@@ -3127,13 +3357,15 @@
       "tiempo_max_min": 998.5,
       "tiempo_min_sec": 27,
       "tiempo_min_min": 0.45,
-      "prom_diario": 1.1,
+      "prom_diario": 1.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 18,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 116,
-      "ranking_velocidad_regional": 116
+      "ranking_velocidad_regional": 116,
+      "max_dia": 3,
+      "min_dia": 1
     },
     {
       "revisor": "CEMARTIN",
@@ -3154,13 +3386,15 @@
       "tiempo_max_min": 49.77,
       "tiempo_min_sec": 45,
       "tiempo_min_min": 0.75,
-      "prom_diario": 1.0,
+      "prom_diario": 1.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 15,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 117,
-      "ranking_velocidad_regional": 117
+      "ranking_velocidad_regional": 117,
+      "max_dia": 3,
+      "min_dia": 1
     },
     {
       "revisor": "JHVARGAS",
@@ -3181,13 +3415,15 @@
       "tiempo_max_min": 11.23,
       "tiempo_min_sec": 88,
       "tiempo_min_min": 1.47,
-      "prom_diario": 1.0,
+      "prom_diario": 3.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 6,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 118,
-      "ranking_velocidad_regional": 118
+      "ranking_velocidad_regional": 118,
+      "max_dia": 9,
+      "min_dia": 1
     },
     {
       "revisor": "JISMLOPE",
@@ -3208,13 +3444,15 @@
       "tiempo_max_min": 13.25,
       "tiempo_min_sec": 40,
       "tiempo_min_min": 0.67,
-      "prom_diario": 1.0,
+      "prom_diario": 3.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 7,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 119,
-      "ranking_velocidad_regional": 119
+      "ranking_velocidad_regional": 119,
+      "max_dia": 11,
+      "min_dia": 1
     },
     {
       "revisor": "AACARDEN",
@@ -3235,13 +3473,15 @@
       "tiempo_max_min": 14.92,
       "tiempo_min_sec": 18,
       "tiempo_min_min": 0.3,
-      "prom_diario": 0.9,
+      "prom_diario": 1.1,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 17,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 120,
-      "ranking_velocidad_regional": 120
+      "ranking_velocidad_regional": 120,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "EATOLVIX",
@@ -3262,13 +3502,15 @@
       "tiempo_max_min": 3.88,
       "tiempo_min_sec": 23,
       "tiempo_min_min": 0.38,
-      "prom_diario": 0.7,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 13,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 121,
-      "ranking_velocidad_regional": 121
+      "ranking_velocidad_regional": 121,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "MVCARRER",
@@ -3289,13 +3531,15 @@
       "tiempo_max_min": 28.33,
       "tiempo_min_sec": 22,
       "tiempo_min_min": 0.37,
-      "prom_diario": 0.7,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 12,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 122,
-      "ranking_velocidad_regional": 122
+      "ranking_velocidad_regional": 122,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "JFRUANOE",
@@ -3316,13 +3560,15 @@
       "tiempo_max_min": 85.07,
       "tiempo_min_sec": 58,
       "tiempo_min_min": 0.97,
-      "prom_diario": 0.7,
+      "prom_diario": 4.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 123,
-      "ranking_velocidad_regional": 123
+      "ranking_velocidad_regional": 123,
+      "max_dia": 8,
+      "min_dia": 3
     },
     {
       "revisor": "DEBE DE INDICAR LOS DATOS EN UN   SOLO VIDEO",
@@ -3343,13 +3589,15 @@
       "tiempo_max_min": 9.72,
       "tiempo_min_sec": 32,
       "tiempo_min_min": 0.53,
-      "prom_diario": 0.6,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 10,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 124,
-      "ranking_velocidad_regional": 124
+      "ranking_velocidad_regional": 124,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "AEFLORES",
@@ -3370,13 +3618,15 @@
       "tiempo_max_min": 51.0,
       "tiempo_min_sec": 65,
       "tiempo_min_min": 1.08,
-      "prom_diario": 0.5,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 10,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 125,
-      "ranking_velocidad_regional": 125
+      "ranking_velocidad_regional": 125,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "KMALVARE",
@@ -3397,13 +3647,15 @@
       "tiempo_max_min": 2736.45,
       "tiempo_min_sec": 45,
       "tiempo_min_min": 0.75,
-      "prom_diario": 0.5,
+      "prom_diario": 1.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 6,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 126,
-      "ranking_velocidad_regional": 126
+      "ranking_velocidad_regional": 126,
+      "max_dia": 4,
+      "min_dia": 1
     },
     {
       "revisor": "MDUARTEM",
@@ -3424,13 +3676,15 @@
       "tiempo_max_min": 10.65,
       "tiempo_min_sec": 108,
       "tiempo_min_min": 1.8,
-      "prom_diario": 0.4,
+      "prom_diario": 1.5,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 6,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 127,
-      "ranking_velocidad_regional": 127
+      "ranking_velocidad_regional": 127,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "LA PERSONA INTERESADA DEBE DE INDICAR LOS DATOS",
@@ -3451,13 +3705,15 @@
       "tiempo_max_min": 3.28,
       "tiempo_min_sec": 36,
       "tiempo_min_min": 0.6,
-      "prom_diario": 0.4,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 8,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 128,
-      "ranking_velocidad_regional": 128
+      "ranking_velocidad_regional": 128,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "LELOPEZZ",
@@ -3478,13 +3734,15 @@
       "tiempo_max_min": 35.8,
       "tiempo_min_sec": 82,
       "tiempo_min_min": 1.37,
-      "prom_diario": 0.3,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 5,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 129,
-      "ranking_velocidad_regional": 129
+      "ranking_velocidad_regional": 129,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "SPDUARTE",
@@ -3505,13 +3763,15 @@
       "tiempo_max_min": 3.6,
       "tiempo_min_sec": 32,
       "tiempo_min_min": 0.53,
-      "prom_diario": 0.3,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 6,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 130,
-      "ranking_velocidad_regional": 130
+      "ranking_velocidad_regional": 130,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "DASORIAP",
@@ -3532,13 +3792,15 @@
       "tiempo_max_min": 3.95,
       "tiempo_min_sec": 40,
       "tiempo_min_min": 0.67,
-      "prom_diario": 0.2,
+      "prom_diario": 1.2,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 131,
-      "ranking_velocidad_regional": 131
+      "ranking_velocidad_regional": 131,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "JDROLDAN",
@@ -3559,13 +3821,15 @@
       "tiempo_max_min": 2.53,
       "tiempo_min_sec": 44,
       "tiempo_min_min": 0.73,
-      "prom_diario": 0.2,
+      "prom_diario": 1.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 132,
-      "ranking_velocidad_regional": 132
+      "ranking_velocidad_regional": 132,
+      "max_dia": 3,
+      "min_dia": 1
     },
     {
       "revisor": "MYSANDOV",
@@ -3586,13 +3850,15 @@
       "tiempo_max_min": 2.78,
       "tiempo_min_sec": 17,
       "tiempo_min_min": 0.28,
-      "prom_diario": 0.2,
+      "prom_diario": 1.7,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 133,
-      "ranking_velocidad_regional": 133
+      "ranking_velocidad_regional": 133,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "AGMIJANG",
@@ -3613,13 +3879,15 @@
       "tiempo_max_min": 2.4,
       "tiempo_min_sec": 34,
       "tiempo_min_min": 0.57,
-      "prom_diario": 0.2,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 134,
-      "ranking_velocidad_regional": 134
+      "ranking_velocidad_regional": 134,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "AGRGOMEZ",
@@ -3640,13 +3908,15 @@
       "tiempo_max_min": 1.78,
       "tiempo_min_sec": 33,
       "tiempo_min_min": 0.55,
-      "prom_diario": 0.2,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 135,
-      "ranking_velocidad_regional": 135
+      "ranking_velocidad_regional": 135,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "JCFELIXC",
@@ -3667,13 +3937,15 @@
       "tiempo_max_min": 22.02,
       "tiempo_min_sec": 51,
       "tiempo_min_min": 0.85,
-      "prom_diario": 0.2,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 136,
-      "ranking_velocidad_regional": 136
+      "ranking_velocidad_regional": 136,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "JMCHINCH",
@@ -3694,13 +3966,15 @@
       "tiempo_max_min": 2.42,
       "tiempo_min_sec": 44,
       "tiempo_min_min": 0.73,
-      "prom_diario": 0.2,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 137,
-      "ranking_velocidad_regional": 137
+      "ranking_velocidad_regional": 137,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "MEAMPERE",
@@ -3721,13 +3995,15 @@
       "tiempo_max_min": 9.38,
       "tiempo_min_sec": 65,
       "tiempo_min_min": 1.08,
-      "prom_diario": 0.2,
+      "prom_diario": 1.3,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 138,
-      "ranking_velocidad_regional": 138
+      "ranking_velocidad_regional": 138,
+      "max_dia": 2,
+      "min_dia": 1
     },
     {
       "revisor": "MLCASTAN",
@@ -3748,13 +4024,15 @@
       "tiempo_max_min": 1249.47,
       "tiempo_min_sec": 320,
       "tiempo_min_min": 5.33,
-      "prom_diario": 0.2,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 139,
-      "ranking_velocidad_regional": 139
+      "ranking_velocidad_regional": 139,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "NEAVALOS",
@@ -3775,13 +4053,15 @@
       "tiempo_max_min": 6.05,
       "tiempo_min_sec": 28,
       "tiempo_min_min": 0.47,
-      "prom_diario": 0.2,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 4,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 140,
-      "ranking_velocidad_regional": 140
+      "ranking_velocidad_regional": 140,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "BGVELASQ",
@@ -3802,13 +4082,15 @@
       "tiempo_max_min": 17.28,
       "tiempo_min_sec": 153,
       "tiempo_min_min": 2.55,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 141,
-      "ranking_velocidad_regional": 141
+      "ranking_velocidad_regional": 141,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "HMROJASS",
@@ -3829,13 +4111,15 @@
       "tiempo_max_min": 49.17,
       "tiempo_min_sec": 156,
       "tiempo_min_min": 2.6,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 3,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 142,
-      "ranking_velocidad_regional": 142
+      "ranking_velocidad_regional": 142,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "BATUCMEN",
@@ -3856,13 +4140,15 @@
       "tiempo_max_min": 27.78,
       "tiempo_min_sec": 98,
       "tiempo_min_min": 1.63,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 143,
-      "ranking_velocidad_regional": 143
+      "ranking_velocidad_regional": 143,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "CAARANAG",
@@ -3883,13 +4169,15 @@
       "tiempo_max_min": 0.43,
       "tiempo_min_sec": 26,
       "tiempo_min_min": 0.43,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 144,
-      "ranking_velocidad_regional": 144
+      "ranking_velocidad_regional": 144,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "EMARMASH",
@@ -3910,13 +4198,15 @@
       "tiempo_max_min": 6.58,
       "tiempo_min_sec": 85,
       "tiempo_min_min": 1.42,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 145,
-      "ranking_velocidad_regional": 145
+      "ranking_velocidad_regional": 145,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "JCPEREZV",
@@ -3937,13 +4227,15 @@
       "tiempo_max_min": 79.77,
       "tiempo_min_sec": 149,
       "tiempo_min_min": 2.48,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 146,
-      "ranking_velocidad_regional": 146
+      "ranking_velocidad_regional": 146,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "PMENDEZB",
@@ -3964,13 +4256,15 @@
       "tiempo_max_min": 12.52,
       "tiempo_min_sec": 99,
       "tiempo_min_min": 1.65,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 147,
-      "ranking_velocidad_regional": 147
+      "ranking_velocidad_regional": 147,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "RCHAJMOR",
@@ -3991,13 +4285,15 @@
       "tiempo_max_min": 1.75,
       "tiempo_min_sec": 103,
       "tiempo_min_min": 1.72,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 148,
-      "ranking_velocidad_regional": 148
+      "ranking_velocidad_regional": 148,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "SCSUCHIT",
@@ -4018,13 +4314,15 @@
       "tiempo_max_min": 1.35,
       "tiempo_min_sec": 20,
       "tiempo_min_min": 0.33,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 149,
-      "ranking_velocidad_regional": 149
+      "ranking_velocidad_regional": 149,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "TIESCOBA",
@@ -4045,13 +4343,15 @@
       "tiempo_max_min": 2.7,
       "tiempo_min_sec": 66,
       "tiempo_min_min": 1.1,
-      "prom_diario": 0.1,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 2,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 150,
-      "ranking_velocidad_regional": 150
+      "ranking_velocidad_regional": 150,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "CAGONZAJ",
@@ -4072,13 +4372,15 @@
       "tiempo_max_min": 8.33,
       "tiempo_min_sec": 500,
       "tiempo_min_min": 8.33,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 151,
-      "ranking_velocidad_regional": 151
+      "ranking_velocidad_regional": 151,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "COLOCAR CORRECTAMENTE EL DPI EN EL VIDEO",
@@ -4099,13 +4401,15 @@
       "tiempo_max_min": 0.77,
       "tiempo_min_sec": 46,
       "tiempo_min_min": 0.77,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 152,
-      "ranking_velocidad_regional": 152
+      "ranking_velocidad_regional": 152,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "FLRECINO",
@@ -4126,13 +4430,15 @@
       "tiempo_max_min": 20.73,
       "tiempo_min_sec": 1244,
       "tiempo_min_min": 20.73,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 153,
-      "ranking_velocidad_regional": 153
+      "ranking_velocidad_regional": 153,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "GEGUZMAN",
@@ -4153,13 +4459,15 @@
       "tiempo_max_min": 6.78,
       "tiempo_min_sec": 407,
       "tiempo_min_min": 6.78,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 154,
-      "ranking_velocidad_regional": 154
+      "ranking_velocidad_regional": 154,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "IICHACON",
@@ -4180,13 +4488,15 @@
       "tiempo_max_min": 3.32,
       "tiempo_min_sec": 199,
       "tiempo_min_min": 3.32,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 155,
-      "ranking_velocidad_regional": 155
+      "ranking_velocidad_regional": 155,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "JAACABAL",
@@ -4207,13 +4517,15 @@
       "tiempo_max_min": 1.8,
       "tiempo_min_sec": 108,
       "tiempo_min_min": 1.8,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 156,
-      "ranking_velocidad_regional": 156
+      "ranking_velocidad_regional": 156,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "JCRAMIRE",
@@ -4234,13 +4546,15 @@
       "tiempo_max_min": 0.62,
       "tiempo_min_sec": 37,
       "tiempo_min_min": 0.62,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 157,
-      "ranking_velocidad_regional": 157
+      "ranking_velocidad_regional": 157,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "LRYACABA",
@@ -4261,13 +4575,15 @@
       "tiempo_max_min": 8.15,
       "tiempo_min_sec": 489,
       "tiempo_min_min": 8.15,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 158,
-      "ranking_velocidad_regional": 158
+      "ranking_velocidad_regional": 158,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "RCAVILAL",
@@ -4288,13 +4604,15 @@
       "tiempo_max_min": 3.07,
       "tiempo_min_sec": 184,
       "tiempo_min_min": 3.07,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 159,
-      "ranking_velocidad_regional": 159
+      "ranking_velocidad_regional": 159,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "TJPERERA",
@@ -4315,13 +4633,15 @@
       "tiempo_max_min": 1.92,
       "tiempo_min_sec": 115,
       "tiempo_min_min": 1.92,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 160,
-      "ranking_velocidad_regional": 160
+      "ranking_velocidad_regional": 160,
+      "max_dia": 1,
+      "min_dia": 1
     },
     {
       "revisor": "VIGALIND",
@@ -4342,13 +4662,15 @@
       "tiempo_max_min": 38.7,
       "tiempo_min_sec": 2322,
       "tiempo_min_min": 38.7,
-      "prom_diario": 0.0,
+      "prom_diario": 1.0,
       "cuadrante": "Q3",
       "dias_habiles": 21,
-      "dias_activos": 21,
+      "dias_activos": 1,
       "estado_personal": "Personal de Apoyo",
       "ranking_velocidad_global": 161,
-      "ranking_velocidad_regional": 161
+      "ranking_velocidad_regional": 161,
+      "max_dia": 1,
+      "min_dia": 1
     }
   ]
 }

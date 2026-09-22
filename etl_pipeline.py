@@ -539,6 +539,11 @@ def export_revisores_rendimiento(master):
 
         region_mode = g['region_norm'].mode()[0] if len(g['region_norm'].mode()) > 0 else 'CENTRAL'
 
+        dias_activos = 1
+        if 'fecha_revision' in g.columns:
+            fechas_rev = g['fecha_revision'].dropna().dt.date.unique()
+            dias_activos = max(1, len(fechas_rev))
+
         revisores_list.append({
             'revisor': str(rev_id).strip(),
             'tipo': 'PLANTA' if total_casos >= 100 else 'APOYO',
@@ -558,10 +563,10 @@ def export_revisores_rendimiento(master):
             'tiempo_max_min': round(max_sec / 60.0, 2),
             'tiempo_min_sec': int(min_sec),
             'tiempo_min_min': round(min_sec / 60.0, 2),
-            'prom_diario': round(total_casos / 21.0, 1),
+            'prom_diario': round(total_casos / dias_activos, 1),
             'cuadrante': 'Q1' if total_casos >= 500 else ('Q2' if total_casos >= 200 else 'Q3'),
-            'dias_habiles': 21,
-            'dias_activos': 21,
+            'dias_habiles': dias_activos,
+            'dias_activos': dias_activos,
             'estado_personal': 'Activo - Planta Titular' if total_casos >= 100 else 'Personal de Apoyo',
         })
 
