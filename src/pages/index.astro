@@ -134,7 +134,7 @@ const formatMinutesToTime = (minDecimal: number) => {
 
                 <KpiCard
                   title="Espera en Buzón"
-                  value="9h 29m"
+                  value={formatHoursToTime(dashboardData.avg_cola_hab_h || 9.07)}
                   badgeText="98.2% del ciclo"
                   contextText="Horas hábiles netas (8h/día)"
                   subtitle="Cola previa a asignación"
@@ -157,7 +157,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   subtitle="Observadas con causal o motivo formal"
                   icon="x-circle"
                   borderColor="amber"
-                  trendText="Revisiones adversos en bandeja"
+                  trendText="Revisiones adversas en bandeja"
                   trendType="warning"
                   valueId="kpiRechazos"
                   badgeId="kpiRechazosBadge"
@@ -349,7 +349,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     </div>
                     <h3 class="text-sm sm:text-base font-bold text-slate-800 tracking-tight mt-1 flex items-center gap-2">
                       <i data-lucide="git-fork" class="w-4 h-4 text-indigo-600"></i>
-                      Árbol de Decisión: Desglose de los 183,054 Revisiones Humanos
+                      Árbol de Decisión: Desglose de los 183,054 Revisiones de los Revisores
                     </h3>
                     <p class="text-xs text-slate-500 mt-0.5 max-w-3xl">
                       Flujo resolutivo de fondo ejecutado por los auditores fiscales: de la carga global emitida a las ramas de aprobación y rechazo, concluyendo en el destino final de cada trámite.
@@ -371,7 +371,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <!-- ============================================== -->
                   <div class="max-w-md mx-auto bg-slate-900/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-md border border-slate-700/80 text-center relative z-10">
                     <div class="text-[10px] font-extrabold uppercase tracking-widest text-indigo-200">Nivel 1: Raíz Operativa Humana</div>
-                    <div class="text-xs font-bold text-indigo-100 uppercase mt-0.5">Total Revisiones Emitidos</div>
+                    <div class="text-xs font-bold text-indigo-100 uppercase mt-0.5">Total Revisiones Realizadas</div>
                     <div class="text-3xl font-black font-mono tracking-tight text-white mt-1">183,054</div>
                     <div class="inline-flex items-center gap-1.5 px-3 py-0.5 mt-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/40 text-[11px] font-bold text-indigo-200 font-mono">
                       <span>100.0% Carga de Trabajo</span>
@@ -563,7 +563,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <!-- Nota explicativa y cuadre matemático -->
                   <div class="mt-3.5 p-3 bg-indigo-50/70 border border-indigo-200/70 rounded-xl text-center text-[11px] text-indigo-950 font-medium backdrop-blur-xs">
                     <span class="font-bold text-indigo-950">Cuadre Matemático de Trazabilidad (Sin Fuga de Datos):</span>
-                    La suma de la Rama B cuadra al 100%: <strong>23,823</strong> (casos que subsanaron) + <strong>27,204</strong> (casos sin subsanar) = <strong>51,027</strong> expedientes observados en su primer intento. Al sumar los <strong>23,797</strong> revisiones de reincidencia (segundas/terceras rondas fallidas), se alcanzan con exactitud los <strong>74,824 revisiones de rechazo</strong> (23,823 + 27,204 + 23,797 = 74,824). Sumado a los 108,230 revisiones de aprobación, completan los <strong>183,054 revisiones humanos emitidos</strong>.
+                    La suma de la Rama B cuadra al 100%: <strong>23,823</strong> (casos que subsanaron) + <strong>27,204</strong> (casos sin subsanar) = <strong>51,027</strong> expedientes observados en su primer intento. Al sumar los <strong>23,797</strong> revisiones de reincidencia (segundas/terceras rondas fallidas), se alcanzan con exactitud los <strong>74,824 revisiones de rechazo</strong> (23,823 + 27,204 + 23,797 = 74,824). Sumado a los 108,230 revisiones de aprobación, completan las <strong>183,054 revisiones de los revisores</strong>.
                   </div>
 
                 </div>
@@ -611,7 +611,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                         </div>
                       </div>
                       <div class="flex justify-between items-center font-bold text-slate-900 border-t border-slate-200/80 pt-1.5">
-                        <span>TOTAL REVISIONES EMITIDOS</span>
+                        <span>TOTAL REVISIONES REALIZADAS</span>
                         <span class="font-mono">183,054 (100.0%)</span>
                       </div>
                     </div>
@@ -1783,17 +1783,17 @@ const formatMinutesToTime = (minDecimal: number) => {
         <div class="space-y-1.5">
           <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
             <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-slate-400"></i>
-            Tendencia Central & Concentración
+            Tendencia Central & Concentración (Horas Hábiles vs Calendario)
           </div>
           <div class="grid grid-cols-3 gap-2.5">
             <!-- MEDIA -->
             <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 flex flex-col justify-between">
               <div>
                 <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Media (Promedio)</span>
-                <span class="text-lg sm:text-xl font-black text-amber-950 font-mono tracking-tight block mt-1">9h 29m</span>
+                <span class="text-lg sm:text-xl font-black text-amber-950 font-mono tracking-tight block mt-1">9h 04m</span>
               </div>
               <div class="mt-2 pt-1.5 border-t border-amber-200/60 text-[10px] text-amber-800/90 leading-tight">
-                9.48h hábiles. Sensible a rezagos de fin de semana.
+                9.07h hábiles (39.47h calendario). Jornada L-V 8h.
               </div>
             </div>
 
@@ -1801,10 +1801,10 @@ const formatMinutesToTime = (minDecimal: number) => {
             <div class="p-3 rounded-xl bg-blue-50/70 border border-blue-200/80 flex flex-col justify-between">
               <div>
                 <span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Mediana (P50)</span>
-                <span class="text-lg sm:text-xl font-black text-blue-950 font-mono tracking-tight block mt-1">3h 24m</span>
+                <span class="text-lg sm:text-xl font-black text-blue-950 font-mono tracking-tight block mt-1">7h 34m</span>
               </div>
               <div class="mt-2 pt-1.5 border-t border-blue-200/60 text-[10px] text-blue-800/90 leading-tight">
-                3.40h hábiles. El 50% entra a revisión en ≤ 3h 24m.
+                7.57h hábiles (26.22h cal). 50% atendido en &lt; 1 día laboral.
               </div>
             </div>
 
@@ -1812,10 +1812,10 @@ const formatMinutesToTime = (minDecimal: number) => {
             <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-200/80 flex flex-col justify-between">
               <div>
                 <span class="text-[10px] font-bold text-sky-800 uppercase tracking-wider block">Moda (Pico)</span>
-                <span class="text-lg sm:text-xl font-black text-sky-950 font-mono tracking-tight block mt-1">0h – 2h</span>
+                <span class="text-lg sm:text-xl font-black text-sky-950 font-mono tracking-tight block mt-1">0h – 3h</span>
               </div>
               <div class="mt-2 pt-1.5 border-t border-sky-200/60 text-[10px] text-sky-800/90 leading-tight">
-                Intervalo modal más frecuente (~45 min en flujo normal).
+                Intervalo modal más frecuente en jornada activa normal.
               </div>
             </div>
           </div>
@@ -1824,30 +1824,34 @@ const formatMinutesToTime = (minDecimal: number) => {
         <!-- ESCALA DE DISPERSIÓN DE PERCENTILES -->
         <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2">
           <div class="flex items-center justify-between text-[11px] font-bold text-slate-700">
-            <span>Escala de Dispersión Acumulada</span>
-            <span class="text-[10px] text-slate-400 font-mono font-normal">P0 → P50 → P95 → P99 → Max</span>
+            <span>Escala de Dispersión Acumulada (Horas Hábiles SAT)</span>
+            <span class="text-[10px] text-slate-400 font-mono font-normal">P0 → P50 → P90 → P95 → P99 → Max</span>
           </div>
           
-          <div class="grid grid-cols-5 gap-1.5 text-center text-[10px] font-mono">
+          <div class="grid grid-cols-6 gap-1.5 text-center text-[10px] font-mono">
             <div class="p-1.5 rounded-lg bg-emerald-100/70 text-emerald-900 border border-emerald-200 font-bold">
               <div>Mín (P0)</div>
               <div class="text-xs">0m</div>
             </div>
             <div class="p-1.5 rounded-lg bg-blue-100/70 text-blue-900 border border-blue-200 font-bold">
               <div>P50</div>
-              <div class="text-xs">3.4h</div>
+              <div class="text-xs">7.6h</div>
+            </div>
+            <div class="p-1.5 rounded-lg bg-indigo-100/70 text-indigo-900 border border-indigo-200 font-bold">
+              <div>P90</div>
+              <div class="text-xs">18.8h</div>
             </div>
             <div class="p-1.5 rounded-lg bg-amber-100/70 text-amber-900 border border-amber-200 font-bold">
-              <div>Media</div>
-              <div class="text-xs">9.5h</div>
+              <div>P95</div>
+              <div class="text-xs">29.2h</div>
             </div>
             <div class="p-1.5 rounded-lg bg-orange-100/70 text-orange-900 border border-orange-200 font-bold">
-              <div>P95</div>
-              <div class="text-xs">116.6h</div>
+              <div>P99</div>
+              <div class="text-xs">40.6h</div>
             </div>
             <div class="p-1.5 rounded-lg bg-rose-100/70 text-rose-900 border border-rose-200 font-bold">
-              <div>Máx (P100)</div>
-              <div class="text-xs">354.7h</div>
+              <div>Máx</div>
+              <div class="text-xs">80.3h</div>
             </div>
           </div>
         </div>
@@ -1859,9 +1863,9 @@ const formatMinutesToTime = (minDecimal: number) => {
             <span>Diagnóstico Estadístico & SLA Institucional</span>
           </div>
           <ul class="space-y-1.5 text-[11px] leading-relaxed text-slate-600 list-disc list-inside">
-            <li><strong>Asignación estándar rápida:</strong> El <strong>50% de las solicitudes</strong> ingresan a revisión activa en menos de <strong>3 horas y 24 minutos</strong>, con casos en jornada activa asignados casi al instante (<strong>mínimo de 0 minutos</strong>).</li>
-            <li><strong>Causa del valor máximo (354.7h):</strong> Se produce en expedientes que ingresan previo a descansos o que quedan fuera de la remesa semanal de extracción, acumulando días de inactividad de servidor antes de ser transferidos a bandeja de revisor.</li>
-            <li><strong>Contraste con la revisión activa:</strong> La espera en buzón representa el <strong>98.2%</strong> del tiempo total del expediente, mientras que la auditoría activa en pantalla del revisor promedia solo <strong>3m 36s</strong> (y en el caso más lento tomó apenas 1m 19s).</li>
+            <li><strong>Asignación estándar en horario laboral:</strong> La mediana de espera es de <strong>7 horas y 34 minutos hábiles</strong> (7.57h), lo que confirma que la mitad de las gestiones se asignan en menos de 1 jornada de 8h.</li>
+            <li><strong>Diferencia Calendario vs Hábil:</strong> En calendario bruto el promedio es de <strong>39.47h</strong> y el máximo es de <strong>354.7h</strong> (14.8 días), generado por solicitudes ingresadas previo a asuetos oficiales SAT o fines de semana largos. En horas hábiles de trabajo el promedio es de <strong>9.07h</strong> y el máximo de <strong>80.3h</strong>.</li>
+            <li><strong>Contraste con la revisión activa:</strong> La espera en buzón representa el <strong>98.2%</strong> del ciclo total del expediente; una vez abierto por el evaluador en pantalla, la resolución toma en promedio solo <strong>3m 36s</strong>.</li>
           </ul>
         </div>
       </div>
