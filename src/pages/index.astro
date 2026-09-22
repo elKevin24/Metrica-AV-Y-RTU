@@ -1473,7 +1473,10 @@ const formatMinutesToTime = (minDecimal: number) => {
                         <span>Total Atenciones</span><span id="thRevIcon_total" class="text-amber-400 text-[11px] font-black ml-1">▼</span>
                       </th>
                       <th id="thRev_prom_diario" class="py-3 px-3 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('prom_diario')" title="Clic para ordenar por Promedio Diario">
-                        <span>Promedio / Día</span><span id="thRevIcon_prom_diario" class="text-slate-500 text-[10px] ml-1">⇅</span>
+                        <div class="flex items-center justify-end gap-1">
+                          <span>Ritmo Diario</span><span id="thRevIcon_prom_diario" class="text-slate-500 text-[10px] ml-0.5">⇅</span>
+                        </div>
+                        <div class="text-[9.5px] font-normal text-slate-400">Prom · Máx · Mín</div>
                       </th>
                       <th id="thRev_pct_aprobadas" class="py-3 px-3 text-left font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors min-w-[150px] group" onclick="handleRevisoresColSort('pct_aprobadas')" title="Clic para ordenar por Tasa de Aprobación">
                         <span>Dictamen (Calidad)</span><span id="thRevIcon_pct_aprobadas" class="text-slate-500 text-[10px] ml-1">⇅</span>
@@ -3414,7 +3417,14 @@ const formatMinutesToTime = (minDecimal: number) => {
                 </div>
               </td>
               <td class="py-3 px-3 text-right font-mono text-xs">
-                <span class="${promBadge}">${promDiario}</span> <span class="text-[10px] text-slate-400 font-normal">/día</span>
+                <div class="flex items-center justify-end gap-1">
+                  <span class="${promBadge}">${promDiario}</span>
+                  <span class="text-[10px] text-slate-400 font-normal">/día</span>
+                </div>
+                <div class="text-[10px] font-mono mt-0.5 flex items-center justify-end gap-1.5" title="Pico máximo en 1 día: ${r.max_dia || 0} exp | Mínimo en 1 día: ${r.min_dia != null ? r.min_dia : 0} exp">
+                  <span class="text-indigo-700 bg-indigo-50/90 px-1 py-0.2 rounded border border-indigo-200/60 font-semibold text-[9.5px]">Máx ${r.max_dia || 0}</span>
+                  <span class="text-slate-400 text-[9.5px]">Mín ${r.min_dia != null ? r.min_dia : 0}</span>
+                </div>
               </td>
               <td class="py-3 px-3 text-left font-sans text-xs min-w-[150px]">
                 <div class="flex items-center justify-between text-[10.5px] font-mono mb-1">
@@ -3563,7 +3573,7 @@ const formatMinutesToTime = (minDecimal: number) => {
 
       window.exportRevisoresCSV = function() {
         const list = revisoresFilteredData.length > 0 ? revisoresFilteredData : revisoresRawData;
-        const headers = ["Ranking", "Revisor", "Regional", "Tipo", "Total_Atenciones", "Promedio_Diario", "Aprobadas", "Rechazadas", "Pct_Aprobacion", "Tiempo_Promedio_Min", "Dias_Activos"];
+        const headers = ["Ranking", "Revisor", "Regional", "Tipo", "Total_Atenciones", "Promedio_Diario", "Pico_Max_Diario", "Min_Diario", "Aprobadas", "Rechazadas", "Pct_Aprobacion", "Tiempo_Promedio_Min", "Dias_Activos"];
         const rows = list.map((r, i) => [
           i + 1,
           `"${r.revisor || ''}"`,
@@ -3571,6 +3581,8 @@ const formatMinutesToTime = (minDecimal: number) => {
           `"${r.tipo || ''}"`,
           r.total || 0,
           r.prom_diario || 0,
+          r.max_dia || 0,
+          r.min_dia != null ? r.min_dia : 0,
           r.aprobadas || 0,
           r.rechazadas || 0,
           r.pct_aprobadas != null ? r.pct_aprobadas : 0,

@@ -540,9 +540,15 @@ def export_revisores_rendimiento(master):
         region_mode = g['region_norm'].mode()[0] if len(g['region_norm'].mode()) > 0 else 'CENTRAL'
 
         dias_activos = 1
+        max_dia = total_casos
+        min_dia = total_casos
         if 'fecha_revision' in g.columns:
-            fechas_rev = g['fecha_revision'].dropna().dt.date.unique()
-            dias_activos = max(1, len(fechas_rev))
+            fechas_rev = g['fecha_revision'].dropna().dt.date
+            counts_per_day = fechas_rev.value_counts()
+            dias_activos = max(1, len(counts_per_day))
+            if len(counts_per_day) > 0:
+                max_dia = int(counts_per_day.max())
+                min_dia = int(counts_per_day.min())
 
         revisores_list.append({
             'revisor': str(rev_id).strip(),
@@ -564,6 +570,8 @@ def export_revisores_rendimiento(master):
             'tiempo_min_sec': int(min_sec),
             'tiempo_min_min': round(min_sec / 60.0, 2),
             'prom_diario': round(total_casos / dias_activos, 1),
+            'max_dia': max_dia,
+            'min_dia': min_dia,
             'cuadrante': 'Q1' if total_casos >= 500 else ('Q2' if total_casos >= 200 else 'Q3'),
             'dias_habiles': dias_activos,
             'dias_activos': dias_activos,
