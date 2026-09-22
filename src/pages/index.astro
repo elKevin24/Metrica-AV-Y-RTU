@@ -84,7 +84,7 @@ const formatMinutesToTime = (minDecimal: number) => {
       <FilterRibbon client:only="react" />
 
       <!-- DASHBOARD CANVAS -->
-      <main class="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 pb-24 md:pb-6">
+      <main class="dashboard-scroll flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 pb-24 md:pb-6">
         <div class="max-w-[1400px] mx-auto space-y-6">
           
           <!-- ============================================== -->
@@ -1845,6 +1845,200 @@ const formatMinutesToTime = (minDecimal: number) => {
     </div>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- MODAL DRILLDOWN: DETALLE DE ATENCIONES Y RENDIMIENTO POR REVISOR           -->
+  <!-- ========================================================================= -->
+  <div id="modalRevisorDetalle" class="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-slate-950/75 backdrop-blur-md hidden transition-all duration-200">
+    <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200/90 w-full max-w-6xl max-h-[94vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-black text-sm flex items-center justify-center shadow-md shadow-blue-600/20 shrink-0">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 id="mRevNombre" class="text-base sm:text-lg font-black text-slate-900 font-sans tracking-tight">Expediente del Revisor</h3>
+              <span id="mRevTipoBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Planta</span>
+              <span id="mRevRegBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">CENTRAL</span>
+              <span id="mRevDiasBadge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">0 días activos</span>
+            </div>
+            <p id="mRevSubtitle" class="text-xs text-slate-500 mt-0.5">Historial individual de atenciones, tiempos en pantalla (minutos/segundos) y desglose de resoluciones.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button 
+            type="button" 
+            onclick="exportIndividualRevisorCSV()" 
+            class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition cursor-pointer"
+            title="Exportar todas las atenciones de este revisor a CSV"
+          >
+            <i data-lucide="download" class="w-3.5 h-3.5 text-slate-500"></i>
+            <span>Exportar CSV</span>
+          </button>
+          <button 
+            type="button" 
+            onclick="closeRevisorDetailModal()" 
+            class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 rounded-xl transition cursor-pointer"
+            title="Cerrar ventana (Esc)"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body con scroll -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        
+        <!-- 5 KPI Cards del Revisor -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+          <div class="p-3 bg-blue-50/70 border border-blue-200/80 rounded-xl">
+            <span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Atenciones Totales</span>
+            <span id="mRevKpiTotal" class="text-xl font-black text-blue-950 font-mono block mt-0.5">0</span>
+            <span id="mRevKpiTotalSub" class="text-[10px] text-blue-700 block font-medium mt-0.5">-</span>
+          </div>
+
+          <div class="p-3 bg-indigo-50/70 border border-indigo-200/80 rounded-xl">
+            <span class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider block">Ritmo Diario</span>
+            <span id="mRevKpiRitmo" class="text-xl font-black text-indigo-950 font-mono block mt-0.5">0.0 / día</span>
+            <span id="mRevKpiRitmoSub" class="text-[10px] text-indigo-700 block font-medium mt-0.5">Máx: 0 · Mín: 0</span>
+          </div>
+
+          <div class="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl">
+            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Tasa Aprobación</span>
+            <span id="mRevKpiAprob" class="text-xl font-black text-emerald-950 font-mono block mt-0.5">0.0%</span>
+            <span id="mRevKpiAprobSub" class="text-[10px] text-emerald-700 block font-medium mt-0.5">0 aprobadas</span>
+          </div>
+
+          <div class="p-3 bg-amber-50/70 border border-amber-200/80 rounded-xl">
+            <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Tiempo en Pantalla</span>
+            <span id="mRevKpiTiempo" class="text-xl font-black text-amber-950 font-mono block mt-0.5">0.0 min</span>
+            <span id="mRevKpiTiempoSub" class="text-[10px] text-amber-700 block font-medium mt-0.5">Promedio por caso</span>
+          </div>
+
+          <div class="p-3 bg-purple-50/70 border border-purple-200/80 rounded-xl col-span-2 sm:col-span-1">
+            <span class="text-[10px] font-bold text-purple-800 uppercase tracking-wider block">Espera en Cola Previa</span>
+            <span id="mRevKpiCola" class="text-xl font-black text-purple-950 font-mono block mt-0.5">0.0h</span>
+            <span id="mRevKpiColaSub" class="text-[10px] text-purple-700 block font-medium mt-0.5">Horas hábiles netas</span>
+          </div>
+        </div>
+
+        <!-- Filtros y Búsqueda de Atenciones -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+          <div class="flex-1 relative">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="mRevSearchInput" 
+              placeholder="Buscar por No. Gestión, Tipo de Trámite..." 
+              oninput="handleMRevSearch(this.value)"
+              class="w-full pl-8 pr-3 py-1.5 bg-slate-100/90 border border-slate-200/80 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition font-sans"
+            />
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Filtro Dictamen -->
+            <select 
+              id="mRevFilterDictamen" 
+              onchange="handleMRevFilterDictamen(this.value)"
+              class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white outline-none cursor-pointer"
+            >
+              <option value="TODOS">Dictamen: Todos</option>
+              <option value="APROBADA_FTR">Aprobadas 1ª Vuelta (FTR)</option>
+              <option value="APROBADA_SUBS">Aprobadas Subsanadas</option>
+              <option value="RECHAZADA">Rechazadas</option>
+            </select>
+
+            <!-- Filtro Velocidad -->
+            <select 
+              id="mRevFilterVelocidad" 
+              onchange="handleMRevFilterVelocidad(this.value)"
+              class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white outline-none cursor-pointer"
+            >
+              <option value="TODOS">Velocidad: Todas</option>
+              <option value="RAPIDA">Ultrarrápida (&lt; 2m)</option>
+              <option value="ESTANDAR">Estándar (2m – 10m)</option>
+              <option value="COMPLEJA">Compleja (&gt; 10m)</option>
+            </select>
+
+            <span id="mRevCaseCount" class="text-xs text-slate-500 font-mono whitespace-nowrap px-1">0 casos</span>
+          </div>
+        </div>
+
+        <!-- Tabla de Atenciones Detallada -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-2xs max-h-[360px]">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-slate-900 text-white font-semibold sticky top-0 z-10 text-[11px]">
+              <tr>
+                <th class="py-2.5 px-3 w-10 text-center text-slate-400">#</th>
+                <th class="py-2.5 px-3">No. Gestión</th>
+                <th class="py-2.5 px-3">Fecha & Hora Atención</th>
+                <th class="py-2.5 px-3">Tipo Trámite</th>
+                <th class="py-2.5 px-3">Dictamen / Calidad</th>
+                <th class="py-2.5 px-3 text-right">Tiempo en Pantalla</th>
+                <th class="py-2.5 px-3 text-right">Espera en Cola</th>
+              </tr>
+            </thead>
+            <tbody id="mRevTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono bg-white">
+              <!-- Filas dinámicas -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación de la Tabla de Atenciones -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-2 pt-1 text-xs text-slate-500">
+          <div class="flex items-center gap-2">
+            <span>Filas por página:</span>
+            <select 
+              id="mRevPageSize" 
+              onchange="handleMRevPageSizeChange(Number(this.value))"
+              class="bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold text-slate-700 outline-none cursor-pointer">
+              <option value="15">15</option>
+              <option value="30" selected>30</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <span id="mRevPaginationInfo" class="font-mono text-slate-600 mr-2 text-[11px]">Página 1 de 1</span>
+            <button 
+              type="button" 
+              id="btnMRevPrev"
+              onclick="handleMRevPagePrev()" 
+              class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+              Anterior
+            </button>
+            <div id="mRevPageNumbers" class="flex items-center gap-1"></div>
+            <button 
+              type="button" 
+              id="btnMRevNext"
+              onclick="handleMRevPageNext()" 
+              class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+              Siguiente
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between shrink-0">
+        <span class="text-[11px] text-slate-400 font-mono">Trazabilidad individual auditada al 100%</span>
+        <button 
+          type="button" 
+          onclick="closeRevisorDetailModal()" 
+          class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition cursor-pointer shadow-xs"
+        >
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- CLIENT SCRIPT (Interactive Logic & Chart.js) -->
   <script is:inline>
     (function initDashboard() {
@@ -1932,6 +2126,13 @@ const formatMinutesToTime = (minDecimal: number) => {
 
         if (typeof lucide !== 'undefined') {
           lucide.createIcons();
+        }
+
+        // Desplazamiento suave hasta la sección activa
+        // (scroll nativo CSS / scrollIntoView, sin secuestrar el scroll)
+        if (activeContent) {
+          const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          activeContent.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         }
       };
 
@@ -3397,11 +3598,14 @@ const formatMinutesToTime = (minDecimal: number) => {
           const dias = r.dias_activos || 1;
 
           return `
-            <tr class="hover:bg-slate-50/90 transition-colors">
+            <tr class="hover:bg-blue-50/60 transition-colors cursor-pointer group" onclick="openRevisorDetail('${r.revisor}')" title="Clic para ver desglose y atenciones detalladas de ${r.revisor}">
               <td class="py-3 px-3 text-center text-slate-400 font-mono text-[11px] font-medium">${rank}</td>
               <td class="py-3 px-3 font-sans text-slate-900">
                 <div class="flex items-center gap-1.5">
-                  <span class="text-xs text-slate-900 font-bold tracking-tight">${r.revisor || 'Sin ID'}</span>
+                  <button type="button" onclick="event.stopPropagation(); openRevisorDetail('${r.revisor}')" class="text-xs text-blue-700 group-hover:text-blue-900 group-hover:underline font-bold tracking-tight text-left flex items-center gap-1 cursor-pointer">
+                    <span>${r.revisor || 'Sin ID'}</span>
+                    <i data-lucide="external-link" class="w-3 h-3 text-blue-500 opacity-60 group-hover:opacity-100"></i>
+                  </button>
                   ${tipoBadge}
                 </div>
               </td>
@@ -3600,10 +3804,392 @@ const formatMinutesToTime = (minDecimal: number) => {
         document.body.removeChild(link);
       };
 
+      // =========================================================================
+      // MODAL DRILLDOWN: DETALLE INDIVIDUAL DE REVISOR & SUS ATENCIONES
+      // =========================================================================
+      let currentMRevData = null;
+      let currentMRevFilteredCases = [];
+      let currentMRevPage = 1;
+      let currentMRevPageSize = 30;
+      let currentMRevSearch = '';
+      let currentMRevDictamen = 'TODOS';
+      let currentMRevVelocidad = 'TODOS';
+
+      window.openRevisorDetail = async function(revisorId) {
+        if (!revisorId) return;
+        const modal = document.getElementById('modalRevisorDetalle');
+        if (!modal) return;
+        
+        modal.classList.remove('hidden');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        // Estado inicial de carga
+        const nomEl = document.getElementById('mRevNombre');
+        if (nomEl) nomEl.textContent = `Cargando atenciones de ${revisorId}...`;
+        const tbody = document.getElementById('mRevTableBody');
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-slate-400 font-sans"><div class="inline-flex items-center gap-2"><div class="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div><span>Cargando expediente forense de ${revisorId}...</span></div></td></tr>`;
+        }
+
+        try {
+          const resp = await fetch(`/data/revisores_detalle/${encodeURIComponent(revisorId)}.json`);
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const data = await resp.json();
+          currentMRevData = data;
+          currentMRevPage = 1;
+          currentMRevSearch = '';
+          currentMRevDictamen = 'TODOS';
+          currentMRevVelocidad = 'TODOS';
+
+          const sInput = document.getElementById('mRevSearchInput');
+          if (sInput) sInput.value = '';
+          const dSelect = document.getElementById('mRevFilterDictamen');
+          if (dSelect) dSelect.value = 'TODOS';
+          const vSelect = document.getElementById('mRevFilterVelocidad');
+          if (vSelect) vSelect.value = 'TODOS';
+          const pSelect = document.getElementById('mRevPageSize');
+          if (pSelect) pSelect.value = String(currentMRevPageSize);
+
+          renderMRevHeaderAndKpis(data);
+          applyMRevFiltersAndRender();
+        } catch (err) {
+          console.error('Error cargando detalle de revisor:', err);
+          if (nomEl) nomEl.textContent = `Error al cargar datos de ${revisorId}`;
+          if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-rose-500 font-sans font-medium">No se pudo cargar el archivo de detalle individual para ${revisorId}.</td></tr>`;
+        }
+      };
+
+      window.closeRevisorDetailModal = function() {
+        const modal = document.getElementById('modalRevisorDetalle');
+        if (modal) modal.classList.add('hidden');
+      };
+
+      const mRevModal = document.getElementById('modalRevisorDetalle');
+      if (mRevModal) {
+        mRevModal.addEventListener('click', function(e) {
+          if (e.target === mRevModal) {
+            window.closeRevisorDetailModal();
+          }
+        });
+      }
+
+      function renderMRevHeaderAndKpis(data) {
+        const meta = data.meta || {};
+        const nomEl = document.getElementById('mRevNombre');
+        if (nomEl) nomEl.textContent = `Revisor: ${data.revisor}`;
+
+        const isPlanta = (meta.tipo || '').toUpperCase() === 'PLANTA';
+        const tipoBadge = document.getElementById('mRevTipoBadge');
+        if (tipoBadge) {
+          tipoBadge.textContent = isPlanta ? 'Planta Titular' : 'Personal Apoyo';
+          tipoBadge.className = isPlanta 
+            ? 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200' 
+            : 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200';
+        }
+
+        const regBadge = document.getElementById('mRevRegBadge');
+        if (regBadge) {
+          regBadge.textContent = meta.regional || 'CENTRAL';
+        }
+
+        const diasBadge = document.getElementById('mRevDiasBadge');
+        if (diasBadge) {
+          diasBadge.textContent = `${meta.dias_activos || 1} días activos`;
+        }
+
+        // KPIs
+        const total = meta.total || data.total_casos || 0;
+        const totalEl = document.getElementById('mRevKpiTotal');
+        if (totalEl) totalEl.textContent = total.toLocaleString();
+
+        const ftrCount = meta.directas || 0;
+        const ftrPct = total > 0 ? ((ftrCount / total) * 100).toFixed(1) : '0';
+        const totalSub = document.getElementById('mRevKpiTotalSub');
+        if (totalSub) totalSub.textContent = `${ftrCount.toLocaleString()} directas (${ftrPct}% FTR)`;
+
+        const ritmoEl = document.getElementById('mRevKpiRitmo');
+        if (ritmoEl) ritmoEl.textContent = `${(meta.prom_diario || 0).toFixed(1)} / día`;
+        const ritmoSub = document.getElementById('mRevKpiRitmoSub');
+        if (ritmoSub) ritmoSub.textContent = `Pico Máx: ${meta.max_dia || 0} · Mín: ${meta.min_dia != null ? meta.min_dia : 0}`;
+
+        const aprobEl = document.getElementById('mRevKpiAprob');
+        if (aprobEl) aprobEl.textContent = `${(meta.pct_aprobadas || 0).toFixed(1)}%`;
+        const aprobSub = document.getElementById('mRevKpiAprobSub');
+        if (aprobSub) {
+          const aprobCount = meta.aprobadas || 0;
+          const rechCount = meta.rechazadas || 0;
+          aprobSub.textContent = `${aprobCount.toLocaleString()} aprobadas (${rechCount.toLocaleString()} rechazos)`;
+        }
+
+        const tiempoEl = document.getElementById('mRevKpiTiempo');
+        if (tiempoEl) tiempoEl.textContent = `${(meta.tiempo_prom_min || 0).toFixed(1)} min`;
+        const tiempoSub = document.getElementById('mRevKpiTiempoSub');
+        if (tiempoSub) {
+          const tMinMin = (meta.tiempo_min_sec || 0) < 60 ? `${meta.tiempo_min_sec || 0}s` : `${meta.tiempo_min_min || 0}m`;
+          const tMaxMin = `${(meta.tiempo_max_min || 0).toFixed(0)}m`;
+          tiempoSub.textContent = `Mín: ${tMinMin} · Máx: ${tMaxMin}`;
+        }
+
+        // Cola previa media
+        const casos = data.casos || [];
+        const sumCola = casos.reduce((acc, c) => acc + (c.th || 0), 0);
+        const avgCola = casos.length > 0 ? (sumCola / casos.length).toFixed(1) : '0.0';
+        const colaEl = document.getElementById('mRevKpiCola');
+        if (colaEl) colaEl.textContent = `${avgCola}h hábiles`;
+        const colaSub = document.getElementById('mRevKpiColaSub');
+        if (colaSub) colaSub.textContent = `Espera previa en cola`;
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+
+      window.handleMRevSearch = function(val) {
+        currentMRevSearch = val;
+        currentMRevPage = 1;
+        applyMRevFiltersAndRender();
+      };
+
+      window.handleMRevFilterDictamen = function(val) {
+        currentMRevDictamen = val;
+        currentMRevPage = 1;
+        applyMRevFiltersAndRender();
+      };
+
+      window.handleMRevFilterVelocidad = function(val) {
+        currentMRevVelocidad = val;
+        currentMRevPage = 1;
+        applyMRevFiltersAndRender();
+      };
+
+      function applyMRevFiltersAndRender() {
+        if (!currentMRevData || !currentMRevData.casos) return;
+        let list = [...currentMRevData.casos];
+
+        // 1. Búsqueda por texto
+        if (currentMRevSearch.trim()) {
+          const q = currentMRevSearch.trim().toLowerCase();
+          list = list.filter(c => 
+            (c.i && c.i.toLowerCase().includes(q)) ||
+            (c.t && c.t.toLowerCase().includes(q)) ||
+            (c.e && c.e.toLowerCase().includes(q)) ||
+            (c.fr && c.fr.toLowerCase().includes(q))
+          );
+        }
+
+        // 2. Filtro Dictamen
+        if (currentMRevDictamen !== 'TODOS') {
+          if (currentMRevDictamen === 'APROBADA_FTR') {
+            list = list.filter(c => c.ft === 1 || (c.e === 'APROBADA' && c.cr === 0));
+          } else if (currentMRevDictamen === 'APROBADA_SUBS') {
+            list = list.filter(c => c.sb === 1 || (c.e === 'APROBADA' && c.cr === 1));
+          } else if (currentMRevDictamen === 'RECHAZADA') {
+            list = list.filter(c => c.cr === 1 || (c.e && c.e.includes('RECHAZ')));
+          }
+        }
+
+        // 3. Filtro Velocidad
+        if (currentMRevVelocidad !== 'TODOS') {
+          list = list.filter(c => {
+            const min = c.t_min != null ? c.t_min : (c.t_sec ? c.t_sec / 60 : 0);
+            if (currentMRevVelocidad === 'RAPIDA') return min < 2.0;
+            if (currentMRevVelocidad === 'ESTANDAR') return min >= 2.0 && min <= 10.0;
+            if (currentMRevVelocidad === 'COMPLEJA') return min > 10.0;
+            return true;
+          });
+        }
+
+        currentMRevFilteredCases = list;
+        renderMRevTablePage();
+      }
+
+      function renderMRevTablePage() {
+        const tbody = document.getElementById('mRevTableBody');
+        if (!tbody) return;
+
+        const totalItems = currentMRevFilteredCases.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / currentMRevPageSize));
+
+        if (currentMRevPage > totalPages) currentMRevPage = totalPages;
+        if (currentMRevPage < 1) currentMRevPage = 1;
+
+        const startIdx = (currentMRevPage - 1) * currentMRevPageSize;
+        const endIdx = Math.min(startIdx + currentMRevPageSize, totalItems);
+        const pageItems = currentMRevFilteredCases.slice(startIdx, endIdx);
+
+        // Actualizar contador
+        const countEl = document.getElementById('mRevCaseCount');
+        if (countEl) {
+          countEl.textContent = `${totalItems.toLocaleString()} atenciones filtradas`;
+        }
+
+        if (pageItems.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400 font-sans">No se encontraron atenciones con los filtros actuales.</td></tr>`;
+          updateMRevPaginationControls(0, 0, 0, 1, 1);
+          return;
+        }
+
+        tbody.innerHTML = pageItems.map((c, i) => {
+          const idx = startIdx + i + 1;
+          const gestion = c.i || 'Sin ID';
+          const fecha = c.fr || c.fa || c.fc || '-';
+          const tipo = c.t || 'GESTIÓN';
+
+          // Dictamen badge
+          let dictamenBadge = '';
+          const isAprob = (c.e || '').toUpperCase() === 'APROBADA';
+          if (isAprob && c.sb === 1) {
+            dictamenBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-200">Aprobada (Subsanada)</span>`;
+          } else if (isAprob) {
+            dictamenBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Aprobada (1ª Vuelta FTR)</span>`;
+          } else {
+            dictamenBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-rose-800 border border-rose-200">Rechazada / Con Observación</span>`;
+          }
+
+          // Tiempo en pantalla badge
+          let tMinStr = '-';
+          let tBadgeColor = 'text-slate-600 bg-slate-100 border-slate-200';
+          if (c.t_min != null) {
+            tMinStr = `${c.t_min.toFixed(1)} min`;
+            if (c.t_min < 2.0) tBadgeColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
+            else if (c.t_min <= 5.0) tBadgeColor = 'text-blue-700 bg-blue-50 border-blue-200';
+            else if (c.t_min <= 10.0) tBadgeColor = 'text-amber-700 bg-amber-50 border-amber-200';
+            else tBadgeColor = 'text-purple-700 bg-purple-50 border-purple-200';
+          } else if (c.t_sec != null) {
+            tMinStr = `${c.t_sec}s`;
+          }
+
+          const colaStr = c.th != null ? `${c.th.toFixed(1)}h` : '-';
+
+          return `
+            <tr class="hover:bg-slate-50/90 transition-colors">
+              <td class="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px] font-medium">${idx}</td>
+              <td class="py-2.5 px-3 font-mono font-bold text-slate-900">
+                <span class="hover:text-blue-600 transition cursor-pointer" onclick="navigator.clipboard.writeText('${gestion}'); alert('No. Gestión ${gestion} copiado al portapapeles');" title="Clic para copiar No. de Gestión">${gestion}</span>
+              </td>
+              <td class="py-2.5 px-3 text-slate-600 font-sans text-xs">
+                ${fecha}
+              </td>
+              <td class="py-2.5 px-3 font-sans text-xs text-slate-800">
+                ${tipo}
+              </td>
+              <td class="py-2.5 px-3 font-sans">
+                ${dictamenBadge}
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono text-xs">
+                <span class="px-2 py-0.5 rounded-md border text-[11px] font-bold ${tBadgeColor}">
+                  ${tMinStr}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono text-xs text-slate-600">
+                ${colaStr}
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        updateMRevPaginationControls(totalItems, startIdx + 1, endIdx, currentMRevPage, totalPages);
+      }
+
+      function updateMRevPaginationControls(total, from, to, page, totalPages) {
+        const info = document.getElementById('mRevPaginationInfo');
+        if (info) {
+          info.textContent = total > 0 ? `${from}-${to} de ${total.toLocaleString()}` : '0 de 0';
+        }
+
+        const btnPrev = document.getElementById('btnMRevPrev');
+        if (btnPrev) btnPrev.disabled = (page <= 1);
+
+        const btnNext = document.getElementById('btnMRevNext');
+        if (btnNext) btnNext.disabled = (page >= totalPages);
+
+        const pageNumbers = document.getElementById('mRevPageNumbers');
+        if (pageNumbers) {
+          let pagesHtml = '';
+          const maxButtons = 5;
+          let startPage = Math.max(1, page - 2);
+          let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+          if (endPage - startPage + 1 < maxButtons) {
+            startPage = Math.max(1, endPage - maxButtons + 1);
+          }
+
+          for (let p = startPage; p <= endPage; p++) {
+            const isActive = (p === page);
+            pagesHtml += `
+              <button 
+                type="button" 
+                onclick="handleMRevGoToPage(${p})" 
+                class="w-6 h-6 rounded-md text-[11px] font-semibold flex items-center justify-center transition cursor-pointer ${isActive ? 'bg-blue-600 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'}">
+                ${p}
+              </button>
+            `;
+          }
+          pageNumbers.innerHTML = pagesHtml;
+        }
+      }
+
+      window.handleMRevPageSizeChange = function(sz) {
+        currentMRevPageSize = sz;
+        currentMRevPage = 1;
+        renderMRevTablePage();
+      };
+
+      window.handleMRevPagePrev = function() {
+        if (currentMRevPage > 1) {
+          currentMRevPage--;
+          renderMRevTablePage();
+        }
+      };
+
+      window.handleMRevPageNext = function() {
+        const totalPages = Math.ceil(currentMRevFilteredCases.length / currentMRevPageSize);
+        if (currentMRevPage < totalPages) {
+          currentMRevPage++;
+          renderMRevTablePage();
+        }
+      };
+
+      window.handleMRevGoToPage = function(p) {
+        currentMRevPage = p;
+        renderMRevTablePage();
+      };
+
+      window.exportIndividualRevisorCSV = function() {
+        if (!currentMRevData || !currentMRevData.casos) return;
+        const list = currentMRevFilteredCases.length > 0 ? currentMRevFilteredCases : currentMRevData.casos;
+        const revId = currentMRevData.revisor || 'Revisor';
+        const headers = ["Numero_Gestion", "Fecha_Atencion", "Tipo_Tramite", "Regional", "Dictamen_Estado", "Es_Subsanada", "Es_FTR_Directa", "Tiene_Rechazo", "Tiempo_Pantalla_Min", "Tiempo_Pantalla_Sec", "Espera_Cola_Habiles_H"];
+        const rows = list.map(c => [
+          `"${c.i || ''}"`,
+          `"${c.fr || c.fa || c.fc || ''}"`,
+          `"${c.t || ''}"`,
+          `"${c.r || ''}"`,
+          `"${c.e || ''}"`,
+          c.sb || 0,
+          c.ft || 0,
+          c.cr || 0,
+          c.t_min != null ? c.t_min : 0,
+          c.t_sec != null ? c.t_sec : 0,
+          c.th != null ? c.th : 0
+        ]);
+
+        const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `SAT_Atenciones_${revId}_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
       // Inicialización por defecto en carga
       setTimeout(() => {
         initCapacidadCharts();
         initRevisoresTable();
+        if (typeof initTiemposCharts === 'function') initTiemposCharts();
+        if (window.__lastOlapResult && typeof window.updateCharts === 'function') {
+          window.updateCharts(window.__lastOlapResult);
+        }
       }, 100);
     })();
   </script>

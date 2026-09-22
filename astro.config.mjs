@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  outDir: './dist_build',
+  outDir: './dist_site',
   devToolbar: {
     enabled: false
   },

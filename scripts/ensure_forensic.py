@@ -42,5 +42,14 @@ def ensure_chunks():
     except Exception as e:
         print("  [ensure_forensic] Error generando chunks:", e)
 
+    # Asegurar detalle por revisor
+    det_dir = os.path.join(BASE_DIR, 'public', 'data', 'revisores_detalle')
+    if not os.path.exists(det_dir) or len(os.listdir(det_dir)) < 100:
+        try:
+            import subprocess
+            subprocess.run([sys.executable, os.path.join(BASE_DIR, 'scripts', 'generate_revisores_detalle.py')], check=True)
+        except Exception as e:
+            print("  [ensure_forensic] Error generando revisores_detalle:", e)
+
 if __name__ == '__main__':
     ensure_chunks()

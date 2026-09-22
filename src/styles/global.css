@@ -37,11 +37,33 @@ body {
 
 /* Animations & Tab Transitions */
 .tab-content {
-  display: none;
+  display: block;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 .tab-content.active {
-  display: block;
   animation: pbiFadeIn 0.35s var(--ease-smooth) forwards;
+}
+
+/* ========================================================= */
+/* FULL-PAGE SCROLLING: SECCIONES ≈ PANTALLA (CSS SNAP)      */
+/* Contenedor de scroll con snap suave de proximidad.        */
+/* ========================================================= */
+.dashboard-scroll {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+/* Nada de movimiento suave / animaciones si se prefiere reducir */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-scroll {
+    scroll-behavior: auto;
+  }
+  .tab-content.active {
+    animation: none;
+  }
 }
 
 @keyframes pbiFadeIn {

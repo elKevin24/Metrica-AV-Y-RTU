@@ -1,6 +1,7 @@
 node_modules/
 node_modules_old/
 dist/
+dist_*/
 dist_to_delete/
 dist_garbage_*/
 .astro/
@@ -9,6 +10,7 @@ dist_garbage_*/
 *.log
 src/data/
 public/data/forensic/
+public/data/revisores_detalle/
 public/data/forensic_cases.json
 __pycache__/
 *.pyc
