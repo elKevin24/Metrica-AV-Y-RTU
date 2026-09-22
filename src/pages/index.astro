@@ -81,7 +81,7 @@ const formatMinutesToTime = (minDecimal: number) => {
     <div class="flex-1 flex flex-col h-full overflow-hidden">
 
       <!-- SLICER FILTER RIBBON -->
-      <FilterRibbon client:load />
+      <FilterRibbon client:only="react" />
 
       <!-- DASHBOARD CANVAS -->
       <main class="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 pb-24 md:pb-6">
@@ -1550,67 +1550,6 @@ const formatMinutesToTime = (minDecimal: number) => {
               </div>
             </div>
 
-            <!-- Tabla de Auditoría Operativa por Semana -->
-            <div class="glass-card rounded-2xl overflow-hidden transition-all duration-300">
-              <div class="p-4 border-b border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white/40 backdrop-blur-xs">
-                <div>
-                  <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                    <i data-lucide="table-2" class="w-4 h-4 text-slate-600"></i>
-                    Auditoría Semanal de Capacidad y Atenciones
-                  </h4>
-                  <p class="text-[11px] text-slate-500 mt-0.5">
-                    Productividad semanal por revisor, revisiones emitidos y balance operativo (Estándar auditado: 100 expedientes/día por revisor).
-                  </p>
-                </div>
-                <div class="text-[11px] font-mono text-slate-600 bg-white/80 px-2.5 py-1 rounded-lg border border-slate-200/80 shadow-2xs backdrop-blur-xs">
-                  Sem 01 a Sem 31
-                </div>
-              </div>
-
-              <div class="overflow-x-auto max-h-96">
-                <table class="w-full text-left border-collapse text-xs">
-                  <thead class="bg-slate-900/90 backdrop-blur-md text-[11px] font-bold text-white uppercase tracking-wider sticky top-0 z-10 border-b border-slate-700">
-                    <tr>
-                      <th class="py-2.5 px-3">Semana</th>
-                      <th class="py-2.5 px-2.5 text-center text-indigo-300">Revisores Planta</th>
-                      <th class="py-2.5 px-3 text-right text-indigo-300" title="Capacidad de 100 expedientes/día calculada con los revisores de planta activos cada semana">Cap. Planta Dinámica (100/d)</th>
-                      <th class="py-2.5 px-3 text-right bg-slate-800/60">Demanda Total</th>
-                      <th class="py-2.5 px-3 text-right text-emerald-300">Revisiones (1ªV + Reing)</th>
-                      <th class="py-2.5 px-3 text-center">Carga Asignada</th>
-                      <th class="py-2.5 px-3 text-center">Ritmo Real</th>
-                      <th class="py-2.5 px-3 text-right">Balance Neto</th>
-                      <th class="py-2.5 px-3 text-center" title="Ratio semanal de atención frente a la demanda ingresada">% Desahogo Semanal</th>
-                      <th class="py-2.5 px-3 text-center">¿Había Capacidad?</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tbodyCapacidadSemanal" class="divide-y divide-slate-100 text-slate-700 font-mono bg-white/40">
-                    <!-- Filas renderizadas dinámicamente -->
-                  </tbody>
-                  <tfoot class="bg-slate-900/90 backdrop-blur-md font-bold text-white border-t-2 border-slate-700 text-xs font-mono">
-                    <tr>
-                      <td class="py-2.5 px-3 font-sans font-bold">TOTAL / PROMEDIO</td>
-                      <td class="py-2.5 px-2.5 text-center text-indigo-300 font-sans font-bold">92 Prom. (110 Total)</td>
-                      <td class="py-2.5 px-3 text-right text-indigo-300">
-                        <div>933,500</div>
-                        <div class="text-[9px] font-sans font-medium text-emerald-300 whitespace-nowrap">Acumulada Dinámica</div>
-                      </td>
-                      <td class="py-2.5 px-3 text-right bg-slate-800/60 text-slate-200">228,714</td>
-                      <td class="py-2.5 px-3 text-right text-emerald-300">
-                        <div>183,054</div>
-                        <div class="text-[9px] font-sans font-medium text-slate-300 whitespace-nowrap">
-                          <span class="text-emerald-300 font-semibold">135,628 1ªv</span> + <span class="text-amber-300 font-semibold">47,426 reing</span>
-                        </div>
-                      </td>
-                      <td class="py-2.5 px-3 text-center text-slate-300 font-sans text-[11px]">15.3 d · 76 sem</td>
-                      <td class="py-2.5 px-3 text-center text-emerald-300 font-sans text-[11px]">12.2 d · 61 sem</td>
-                      <td class="py-2.5 px-3 text-right text-amber-300">-45,660</td>
-                      <td class="py-2.5 px-3 text-center text-cyan-300">80.0% global</td>
-                      <td class="py-2.5 px-3 text-center text-emerald-300 font-sans text-[11px]">100% Semanas Cubiertas</td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
 
             <!-- Tarjetas de Diagnóstico e Insights Operativos -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

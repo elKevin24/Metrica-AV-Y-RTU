@@ -767,7 +767,7 @@
 
     // Regiones: solo regiones válidas
     const validRegiones = (dims.regiones || []).filter(r => REGION_LABELS[r]);
-    populateSelect('selRegion', validRegiones, 'TODAS', 'Todas las Regionales', v => REGION_LABELS[v] || v);
+    populateSelect('selRegion', validRegiones, 'TODAS', 'Todas las Regiones', v => REGION_LABELS[v] || v);
 
     // Gestiones / Trámites
     const validGestiones = (dims.gestiones || []).filter(g => GESTION_LABELS[g]);

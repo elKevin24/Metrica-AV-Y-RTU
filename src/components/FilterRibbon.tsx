@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SlidersHorizontal, RotateCcw } from 'lucide-react';
 
 interface FilterState {
   region: string;
@@ -68,7 +69,7 @@ export default function FilterRibbon() {
       <div className="max-w-[1400px] mx-auto flex items-center gap-2 sm:gap-2.5 w-full overflow-x-auto no-scrollbar scroll-smooth py-0.5">
 
         <div className="flex sm:hidden items-center gap-1 shrink-0 px-2 py-1.5 rounded-xl bg-slate-900 text-white text-[11px] font-bold shadow-xs">
-          <i data-lucide="sliders-horizontal" className="w-3.5 h-3.5 text-blue-400"></i>
+          <SlidersHorizontal className="w-3.5 h-3.5 text-blue-400" />
           <span>Filtros</span>
         </div>
 
@@ -134,7 +135,7 @@ export default function FilterRibbon() {
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-slate-950 bg-white/80 hover:bg-white active:scale-95 backdrop-blur-md border border-slate-200/90 rounded-xl transition-all cursor-pointer whitespace-nowrap shadow-2xs"
             title="Restablecer todos los filtros (Alt+R)"
           >
-            <i data-lucide="rotate-ccw" className="w-3.5 h-3.5 text-slate-500"></i>
+            <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
             <span>Restablecer</span>
           </button>
         </div>
