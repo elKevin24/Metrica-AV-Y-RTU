@@ -1428,7 +1428,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer w-full text-xs">
                     <option value="TODOS">Todos los Tipos</option>
                     <option value="PLANTA">Planta Titular (88)</option>
-                    <option value="ESPORADICO">Apoyo / Temporal (73)</option>
+                    <option value="APOYO">Apoyo / Temporal (73)</option>
                   </select>
                 </div>
               </div>
@@ -3236,7 +3236,14 @@ const formatMinutesToTime = (minDecimal: number) => {
 
         // 3. Filtro Tipo
         if (revisoresSelectedTipo !== 'TODOS') {
-          list = list.filter(r => (r.tipo || '').toUpperCase() === revisoresSelectedTipo.toUpperCase());
+          const selTipo = revisoresSelectedTipo.toUpperCase();
+          list = list.filter(r => {
+            const t = (r.tipo || '').toUpperCase();
+            if (selTipo === 'APOYO' || selTipo === 'ESPORADICO') {
+              return t === 'APOYO' || t === 'ESPORADICO';
+            }
+            return t === selTipo;
+          });
         }
 
         // 4. Ordenamiento
