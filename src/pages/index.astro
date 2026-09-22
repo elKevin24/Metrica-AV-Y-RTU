@@ -1242,17 +1242,17 @@ const formatMinutesToTime = (minDecimal: number) => {
                       type="button"
                       id="btnSegCiclo"
                       onclick="setCapacidadSegmentation('ciclo')" 
-                      class="px-2.5 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-emerald-700 font-bold cursor-pointer flex items-center gap-1"
-                      title="Ver atenciones divididas por Ciclo (1ª Vuelta vs Retrabajo)">
-                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                      1ªV / Retrabajo
+                      class="px-2.5 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-sky-700 font-bold cursor-pointer flex items-center gap-1"
+                      title="Ver atenciones por Ciclo: 1ª Vuelta (Trámites Nuevos) vs Retrabajo (Reingresos Subsanados)">
+                      <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                      Nuevos / Retrabajo
                     </button>
                     <button 
                       type="button"
                       id="btnSegDictamen"
                       onclick="setCapacidadSegmentation('dictamen')" 
                       class="px-2.5 py-1 text-xs rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer font-medium flex items-center gap-1"
-                      title="Ver atenciones divididas por Dictamen (Aprobadas vs Rechazos)">
+                      title="Ver atenciones por Dictamen de Calidad: Aprobados vs Rechazos">
                       <span class="w-2 h-2 rounded-full bg-rose-500"></span>
                       Aprob / Rechazo
                     </button>
@@ -1344,9 +1344,9 @@ const formatMinutesToTime = (minDecimal: number) => {
               <!-- Leyenda Descriptiva Unificada en 1 Sola Línea Horizontal (4 Columnas) -->
               <div class="grid grid-cols-4 gap-2 p-2 bg-slate-50/90 border border-slate-200/80 rounded-xl text-xs">
                 <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
-                  <span id="pillDot1" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
-                  <span id="pillLabel1" class="font-bold text-slate-700 text-[11px] whitespace-nowrap">1ª Vuelta:</span>
-                  <span id="pillVal1aVuelta" class="font-mono font-bold text-emerald-800 text-xs">135,628</span>
+                  <span id="pillDot1" class="w-2.5 h-2.5 rounded-full bg-sky-500 shrink-0"></span>
+                  <span id="pillLabel1" class="font-bold text-slate-700 text-[11px] whitespace-nowrap">1ªV (Nuevos):</span>
+                  <span id="pillVal1aVuelta" class="font-mono font-bold text-sky-800 text-xs">135,628</span>
                   <span id="pillPct1aVuelta" class="text-[10px] text-slate-400 font-medium hidden sm:inline">(74%)</span>
                 </div>
 
@@ -2854,10 +2854,10 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'bar',
-                label: 'Atención 1ª Vuelta (Directas)',
+                label: '1ª Vuelta (Trámites Nuevos)',
                 data: dataAtendidasPrimera,
-                backgroundColor: '#10b981',
-                hoverBackgroundColor: '#059669',
+                backgroundColor: '#0284c7',
+                hoverBackgroundColor: '#0369a1',
                 stack: 'atendidas',
                 borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 },
                 borderSkipped: false,
@@ -2867,7 +2867,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'bar',
-                label: 'Retrabajo por Subsanaciones',
+                label: 'Retrabajo (Reingresos Subsanados)',
                 data: dataAtendidasReingreso,
                 backgroundColor: '#f59e0b',
                 hoverBackgroundColor: '#d97706',
@@ -2933,15 +2933,15 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (context.dataset.label && (context.dataset.label.includes('Teórica') || context.dataset.label.includes('55,000'))) {
                       return ` 🎯 Cap. Teórica (110 rev): 55,000 exp`;
                     }
-                    if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Directas'))) {
+                    if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Nuevos'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
-                      return ` 🟩 1ª Vuelta: ${rawVal.toLocaleString()} exp (${pct}%)`;
+                      return ` 🔹 1ª Vuelta (Nuevos): ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
-                    if (context.dataset.label && (context.dataset.label.includes('Retrabajo') || context.dataset.label.includes('Subsanaciones'))) {
+                    if (context.dataset.label && (context.dataset.label.includes('Retrabajo') || context.dataset.label.includes('Subsanaciones') || context.dataset.label.includes('Reingresos'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
-                      return ` 🟧 Retrabajo: ${rawVal.toLocaleString()} exp (${pct}%)`;
+                      return ` 🟧 Retrabajo (Reingresos): ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
-                    if (context.dataset.label && context.dataset.label.includes('Aprobaciones')) {
+                    if (context.dataset.label && (context.dataset.label.includes('Aprobaciones') || context.dataset.label.includes('Aprobadas'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
                       return ` 🟩 Aprobadas: ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
@@ -3135,11 +3135,19 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (mode === 'dictamen') {
           btnDictamen?.classList.add('bg-white', 'shadow-2xs', 'text-rose-700', 'font-bold');
           btnDictamen?.classList.remove('text-slate-600');
-          btnCiclo?.classList.remove('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnCiclo?.classList.remove('bg-white', 'shadow-2xs', 'text-sky-700', 'font-bold');
           btnCiclo?.classList.add('text-slate-600');
 
           if (pillLabel1) pillLabel1.textContent = 'Aprobadas:';
           if (pillLabel2) pillLabel2.textContent = 'Rechazos:';
+          if (pillDot1) {
+            pillDot1.classList.remove('bg-sky-500');
+            pillDot1.classList.add('bg-emerald-500');
+          }
+          if (pillVal1) {
+            pillVal1.classList.remove('text-sky-800');
+            pillVal1.classList.add('text-emerald-800');
+          }
           if (pillDot2) {
             pillDot2.classList.remove('bg-amber-500');
             pillDot2.classList.add('bg-rose-500');
@@ -3160,13 +3168,21 @@ const formatMinutesToTime = (minDecimal: number) => {
           }
         } else {
           // Modo Ciclo (1ª Vuelta vs Retrabajo)
-          btnCiclo?.classList.add('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnCiclo?.classList.add('bg-white', 'shadow-2xs', 'text-sky-700', 'font-bold');
           btnCiclo?.classList.remove('text-slate-600');
           btnDictamen?.classList.remove('bg-white', 'shadow-2xs', 'text-rose-700', 'font-bold');
           btnDictamen?.classList.add('text-slate-600');
 
-          if (pillLabel1) pillLabel1.textContent = '1ª Vuelta:';
+          if (pillLabel1) pillLabel1.textContent = '1ªV (Nuevos):';
           if (pillLabel2) pillLabel2.textContent = 'Retrabajo:';
+          if (pillDot1) {
+            pillDot1.classList.remove('bg-emerald-500');
+            pillDot1.classList.add('bg-sky-500');
+          }
+          if (pillVal1) {
+            pillVal1.classList.remove('text-emerald-800');
+            pillVal1.classList.add('text-sky-800');
+          }
           if (pillDot2) {
             pillDot2.classList.remove('bg-rose-500');
             pillDot2.classList.add('bg-amber-500');
@@ -3177,11 +3193,11 @@ const formatMinutesToTime = (minDecimal: number) => {
           }
 
           if (capacidadChartInstance) {
-            capacidadChartInstance.data.datasets[4].label = 'Atención 1ª Vuelta (Directas)';
-            capacidadChartInstance.data.datasets[4].backgroundColor = '#10b981';
-            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#059669';
+            capacidadChartInstance.data.datasets[4].label = '1ª Vuelta (Trámites Nuevos)';
+            capacidadChartInstance.data.datasets[4].backgroundColor = '#0284c7';
+            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#0369a1';
 
-            capacidadChartInstance.data.datasets[5].label = 'Retrabajo por Subsanaciones';
+            capacidadChartInstance.data.datasets[5].label = 'Retrabajo (Reingresos Subsanados)';
             capacidadChartInstance.data.datasets[5].backgroundColor = '#f59e0b';
             capacidadChartInstance.data.datasets[5].hoverBackgroundColor = '#d97706';
           }
