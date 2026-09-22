@@ -1236,22 +1236,43 @@ const formatMinutesToTime = (minDecimal: number) => {
 
                 <!-- Controles Interactivos de Capas y Visualización -->
                 <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <!-- Segmentación de Barras (Ciclo vs Dictamen) -->
+                  <div class="inline-flex rounded-xl bg-slate-100/90 p-1 border border-slate-200/80 shadow-2xs">
+                    <button 
+                      type="button"
+                      id="btnSegCiclo"
+                      onclick="setCapacidadSegmentation('ciclo')" 
+                      class="px-2.5 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-emerald-700 font-bold cursor-pointer flex items-center gap-1"
+                      title="Ver atenciones divididas por Ciclo (1ª Vuelta vs Retrabajo)">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      1ªV / Retrabajo
+                    </button>
+                    <button 
+                      type="button"
+                      id="btnSegDictamen"
+                      onclick="setCapacidadSegmentation('dictamen')" 
+                      class="px-2.5 py-1 text-xs rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer font-medium flex items-center gap-1"
+                      title="Ver atenciones divididas por Dictamen (Aprobadas vs Rechazos)">
+                      <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                      Aprob / Rechazo
+                    </button>
+                  </div>
+
                   <!-- Modo de Barras (Apiladas / Lado a Lado) -->
                   <div class="inline-flex rounded-xl bg-slate-100/90 p-1 border border-slate-200/80 shadow-2xs">
                     <button 
                       type="button"
                       id="btnModoApiladas"
                       onclick="setCapacidadBarMode('apiladas')" 
-                      class="px-3 py-1.5 text-xs rounded-lg transition-all bg-white shadow-2xs text-emerald-700 font-bold cursor-pointer flex items-center gap-1.5"
+                      class="px-2.5 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-slate-800 font-bold cursor-pointer"
                       title="Ver atenciones apiladas en una sola barra">
-                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                       Apiladas
                     </button>
                     <button 
                       type="button"
                       id="btnModoAgrupadas"
                       onclick="setCapacidadBarMode('lado')" 
-                      class="px-3 py-1.5 text-xs rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer font-medium"
+                      class="px-2.5 py-1 text-xs rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer font-medium"
                       title="Ver barras separadas lado a lado">
                       Lado a Lado
                     </button>
@@ -1263,7 +1284,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                       type="button"
                       id="btnToggleDemanda"
                       onclick="toggleCapacidadSeries(0, 'btnToggleDemanda')" 
-                      class="px-2.5 py-1.5 text-xs rounded-lg transition-all bg-white shadow-2xs text-blue-700 font-bold cursor-pointer flex items-center gap-1"
+                      class="px-2 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-blue-700 font-bold cursor-pointer flex items-center gap-1"
                       title="Activar / Desactivar línea de Demanda Total Recibida">
                       <span class="w-2 h-2 rounded-full bg-blue-600"></span>
                       Demanda
@@ -1271,17 +1292,26 @@ const formatMinutesToTime = (minDecimal: number) => {
                     <button 
                       type="button"
                       id="btnToggleCapacidad"
-                      onclick="toggleCapacidadSeries(4, 'btnToggleCapacidad')" 
-                      class="px-2.5 py-1.5 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
-                      title="Activar / Desactivar línea de Capacidad de Planta (110 Analistas)">
+                      onclick="toggleCapacidadSeries(1, 'btnToggleCapacidad')" 
+                      class="px-2 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
+                      title="Activar / Desactivar línea de Capacidad Dinámica Semanal">
                       <span class="w-2.5 h-0.5 bg-indigo-600 border-t border-dashed"></span>
-                      Capacidad
+                      Cap. Semanal
+                    </button>
+                    <button 
+                      type="button"
+                      id="btnToggleCapTeorica"
+                      onclick="toggleCapacidadSeries(2, 'btnToggleCapTeorica')" 
+                      class="px-2 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
+                      title="Activar / Desactivar línea de Capacidad Teórica Plena (55,000 exp/sem)">
+                      <span class="w-2.5 h-0.5 bg-indigo-400 border-t border-dotted"></span>
+                      Teórica (55k)
                     </button>
                     <button 
                       type="button"
                       id="btnToggleCobertura"
-                      onclick="toggleCapacidadSeries(1, 'btnToggleCobertura')" 
-                      class="px-2.5 py-1.5 text-xs rounded-lg transition-all text-emerald-700 hover:bg-white/80 opacity-40 line-through cursor-pointer flex items-center gap-1"
+                      onclick="toggleCapacidadSeries(3, 'btnToggleCobertura')" 
+                      class="px-2 py-1 text-xs rounded-lg transition-all text-emerald-700 hover:bg-white/80 opacity-40 line-through cursor-pointer flex items-center gap-1"
                       title="Activar / Desactivar eje derecho de % de Cobertura de Demanda">
                       <span>📈</span>
                       % Cobertura
@@ -1289,7 +1319,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   </div>
 
                   <!-- Filtro por Rango Temporal -->
-                  <div class="flex items-center gap-1.5 bg-slate-100/90 px-2.5 py-1.5 rounded-xl border border-slate-200/80 text-xs shadow-2xs">
+                  <div class="flex items-center gap-1 bg-slate-100/90 px-2 py-1 rounded-xl border border-slate-200/80 text-xs shadow-2xs">
                     <span class="text-slate-500 font-medium text-[11px]">Rango:</span>
                     <select 
                       id="selectCapacidadPeriodo" 
@@ -1314,15 +1344,15 @@ const formatMinutesToTime = (minDecimal: number) => {
               <!-- Leyenda Descriptiva Unificada en 1 Sola Línea Horizontal (4 Columnas) -->
               <div class="grid grid-cols-4 gap-2 p-2 bg-slate-50/90 border border-slate-200/80 rounded-xl text-xs">
                 <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
-                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
-                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">1ª Vuelta:</span>
+                  <span id="pillDot1" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span id="pillLabel1" class="font-bold text-slate-700 text-[11px] whitespace-nowrap">1ª Vuelta:</span>
                   <span id="pillVal1aVuelta" class="font-mono font-bold text-emerald-800 text-xs">135,628</span>
                   <span id="pillPct1aVuelta" class="text-[10px] text-slate-400 font-medium hidden sm:inline">(74%)</span>
                 </div>
 
                 <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
-                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
-                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Retrabajo:</span>
+                  <span id="pillDot2" class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                  <span id="pillLabel2" class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Retrabajo:</span>
                   <span id="pillValRetrabajo" class="font-mono font-bold text-amber-800 text-xs">47,426</span>
                   <span id="pillPctRetrabajo" class="text-[10px] text-slate-400 font-medium hidden sm:inline">(26%)</span>
                 </div>
@@ -1335,7 +1365,7 @@ const formatMinutesToTime = (minDecimal: number) => {
 
                 <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
                   <span class="w-3 h-0.5 bg-indigo-600 border-t border-dashed shrink-0"></span>
-                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Capacidad:</span>
+                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Cap. Prom:</span>
                   <span id="pillValCapacidad" class="font-mono font-bold text-indigo-800 text-xs">55,000</span>
                   <span class="text-[10px] text-slate-400 font-medium hidden sm:inline">/sem</span>
                 </div>
@@ -2507,6 +2537,7 @@ const formatMinutesToTime = (minDecimal: number) => {
       let capacidadChartInstance = null;
       let currentFilteredCapacidadData = null;
       let currentCapacidadScale = 1;
+      let currentCapacidadSegmentation = 'ciclo';
       const capacidadData = [
         { semana: "Sem 01", mes: "Ene", nuevas: 4306, reingresos: 201, demanda: 4507, atendidas: 734, atendidas_primera: 544, atendidas_reingreso: 190, aprobadas: 431, rechazos: 303, cobertura: 16.3, revisores: 61, capacidad: 24400 },
         { semana: "Sem 02", mes: "Ene", nuevas: 21642, reingresos: 3715, demanda: 25357, atendidas: 14452, atendidas_primera: 10708, atendidas_reingreso: 3744, aprobadas: 8201, rechazos: 6251, cobertura: 57.0, revisores: 104, capacidad: 52000 },
@@ -2745,6 +2776,8 @@ const formatMinutesToTime = (minDecimal: number) => {
           }
         };
 
+        const dataCapacidadTeorica = capacidadData.map(() => 55000);
+
         capacidadChartInstance = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -2764,6 +2797,40 @@ const formatMinutesToTime = (minDecimal: number) => {
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#2563eb',
                 pointBorderWidth: 2,
+                yAxisID: 'y',
+                order: 1,
+                hidden: false
+              },
+              {
+                type: 'line',
+                label: 'Capacidad Sostenible Semanal',
+                data: dataCapacidad,
+                borderColor: '#6366f1',
+                backgroundColor: 'transparent',
+                borderWidth: 2.4,
+                borderDash: [6, 4],
+                tension: 0.15,
+                pointRadius: 2.5,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#6366f1',
+                pointBorderWidth: 2,
+                yAxisID: 'y',
+                order: 1,
+                hidden: false
+              },
+              {
+                type: 'line',
+                label: 'Capacidad Teórica Plena (55,000 exp/sem)',
+                data: dataCapacidadTeorica,
+                borderColor: '#818cf8',
+                backgroundColor: 'transparent',
+                borderWidth: 2.2,
+                borderDash: [3, 3],
+                tension: 0,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointBackgroundColor: '#818cf8',
                 yAxisID: 'y',
                 order: 1,
                 hidden: false
@@ -2810,24 +2877,6 @@ const formatMinutesToTime = (minDecimal: number) => {
                 maxBarThickness: 34,
                 yAxisID: 'y',
                 order: 3
-              },
-              {
-                type: 'line',
-                label: 'Capacidad Sostenible (110 Revisores)',
-                data: dataCapacidad,
-                borderColor: '#6366f1',
-                backgroundColor: 'transparent',
-                borderWidth: 2.5,
-                borderDash: [6, 4],
-                tension: 0.1,
-                pointRadius: 2.5,
-                pointHoverRadius: 6,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#6366f1',
-                pointBorderWidth: 2,
-                yAxisID: 'y',
-                order: 1,
-                hidden: false
               }
             ]
           },
@@ -2871,7 +2920,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const item = (currentFilteredCapacidadData || capacidadData)[idx];
                     if (!item) return '';
                     const cap = item.capacidad != null ? item.capacidad.toLocaleString() : 'N/D';
-                    return `👥 Capacidad Teórica: ${item.revisores} analistas × 100/d = ${cap} exp/sem`;
+                    return `👥 Capacidad Semanal: ${item.revisores} analistas × 100/d = ${cap} exp/sem`;
                   },
                   label: function(context) {
                     const rawVal = context.raw != null ? context.raw : 0;
@@ -2882,6 +2931,16 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (context.dataset.yAxisID === 'y1') {
                       return ` 📈 Cobertura de Demanda: ${typeof rawVal === 'number' ? rawVal.toFixed(1) : rawVal}%`;
                     }
+                    if (context.dataset.label && context.dataset.label.includes('Demanda')) {
+                      return ` 🔷 Demanda Total Recibida: ${rawVal.toLocaleString()} solicitudes`;
+                    }
+                    if (context.dataset.label && context.dataset.label.includes('Sostenible')) {
+                      const rev = item ? item.revisores : 'N/D';
+                      return ` ➖ Capacidad Semanal (${rev} analistas): ${rawVal.toLocaleString()} exp/sem`;
+                    }
+                    if (context.dataset.label && (context.dataset.label.includes('Teórica') || context.dataset.label.includes('55,000'))) {
+                      return ` 🎯 Capacidad Teórica Plena (110 analistas): ${rawVal.toLocaleString()} exp/sem`;
+                    }
                     if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Directas'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
                       return ` 🟩 1ª Vuelta (Directas): ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
@@ -2890,12 +2949,13 @@ const formatMinutesToTime = (minDecimal: number) => {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
                       return ` 🟧 Retrabajo (Subsanaciones): ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
                     }
-                    if (context.dataset.label && context.dataset.label.includes('Demanda')) {
-                      return ` 🔷 Demanda Total Recibida: ${rawVal.toLocaleString()} solicitudes`;
+                    if (context.dataset.label && context.dataset.label.includes('Aprobaciones')) {
+                      const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
+                      return ` 🟩 Aprobaciones Emitidas: ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
                     }
-                    if (context.dataset.label && context.dataset.label.includes('Capacidad')) {
-                      const rev = item ? item.revisores : 'N/D';
-                      return ` ➖ Capacidad Instalada (${rev} analistas): ${rawVal.toLocaleString()} exp/sem`;
+                    if (context.dataset.label && context.dataset.label.includes('Rechazos')) {
+                      const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
+                      return ` 🟥 Rechazos Emitidos: ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
                     }
                     const lbl = context.dataset.label || 'Valor';
                     return ` ${lbl}: ${rawVal.toLocaleString()} exp.`;
@@ -2907,16 +2967,25 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (!item) return '';
                     const atendidas = item.atendidas || 0;
                     const reingreso = item.atendidas_reingreso || 0;
+                    const rechazos = item.rechazos || 0;
                     const cap = item.capacidad || 55000;
                     const pctRetrabajo = atendidas > 0 ? ((reingreso / atendidas) * 100).toFixed(1) : '0';
+                    const pctRechazo = atendidas > 0 ? ((rechazos / atendidas) * 100).toFixed(1) : '0';
                     const holgura = cap - atendidas;
                     const holguraStr = holgura >= 0 ? `+${holgura.toLocaleString()}` : `${holgura.toLocaleString()}`;
                     const pctCap = cap > 0 ? ((atendidas / cap) * 100).toFixed(1) : '0';
 
-                    return `─────────────────────────────\n` +
-                           `Total Dictaminado: ${atendidas.toLocaleString()} expedientes\n` +
-                           `⚠️ Esfuerzo en Retrabajo: ${pctRetrabajo}%\n` +
-                           `🛡️ Holgura de Capacidad: ${holguraStr} exp (${pctCap}% utilizada)`;
+                    if (currentCapacidadSegmentation === 'dictamen') {
+                      return `─────────────────────────────\n` +
+                             `Total Dictaminado: ${atendidas.toLocaleString()} expedientes\n` +
+                             `🚫 Tasa de Rechazos: ${pctRechazo}% (${rechazos.toLocaleString()} exp)\n` +
+                             `🛡️ Holgura de Capacidad: ${holguraStr} exp (${pctCap}% utilizada)`;
+                    } else {
+                      return `─────────────────────────────\n` +
+                             `Total Atendido: ${atendidas.toLocaleString()} expedientes\n` +
+                             `⚠️ Esfuerzo en Retrabajo: ${pctRetrabajo}% (${reingreso.toLocaleString()} exp)\n` +
+                             `🛡️ Holgura de Capacidad: ${holguraStr} exp (${pctCap}% utilizada)`;
+                    }
                   }
                 }
               }
@@ -2998,26 +3067,33 @@ const formatMinutesToTime = (minDecimal: number) => {
         const baseThickness = count <= 4 ? 76 : (count <= 8 ? 56 : (count <= 13 ? 42 : 32));
         const dynamicBarThickness = isStacked ? baseThickness : Math.round(baseThickness * 0.52);
 
-        capacidadChartInstance.data.datasets[2].maxBarThickness = dynamicBarThickness;
-        capacidadChartInstance.data.datasets[3].maxBarThickness = dynamicBarThickness;
+        capacidadChartInstance.data.datasets[4].maxBarThickness = dynamicBarThickness;
+        capacidadChartInstance.data.datasets[5].maxBarThickness = dynamicBarThickness;
 
         capacidadChartInstance.data.labels = data.map(d => d.semana.replace('Sem ', 'S'));
         capacidadChartInstance.data.datasets[0].data = data.map(d => Math.round(d.demanda * scale));
-        capacidadChartInstance.data.datasets[1].data = data.map(d => Math.min(115, d.cobertura));
-        capacidadChartInstance.data.datasets[2].data = data.map(d => Math.round(d.atendidas_primera * scale));
-        capacidadChartInstance.data.datasets[3].data = data.map(d => Math.round(d.atendidas_reingreso * scale));
-        if (capacidadChartInstance.data.datasets[4]) {
-          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.capacidad * scale));
+        capacidadChartInstance.data.datasets[1].data = data.map(d => Math.round(d.capacidad * scale));
+        capacidadChartInstance.data.datasets[2].data = data.map(d => Math.round(55000 * scale));
+        capacidadChartInstance.data.datasets[3].data = data.map(d => Math.min(115, d.cobertura));
+
+        if (currentCapacidadSegmentation === 'dictamen') {
+          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.aprobadas * scale));
+          capacidadChartInstance.data.datasets[5].data = data.map(d => Math.round(d.rechazos * scale));
+        } else {
+          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.atendidas_primera * scale));
+          capacidadChartInstance.data.datasets[5].data = data.map(d => Math.round(d.atendidas_reingreso * scale));
         }
 
         // Auto-escala dinámica del eje Y según el pico del rango filtrado
-        const isCapHidden = capacidadChartInstance.getDatasetMeta(4)?.hidden;
         const isDemHidden = capacidadChartInstance.getDatasetMeta(0)?.hidden;
+        const isCapHidden = capacidadChartInstance.getDatasetMeta(1)?.hidden;
+        const isCapTHidden = capacidadChartInstance.getDatasetMeta(2)?.hidden;
         const maxVal = Math.max(...data.map(d => {
-          const cap = isCapHidden ? 0 : (d.capacidad * scale);
           const dem = isDemHidden ? 0 : (d.demanda * scale);
+          const cap = isCapHidden ? 0 : (d.capacidad * scale);
+          const capT = isCapTHidden ? 0 : (55000 * scale);
           const aten = (d.atendidas_primera + d.atendidas_reingreso) * scale;
-          return Math.max(cap, dem, aten);
+          return Math.max(dem, cap, capT, aten);
         }));
         if (maxVal > 0) {
           capacidadChartInstance.options.scales.y.suggestedMax = Math.ceil((maxVal * 1.15) / 2000) * 2000;
@@ -3025,11 +3101,18 @@ const formatMinutesToTime = (minDecimal: number) => {
 
         // Actualización reactiva de las 4 pills de resumen inferior
         const totDemanda = data.reduce((acc, d) => acc + Math.round(d.demanda * scale), 0);
-        const totPrimera = data.reduce((acc, d) => acc + Math.round(d.atendidas_primera * scale), 0);
-        const totReingreso = data.reduce((acc, d) => acc + Math.round(d.atendidas_reingreso * scale), 0);
-        const totAtendidas = totPrimera + totReingreso;
-        const pctPrimera = totAtendidas > 0 ? Math.round((totPrimera / totAtendidas) * 100) : 0;
-        const pctReingreso = totAtendidas > 0 ? Math.round((totReingreso / totAtendidas) * 100) : 0;
+        let totVal1 = 0;
+        let totVal2 = 0;
+        if (currentCapacidadSegmentation === 'dictamen') {
+          totVal1 = data.reduce((acc, d) => acc + Math.round(d.aprobadas * scale), 0);
+          totVal2 = data.reduce((acc, d) => acc + Math.round(d.rechazos * scale), 0);
+        } else {
+          totVal1 = data.reduce((acc, d) => acc + Math.round(d.atendidas_primera * scale), 0);
+          totVal2 = data.reduce((acc, d) => acc + Math.round(d.atendidas_reingreso * scale), 0);
+        }
+        const totAtendidas = totVal1 + totVal2;
+        const pct1 = totAtendidas > 0 ? Math.round((totVal1 / totAtendidas) * 100) : 0;
+        const pct2 = totAtendidas > 0 ? Math.round((totVal2 / totAtendidas) * 100) : 0;
         const avgCap = data.length > 0 ? Math.round(data.reduce((acc, d) => acc + d.capacidad, 0) / data.length) : 55000;
 
         const el1a = document.getElementById('pillVal1aVuelta');
@@ -3039,10 +3122,10 @@ const formatMinutesToTime = (minDecimal: number) => {
         const elDem = document.getElementById('pillValDemanda');
         const elCap = document.getElementById('pillValCapacidad');
 
-        if (el1a) el1a.textContent = totPrimera.toLocaleString();
-        if (elPct1a) elPct1a.textContent = `(${pctPrimera}%)`;
-        if (elReing) elReing.textContent = totReingreso.toLocaleString();
-        if (elPctReing) elPctReing.textContent = `(${pctReingreso}%)`;
+        if (el1a) el1a.textContent = totVal1.toLocaleString();
+        if (elPct1a) elPct1a.textContent = `(${pct1}%)`;
+        if (elReing) elReing.textContent = totVal2.toLocaleString();
+        if (elPctReing) elPctReing.textContent = `(${pct2}%)`;
         if (elDem) elDem.textContent = totDemanda.toLocaleString();
         if (elCap) elCap.textContent = avgCap.toLocaleString();
 
@@ -3057,8 +3140,82 @@ const formatMinutesToTime = (minDecimal: number) => {
         updateCapacidadChartData();
       };
 
+      // Segmentación de Barras: Ciclo Operativo (1ª Vuelta vs Retrabajo) vs Dictamen (Aprobadas vs Rechazos)
+      window.setCapacidadSegmentation = function(mode) {
+        currentCapacidadSegmentation = mode;
+        const btnCiclo = document.getElementById('btnSegCiclo');
+        const btnDictamen = document.getElementById('btnSegDictamen');
+        const pillDot1 = document.getElementById('pillDot1');
+        const pillLabel1 = document.getElementById('pillLabel1');
+        const pillDot2 = document.getElementById('pillDot2');
+        const pillLabel2 = document.getElementById('pillLabel2');
+        const pillVal1 = document.getElementById('pillVal1aVuelta');
+        const pillVal2 = document.getElementById('pillValRetrabajo');
+
+        if (mode === 'dictamen') {
+          btnDictamen?.classList.add('bg-white', 'shadow-2xs', 'text-rose-700', 'font-bold');
+          btnDictamen?.classList.remove('text-slate-600');
+          btnCiclo?.classList.remove('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnCiclo?.classList.add('text-slate-600');
+
+          if (pillLabel1) pillLabel1.textContent = 'Aprobadas:';
+          if (pillLabel2) pillLabel2.textContent = 'Rechazos:';
+          if (pillDot2) {
+            pillDot2.classList.remove('bg-amber-500');
+            pillDot2.classList.add('bg-rose-500');
+          }
+          if (pillVal2) {
+            pillVal2.classList.remove('text-amber-800');
+            pillVal2.classList.add('text-rose-800');
+          }
+
+          if (capacidadChartInstance) {
+            capacidadChartInstance.data.datasets[4].label = 'Aprobaciones Emitidas';
+            capacidadChartInstance.data.datasets[4].backgroundColor = '#10b981';
+            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#059669';
+
+            capacidadChartInstance.data.datasets[5].label = 'Rechazos Emitidos';
+            capacidadChartInstance.data.datasets[5].backgroundColor = '#e11d48';
+            capacidadChartInstance.data.datasets[5].hoverBackgroundColor = '#be123c';
+          }
+        } else {
+          // Modo Ciclo (1ª Vuelta vs Retrabajo)
+          btnCiclo?.classList.add('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnCiclo?.classList.remove('text-slate-600');
+          btnDictamen?.classList.remove('bg-white', 'shadow-2xs', 'text-rose-700', 'font-bold');
+          btnDictamen?.classList.add('text-slate-600');
+
+          if (pillLabel1) pillLabel1.textContent = '1ª Vuelta:';
+          if (pillLabel2) pillLabel2.textContent = 'Retrabajo:';
+          if (pillDot2) {
+            pillDot2.classList.remove('bg-rose-500');
+            pillDot2.classList.add('bg-amber-500');
+          }
+          if (pillVal2) {
+            pillVal2.classList.remove('text-rose-800');
+            pillVal2.classList.add('text-amber-800');
+          }
+
+          if (capacidadChartInstance) {
+            capacidadChartInstance.data.datasets[4].label = 'Atención 1ª Vuelta (Directas)';
+            capacidadChartInstance.data.datasets[4].backgroundColor = '#10b981';
+            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#059669';
+
+            capacidadChartInstance.data.datasets[5].label = 'Retrabajo por Subsanaciones';
+            capacidadChartInstance.data.datasets[5].backgroundColor = '#f59e0b';
+            capacidadChartInstance.data.datasets[5].hoverBackgroundColor = '#d97706';
+          }
+        }
+
+        updateCapacidadChartData();
+      };
+
       // Filtro por Periodo / Rango de Semanas
       window.filterCapacidadPeriodo = function(periodo) {
+        const sel = document.getElementById('selectCapacidadPeriodo');
+        if (sel && sel.value !== periodo) {
+          sel.value = periodo;
+        }
         if (periodo === 'ENE') {
           currentFilteredCapacidadData = capacidadData.filter(d => d.mes === 'Ene');
         } else if (periodo === 'FEB') {
@@ -3083,29 +3240,29 @@ const formatMinutesToTime = (minDecimal: number) => {
         const btnLado = document.getElementById('btnModoAgrupadas');
 
         if (mode === 'apiladas') {
-          btnApiladas?.classList.add('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnApiladas?.classList.add('bg-white', 'shadow-2xs', 'text-slate-800', 'font-bold');
           btnApiladas?.classList.remove('text-slate-600');
-          btnLado?.classList.remove('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnLado?.classList.remove('bg-white', 'shadow-2xs', 'text-slate-800', 'font-bold');
           btnLado?.classList.add('text-slate-600');
 
           capacidadChartInstance.options.scales.x.stacked = true;
           delete capacidadChartInstance.options.scales.y.stacked;
-          capacidadChartInstance.data.datasets[2].stack = 'atendidas';
-          capacidadChartInstance.data.datasets[2].borderRadius = { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 };
-          capacidadChartInstance.data.datasets[3].stack = 'atendidas';
-          capacidadChartInstance.data.datasets[3].borderRadius = { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 };
+          capacidadChartInstance.data.datasets[4].stack = 'atendidas';
+          capacidadChartInstance.data.datasets[4].borderRadius = { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 };
+          capacidadChartInstance.data.datasets[5].stack = 'atendidas';
+          capacidadChartInstance.data.datasets[5].borderRadius = { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 };
         } else {
-          btnLado?.classList.add('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnLado?.classList.add('bg-white', 'shadow-2xs', 'text-slate-800', 'font-bold');
           btnLado?.classList.remove('text-slate-600');
-          btnApiladas?.classList.remove('bg-white', 'shadow-2xs', 'text-emerald-700', 'font-bold');
+          btnApiladas?.classList.remove('bg-white', 'shadow-2xs', 'text-slate-800', 'font-bold');
           btnApiladas?.classList.add('text-slate-600');
 
           capacidadChartInstance.options.scales.x.stacked = false;
           capacidadChartInstance.options.scales.y.stacked = false;
-          capacidadChartInstance.data.datasets[2].stack = 'primera';
-          capacidadChartInstance.data.datasets[2].borderRadius = 6;
-          capacidadChartInstance.data.datasets[3].stack = 'reingreso';
-          capacidadChartInstance.data.datasets[3].borderRadius = 6;
+          capacidadChartInstance.data.datasets[4].stack = 'primera';
+          capacidadChartInstance.data.datasets[4].borderRadius = 6;
+          capacidadChartInstance.data.datasets[5].stack = 'reingreso';
+          capacidadChartInstance.data.datasets[5].borderRadius = 6;
         }
         updateCapacidadChartData();
       };
@@ -3126,7 +3283,7 @@ const formatMinutesToTime = (minDecimal: number) => {
             btn.classList.add('bg-white', 'shadow-2xs');
           }
         }
-        if (datasetIndex === 1) {
+        if (datasetIndex === 3) {
           capacidadChartInstance.options.scales.y1.display = !isHidden;
         }
         updateCapacidadChartData();
@@ -3138,10 +3295,12 @@ const formatMinutesToTime = (minDecimal: number) => {
           setCapacidadBarMode(view);
         } else if (view === 'demanda') {
           toggleCapacidadSeries(0, 'btnToggleDemanda');
-        } else if (view === 'cobertura') {
-          toggleCapacidadSeries(1, 'btnToggleCobertura');
         } else if (view === 'capacidad') {
-          toggleCapacidadSeries(4, 'btnToggleCapacidad');
+          toggleCapacidadSeries(1, 'btnToggleCapacidad');
+        } else if (view === 'teorica') {
+          toggleCapacidadSeries(2, 'btnToggleCapTeorica');
+        } else if (view === 'cobertura') {
+          toggleCapacidadSeries(3, 'btnToggleCobertura');
         }
       };
 
