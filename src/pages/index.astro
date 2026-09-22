@@ -335,137 +335,187 @@ const formatMinutesToTime = (minDecimal: number) => {
             </div>
 
               <!-- SECCIÓN FORENSE: ÁRBOL DE DESGLOSE DE LOS 183,054 REVISIONES HUMANOS -->
-              <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-6 transition-all duration-300">
+              <div class="glass-card rounded-3xl p-5 sm:p-7 space-y-6 transition-all duration-300 border border-slate-200/80 shadow-md">
                 
-                <!-- Encabezado con Contexto Diferenciador -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200/60 pb-4">
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-indigo-50/90 text-indigo-700 border border-indigo-200/70 backdrop-blur-xs">
+                <!-- Encabezado Ejecutivo con Factor de Retrabajo -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/60 pb-5">
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-indigo-500/15 to-violet-500/15 text-indigo-800 border border-indigo-300/60 backdrop-blur-xs">
                         Nivel 2: Carga Operativa Real
                       </span>
                       <span class="text-slate-300 text-xs">•</span>
-                      <span class="text-[11px] font-semibold text-slate-500">172 Revisores SAT Guatemala</span>
+                      <span class="text-xs font-semibold text-slate-500">172 Evaluadores Activos · SAT Guatemala</span>
                     </div>
-                    <h3 class="text-sm sm:text-base font-bold text-slate-800 tracking-tight mt-1 flex items-center gap-2">
-                      <i data-lucide="git-fork" class="w-4 h-4 text-indigo-600"></i>
-                      Árbol de Decisión: Desglose de los 183,054 Revisiones de los Revisores
+                    <h3 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                      <i data-lucide="git-fork" class="w-5 h-5 text-indigo-600"></i>
+                      Árbol de Decisión: Desglose de las 183,054 Evaluaciones Humanas
                     </h3>
-                    <p class="text-xs text-slate-500 mt-0.5 max-w-3xl">
-                      Flujo resolutivo de fondo ejecutado por los auditores fiscales: de la carga global emitida a las ramas de aprobación y rechazo, concluyendo en el destino final de cada trámite.
+                    <p class="text-xs text-slate-500 max-w-3xl leading-relaxed">
+                      Trazabilidad completa de la carga ejecutada por auditores fiscales: desde el volumen global emitido hasta las bifurcaciones de aprobación, requerimientos y desenlace final sin fuga de datos.
                     </p>
                   </div>
-                  <div class="flex items-center gap-2 shrink-0">
-                    <div class="px-3 py-1.5 bg-amber-50/80 border border-amber-200/70 rounded-xl text-right backdrop-blur-xs">
-                      <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Factor de Re-trabajo</div>
-                      <div class="text-base font-black text-amber-900 font-mono">1.35x <span class="text-[11px] font-semibold text-amber-700">(+35% esfuerzo)</span></div>
+
+                  <!-- Mini Card de Factor de Retrabajo -->
+                  <div class="flex items-center gap-3 shrink-0">
+                    <div class="px-4 py-2.5 bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-transparent border border-amber-300/80 rounded-2xl text-right backdrop-blur-md shadow-xs">
+                      <div class="text-[10px] font-extrabold text-amber-800 uppercase tracking-wider flex items-center justify-end gap-1">
+                        <i data-lucide="repeat" class="w-3 h-3 text-amber-600"></i>
+                        Factor de Re-trabajo
+                      </div>
+                      <div class="text-xl font-black text-amber-950 font-mono mt-0.5">
+                        1.35x <span class="text-xs font-bold text-amber-700 font-sans">(+35% esfuerzo)</span>
+                      </div>
+                      <div class="text-[10px] text-amber-800/80 font-medium mt-0.5">
+                        47,426 re-evaluaciones adicionales
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- CONTENEDOR DEL ÁRBOL JERÁRQUICO RESOLUTIVO -->
-                <div class="bg-white/40 backdrop-blur-md border border-white/80 rounded-2xl p-4 sm:p-6 shadow-xs">
+                <div class="bg-gradient-to-b from-slate-50/60 to-slate-100/30 backdrop-blur-md border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs space-y-6">
                   
                   <!-- ============================================== -->
-                  <!-- NIVEL 1: NODO RAÍZ (TOTAL REVISIONES HUMANOS)  -->
+                  <!-- NIVEL 1: NODO RAÍZ (TOTAL REVISIONES HUMANAS)  -->
                   <!-- ============================================== -->
-                  <div class="max-w-md mx-auto bg-slate-900/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-md border border-slate-700/80 text-center relative z-10">
-                    <div class="text-[10px] font-extrabold uppercase tracking-widest text-indigo-200">Nivel 1: Raíz Operativa Humana</div>
-                    <div class="text-xs font-bold text-indigo-100 uppercase mt-0.5">Total Revisiones Realizadas</div>
-                    <div class="text-3xl font-black font-mono tracking-tight text-white mt-1">183,054</div>
-                    <div class="inline-flex items-center gap-1.5 px-3 py-0.5 mt-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/40 text-[11px] font-bold text-indigo-200 font-mono">
-                      <span>100.0% Carga de Trabajo</span>
+                  <div class="max-w-lg mx-auto bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-5 rounded-2xl shadow-xl border border-indigo-500/30 text-center relative z-10 overflow-hidden group">
+                    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500"></div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-indigo-300 flex items-center justify-center gap-1.5">
+                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                      Nivel 1: Raíz Operativa Humana
                     </div>
-                    <div class="text-[10px] text-slate-300 mt-1">Decisiones formales sobre 135,628 expedientes atendidos</div>
+                    <div class="text-xs font-bold text-slate-300 uppercase mt-1">Total Evaluaciones Realizadas</div>
+                    <div class="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white mt-1.5">183,054</div>
+                    
+                    <div class="flex items-center justify-center gap-2 mt-2 flex-wrap">
+                      <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-400/40 text-[11px] font-bold text-indigo-200 font-mono">
+                        100.0% Carga de Trabajo
+                      </span>
+                      <span class="text-[11px] text-slate-300 font-medium">
+                        (sobre 135,628 expedientes únicos atendidos)
+                      </span>
+                    </div>
                   </div>
 
-                  <!-- CONECTORES SVG: NIVEL 1 -> NIVEL 2 -->
-                  <div class="hidden sm:block w-full max-w-2xl mx-auto h-10 my-0 relative">
-                    <svg class="w-full h-full" viewBox="0 0 600 40" fill="none" preserveAspectRatio="none">
+                  <!-- CONECTORES SVG: NIVEL 1 -> NIVEL 2 (Curvas Bézier Fluidas) -->
+                  <div class="hidden sm:block w-full max-w-2xl mx-auto h-12 -my-2 relative">
+                    <svg class="w-full h-full" viewBox="0 0 600 48" fill="none" preserveAspectRatio="none">
                       <defs>
-                        <marker id="arrow-tree-1" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                          <path d="M 0 0 L 6 3 L 0 6 z" fill="#6366f1"/>
+                        <linearGradient id="gradTreeL1ToGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stop-color="#6366f1" />
+                          <stop offset="100%" stop-color="#10b981" />
+                        </linearGradient>
+                        <linearGradient id="gradTreeL1ToRose" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stop-color="#6366f1" />
+                          <stop offset="100%" stop-color="#f43f5e" />
+                        </linearGradient>
+                        <marker id="markerTreeGreen" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <path d="M 0 0 L 6 3 L 0 6 z" fill="#10b981"/>
+                        </marker>
+                        <marker id="markerTreeRose" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <path d="M 0 0 L 6 3 L 0 6 z" fill="#f43f5e"/>
                         </marker>
                       </defs>
-                      <path d="M 300 0 L 300 20" stroke="#6366f1" stroke-width="2.5" />
-                      <path d="M 150 20 L 450 20" stroke="#6366f1" stroke-width="2.5" />
-                      <path d="M 150 20 L 150 38" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow-tree-1)" />
-                      <path d="M 450 20 L 450 38" stroke="#f43f5e" stroke-width="2.5" marker-end="url(#arrow-tree-1)" />
+                      <path d="M 300 0 C 300 24, 150 16, 150 44" stroke="url(#gradTreeL1ToGreen)" stroke-width="2.5" fill="none" marker-end="url(#markerTreeGreen)" />
+                      <path d="M 300 0 C 300 24, 450 16, 450 44" stroke="url(#gradTreeL1ToRose)" stroke-width="2.5" fill="none" marker-end="url(#markerTreeRose)" />
                     </svg>
                   </div>
 
                   <!-- ============================================== -->
                   <!-- NIVEL 2: RAMAS PRINCIPALES (APROBACIÓN / RECHAZO)-->
                   <!-- ============================================== -->
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mt-4 sm:mt-0">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
                     
                     <!-- Rama Izquierda: APROBACIÓN -->
-                    <div class="bg-emerald-50/70 backdrop-blur-xs border border-emerald-300/80 rounded-2xl p-4 shadow-xs text-center relative">
-                      <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800">Rama A: Desenlace Favorable</div>
-                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-0.5">Revisiones de APROBACIÓN</h4>
-                      <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700 mt-1">108,230</div>
-                      <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-900 border border-emerald-300/80 text-[11px] font-black font-mono mt-1">
-                        59.12% de la carga (108,229 casos)
-                      </span>
-                      <p class="text-[10px] text-slate-500 mt-1.5">
-                        Resoluciones favorables: 84,406 directas (FTR) + 23,823 subsanadas
+                    <div class="bg-gradient-to-b from-emerald-50/90 to-emerald-100/40 backdrop-blur-md border border-emerald-300/90 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5 text-center relative overflow-hidden">
+                      <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-400 via-emerald-500 to-transparent"></div>
+                      <div class="text-[10px] font-black uppercase tracking-wider text-emerald-800 flex items-center justify-center gap-1">
+                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        Rama A: Desenlace Favorable
+                      </div>
+                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-1">Evaluaciones de APROBACIÓN</h4>
+                      <div class="text-3xl font-black font-mono text-emerald-700 mt-1">108,230</div>
+                      
+                      <div class="mt-2 flex items-center justify-center gap-2 flex-wrap">
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-black font-mono">
+                          59.12% de la carga humana
+                        </span>
+                        <span class="text-[11px] font-bold text-emerald-800">
+                          (108,229 casos únicos)
+                        </span>
+                      </div>
+                      
+                      <p class="text-[11px] text-emerald-900/80 mt-2 border-t border-emerald-200/60 pt-2 font-medium">
+                        Resoluciones favorables: <strong>84,406 directas (FTR)</strong> + <strong>23,823 subsanadas</strong>
                       </p>
                     </div>
 
                     <!-- Rama Derecha: RECHAZO -->
-                    <div class="bg-rose-50/70 backdrop-blur-xs border border-rose-300/80 rounded-2xl p-4 shadow-xs text-center relative">
-                      <div class="text-[10px] font-extrabold uppercase tracking-wider text-rose-800">Rama B: Fricción & Observaciones</div>
-                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-0.5">Revisiones de RECHAZO</h4>
-                      <div class="text-2xl sm:text-3xl font-black font-mono text-rose-700 mt-1">74,824</div>
-                      <span class="inline-block px-2.5 py-0.5 rounded-full bg-rose-100/90 text-rose-900 border border-rose-300/80 text-[11px] font-black font-mono mt-1">
-                        40.88% de la carga (51,027 casos únicos)
-                      </span>
-                      <p class="text-[10px] text-slate-500 mt-1.5">
-                        74,824 revisiones desfavorables: 51,027 en 1er rechazo + 23,797 reincidencias (1.47x por caso)
+                    <div class="bg-gradient-to-b from-rose-50/90 to-rose-100/40 backdrop-blur-md border border-rose-300/90 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5 text-center relative overflow-hidden">
+                      <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-rose-400 via-rose-500 to-transparent"></div>
+                      <div class="text-[10px] font-black uppercase tracking-wider text-rose-800 flex items-center justify-center gap-1">
+                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
+                        Rama B: Fricción & Observaciones
+                      </div>
+                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-1">Evaluaciones de RECHAZO</h4>
+                      <div class="text-3xl font-black font-mono text-rose-700 mt-1">74,824</div>
+                      
+                      <div class="mt-2 flex items-center justify-center gap-2 flex-wrap">
+                        <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-900 border border-rose-300 text-[11px] font-black font-mono">
+                          40.88% de la carga humana
+                        </span>
+                        <span class="text-[11px] font-bold text-rose-800">
+                          (51,027 casos únicos)
+                        </span>
+                      </div>
+                      
+                      <p class="text-[11px] text-rose-900/80 mt-2 border-t border-rose-200/60 pt-2 font-medium">
+                        74,824 observaciones emitidas: <strong>51,027 en 1er intento</strong> + <strong>23,797 reincidencias (1.47x)</strong>
                       </p>
                     </div>
 
                   </div>
 
-                  <!-- CONECTORES SVG: NIVEL 2 -> NIVEL 3 -->
-                  <div class="hidden sm:grid grid-cols-12 gap-3 max-w-5xl mx-auto h-10 my-0">
+                  <!-- CONECTORES SVG: NIVEL 2 -> NIVEL 3 (Curvas Bézier hacia 5 Hojas) -->
+                  <div class="hidden sm:grid grid-cols-12 gap-3 max-w-5xl mx-auto h-12 -my-2">
                     <!-- Conector Aprobaciones -> Hojas 1 & 2 (5 columnas) -->
                     <div class="col-span-5">
-                      <svg class="w-full h-full" viewBox="0 0 250 40" fill="none" preserveAspectRatio="none">
+                      <svg class="w-full h-full" viewBox="0 0 250 48" fill="none" preserveAspectRatio="none">
                         <defs>
-                          <marker id="arrow-tree-green" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <linearGradient id="gradTreeGreenToCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#10b981" />
+                            <stop offset="100%" stop-color="#06b6d4" />
+                          </linearGradient>
+                          <marker id="markerGreen" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
                             <path d="M 0 0 L 6 3 L 0 6 z" fill="#10b981"/>
                           </marker>
-                          <marker id="arrow-tree-cyan" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <marker id="markerCyan" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
                             <path d="M 0 0 L 6 3 L 0 6 z" fill="#06b6d4"/>
                           </marker>
                         </defs>
-                        <path d="M 125 0 L 125 18" stroke="#10b981" stroke-width="2.5" />
-                        <path d="M 62 18 L 188 18" stroke="#10b981" stroke-width="2.5" />
-                        <path d="M 62 18 L 62 38" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow-tree-green)" />
-                        <path d="M 188 18 L 188 38" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#arrow-tree-cyan)" />
+                        <path d="M 125 0 C 125 24, 62 20, 62 44" stroke="#10b981" stroke-width="2.5" fill="none" marker-end="url(#markerGreen)" />
+                        <path d="M 125 0 C 125 24, 188 20, 188 44" stroke="url(#gradTreeGreenToCyan)" stroke-width="2.5" fill="none" marker-end="url(#markerCyan)" />
                       </svg>
                     </div>
 
                     <!-- Conector Rechazos -> Hojas 3, 4 & 5 (7 columnas) -->
                     <div class="col-span-7">
-                      <svg class="w-full h-full" viewBox="0 0 350 40" fill="none" preserveAspectRatio="none">
+                      <svg class="w-full h-full" viewBox="0 0 350 48" fill="none" preserveAspectRatio="none">
                         <defs>
-                          <marker id="arrow-tree-amber" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <marker id="markerAmber" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
                             <path d="M 0 0 L 6 3 L 0 6 z" fill="#f59e0b"/>
                           </marker>
-                          <marker id="arrow-tree-red" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <marker id="markerRose" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
                             <path d="M 0 0 L 6 3 L 0 6 z" fill="#f43f5e"/>
                           </marker>
-                          <marker id="arrow-tree-purple" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+                          <marker id="markerPurple" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
                             <path d="M 0 0 L 6 3 L 0 6 z" fill="#a855f7"/>
                           </marker>
                         </defs>
-                        <path d="M 175 0 L 175 18" stroke="#f43f5e" stroke-width="2.5" />
-                        <path d="M 58 18 L 292 18" stroke="#f43f5e" stroke-width="2.5" />
-                        <path d="M 58 18 L 58 38" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-tree-amber)" />
-                        <path d="M 175 18 L 175 38" stroke="#f43f5e" stroke-width="2.5" marker-end="url(#arrow-tree-red)" />
-                        <path d="M 292 18 L 292 38" stroke="#a855f7" stroke-width="2.5" marker-end="url(#arrow-tree-purple)" />
+                        <path d="M 175 0 C 175 24, 58 20, 58 44" stroke="#f59e0b" stroke-width="2.5" fill="none" marker-end="url(#markerAmber)" />
+                        <path d="M 175 0 L 175 44" stroke="#f43f5e" stroke-width="2.5" fill="none" marker-end="url(#markerRose)" />
+                        <path d="M 175 0 C 175 24, 292 20, 292 44" stroke="#a855f7" stroke-width="2.5" fill="none" marker-end="url(#markerPurple)" />
                       </svg>
                     </div>
                   </div>
@@ -473,39 +523,39 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <!-- ============================================== -->
                   <!-- NIVEL 3: HOJAS DE DESTINO RESOLUTIVO FINAL     -->
                   <!-- ============================================== -->
-                  <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 max-w-5xl mx-auto mt-4 sm:mt-0">
+                  <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 max-w-5xl mx-auto">
                     
                     <!-- RAMA A (5 cols): Hojas 1 & 2 -->
                     <div class="sm:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <!-- Hoja 1: Aprobadas 1er Intento (FTR) -->
-                      <div class="glass-card border border-emerald-400/50 rounded-xl p-3.5 shadow-xs hover:border-emerald-500/80 transition-all flex flex-col justify-between">
+                      <div class="glass-card bg-white/90 border border-emerald-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
                         <div>
                           <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700">1. Aprobación Directa</span>
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">FTR Limpia</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800">1. Aprobación Directa</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">FTR Limpia</span>
                           </div>
-                          <div class="text-xl font-black font-mono text-emerald-800 mt-1.5">84,406</div>
-                          <div class="text-[11px] font-bold text-emerald-700 font-mono mt-1">78.0% según aprobadas totales (108,230)</div>
-                          <div class="text-[11px] text-emerald-800 font-semibold mt-0.5">62.2% según atendidas por humanos (135,628)</div>
+                          <div class="text-2xl font-black font-mono text-emerald-800 mt-2">84,406</div>
+                          <div class="text-[11px] font-bold text-emerald-700 font-mono mt-1">78.0% de aprobadas totales</div>
+                          <div class="text-[10px] text-emerald-800 font-semibold mt-0.5">62.2% de atendidas por humanos</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          Expedientes resueltos favorablemente al 1er intento sin observaciones.
+                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
+                          Expedientes resueltos favorablemente al 1er intento sin generar retrabajo.
                         </p>
                       </div>
 
                       <!-- Hoja 2: Subsanadas Exitosas -->
-                      <div class="glass-card border border-cyan-400/50 rounded-xl p-3.5 shadow-xs hover:border-cyan-500/80 transition-all flex flex-col justify-between">
+                      <div class="glass-card bg-white/90 border border-cyan-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-cyan-500 transition-all flex flex-col justify-between">
                         <div>
                           <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-cyan-700">2. Subsanadas (Recuperadas)</span>
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-cyan-50 text-cyan-700 border border-cyan-200">2ª Vuelta</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider text-cyan-800">2. Subsanadas</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200">2ª Vuelta</span>
                           </div>
-                          <div class="text-xl font-black font-mono text-cyan-800 mt-1.5">23,823</div>
-                          <div class="text-[11px] font-bold text-cyan-700 font-mono mt-1">17.6% de atendidas por humanos</div>
-                          <div class="text-[10px] text-cyan-800 font-semibold mt-0.5">46.7% de rescate sobre observadas (22.0% de aprobadas)</div>
+                          <div class="text-2xl font-black font-mono text-cyan-800 mt-2">23,823</div>
+                          <div class="text-[11px] font-bold text-cyan-700 font-mono mt-1">46.7% tasa de rescate</div>
+                          <div class="text-[10px] text-cyan-800 font-semibold mt-0.5">22.0% del total de aprobadas</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          Expedientes aprobados tras solventar requerimientos con éxito.
+                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
+                          Expedientes aprobados tras solventar observaciones previas del revisor.
                         </p>
                       </div>
                     </div>
@@ -513,57 +563,62 @@ const formatMinutesToTime = (minDecimal: number) => {
                     <!-- RAMA B (7 cols): Hojas 3, 4 & 5 (Suma Exacta: 23,823 + 27,204 + 23,797 = 74,824) -->
                     <div class="sm:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <!-- Hoja 3: Rechazos Superados -->
-                      <div class="glass-card border border-amber-400/50 rounded-xl p-3 shadow-xs hover:border-amber-500/80 transition-all flex flex-col justify-between">
+                      <div class="glass-card bg-white/90 border border-amber-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-amber-500 transition-all flex flex-col justify-between">
                         <div>
                           <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700">3. Rechazos Superados</span>
-                            <span class="text-[10px] font-bold px-1 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">Puente ⇄</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider text-amber-800">3. Superados</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Puente ⇄</span>
                           </div>
-                          <div class="text-xl font-black font-mono text-amber-800 mt-1.5">23,823</div>
-                          <div class="text-[11px] font-bold text-amber-600 font-mono">31.8% de rechazos</div>
+                          <div class="text-2xl font-black font-mono text-amber-800 mt-2">23,823</div>
+                          <div class="text-[11px] font-bold text-amber-700 font-mono mt-1">31.8% de rechazos</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          1ª revisión de rechazo en casos que lograron corregir y pasar a Hoja 2.
+                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
+                          1ª observación en casos que corrigieron y pasaron a la Hoja 2.
                         </p>
                       </div>
 
                       <!-- Hoja 4: Rechazos Definitivos -->
-                      <div class="glass-card border border-rose-400/50 rounded-xl p-3 shadow-xs hover:border-rose-500/80 transition-all flex flex-col justify-between">
+                      <div class="glass-card bg-white/90 border border-rose-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-rose-500 transition-all flex flex-col justify-between">
                         <div>
                           <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-rose-700">4. Rechazos Definitivos</span>
-                            <span class="text-[10px] font-bold px-1 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200">Sin Subsanar</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider text-rose-800">4. Definitivos</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">Deserción</span>
                           </div>
-                          <div class="text-xl font-black font-mono text-rose-800 mt-1.5">27,204</div>
-                          <div class="text-[11px] font-bold text-rose-600 font-mono">36.4% de rechazos</div>
+                          <div class="text-2xl font-black font-mono text-rose-800 mt-2">27,204</div>
+                          <div class="text-[11px] font-bold text-rose-700 font-mono mt-1">36.4% de rechazos</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          1ª revisión de rechazo en casos sin subsanación (deserción o caducidad).
+                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
+                          Observaciones sin subsanar por abandono o vencimiento del trámite.
                         </p>
                       </div>
 
                       <!-- Hoja 5: Re-Rechazos por Reincidencia -->
-                      <div class="glass-card border border-purple-400/50 rounded-xl p-3 shadow-xs hover:border-purple-500/80 transition-all flex flex-col justify-between">
+                      <div class="glass-card bg-white/90 border border-purple-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-purple-500 transition-all flex flex-col justify-between">
                         <div>
                           <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-700">5. Re-Rechazos</span>
-                            <span class="text-[10px] font-bold px-1 py-0.5 rounded-md bg-purple-50 text-purple-700 border border-purple-200">Reincidencias</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider text-purple-800">5. Reincidencias</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">2ª/3ª Vuelta</span>
                           </div>
-                          <div class="text-xl font-black font-mono text-purple-800 mt-1.5">23,797</div>
-                          <div class="text-[11px] font-bold text-purple-600 font-mono">31.8% de rechazos</div>
+                          <div class="text-2xl font-black font-mono text-purple-800 mt-2">23,797</div>
+                          <div class="text-[11px] font-bold text-purple-700 font-mono mt-1">31.8% de rechazos</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          Revisiones de rechazo adicionales por fallas repetidas en 2ª o 3ª vuelta.
+                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
+                          Evaluaciones de rechazo adicionales por fallas repetidas.
                         </p>
                       </div>
                     </div>
 
                   </div>
 
-                  <!-- Nota explicativa y cuadre matemático -->
-                  <div class="mt-3.5 p-3 bg-indigo-50/70 border border-indigo-200/70 rounded-xl text-center text-[11px] text-indigo-950 font-medium backdrop-blur-xs">
-                    <span class="font-bold text-indigo-950">Cuadre Matemático de Trazabilidad (Sin Fuga de Datos):</span>
-                    La suma de la Rama B cuadra al 100%: <strong>23,823</strong> (casos que subsanaron) + <strong>27,204</strong> (casos sin subsanar) = <strong>51,027</strong> expedientes observados en su primer intento. Al sumar los <strong>23,797</strong> revisiones de reincidencia (segundas/terceras rondas fallidas), se alcanzan con exactitud los <strong>74,824 revisiones de rechazo</strong> (23,823 + 27,204 + 23,797 = 74,824). Sumado a los 108,230 revisiones de aprobación, completan las <strong>183,054 revisiones de los revisores</strong>.
+                  <!-- Cuadre Matemático & ROI Operativo -->
+                  <div class="p-4 bg-gradient-to-r from-indigo-50/90 via-violet-50/80 to-blue-50/90 border border-indigo-200/80 rounded-2xl text-[11px] text-indigo-950 font-medium backdrop-blur-xs flex flex-col sm:flex-row items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                      <i data-lucide="scale" class="w-4 h-4"></i>
+                    </div>
+                    <div class="flex-1 text-center sm:text-left leading-relaxed">
+                      <span class="font-extrabold text-indigo-950">Cuadre Matemático de Trazabilidad (100% Sin Fuga de Datos):</span>
+                      La Rama B suma con exactitud: <strong>23,823</strong> (subsanadas) + <strong>27,204</strong> (deserción) = <strong>51,027</strong> expedientes observados. Al sumar los <strong>23,797</strong> re-rechazos, se alcanzan con exactitud los <strong>74,824 rechazos emitidos</strong>. Con los <strong>108,230 favorables</strong>, totalizan las <strong>183,054 evaluaciones humanas</strong> registradas.
+                    </div>
                   </div>
 
                 </div>
