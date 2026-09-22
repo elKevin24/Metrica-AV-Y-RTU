@@ -311,6 +311,7 @@
     );
 
     window.updateOlapDom(result);
+    window.dispatchEvent(new CustomEvent('filters:sync'));
   };
 
   window.resetFilters = function() {
@@ -541,7 +542,7 @@
       chartRegSla.update();
     }
 
-    // 5. Chart Regional Dictamen (Aprobadas vs Rechazadas)
+    // 5. Chart Regional Revisiones (Aprobadas vs Rechazadas)
     const chartDict = Chart.getChart('chartRegionalDictamen');
     if (chartDict && r.regionBreakdown) {
       const regOrder = ['Occidente', 'Central', 'Nororiente', 'Sur'];

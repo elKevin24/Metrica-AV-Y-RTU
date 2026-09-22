@@ -2,10 +2,10 @@
 // Visor Estratégico BI - SAT Guatemala (Astro + Power BI Style + Web Magic)
 import Layout from '../layouts/Layout.astro';
 import Sidebar from '../components/Sidebar.astro';
-import FilterRibbon from '../components/FilterRibbon.astro';
+import FilterRibbon from '../components/FilterRibbon';
 import KpiCard from '../components/KpiCard.astro';
 import ChartCard from '../components/ChartCard.astro';
-import ForensicView from '../components/ForensicView.astro';
+import ForensicView from '../components/ForensicView';
 import CausalidadView from '../components/CausalidadView.astro';
 import RechazosTrendChart from '../components/RechazosTrendChart';
 
@@ -81,7 +81,7 @@ const formatMinutesToTime = (minDecimal: number) => {
     <div class="flex-1 flex flex-col h-full overflow-hidden">
 
       <!-- SLICER FILTER RIBBON -->
-      <FilterRibbon />
+      <FilterRibbon client:load />
 
       <!-- DASHBOARD CANVAS -->
       <main class="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 pb-24 md:pb-6">
@@ -728,7 +728,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                 </div>
               </div>
 
-              <!-- KPI 3: DICTAMEN ACTIVO -->
+              <!-- KPI 3: REVISIÓN ACTIVA -->
               <div class="glass-card p-4 rounded-2xl relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 group">
                 <div class="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-60"></div>
                 <div class="flex items-center justify-between">
@@ -1619,7 +1619,7 @@ const formatMinutesToTime = (minDecimal: number) => {
           <!-- TAB 5: AUDITORÍA FORENSE (MASTER-DETAIL)       -->
           <!-- ============================================== -->
           <div id="tab-casos" class="tab-content">
-            <ForensicView />
+            <ForensicView client:load />
           </div>
 
         </div>
@@ -1960,7 +1960,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         }
 
         if (targetId === 'tab-casos') {
-          if (typeof window.loadForensicData === 'function') window.loadForensicData();
+          window.dispatchEvent(new CustomEvent('forensic:load'));
           if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
@@ -2158,7 +2158,7 @@ const formatMinutesToTime = (minDecimal: number) => {
           });
         }
 
-        // 4. Gráfico 3: Comparativa Aprobadas vs Rechazadas por Región (chartRegionalDictamen)
+        // 4. Gráfico 3: Comparativa Aprobadas vs Rechazadas por Región (chartRegionalRevision)
         const ctxDict = document.getElementById('chartRegionalDictamen');
         if (ctxDict && !Chart.getChart('chartRegionalDictamen')) {
           new Chart(ctxDict, {

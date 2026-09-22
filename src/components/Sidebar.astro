@@ -1,89 +1,105 @@
 ---
-// Sidebar.astro - Power BI / Tableau Style Collapsible Navigation with Full Mobile UX
+// Sidebar.astro - Power BI / Tableau Style Collapsible Navigation with Fluid Spring Physics
 ---
 
 <!-- DESKTOP / TABLET SIDEBAR (md:flex) -->
-<aside class="hidden md:flex md:w-60 bg-slate-950/85 backdrop-blur-2xl text-slate-300 flex-col h-full shrink-0 border-r border-white/10 transition-all z-20 select-none shadow-xl">
-  <!-- Brand Badge -->
-  <div class="h-14 flex items-center px-4 border-b border-white/5 bg-white/[0.02]">
-    <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white font-black w-8 h-8 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/25 text-xs tracking-wider border border-white/20">
-      SAT
+<aside 
+  id="mainSidebar" 
+  class="hidden md:flex bg-slate-950/90 backdrop-blur-2xl text-slate-300 flex-col h-full shrink-0 border-r border-white/10 select-none shadow-2xl relative z-20 overflow-hidden"
+>
+  <!-- Brand Badge & Toggle Header -->
+  <div class="h-14 flex items-center justify-between px-3 border-b border-white/5 bg-white/[0.02]">
+    <div class="flex items-center min-w-0">
+      <div class="bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 text-white font-black w-8 h-8 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/25 text-xs tracking-wider border border-white/20 shrink-0">
+        SAT
+      </div>
+      <div class="sidebar-text flex flex-col ml-3 min-w-0">
+        <span class="font-bold text-white tracking-tight text-xs truncate">Visor Estratégico BI</span>
+        <span class="text-[10px] text-blue-400 font-medium truncate">Agencia Virtual & RTU</span>
+      </div>
     </div>
-    <div class="flex flex-col ml-3">
-      <span class="font-semibold text-white tracking-tight text-xs">Visor Estratégico BI</span>
-      <span class="text-[10px] text-blue-400 font-medium">Agencia Virtual & RTU</span>
-    </div>
+
+    <!-- Desktop Collapse / Expand Toggle Button -->
+    <button 
+      id="btnToggleSidebar"
+      onclick="toggleSidebarCollapse()" 
+      class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 active:scale-95 transition-all cursor-pointer shrink-0"
+      title="Alternar menú lateral (Ctrl+B)"
+      aria-label="Alternar menú lateral"
+    >
+      <i id="sidebarToggleIcon" data-lucide="chevron-left" class="w-4 h-4"></i>
+    </button>
   </div>
 
   <!-- Enlaces de Navegación (5 módulos analíticos) -->
-  <div class="flex-1 py-4 flex flex-col gap-1.5 px-2.5 overflow-y-auto no-scrollbar">
-    <div class="px-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+  <div class="flex-1 py-3.5 flex flex-col gap-1.5 px-2.5 overflow-y-auto no-scrollbar">
+    <div class="sidebar-text px-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
       Módulos Analíticos
     </div>
 
     <button 
-      class="tab-btn active-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all bg-blue-600/90 text-white shadow-lg shadow-blue-600/25 border border-blue-400/30 cursor-pointer" 
+      class="tab-btn active-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium bg-blue-600 text-white shadow-lg shadow-blue-600/25 border border-blue-400/30 cursor-pointer group" 
       data-target="tab-general"
       title="Resumen Ejecutivo"
     >
-      <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
-      <span class="text-left truncate font-semibold">Resumen Ejecutivo</span>
+      <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform"></i>
+      <span class="sidebar-text text-left truncate font-semibold">Resumen Ejecutivo</span>
     </button>
 
     <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer" 
+      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.07] hover:text-white border border-transparent cursor-pointer group" 
       data-target="tab-tiempos"
-      title="Análisis de Tiempos & SLA"
+      title="Análisis de Tiempos & SLA (8h)"
     >
-      <i data-lucide="clock" class="w-4 h-4 shrink-0 text-emerald-400"></i>
-      <span class="text-left truncate font-medium">Tiempos & SLAs (8h)</span>
+      <i data-lucide="clock" class="w-4 h-4 shrink-0 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+      <span class="sidebar-text text-left truncate font-medium">Tiempos & SLAs (8h)</span>
     </button>
 
     <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer" 
+      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.07] hover:text-white border border-transparent cursor-pointer group" 
       data-target="tab-revisores"
       title="Lista de Revisores y Atenciones"
     >
-      <i data-lucide="users" class="w-4 h-4 shrink-0 text-amber-400"></i>
-      <span class="text-left truncate font-medium">Revisores & Atenciones</span>
+      <i data-lucide="users" class="w-4 h-4 shrink-0 text-amber-400 group-hover:scale-110 transition-transform"></i>
+      <span class="sidebar-text text-left truncate font-medium">Revisores & Atenciones</span>
     </button>
 
     <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer" 
+      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.07] hover:text-white border border-transparent cursor-pointer group" 
       data-target="tab-relaciones"
       title="Causalidad & Flujos de Retrabajo"
     >
-      <i data-lucide="git-fork" class="w-4 h-4 shrink-0 text-violet-400"></i>
-      <span class="text-left truncate font-medium">Causalidad & Flujos</span>
+      <i data-lucide="git-fork" class="w-4 h-4 shrink-0 text-violet-400 group-hover:scale-110 transition-transform"></i>
+      <span class="sidebar-text text-left truncate font-medium">Causalidad & Flujos</span>
     </button>
 
     <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer" 
+      class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.07] hover:text-white border border-transparent cursor-pointer group" 
       data-target="tab-casos"
-      title="Forense de Expedientes"
+      title="Auditoría Forense de Expedientes"
     >
-      <i data-lucide="search" class="w-4 h-4 shrink-0 text-cyan-400"></i>
-      <span class="text-left truncate font-medium">Auditoría Forense</span>
+      <i data-lucide="search" class="w-4 h-4 shrink-0 text-cyan-400 group-hover:scale-110 transition-transform"></i>
+      <span class="sidebar-text text-left truncate font-medium">Auditoría Forense</span>
     </button>
   </div>
 
   <!-- Bottom Quick Status & Settings -->
-  <div class="p-3 border-t border-white/5 text-left space-y-2">
-    <div class="flex items-center justify-between text-[11px] text-slate-400 px-1">
-      <span class="flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Datos en Línea
+  <div class="p-2.5 border-t border-white/5 text-left space-y-1.5 bg-black/10">
+    <div class="flex items-center justify-between text-[11px] text-slate-400 px-1 py-0.5">
+      <span class="flex items-center gap-2 min-w-0">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 status-pulse-dot shrink-0"></span>
+        <span class="sidebar-text font-medium truncate text-slate-300">Datos en Línea</span>
       </span>
-      <span class="font-mono text-slate-400 text-[10px]">v1.4</span>
+      <span class="sidebar-text font-mono text-slate-400 text-[10px] shrink-0">2026</span>
     </div>
 
     <button 
       onclick="toggleShortcutsModal()" 
-      class="w-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 rounded-xl flex items-center justify-start px-3 py-2 text-slate-400 hover:text-white transition-all backdrop-blur-md cursor-pointer"
-      title="Atajos de teclado (?)"
+      class="w-full bg-white/[0.04] hover:bg-white/[0.08] active:scale-98 border border-white/10 rounded-xl flex items-center justify-center md:justify-start px-2.5 py-2 text-slate-400 hover:text-white transition-all backdrop-blur-md cursor-pointer group"
+      title="Atajos de teclado (Ctrl+K)"
     >
-      <i data-lucide="keyboard" class="w-4 h-4 shrink-0"></i>
-      <span class="ml-2.5 text-xs font-medium">Atajos (Ctrl+K)</span>
+      <i data-lucide="keyboard" class="w-4 h-4 shrink-0 group-hover:text-blue-400 transition-colors"></i>
+      <span class="sidebar-text ml-2 text-xs font-medium truncate">Atajos (Ctrl+K)</span>
     </button>
   </div>
 </aside>
@@ -91,7 +107,7 @@
 <!-- MOBILE TOP HEADER (md:hidden) -->
 <header class="md:hidden flex items-center justify-between px-3.5 py-2.5 bg-slate-950/95 backdrop-blur-2xl border-b border-white/10 text-white shrink-0 z-30 sticky top-0 shadow-lg">
   <div class="flex items-center gap-2.5 min-w-0">
-    <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white font-black w-7 h-7 rounded-lg flex items-center justify-center shadow-sm text-[11px] tracking-wider border border-white/20 shrink-0">
+    <div class="bg-gradient-to-br from-blue-500 to-indigo-700 text-white font-black w-7 h-7 rounded-lg flex items-center justify-center shadow-sm text-[11px] tracking-wider border border-white/20 shrink-0">
       SAT
     </div>
     <div class="flex flex-col min-w-0">
@@ -170,3 +186,52 @@
   </button>
 </nav>
 
+<!-- Inline Script for Fluid Sidebar Physics & Keybindings -->
+<script is:inline>
+  function toggleSidebarCollapse() {
+    const sidebar = document.getElementById('mainSidebar');
+    if (!sidebar) return;
+    const isCurrentlyCollapsed = sidebar.classList.contains('sidebar-collapsed');
+    
+    if (isCurrentlyCollapsed) {
+      sidebar.classList.remove('sidebar-collapsed');
+      localStorage.setItem('sat_sidebar_collapsed', 'false');
+    } else {
+      sidebar.classList.add('sidebar-collapsed');
+      localStorage.setItem('sat_sidebar_collapsed', 'true');
+    }
+
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    // Trigger smooth resize for charts during and at the end of the transition
+    const resizeInterval = setInterval(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 50);
+    setTimeout(() => {
+      clearInterval(resizeInterval);
+      window.dispatchEvent(new Event('resize'));
+    }, 420);
+  }
+
+  // Restore saved sidebar state on DOM load
+  (function initSidebarState() {
+    const saved = localStorage.getItem('sat_sidebar_collapsed');
+    const sidebar = document.getElementById('mainSidebar');
+    if (saved === 'true' && sidebar) {
+      sidebar.classList.add('sidebar-collapsed');
+    }
+
+    // Keyboard shortcut Ctrl+B or Cmd+B to toggle
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        const activeTag = document.activeElement ? document.activeElement.tagName : '';
+        if (activeTag !== 'INPUT' && activeTag !== 'TEXTAREA') {
+          e.preventDefault();
+          toggleSidebarCollapse();
+        }
+      }
+    });
+  })();
+</script>

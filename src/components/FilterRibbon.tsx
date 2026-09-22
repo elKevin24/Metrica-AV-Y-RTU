@@ -29,8 +29,16 @@ function readFilterState(): FilterState {
   };
 }
 
+const INITIAL_FILTERS: FilterState = {
+  region: 'TODAS',
+  gestion: 'TODAS',
+  mes: 'TODOS',
+  estado: 'TODOS',
+  macro: 'TODAS',
+};
+
 export default function FilterRibbon() {
-  const [f, setF] = useState<FilterState>(readFilterState);
+  const [f, setF] = useState<FilterState>(() => (typeof document === 'undefined' ? INITIAL_FILTERS : readFilterState()));
 
   useEffect(() => {
     const sync = () => setF(readFilterState());
