@@ -84,7 +84,7 @@ const formatMinutesToTime = (minDecimal: number) => {
       <FilterRibbon client:only="react" />
 
       <!-- DASHBOARD CANVAS -->
-      <main class="dashboard-scroll flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 pb-24 md:pb-6">
+      <main id="mainScrollCanvas" tabindex="0" class="dashboard-scroll flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 pb-24 md:pb-6 focus:outline-none">
         <div class="max-w-[1400px] mx-auto space-y-6">
           
           <!-- ============================================== -->
@@ -2047,9 +2047,14 @@ const formatMinutesToTime = (minDecimal: number) => {
         lucide.createIcons();
       }
 
-      // 2. Tab Switcher Logic
+      // 2. Tab Switcher & Full-Page Scroll Sync Logic
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = document.querySelectorAll('.tab-content');
+      const scrollContainer = document.getElementById('mainScrollCanvas') || document.querySelector('.dashboard-scroll');
+
+      let isManualScrolling = false;
+      let scrollLockTimer = null;
+      let activeSectionId = 'tab-general';
 
       const tabLabelsMap = {
         'tab-general': 'Resumen Ejecutivo',
@@ -2059,7 +2064,9 @@ const formatMinutesToTime = (minDecimal: number) => {
         'tab-casos': 'Auditoría Forense'
       };
 
-      window.switchTab = function(targetId) {
+      window.switchTab = function(targetId, shouldScroll = true) {
+        if (!targetId) return;
+
         // Reset all buttons (desktop sidebar & mobile bottom bar)
         tabBtns.forEach(b => {
           b.classList.remove('active-tab', 'bg-blue-600/90', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-600/25', 'shadow-md', 'shadow-blue-600/20', 'border-blue-400/30');
@@ -2067,7 +2074,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         });
         tabContents.forEach(c => c.classList.remove('active'));
 
-        // Activate all buttons matching the targetId
+        // Activate buttons matching the targetId
         const activeBtns = Array.from(tabBtns).filter(b => b.getAttribute('data-target') === targetId);
         activeBtns.forEach(activeBtn => {
           activeBtn.classList.add('active-tab', 'bg-blue-600/90', 'text-white', 'shadow-lg', 'shadow-blue-600/25', 'border-blue-400/30');
@@ -2085,6 +2092,9 @@ const formatMinutesToTime = (minDecimal: number) => {
           activeContent.classList.add('active');
         }
 
+        activeSectionId = targetId;
+
+        // Lazy initialization of section-specific modules
         if (targetId === 'tab-general') {
           const ch = Chart.getChart('chartEstados');
           if (ch) ch.resize();
@@ -2128,11 +2138,15 @@ const formatMinutesToTime = (minDecimal: number) => {
           lucide.createIcons();
         }
 
-        // Desplazamiento suave hasta la sección activa
-        // (scroll nativo CSS / scrollIntoView, sin secuestrar el scroll)
-        if (activeContent) {
+        // Desplazamiento suave nativo a la sección (respetando prefers-reduced-motion)
+        if (shouldScroll && activeContent) {
+          isManualScrolling = true;
+          clearTimeout(scrollLockTimer);
           const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           activeContent.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          scrollLockTimer = setTimeout(() => {
+            isManualScrolling = false;
+          }, 700);
         }
       };
 
@@ -2140,9 +2154,35 @@ const formatMinutesToTime = (minDecimal: number) => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           const targetId = btn.getAttribute('data-target');
-          if (targetId) window.switchTab(targetId);
+          if (targetId) window.switchTab(targetId, true);
         });
       });
+
+      // Sincronización bidireccional de scroll con IntersectionObserver
+      if (typeof IntersectionObserver !== 'undefined' && tabContents.length > 0) {
+        const observerOptions = {
+          root: scrollContainer || null,
+          rootMargin: '-10% 0px -40% 0px',
+          threshold: [0.15, 0.35, 0.6]
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+          if (isManualScrolling) return;
+
+          const visibleEntries = entries.filter(e => e.isIntersecting);
+          if (visibleEntries.length > 0) {
+            visibleEntries.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+            const topTarget = visibleEntries[0].target;
+            if (topTarget && topTarget.id && topTarget.id !== activeSectionId) {
+              window.switchTab(topTarget.id, false);
+            }
+          }
+        }, observerOptions);
+
+        tabContents.forEach(section => {
+          sectionObserver.observe(section);
+        });
+      }
 
       // 3. Command Palette & Shortcuts
       window.toggleCommandPalette = function() {
@@ -2168,7 +2208,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         });
       };
 
-      // 4. Keyboard Shortcuts
+      // 4. Keyboard Shortcuts (1 a 5 para saltar entre las 5 secciones)
       window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
           e.preventDefault();
@@ -2186,8 +2226,8 @@ const formatMinutesToTime = (minDecimal: number) => {
           return;
         }
         if (!['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
-          const map = { '1': 'tab-general', '2': 'tab-tiempos', '3': 'tab-revisores', '4': 'tab-casos' };
-          if (map[e.key]) window.switchTab(map[e.key]);
+          const map = { '1': 'tab-general', '2': 'tab-tiempos', '3': 'tab-revisores', '4': 'tab-relaciones', '5': 'tab-casos' };
+          if (map[e.key]) window.switchTab(map[e.key], true);
         }
       });
 
