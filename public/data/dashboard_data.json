@@ -1,0 +1,34 @@
+{
+  "total_gestiones": 182412,
+  "total_filas_log": 1306000,
+  "ratio_retrabajo": 7.16,
+  "tiempos_promedio": {
+    "cola_cal_horas": 39.47,
+    "cola_hab_horas": 9.07,
+    "total_cal_horas": 83.41,
+    "total_hab_horas": 19.15
+  },
+  "estados": {
+    "APROBADA": 108229,
+    "NO CONFIRMADA": 32380,
+    "CANCELADA": 26223,
+    "CANCELADA POR EL CONTRIBUYENTE": 8844,
+    "CANCELADA POR REQUERIMIENTO": 3102,
+    "CANCELADA POR ADMINISTRADOR": 1498,
+    "CANCELADA POR CANTIDAD DE RECHAZOS": 1439,
+    "CREADA": 527,
+    "RECHAZADA CON REQUERIMIENTO": 121,
+    "CANCELADA POR POSIBLES ANOMALÍAS DPI": 48,
+    "CANCELADA POR POSIBLES ANOMALÍAS CONSTANCIA DE RENAP": 1
+  },
+  "regiones": {
+    "CENTRAL": 73327,
+    "OCCIDENTE": 38754,
+    "SUR": 35403,
+    "NORORIENTE": 34928
+  },
+  "gestiones": {
+    "CAMBIO DE CORREO ELECTRÓNICO": 101799,
+    "ACTIVACIÓN": 80613
+  }
+}

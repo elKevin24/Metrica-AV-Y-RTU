@@ -105,8 +105,12 @@
     let totalConRechazo = 0;
     let tColaSum = 0;
     let tColaCount = 0;
+    let tColaHabSum = 0;
+    let tColaHabCount = 0;
     let tTotalSum = 0;
     let tTotalCount = 0;
+    let tTotalHabSum = 0;
+    let tTotalHabCount = 0;
     let nEventosSum = 0;
 
     const estadoCounts = {};
@@ -129,31 +133,40 @@
       totalAprobadosLimpios += (c.aprobadas || 0);
       totalSubsanadas += (c.subsanadas || 0);
       totalConRechazo += (c.con_rechazo || 0);
-      tColaSum += (c.t_cola_sum || 0);
-      tColaCount += (c.t_cola_count || 0);
-      tTotalSum += (c.t_total_sum || 0);
-      tTotalCount += (c.t_total_count || 0);
+      tColaSum += (c.t_cola_cal_sum || c.t_cola_sum || 0);
+      tColaCount += (c.t_cola_cal_count || c.t_cola_count || 0);
+      tColaHabSum += (c.t_cola_hab_sum || (c.t_cola_sum ? c.t_cola_sum * 0.34 : 0));
+      tColaHabCount += (c.t_cola_hab_count || c.t_cola_count || 0);
+      tTotalSum += (c.t_total_cal_sum || c.t_total_sum || 0);
+      tTotalCount += (c.t_total_cal_count || c.t_total_count || 0);
+      tTotalHabSum += (c.t_total_hab_sum || (c.t_total_sum ? c.t_total_sum * 0.34 : 0));
+      tTotalHabCount += (c.t_total_hab_count || c.t_total_count || 0);
       nEventosSum += (c.n_eventos_sum || 0);
 
       // Desglose por región (totales, aprobadas, rechazos, cola, SLA)
       if (c.region && c.region !== 'DESCONOCIDO' && c.region !== 'AP_MS_SAT_EN_LINEA' && c.region !== 'NO CONFIRMADA') {
         const rb = regionBreakdown[c.region] = regionBreakdown[c.region] || { 
           total: 0, aprobadas: 0, subsanadas: 0, con_rechazo: 0, 
-          t_cola_sum: 0, t_cola_count: 0, t_total_sum: 0, t_total_count: 0,
+          t_cola_sum: 0, t_cola_count: 0, t_cola_hab_sum: 0, t_cola_hab_count: 0,
+          t_total_sum: 0, t_total_count: 0, t_total_hab_sum: 0, t_total_hab_count: 0,
           dentroSla: 0, fueraSla: 0
         };
         rb.total += t;
         rb.aprobadas += (c.aprobadas || 0);
         rb.subsanadas += (c.subsanadas || 0);
         rb.con_rechazo += (c.con_rechazo || 0);
-        rb.t_cola_sum += (c.t_cola_sum || 0);
-        rb.t_cola_count += (c.t_cola_count || 0);
-        rb.t_total_sum += (c.t_total_sum || 0);
-        rb.t_total_count += (c.t_total_count || 0);
+        rb.t_cola_sum += (c.t_cola_cal_sum || c.t_cola_sum || 0);
+        rb.t_cola_count += (c.t_cola_cal_count || c.t_cola_count || 0);
+        rb.t_cola_hab_sum += (c.t_cola_hab_sum || 0);
+        rb.t_cola_hab_count += (c.t_cola_hab_count || 0);
+        rb.t_total_sum += (c.t_total_cal_sum || c.t_total_sum || 0);
+        rb.t_total_count += (c.t_total_cal_count || c.t_total_count || 0);
+        rb.t_total_hab_sum += (c.t_total_hab_sum || 0);
+        rb.t_total_hab_count += (c.t_total_hab_count || 0);
 
-        const hTot = c.t_total_count > 0 
-          ? (c.t_total_sum / c.t_total_count) * (8 / 24) * 0.72 
-          : (c.t_cola_count > 0 ? (c.t_cola_sum / c.t_cola_count) * (8 / 24) * 0.72 : 4);
+        const hTot = c.t_total_hab_count > 0 
+          ? (c.t_total_hab_sum / c.t_total_hab_count) 
+          : (c.t_cola_hab_count > 0 ? (c.t_cola_hab_sum / c.t_cola_hab_count) : 8);
 
         if (hTot <= 24) {
           rb.dentroSla += t;
@@ -162,10 +175,10 @@
         }
       }
 
-      // Distribución en Tramos SLA: <=8h, 8-16h, 16-24h, 24-40h, >40h
-      const avgH = c.t_total_count > 0 
-        ? (c.t_total_sum / c.t_total_count) * (8 / 24) * 0.72 
-        : (c.t_cola_count > 0 ? (c.t_cola_sum / c.t_cola_count) * (8 / 24) * 0.72 : 4);
+      // Distribución en Tramos SLA Hábil: <=8h, 8-16h, 16-24h, 24-40h, >40h
+      const avgH = c.t_total_hab_count > 0 
+        ? (c.t_total_hab_sum / c.t_total_hab_count) 
+        : (c.t_cola_hab_count > 0 ? (c.t_cola_hab_sum / c.t_cola_hab_count) : 8);
 
       if (avgH <= 8) slaBuckets[0] += t;
       else if (avgH <= 16) slaBuckets[1] += t;
@@ -175,9 +188,11 @@
 
       // Tendencia regional mensual (meses 1 a 7)
       if (c.region && regionMonthly[c.region] && c.mes >= 1 && c.mes <= 7) {
-        const rm = regionMonthly[c.region][c.mes] = regionMonthly[c.region][c.mes] || { sum: 0, count: 0 };
-        rm.sum += (c.t_cola_sum || 0);
-        rm.count += (c.t_cola_count || 0);
+        const rm = regionMonthly[c.region][c.mes] = regionMonthly[c.region][c.mes] || { sum: 0, count: 0, habSum: 0, habCount: 0 };
+        rm.sum += (c.t_cola_cal_sum || c.t_cola_sum || 0);
+        rm.count += (c.t_cola_cal_count || c.t_cola_count || 0);
+        rm.habSum += (c.t_cola_hab_sum || 0);
+        rm.habCount += (c.t_cola_hab_count || 0);
       }
 
       // Agrupaciones
@@ -207,8 +222,10 @@
     const totalAprobadosGlobal = totalAprobadosLimpios + totalSubsanadas;
     const totalRechazos = totalConRechazo;
     const totalOtrosEstados = Math.max(0, totalCasos - totalAprobadosGlobal);
-    const avgColaH = tColaCount > 0 ? tColaSum / tColaCount : 0;
-    const avgTotalH = tTotalCount > 0 ? tTotalSum / tTotalCount : 0;
+    const avgColaCalH = tColaCount > 0 ? tColaSum / tColaCount : 0;
+    const avgColaHabH = tColaHabCount > 0 ? tColaHabSum / tColaHabCount : (avgColaCalH * 0.34);
+    const avgTotalCalH = tTotalCount > 0 ? tTotalSum / tTotalCount : 0;
+    const avgTotalHabH = tTotalHabCount > 0 ? tTotalHabSum / tTotalHabCount : (avgTotalCalH * 0.34);
 
     const sinMotivo = macroCounts['SIN_MOTIVO'] || 0;
     const docDpi = macroCounts['DOCUMENTACION_DPI'] || 0;
@@ -235,8 +252,12 @@
       rechVideo: videoConf,
       rechDatos: datosInc,
       rechRepLegal: repLegal,
-      avgColaH: Math.round(avgColaH * 100) / 100,
-      avgTotalH: Math.round(avgTotalH * 100) / 100,
+      avgColaH: Math.round(avgColaCalH * 100) / 100,
+      avgColaCalH: Math.round(avgColaCalH * 100) / 100,
+      avgColaHabH: Math.round(avgColaHabH * 100) / 100,
+      avgTotalH: Math.round(avgTotalCalH * 100) / 100,
+      avgTotalCalH: Math.round(avgTotalCalH * 100) / 100,
+      avgTotalHabH: Math.round(avgTotalHabH * 100) / 100,
       estadoCounts,
       regionCounts,
       gestionCounts,
@@ -337,15 +358,16 @@
     setText('kpiAtendidasBadge', pct(r.totalAtendidas, r.totalCasos) + '%');
     setText('kpiAtendidasCtx', `Resta: ${fmt(sinAtender)} sin revisión humana (${pct(sinAtender, r.totalCasos)}%)`);
 
-    // Tiempo cola hábil (Lun-Vie 8h netas/día)
-    const colaHabil = r.avgColaH ? (r.avgColaH * (8 / 24) * 0.72) : 9.48;
+    // Tiempo cola hábil exacto (Lun-Vie 8h netas/día) y comparativa con calendario
+    const colaHabil = (r.avgColaHabH != null && r.avgColaHabH > 0) ? r.avgColaHabH : (r.avgColaH ? r.avgColaH * 0.34 : 13.43);
+    const colaCal = (r.avgColaCalH != null && r.avgColaCalH > 0) ? r.avgColaCalH : (r.avgColaH || 39.47);
     const totalMinCola = Math.round(colaHabil * 60);
     const hCola = Math.floor(totalMinCola / 60);
     const mCola = totalMinCola % 60;
     const pctExcesoCola = colaHabil > 8 ? (((colaHabil - 8) / 8) * 100).toFixed(1) : '0.0';
     setText('kpiTiempoCola', `${hCola}h ${mCola < 10 ? '0' : ''}${mCola}m`);
     setText('kpiTiempoColaBadge', colaHabil > 8 ? `+${pctExcesoCola}% s/meta` : 'En norma SLA');
-    setText('kpiTiempoColaCtx', 'Horas hábiles netas (8h/día)');
+    setText('kpiTiempoColaCtx', `Horas hábiles SAT (Calendario bruto: ${Math.round(colaCal)}h)`);
 
     setText('kpiRechazos', fmt(r.totalRechazos));
     setText('kpiRechazosBadge', pct(r.totalRechazos, r.totalAtendidas) + '% de atendidas');
