@@ -1294,23 +1294,14 @@ const formatMinutesToTime = (minDecimal: number) => {
                       id="btnToggleCapacidad"
                       onclick="toggleCapacidadSeries(1, 'btnToggleCapacidad')" 
                       class="px-2 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
-                      title="Activar / Desactivar línea de Capacidad Dinámica Semanal">
+                      title="Activar / Desactivar línea de Capacidad Semanal">
                       <span class="w-2.5 h-0.5 bg-indigo-600 border-t border-dashed"></span>
                       Cap. Semanal
                     </button>
                     <button 
                       type="button"
-                      id="btnToggleCapTeorica"
-                      onclick="toggleCapacidadSeries(2, 'btnToggleCapTeorica')" 
-                      class="px-2 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
-                      title="Activar / Desactivar línea de Capacidad Teórica Plena (55,000 exp/sem)">
-                      <span class="w-2.5 h-0.5 bg-indigo-400 border-t border-dotted"></span>
-                      Teórica (55k)
-                    </button>
-                    <button 
-                      type="button"
                       id="btnToggleCobertura"
-                      onclick="toggleCapacidadSeries(3, 'btnToggleCobertura')" 
+                      onclick="toggleCapacidadSeries(2, 'btnToggleCobertura')" 
                       class="px-2 py-1 text-xs rounded-lg transition-all text-emerald-700 hover:bg-white/80 opacity-40 line-through cursor-pointer flex items-center gap-1"
                       title="Activar / Desactivar eje derecho de % de Cobertura de Demanda">
                       <span>📈</span>
@@ -2776,8 +2767,6 @@ const formatMinutesToTime = (minDecimal: number) => {
           }
         };
 
-        const dataCapacidadTeorica = capacidadData.map(() => 55000);
-
         capacidadChartInstance = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -2803,7 +2792,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'line',
-                label: 'Capacidad Sostenible Semanal',
+                label: 'Capacidad Semanal',
                 data: dataCapacidad,
                 borderColor: '#6366f1',
                 backgroundColor: 'transparent',
@@ -2815,22 +2804,6 @@ const formatMinutesToTime = (minDecimal: number) => {
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#6366f1',
                 pointBorderWidth: 2,
-                yAxisID: 'y',
-                order: 1,
-                hidden: false
-              },
-              {
-                type: 'line',
-                label: 'Capacidad Teórica Plena (55,000 exp/sem)',
-                data: dataCapacidadTeorica,
-                borderColor: '#818cf8',
-                backgroundColor: 'transparent',
-                borderWidth: 2.2,
-                borderDash: [3, 3],
-                tension: 0,
-                pointRadius: 0,
-                pointHoverRadius: 4,
-                pointBackgroundColor: '#818cf8',
                 yAxisID: 'y',
                 order: 1,
                 hidden: false
@@ -2926,12 +2899,9 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (context.dataset.label && context.dataset.label.includes('Demanda')) {
                       return ` 🔷 Demanda: ${rawVal.toLocaleString()} solicitudes`;
                     }
-                    if (context.dataset.label && context.dataset.label.includes('Sostenible')) {
+                    if (context.dataset.label && (context.dataset.label.includes('Sostenible') || context.dataset.label.includes('Capacidad') || context.dataset.label.includes('Cap. Semanal'))) {
                       const rev = item ? item.revisores : 'N/D';
                       return ` ➖ Cap. Semanal (${rev} rev): ${rawVal.toLocaleString()} exp`;
-                    }
-                    if (context.dataset.label && (context.dataset.label.includes('Teórica') || context.dataset.label.includes('55,000'))) {
-                      return ` 🎯 Cap. Teórica (110 rev): 55,000 exp`;
                     }
                     if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Nuevos'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
@@ -2958,7 +2928,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const item = (currentFilteredCapacidadData || capacidadData)[idx];
                     if (!item) return '';
                     const atendidas = item.atendidas || 0;
-                    const cap = item.capacidad || 55000;
+                    const cap = item.capacidad || 45000;
                     const holgura = cap - atendidas;
                     const holguraStr = holgura >= 0 ? `+${holgura.toLocaleString()}` : `${holgura.toLocaleString()}`;
                     const cob = item.cobertura != null ? item.cobertura.toFixed(1) : '0';
@@ -3047,33 +3017,30 @@ const formatMinutesToTime = (minDecimal: number) => {
         const baseThickness = count <= 4 ? 76 : (count <= 8 ? 56 : (count <= 13 ? 42 : 32));
         const dynamicBarThickness = isStacked ? baseThickness : Math.round(baseThickness * 0.52);
 
+        capacidadChartInstance.data.datasets[3].maxBarThickness = dynamicBarThickness;
         capacidadChartInstance.data.datasets[4].maxBarThickness = dynamicBarThickness;
-        capacidadChartInstance.data.datasets[5].maxBarThickness = dynamicBarThickness;
 
         capacidadChartInstance.data.labels = data.map(d => d.semana.replace('Sem ', 'S'));
         capacidadChartInstance.data.datasets[0].data = data.map(d => Math.round(d.demanda * scale));
         capacidadChartInstance.data.datasets[1].data = data.map(d => Math.round(d.capacidad * scale));
-        capacidadChartInstance.data.datasets[2].data = data.map(d => Math.round(55000 * scale));
-        capacidadChartInstance.data.datasets[3].data = data.map(d => Math.min(115, d.cobertura));
+        capacidadChartInstance.data.datasets[2].data = data.map(d => Math.min(115, d.cobertura));
 
         if (currentCapacidadSegmentation === 'dictamen') {
-          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.aprobadas * scale));
-          capacidadChartInstance.data.datasets[5].data = data.map(d => Math.round(d.rechazos * scale));
+          capacidadChartInstance.data.datasets[3].data = data.map(d => Math.round(d.aprobadas * scale));
+          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.rechazos * scale));
         } else {
-          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.atendidas_primera * scale));
-          capacidadChartInstance.data.datasets[5].data = data.map(d => Math.round(d.atendidas_reingreso * scale));
+          capacidadChartInstance.data.datasets[3].data = data.map(d => Math.round(d.atendidas_primera * scale));
+          capacidadChartInstance.data.datasets[4].data = data.map(d => Math.round(d.atendidas_reingreso * scale));
         }
 
         // Auto-escala dinámica del eje Y según el pico del rango filtrado
         const isDemHidden = capacidadChartInstance.getDatasetMeta(0)?.hidden;
         const isCapHidden = capacidadChartInstance.getDatasetMeta(1)?.hidden;
-        const isCapTHidden = capacidadChartInstance.getDatasetMeta(2)?.hidden;
         const maxVal = Math.max(...data.map(d => {
           const dem = isDemHidden ? 0 : (d.demanda * scale);
           const cap = isCapHidden ? 0 : (d.capacidad * scale);
-          const capT = isCapTHidden ? 0 : (55000 * scale);
           const aten = (d.atendidas_primera + d.atendidas_reingreso) * scale;
-          return Math.max(dem, cap, capT, aten);
+          return Math.max(dem, cap, aten);
         }));
         if (maxVal > 0) {
           capacidadChartInstance.options.scales.y.suggestedMax = Math.ceil((maxVal * 1.15) / 2000) * 2000;
@@ -3093,7 +3060,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         const totAtendidas = totVal1 + totVal2;
         const pct1 = totAtendidas > 0 ? Math.round((totVal1 / totAtendidas) * 100) : 0;
         const pct2 = totAtendidas > 0 ? Math.round((totVal2 / totAtendidas) * 100) : 0;
-        const avgCap = data.length > 0 ? Math.round(data.reduce((acc, d) => acc + d.capacidad, 0) / data.length) : 55000;
+        const avgCap = data.length > 0 ? Math.round(data.reduce((acc, d) => acc + d.capacidad, 0) / data.length) : 45000;
 
         const el1a = document.getElementById('pillVal1aVuelta');
         const elPct1a = document.getElementById('pillPct1aVuelta');
@@ -3158,13 +3125,13 @@ const formatMinutesToTime = (minDecimal: number) => {
           }
 
           if (capacidadChartInstance) {
-            capacidadChartInstance.data.datasets[4].label = 'Aprobaciones Emitidas';
-            capacidadChartInstance.data.datasets[4].backgroundColor = '#10b981';
-            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#059669';
+            capacidadChartInstance.data.datasets[3].label = 'Aprobaciones Emitidas';
+            capacidadChartInstance.data.datasets[3].backgroundColor = '#10b981';
+            capacidadChartInstance.data.datasets[3].hoverBackgroundColor = '#059669';
 
-            capacidadChartInstance.data.datasets[5].label = 'Rechazos Emitidos';
-            capacidadChartInstance.data.datasets[5].backgroundColor = '#e11d48';
-            capacidadChartInstance.data.datasets[5].hoverBackgroundColor = '#be123c';
+            capacidadChartInstance.data.datasets[4].label = 'Rechazos Emitidos';
+            capacidadChartInstance.data.datasets[4].backgroundColor = '#e11d48';
+            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#be123c';
           }
         } else {
           // Modo Ciclo (1ª Vuelta vs Retrabajo)
@@ -3193,13 +3160,13 @@ const formatMinutesToTime = (minDecimal: number) => {
           }
 
           if (capacidadChartInstance) {
-            capacidadChartInstance.data.datasets[4].label = '1ª Vuelta (Trámites Nuevos)';
-            capacidadChartInstance.data.datasets[4].backgroundColor = '#0284c7';
-            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#0369a1';
+            capacidadChartInstance.data.datasets[3].label = '1ª Vuelta (Trámites Nuevos)';
+            capacidadChartInstance.data.datasets[3].backgroundColor = '#0284c7';
+            capacidadChartInstance.data.datasets[3].hoverBackgroundColor = '#0369a1';
 
-            capacidadChartInstance.data.datasets[5].label = 'Retrabajo (Reingresos Subsanados)';
-            capacidadChartInstance.data.datasets[5].backgroundColor = '#f59e0b';
-            capacidadChartInstance.data.datasets[5].hoverBackgroundColor = '#d97706';
+            capacidadChartInstance.data.datasets[4].label = 'Retrabajo (Reingresos Subsanados)';
+            capacidadChartInstance.data.datasets[4].backgroundColor = '#f59e0b';
+            capacidadChartInstance.data.datasets[4].hoverBackgroundColor = '#d97706';
           }
         }
 
@@ -3243,10 +3210,10 @@ const formatMinutesToTime = (minDecimal: number) => {
 
           capacidadChartInstance.options.scales.x.stacked = true;
           delete capacidadChartInstance.options.scales.y.stacked;
+          capacidadChartInstance.data.datasets[3].stack = 'atendidas';
+          capacidadChartInstance.data.datasets[3].borderRadius = { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 };
           capacidadChartInstance.data.datasets[4].stack = 'atendidas';
-          capacidadChartInstance.data.datasets[4].borderRadius = { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 };
-          capacidadChartInstance.data.datasets[5].stack = 'atendidas';
-          capacidadChartInstance.data.datasets[5].borderRadius = { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 };
+          capacidadChartInstance.data.datasets[4].borderRadius = { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 };
         } else {
           btnLado?.classList.add('bg-white', 'shadow-2xs', 'text-slate-800', 'font-bold');
           btnLado?.classList.remove('text-slate-600');
@@ -3255,10 +3222,10 @@ const formatMinutesToTime = (minDecimal: number) => {
 
           capacidadChartInstance.options.scales.x.stacked = false;
           capacidadChartInstance.options.scales.y.stacked = false;
-          capacidadChartInstance.data.datasets[4].stack = 'primera';
+          capacidadChartInstance.data.datasets[3].stack = 'primera';
+          capacidadChartInstance.data.datasets[3].borderRadius = 6;
+          capacidadChartInstance.data.datasets[4].stack = 'reingreso';
           capacidadChartInstance.data.datasets[4].borderRadius = 6;
-          capacidadChartInstance.data.datasets[5].stack = 'reingreso';
-          capacidadChartInstance.data.datasets[5].borderRadius = 6;
         }
         updateCapacidadChartData();
       };
@@ -3279,7 +3246,7 @@ const formatMinutesToTime = (minDecimal: number) => {
             btn.classList.add('bg-white', 'shadow-2xs');
           }
         }
-        if (datasetIndex === 3) {
+        if (datasetIndex === 2) {
           capacidadChartInstance.options.scales.y1.display = !isHidden;
         }
         updateCapacidadChartData();
@@ -3293,10 +3260,8 @@ const formatMinutesToTime = (minDecimal: number) => {
           toggleCapacidadSeries(0, 'btnToggleDemanda');
         } else if (view === 'capacidad') {
           toggleCapacidadSeries(1, 'btnToggleCapacidad');
-        } else if (view === 'teorica') {
-          toggleCapacidadSeries(2, 'btnToggleCapTeorica');
         } else if (view === 'cobertura') {
-          toggleCapacidadSeries(3, 'btnToggleCobertura');
+          toggleCapacidadSeries(2, 'btnToggleCobertura');
         }
       };
 
