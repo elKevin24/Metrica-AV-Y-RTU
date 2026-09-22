@@ -1209,19 +1209,27 @@ const formatMinutesToTime = (minDecimal: number) => {
             </div>
 
             <!-- GRÁFICO COMBINADO (BARRAS Y LÍNEAS): EVOLUCIÓN SEMANAL DE DEMANDA VS CAPACIDAD Y ATENCIONES -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-4">
-              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold shrink-0 border border-emerald-500/20">
-                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+            <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-xs space-y-5 transition-all" id="cardCapacidadSemanal">
+              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div class="flex items-start sm:items-center gap-3.5">
+                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/15 to-teal-500/10 text-emerald-700 flex items-center justify-center font-bold shrink-0 border border-emerald-500/25 shadow-2xs">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
                   </div>
                   <div>
-                    <h4 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+                        Capacidad & Demanda Operativa
+                      </span>
+                      <span class="text-slate-300 text-xs">•</span>
+                      <span class="bg-indigo-50 text-indigo-800 border border-indigo-200/80 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        👥 110 Revisores de Planta (~55k exp/sem)
+                      </span>
+                    </div>
+                    <h4 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-1 flex items-center gap-2">
                       <span>Evolución Semanal: Demanda vs Atenciones y Capacidad de Planta</span>
-                      <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full">110 Revisores de Planta</span>
                     </h4>
-                    <p class="text-[11px] text-slate-500">
-                      Barras apiladas (1ª vuelta vs retrabajo por subsanaciones) superpuestas con la línea de Demanda Total y la Línea de Capacidad Sostenible de Planta (55,000 exp/sem).
+                    <p class="text-xs text-slate-500 max-w-3xl mt-0.5">
+                      Desglose semanal de atenciones directas (1ª vuelta) vs retrabajo por subsanaciones, contrastadas con la Demanda Total recibida y la Capacidad Instalada de Planta.
                     </p>
                   </div>
                 </div>
@@ -1229,100 +1237,116 @@ const formatMinutesToTime = (minDecimal: number) => {
                 <!-- Controles Interactivos de Capas y Visualización -->
                 <div class="flex flex-wrap items-center gap-2 text-xs">
                   <!-- Modo de Barras (Apiladas / Lado a Lado) -->
-                  <div class="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200/80">
+                  <div class="inline-flex rounded-xl bg-slate-100/90 p-1 border border-slate-200/80 shadow-2xs">
                     <button 
                       type="button"
                       id="btnModoApiladas"
                       onclick="setCapacidadBarMode('apiladas')" 
-                      class="px-2.5 py-1 text-xs rounded-lg transition bg-white shadow-2xs text-emerald-700 font-bold cursor-pointer">
+                      class="px-3 py-1.5 text-xs rounded-lg transition-all bg-white shadow-2xs text-emerald-700 font-bold cursor-pointer flex items-center gap-1.5"
+                      title="Ver atenciones apiladas en una sola barra">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                       Apiladas
                     </button>
                     <button 
                       type="button"
                       id="btnModoAgrupadas"
                       onclick="setCapacidadBarMode('lado')" 
-                      class="px-2.5 py-1 text-xs rounded-lg transition text-slate-600 hover:text-slate-900 cursor-pointer">
+                      class="px-3 py-1.5 text-xs rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer font-medium"
+                      title="Ver barras separadas lado a lado">
                       Lado a Lado
                     </button>
                   </div>
 
                   <!-- Toggle de Series / Líneas -->
-                  <div class="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200/80 gap-1">
+                  <div class="inline-flex rounded-xl bg-slate-100/90 p-1 border border-slate-200/80 gap-1 shadow-2xs">
                     <button 
                       type="button"
                       id="btnToggleDemanda"
                       onclick="toggleCapacidadSeries(0, 'btnToggleDemanda')" 
-                      class="px-2.5 py-1 text-xs rounded-lg transition bg-white shadow-2xs text-blue-700 font-bold cursor-pointer"
-                      title="Activar / Desactivar línea de Demanda Total">
-                      🔷 Demanda
+                      class="px-2.5 py-1.5 text-xs rounded-lg transition-all bg-white shadow-2xs text-blue-700 font-bold cursor-pointer flex items-center gap-1"
+                      title="Activar / Desactivar línea de Demanda Total Recibida">
+                      <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                      Demanda
                     </button>
                     <button 
                       type="button"
                       id="btnToggleCapacidad"
                       onclick="toggleCapacidadSeries(4, 'btnToggleCapacidad')" 
-                      class="px-2.5 py-1 text-xs rounded-lg transition bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer"
+                      class="px-2.5 py-1.5 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
                       title="Activar / Desactivar línea de Capacidad de Planta (110 Analistas)">
-                      ➖ Capacidad Planta (110)
+                      <span class="w-2.5 h-0.5 bg-indigo-600 border-t border-dashed"></span>
+                      Capacidad
                     </button>
                     <button 
                       type="button"
                       id="btnToggleCobertura"
                       onclick="toggleCapacidadSeries(1, 'btnToggleCobertura')" 
-                      class="px-2 py-1 text-xs rounded-lg transition text-emerald-700 hover:bg-white/80 opacity-40 line-through cursor-pointer"
-                      title="Activar / Desactivar eje derecho de % de Cobertura">
-                      📈 % Cobertura
+                      class="px-2.5 py-1.5 text-xs rounded-lg transition-all text-emerald-700 hover:bg-white/80 opacity-40 line-through cursor-pointer flex items-center gap-1"
+                      title="Activar / Desactivar eje derecho de % de Cobertura de Demanda">
+                      <span>📈</span>
+                      % Cobertura
                     </button>
                   </div>
 
                   <!-- Filtro por Rango Temporal -->
-                  <select 
-                    id="selectCapacidadPeriodo" 
-                    onchange="filterCapacidadPeriodo(this.value)" 
-                    class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 font-semibold focus:outline-none cursor-pointer">
-                    <option value="TODAS">Todas las Semanas (Sem 01 - 31)</option>
-                    <option value="ENE">Enero (Sem 01 - 04)</option>
-                    <option value="FEB">Febrero (Sem 05 - 08)</option>
-                    <option value="MAR">Marzo (Sem 09 - 13)</option>
-                    <option value="ABR_MAY">Abril - Mayo (Sem 17 - 20)</option>
-                    <option value="JUN_JUL">Junio - Julio (Sem 24 - 31)</option>
-                  </select>
+                  <div class="flex items-center gap-1.5 bg-slate-100/90 px-2.5 py-1.5 rounded-xl border border-slate-200/80 text-xs shadow-2xs">
+                    <span class="text-slate-500 font-medium text-[11px]">Rango:</span>
+                    <select 
+                      id="selectCapacidadPeriodo" 
+                      onchange="filterCapacidadPeriodo(this.value)" 
+                      class="bg-transparent border-0 text-xs text-slate-800 font-bold focus:outline-none cursor-pointer pr-1">
+                      <option value="TODAS">Todas las Semanas (Sem 01 - 31)</option>
+                      <option value="ENE">Enero (Sem 01 - 04)</option>
+                      <option value="FEB">Febrero (Sem 05 - 08)</option>
+                      <option value="MAR">Marzo (Sem 09 - 13)</option>
+                      <option value="ABR_MAY">Abril - Mayo (Sem 17 - 20)</option>
+                      <option value="JUN_JUL">Junio - Julio (Sem 24 - 31)</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
               <!-- Canvas del Gráfico Mixto -->
-              <div class="relative w-full h-80 sm:h-96">
+              <div class="relative w-full h-84 sm:h-96">
                 <canvas id="chartCapacidadSemanal"></canvas>
               </div>
 
-              <!-- Leyenda Descriptiva Inferior -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs text-slate-600">
-                <div class="flex items-center gap-2 bg-emerald-50/70 border border-emerald-200/60 p-2 rounded-xl">
-                  <span class="w-3 h-3 rounded bg-emerald-500 shrink-0"></span>
-                  <div class="truncate">
-                    <span class="font-bold text-slate-800 block text-[11px]">1ª Vuelta (Directas)</span>
-                    <span class="text-[10px] text-slate-500 font-mono">135,628 expedientes</span>
+              <!-- Leyenda Descriptiva y Badges de Auditoría Inferior -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs">
+                <div class="p-3 bg-emerald-50/70 border border-emerald-200/70 rounded-xl backdrop-blur-xs transition-all hover:bg-emerald-50">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">1ª Vuelta (Directas)</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                   </div>
+                  <div class="text-base sm:text-lg font-black text-emerald-950 font-mono mt-1">135,628</div>
+                  <div class="text-[10px] text-emerald-700/90 mt-0.5 font-medium">74.1% atenciones sin inconsistencias</div>
                 </div>
-                <div class="flex items-center gap-2 bg-amber-50/70 border border-amber-200/60 p-2 rounded-xl">
-                  <span class="w-3 h-3 rounded bg-amber-500 shrink-0"></span>
-                  <div class="truncate">
-                    <span class="font-bold text-slate-800 block text-[11px]">Reingresos (Retrabajo)</span>
-                    <span class="text-[10px] text-slate-500 font-mono">47,426 expedientes</span>
+
+                <div class="p-3 bg-amber-50/70 border border-amber-200/70 rounded-xl backdrop-blur-xs transition-all hover:bg-amber-50">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Retrabajo Subsanado</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                   </div>
+                  <div class="text-base sm:text-lg font-black text-amber-950 font-mono mt-1">47,426</div>
+                  <div class="text-[10px] text-amber-700/90 mt-0.5 font-medium">25.9% re-evaluaciones por corrección</div>
                 </div>
-                <div class="flex items-center gap-2 bg-blue-50/70 border border-blue-200/60 p-2 rounded-xl">
-                  <span class="w-4 h-0.5 bg-blue-600 shrink-0"></span>
-                  <div class="truncate">
-                    <span class="font-bold text-slate-800 block text-[11px]">Demanda Total (Línea)</span>
-                    <span class="text-[10px] text-slate-500 font-mono">228,714 solicitudes</span>
+
+                <div class="p-3 bg-blue-50/70 border border-blue-200/70 rounded-xl backdrop-blur-xs transition-all hover:bg-blue-50">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Demanda Total (Línea)</span>
+                    <span class="w-3 h-1 rounded-full bg-blue-600"></span>
                   </div>
+                  <div class="text-base sm:text-lg font-black text-blue-950 font-mono mt-1">228,714</div>
+                  <div class="text-[10px] text-blue-700/90 mt-0.5 font-medium">181.3k nuevas + 47.4k reingresos</div>
                 </div>
-                <div class="flex items-center gap-2 bg-indigo-50/70 border border-indigo-200/60 p-2 rounded-xl">
-                  <span class="w-4 h-0.5 border-t-2 border-dashed border-indigo-600 shrink-0"></span>
-                  <div class="truncate">
-                    <span class="font-bold text-slate-800 block text-[11px]">Capacidad Planta Activa</span>
-                    <span class="text-[10px] text-indigo-700 font-mono font-semibold">Dinámica semanal (100 exp/d)</span>
+
+                <div class="p-3 bg-indigo-50/70 border border-indigo-200/70 rounded-xl backdrop-blur-xs transition-all hover:bg-indigo-50">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Capacidad de Planta</span>
+                    <span class="w-3 h-0.5 bg-indigo-600 border-t border-dashed"></span>
                   </div>
+                  <div class="text-base sm:text-lg font-black text-indigo-950 font-mono mt-1">55,000 <span class="text-xs font-normal text-indigo-600">/sem</span></div>
+                  <div class="text-[10px] text-indigo-700/90 mt-0.5 font-medium">110 analistas × 100 exp/día base</div>
                 </div>
               </div>
             </div>
@@ -1958,7 +1982,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (targetId === 'tab-relaciones') {
           if (typeof initCausalidadCharts === 'function') initCausalidadCharts();
           setTimeout(() => {
-            ['chartFlujoEmbudo', 'chartCausalComparativa', 'chartScatterColaRechazo', 'chartPenalizacionCiclo', 'chartLatenciaSubsanacion'].forEach(id => {
+            ['chartFlujoEmbudo', 'chartScatterColaRechazo', 'chartPenalizacionCiclo', 'chartLatenciaSubsanacion'].forEach(id => {
               const ch = Chart.getChart(id);
               if (ch) ch.resize();
             });
@@ -2650,7 +2674,17 @@ const formatMinutesToTime = (minDecimal: number) => {
         const dataAtendidasReingreso = capacidadData.map(d => d.atendidas_reingreso);
         const dataCobertura = capacidadData.map(d => d.cobertura);
 
-        // Plugin para agrupar semanas por mes con corchetes sutiles bajo el eje X
+        const monthNames = {
+          'Ene': 'Enero',
+          'Feb': 'Febrero',
+          'Mar': 'Marzo',
+          'Abr': 'Abril',
+          'May': 'Mayo',
+          'Jun': 'Junio',
+          'Jul': 'Julio'
+        };
+
+        // Plugin dinámico para agrupar semanas por mes con corchetes nítidos bajo el eje X
         const monthGroupingPlugin = {
           id: 'monthGrouping',
           afterDraw: (chart) => {
@@ -2658,17 +2692,24 @@ const formatMinutesToTime = (minDecimal: number) => {
             if (!x || !chartArea) return;
 
             const currentData = currentFilteredCapacidadData || capacidadData;
-            if (currentData.length < capacidadData.length) return; // Si hay filtro por periodo activo, no dibujar corchetes globales
+            if (!currentData || currentData.length === 0) return;
 
-            const groups = [
-              { name: 'Enero', from: 0, to: 3 },
-              { name: 'Febrero', from: 4, to: 7 },
-              { name: 'Marzo', from: 8, to: 12 },
-              { name: 'Abril', from: 13, to: 13 },
-              { name: 'Mayo', from: 14, to: 16 },
-              { name: 'Junio', from: 17, to: 18 },
-              { name: 'Julio', from: 19, to: 20 }
-            ];
+            // Agrupamiento dinámico de meses contiguos
+            const groups = [];
+            let curMes = null;
+            let curStart = 0;
+            currentData.forEach((d, idx) => {
+              if (d.mes !== curMes) {
+                if (curMes !== null) {
+                  groups.push({ mes: curMes, name: monthNames[curMes] || curMes, from: curStart, to: idx - 1 });
+                }
+                curMes = d.mes;
+                curStart = idx;
+              }
+            });
+            if (curMes !== null) {
+              groups.push({ mes: curMes, name: monthNames[curMes] || curMes, from: curStart, to: currentData.length - 1 });
+            }
 
             const getPixel = (idx) => {
               if (typeof x.getPixelForTick === 'function') return x.getPixelForTick(idx);
@@ -2676,13 +2717,13 @@ const formatMinutesToTime = (minDecimal: number) => {
               return 0;
             };
 
-            const count = x.ticks ? x.ticks.length : 21;
+            const count = currentData.length;
             let step = 30;
             if (count > 1) {
               step = (getPixel(count - 1) - getPixel(0)) / (count - 1);
             }
-            const halfStep = step * 0.45;
-            const lineY = x.bottom + 5;
+            const halfStep = Math.min(step * 0.45, 24);
+            const lineY = x.bottom + 6;
 
             ctx.save();
             groups.forEach(g => {
@@ -2692,9 +2733,9 @@ const formatMinutesToTime = (minDecimal: number) => {
               const right = Math.round(pEnd + halfStep) - 2;
               const centerX = Math.round((left + right) / 2);
 
-              // Corchete sutil que engloba el mes
-              ctx.strokeStyle = '#cbd5e1';
-              ctx.lineWidth = 1;
+              // Corchete sutil y nítido
+              ctx.strokeStyle = '#94a3b8';
+              ctx.lineWidth = 1.2;
               ctx.beginPath();
               ctx.moveTo(left, lineY - 3);
               ctx.lineTo(left, lineY);
@@ -2702,9 +2743,9 @@ const formatMinutesToTime = (minDecimal: number) => {
               ctx.lineTo(right, lineY - 3);
               ctx.stroke();
 
-              // Etiqueta del mes única y centrada
-              ctx.font = '600 10px Inter, system-ui, -apple-system, sans-serif';
-              ctx.fillStyle = '#64748b';
+              // Etiqueta del mes centrada
+              ctx.font = '700 10.5px Inter, system-ui, -apple-system, sans-serif';
+              ctx.fillStyle = '#334155';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'top';
               ctx.fillText(g.name, centerX, lineY + 3);
@@ -2720,15 +2761,15 @@ const formatMinutesToTime = (minDecimal: number) => {
             datasets: [
               {
                 type: 'line',
-                label: 'Demanda Total (Nuevas + Reingresos)',
+                label: 'Demanda Total Recibida',
                 data: dataDemanda,
                 borderColor: '#2563eb',
                 backgroundColor: 'transparent',
                 fill: false,
-                borderWidth: 2.5,
-                tension: 0.25,
-                pointRadius: 3,
-                pointHoverRadius: 6,
+                borderWidth: 2.6,
+                tension: 0.22,
+                pointRadius: 3.5,
+                pointHoverRadius: 6.5,
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#2563eb',
                 pointBorderWidth: 2,
@@ -2743,9 +2784,9 @@ const formatMinutesToTime = (minDecimal: number) => {
                 borderColor: '#059669',
                 backgroundColor: '#059669',
                 borderWidth: 2,
-                tension: 0.25,
+                tension: 0.22,
                 pointRadius: 2.5,
-                pointHoverRadius: 5,
+                pointHoverRadius: 5.5,
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#059669',
                 pointBorderWidth: 1.5,
@@ -2755,7 +2796,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'bar',
-                label: 'Atendidas (1ª Vuelta)',
+                label: 'Atención 1ª Vuelta (Directas)',
                 data: dataAtendidasPrimera,
                 backgroundColor: '#10b981',
                 hoverBackgroundColor: '#059669',
@@ -2768,7 +2809,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'bar',
-                label: 'Reingresos (Retrabajo / Subsanación)',
+                label: 'Retrabajo por Subsanaciones',
                 data: dataAtendidasReingreso,
                 backgroundColor: '#f59e0b',
                 hoverBackgroundColor: '#d97706',
@@ -2781,7 +2822,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'line',
-                label: 'Capacidad Planta Activa (~100 exp/d por analista)',
+                label: 'Capacidad Sostenible (110 Revisores)',
                 data: dataCapacidad,
                 borderColor: '#6366f1',
                 backgroundColor: 'transparent',
@@ -2829,7 +2870,8 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (!items || items.length === 0) return '';
                     const idx = items[0].dataIndex;
                     const item = (currentFilteredCapacidadData || capacidadData)[idx];
-                    return item ? `📅 ${item.semana} (${item.mes})` : '';
+                    const mesCompleto = item ? (monthNames[item.mes] || item.mes) : '';
+                    return item ? `📅 ${item.semana} — Mes de ${mesCompleto}` : '';
                   },
                   beforeBody: function(items) {
                     if (!items || items.length === 0) return '';
@@ -2837,27 +2879,31 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const item = (currentFilteredCapacidadData || capacidadData)[idx];
                     if (!item) return '';
                     const cap = item.capacidad != null ? item.capacidad.toLocaleString() : 'N/D';
-                    return `👥 Revisores de Planta Activos: ${item.revisores} analistas (Capacidad: ${cap} exp/sem)`;
+                    return `👥 Capacidad Teórica: ${item.revisores} analistas × 100/d = ${cap} exp/sem`;
                   },
                   label: function(context) {
                     const rawVal = context.raw != null ? context.raw : 0;
+                    const idx = context.dataIndex;
+                    const item = (currentFilteredCapacidadData || capacidadData)[idx];
+                    const atendidas = item ? (item.atendidas || 0) : 0;
+
                     if (context.dataset.yAxisID === 'y1') {
-                      return ` 🎯 ${context.dataset.label}: ${typeof rawVal === 'number' ? rawVal.toFixed(1) : rawVal}% de cobertura`;
+                      return ` 📈 Cobertura de Demanda: ${typeof rawVal === 'number' ? rawVal.toFixed(1) : rawVal}%`;
                     }
-                    if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Atendidas'))) {
-                      return ` 🟩 A la primera (sin inconsistencias): ${rawVal.toLocaleString()} exp.`;
+                    if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Directas'))) {
+                      const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
+                      return ` 🟩 1ª Vuelta (Directas): ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
                     }
-                    if (context.dataset.label && (context.dataset.label.includes('Reingreso') || context.dataset.label.includes('Retrabajo') || context.dataset.label.includes('Re-evaluaciones'))) {
-                      return ` 🟧 Retrabajo (repetidos / 2ª vuelta): ${rawVal.toLocaleString()} exp.`;
+                    if (context.dataset.label && (context.dataset.label.includes('Retrabajo') || context.dataset.label.includes('Subsanaciones'))) {
+                      const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
+                      return ` 🟧 Retrabajo (Subsanaciones): ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Demanda')) {
-                      return ` 🔷 Demanda ingresada: ${rawVal.toLocaleString()} solicitudes`;
+                      return ` 🔷 Demanda Total Recibida: ${rawVal.toLocaleString()} solicitudes`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Capacidad')) {
-                      const idx = context.dataIndex;
-                      const item = (currentFilteredCapacidadData || capacidadData)[idx];
                       const rev = item ? item.revisores : 'N/D';
-                      return ` ➖ Capacidad Planta Activa (${rev} analistas × 100/d): ${rawVal.toLocaleString()} exp/sem`;
+                      return ` ➖ Capacidad Instalada (${rev} analistas): ${rawVal.toLocaleString()} exp/sem`;
                     }
                     const lbl = context.dataset.label || 'Valor';
                     return ` ${lbl}: ${rawVal.toLocaleString()} exp.`;
@@ -2869,8 +2915,16 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (!item) return '';
                     const atendidas = item.atendidas || 0;
                     const reingreso = item.atendidas_reingreso || 0;
+                    const cap = item.capacidad || 55000;
                     const pctRetrabajo = atendidas > 0 ? ((reingreso / atendidas) * 100).toFixed(1) : '0';
-                    return `Total dictaminado: ${atendidas.toLocaleString()} expedientes\n⚠️ Retrabajo de la semana: ${pctRetrabajo}% del esfuerzo total`;
+                    const holgura = cap - atendidas;
+                    const holguraStr = holgura >= 0 ? `+${holgura.toLocaleString()}` : `${holgura.toLocaleString()}`;
+                    const pctCap = cap > 0 ? ((atendidas / cap) * 100).toFixed(1) : '0';
+
+                    return `─────────────────────────────\n` +
+                           `Total Dictaminado: ${atendidas.toLocaleString()} expedientes\n` +
+                           `⚠️ Esfuerzo en Retrabajo: ${pctRetrabajo}%\n` +
+                           `🛡️ Holgura de Capacidad: ${holguraStr} exp (${pctCap}% utilizada)`;
                   }
                 }
               }
