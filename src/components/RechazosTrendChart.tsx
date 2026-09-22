@@ -287,7 +287,7 @@ export const RechazosTrendChart: React.FC<Props> = ({ initialData = DEFAULT_SEMA
           <div className="text-lg sm:text-xl font-black text-emerald-900 font-mono mt-0.5" id="statAprobadasTotal">
             {fmt(kpis.totalAprobadas)}
           </div>
-          <div className="text-[10px] text-emerald-700 mt-0.5">{100 - kpis.tasaPromedio}% resoluciones directas</div>
+          <div className="text-[10px] text-emerald-700 mt-0.5">{(100 - kpis.tasaPromedio).toFixed(1)}% resoluciones directas</div>
         </div>
       </div>
 
