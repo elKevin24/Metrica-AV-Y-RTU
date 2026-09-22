@@ -1391,7 +1391,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               </div>
 
               <!-- Controles y Filtros Rápidos -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <!-- Buscador en tiempo real -->
                 <div class="relative">
                   <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
@@ -1431,25 +1431,6 @@ const formatMinutesToTime = (minDecimal: number) => {
                     <option value="ESPORADICO">Apoyo / Temporal (73)</option>
                   </select>
                 </div>
-
-                <!-- Ordenamiento Rápido -->
-                <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-xs">
-                  <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider shrink-0">Ordenar:</span>
-                  <select 
-                    id="filterRevisoresSort" 
-                    onchange="handleRevisoresSortChange(this.value)" 
-                    class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer w-full text-xs">
-                    <option value="total_desc">Total Atenciones (Mayor ▼)</option>
-                    <option value="total_asc">Total Atenciones (Menor ▲)</option>
-                    <option value="prom_diario_desc">Promedio Diario (Mayor ▼)</option>
-                    <option value="pct_aprobadas_desc">% Aprobación (Mayor ▼)</option>
-                    <option value="pct_aprobadas_asc">% Aprobación (Menor ▲)</option>
-                    <option value="tiempo_prom_asc">Velocidad (Más rápido ▲)</option>
-                    <option value="tiempo_prom_desc">Velocidad (Más lento ▼)</option>
-                    <option value="dias_activos_desc">Días Activos (Mayor ▼)</option>
-                    <option value="revisor_asc">Revisor (A - Z)</option>
-                  </select>
-                </div>
               </div>
 
               <!-- Resumen Minimalista de Totales Filtrados -->
@@ -1482,26 +1463,26 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <thead class="bg-slate-900 text-white font-semibold sticky top-0 z-10 shadow-xs text-[11px]">
                     <tr>
                       <th class="py-3 px-3 w-12 text-center text-slate-400">#</th>
-                      <th class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('revisor')">
-                        <span>Revisor</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th id="thRev_revisor" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('revisor')" title="Clic para ordenar por Nombre de Revisor">
+                        <span>Revisor</span><span id="thRevIcon_revisor" class="text-slate-500 text-[10px] ml-1">⇅</span>
                       </th>
-                      <th class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('regional')">
-                        <span>Regional</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th id="thRev_regional" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('regional')" title="Clic para ordenar por Regional">
+                        <span>Regional</span><span id="thRevIcon_regional" class="text-slate-500 text-[10px] ml-1">⇅</span>
                       </th>
-                      <th class="py-3 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800 transition-colors bg-slate-800/80" onclick="handleRevisoresColSort('total')">
-                        <span>Total Atenciones</span> <span class="text-blue-300 text-[10px]">⇅</span>
+                      <th id="thRev_total" class="py-3 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800 transition-colors bg-slate-800/80 group" onclick="handleRevisoresColSort('total')" title="Clic para ordenar por Total de Atenciones">
+                        <span>Total Atenciones</span><span id="thRevIcon_total" class="text-amber-400 text-[11px] font-black ml-1">▼</span>
                       </th>
-                      <th class="py-3 px-3 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('prom_diario')">
-                        <span>Promedio / Día</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th id="thRev_prom_diario" class="py-3 px-3 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('prom_diario')" title="Clic para ordenar por Promedio Diario">
+                        <span>Promedio / Día</span><span id="thRevIcon_prom_diario" class="text-slate-500 text-[10px] ml-1">⇅</span>
                       </th>
-                      <th class="py-3 px-3 text-left font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors min-w-[150px]" onclick="handleRevisoresColSort('pct_aprobadas')">
-                        <span>Dictamen (Calidad)</span> <span class="text-emerald-400 text-[10px]">⇅</span>
+                      <th id="thRev_pct_aprobadas" class="py-3 px-3 text-left font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors min-w-[150px] group" onclick="handleRevisoresColSort('pct_aprobadas')" title="Clic para ordenar por Tasa de Aprobación">
+                        <span>Dictamen (Calidad)</span><span id="thRevIcon_pct_aprobadas" class="text-slate-500 text-[10px] ml-1">⇅</span>
                       </th>
-                      <th class="py-3 px-3 text-right font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('tiempo_prom_min')">
-                        <span>Tiempo Prom.</span> <span class="text-amber-400 text-[10px]">⇅</span>
+                      <th id="thRev_tiempo_prom_min" class="py-3 px-3 text-right font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('tiempo_prom_min')" title="Clic para ordenar por Velocidad (Tiempo Promedio)">
+                        <span>Tiempo Prom.</span><span id="thRevIcon_tiempo_prom_min" class="text-slate-500 text-[10px] ml-1">⇅</span>
                       </th>
-                      <th class="py-3 px-3 text-center text-slate-300 cursor-pointer select-none hover:bg-slate-800 transition-colors" onclick="handleRevisoresColSort('dias_activos')">
-                        <span>Días Activos</span> <span class="text-slate-400 text-[10px]">⇅</span>
+                      <th id="thRev_dias_activos" class="py-3 px-3 text-center text-slate-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('dias_activos')" title="Clic para ordenar por Días Activos">
+                        <span>Días Activos</span><span id="thRevIcon_dias_activos" class="text-slate-500 text-[10px] ml-1">⇅</span>
                       </th>
                     </tr>
                   </thead>
@@ -3275,8 +3256,28 @@ const formatMinutesToTime = (minDecimal: number) => {
         });
 
         revisoresFilteredData = list;
+        updateRevisoresHeaderSortIndicators();
         renderRevisoresSummary(list);
         renderRevisoresTablePage();
+      }
+
+      function updateRevisoresHeaderSortIndicators() {
+        const sortCols = ['revisor', 'regional', 'total', 'prom_diario', 'pct_aprobadas', 'tiempo_prom_min', 'dias_activos'];
+        sortCols.forEach(col => {
+          const th = document.getElementById(`thRev_${col}`);
+          const iconSpan = document.getElementById(`thRevIcon_${col}`);
+          if (th && iconSpan) {
+            if (revisoresCurrentSortCol === col) {
+              iconSpan.textContent = revisoresSortAsc ? ' ▲' : ' ▼';
+              iconSpan.className = 'text-amber-400 text-[11px] font-black ml-1';
+              th.classList.add('bg-slate-800');
+            } else {
+              iconSpan.textContent = ' ⇅';
+              iconSpan.className = 'text-slate-500 text-[10px] ml-1 group-hover:text-slate-300';
+              th.classList.remove('bg-slate-800');
+            }
+          }
+        });
       }
 
       function renderRevisoresSummary(list) {
@@ -3556,8 +3557,6 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (regSelect) regSelect.value = 'TODAS';
         const tipoSelect = document.getElementById('filterRevisoresTipo');
         if (tipoSelect) tipoSelect.value = 'TODOS';
-        const sortSelect = document.getElementById('filterRevisoresSort');
-        if (sortSelect) sortSelect.value = 'total_desc';
         applyRevisoresFiltersAndRender();
       };
 
