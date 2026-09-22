@@ -1294,9 +1294,9 @@ const formatMinutesToTime = (minDecimal: number) => {
                       id="btnToggleCapacidad"
                       onclick="toggleCapacidadSeries(1, 'btnToggleCapacidad')" 
                       class="px-2 py-1 text-xs rounded-lg transition-all bg-white shadow-2xs text-indigo-700 font-bold cursor-pointer flex items-center gap-1"
-                      title="Activar / Desactivar línea de Capacidad Semanal">
+                      title="Activar / Desactivar línea de Capacidad Semanal de Planta (88 revisores)">
                       <span class="w-2.5 h-0.5 bg-indigo-600 border-t border-dashed"></span>
-                      Cap. Semanal
+                      Cap. Planta (88 rev)
                     </button>
                     <button 
                       type="button"
@@ -1356,8 +1356,8 @@ const formatMinutesToTime = (minDecimal: number) => {
 
                 <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
                   <span class="w-3 h-0.5 bg-indigo-600 border-t border-dashed shrink-0"></span>
-                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Cap. Prom:</span>
-                  <span id="pillValCapacidad" class="font-mono font-bold text-indigo-800 text-xs">55,000</span>
+                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Cap. Planta:</span>
+                  <span id="pillValCapacidad" class="font-mono font-bold text-indigo-800 text-xs">44,000</span>
                   <span class="text-[10px] text-slate-400 font-medium hidden sm:inline">/sem</span>
                 </div>
               </div>
@@ -2695,27 +2695,27 @@ const formatMinutesToTime = (minDecimal: number) => {
       let currentCapacidadScale = 1;
       let currentCapacidadSegmentation = 'ciclo';
       const capacidadData = [
-        { semana: "Sem 01", mes: "Ene", nuevas: 4306, reingresos: 201, demanda: 4507, atendidas: 734, atendidas_primera: 544, atendidas_reingreso: 190, aprobadas: 431, rechazos: 303, cobertura: 16.3, revisores: 61, capacidad: 24400 },
-        { semana: "Sem 02", mes: "Ene", nuevas: 21642, reingresos: 3715, demanda: 25357, atendidas: 14452, atendidas_primera: 10708, atendidas_reingreso: 3744, aprobadas: 8201, rechazos: 6251, cobertura: 57.0, revisores: 104, capacidad: 52000 },
-        { semana: "Sem 03", mes: "Ene", nuevas: 18072, reingresos: 4421, demanda: 22493, atendidas: 20411, atendidas_primera: 15124, atendidas_reingreso: 5287, aprobadas: 11480, rechazos: 8931, cobertura: 90.7, revisores: 107, capacidad: 53500 },
-        { semana: "Sem 04", mes: "Ene", nuevas: 16406, reingresos: 4259, demanda: 20665, atendidas: 17323, atendidas_primera: 12835, atendidas_reingreso: 4488, aprobadas: 10483, rechazos: 6840, cobertura: 83.8, revisores: 106, capacidad: 53000 },
-        { semana: "Sem 05", mes: "Feb", nuevas: 14357, reingresos: 3282, demanda: 17639, atendidas: 13302, atendidas_primera: 9856, atendidas_reingreso: 3446, aprobadas: 7922, rechazos: 5380, cobertura: 75.4, revisores: 101, capacidad: 50500 },
-        { semana: "Sem 06", mes: "Feb", nuevas: 12095, reingresos: 3526, demanda: 15621, atendidas: 13447, atendidas_primera: 9963, atendidas_reingreso: 3484, aprobadas: 7835, rechazos: 5612, cobertura: 86.1, revisores: 100, capacidad: 50000 },
-        { semana: "Sem 07", mes: "Feb", nuevas: 11348, reingresos: 3436, demanda: 14784, atendidas: 13120, atendidas_primera: 9721, atendidas_reingreso: 3399, aprobadas: 7944, rechazos: 5176, cobertura: 88.7, revisores: 98, capacidad: 49000 },
-        { semana: "Sem 08", mes: "Feb", nuevas: 10811, reingresos: 2734, demanda: 13545, atendidas: 10400, atendidas_primera: 7706, atendidas_reingreso: 2694, aprobadas: 6238, rechazos: 4162, cobertura: 76.8, revisores: 96, capacidad: 48000 },
-        { semana: "Sem 09", mes: "Mar", nuevas: 10426, reingresos: 3222, demanda: 13648, atendidas: 11428, atendidas_primera: 8467, atendidas_reingreso: 2961, aprobadas: 6576, rechazos: 4852, cobertura: 83.7, revisores: 97, capacidad: 48500 },
-        { semana: "Sem 10", mes: "Mar", nuevas: 10454, reingresos: 3088, demanda: 13542, atendidas: 11269, atendidas_primera: 8349, atendidas_reingreso: 2920, aprobadas: 6498, rechazos: 4771, cobertura: 83.2, revisores: 97, capacidad: 48500 },
-        { semana: "Sem 11", mes: "Mar", nuevas: 9719, reingresos: 2944, demanda: 12663, atendidas: 10471, atendidas_primera: 7758, atendidas_reingreso: 2713, aprobadas: 6159, rechazos: 4312, cobertura: 82.7, revisores: 95, capacidad: 47500 },
-        { semana: "Sem 12", mes: "Mar", nuevas: 9178, reingresos: 2916, demanda: 12094, atendidas: 10791, atendidas_primera: 7995, atendidas_reingreso: 2796, aprobadas: 6266, rechazos: 4525, cobertura: 89.2, revisores: 93, capacidad: 46500 },
-        { semana: "Sem 13", mes: "Mar", nuevas: 1577, reingresos: 834, demanda: 2411, atendidas: 3384, atendidas_primera: 2507, atendidas_reingreso: 877, aprobadas: 2057, rechazos: 1327, cobertura: 140.4, revisores: 77, capacidad: 23100 },
-        { semana: "Sem 17", mes: "Abr", nuevas: 1943, reingresos: 323, demanda: 2266, atendidas: 710, atendidas_primera: 526, atendidas_reingreso: 184, aprobadas: 273, rechazos: 437, cobertura: 31.3, revisores: 70, capacidad: 35000 },
-        { semana: "Sem 18", mes: "May", nuevas: 8725, reingresos: 2166, demanda: 10891, atendidas: 7406, atendidas_primera: 5487, atendidas_reingreso: 1919, aprobadas: 4159, rechazos: 3247, cobertura: 68.0, revisores: 93, capacidad: 46500 },
-        { semana: "Sem 19", mes: "May", nuevas: 7713, reingresos: 2308, demanda: 10021, atendidas: 9386, atendidas_primera: 6954, atendidas_reingreso: 2432, aprobadas: 5940, rechazos: 3446, cobertura: 93.7, revisores: 96, capacidad: 48000 },
-        { semana: "Sem 20", mes: "May", nuevas: 374, reingresos: 306, demanda: 680, atendidas: 1456, atendidas_primera: 1079, atendidas_reingreso: 377, aprobadas: 933, rechazos: 523, cobertura: 214.1, revisores: 74, capacidad: 37000 },
-        { semana: "Sem 24", mes: "Jun", nuevas: 3115, reingresos: 881, demanda: 3996, atendidas: 2360, atendidas_primera: 1749, atendidas_reingreso: 611, aprobadas: 1342, rechazos: 1018, cobertura: 59.1, revisores: 86, capacidad: 43000 },
-        { semana: "Sem 25", mes: "Jun", nuevas: 5421, reingresos: 1658, demanda: 7079, atendidas: 7027, atendidas_primera: 5206, atendidas_reingreso: 1821, aprobadas: 4774, rechazos: 2253, cobertura: 99.3, revisores: 95, capacidad: 47500 },
-        { semana: "Sem 30", mes: "Jul", nuevas: 3039, reingresos: 736, demanda: 3775, atendidas: 1253, atendidas_primera: 928, atendidas_reingreso: 325, aprobadas: 333, rechazos: 920, cobertura: 33.2, revisores: 83, capacidad: 41500 },
-        { semana: "Sem 31", mes: "Jul", nuevas: 624, reingresos: 413, demanda: 1037, atendidas: 2924, atendidas_primera: 2166, atendidas_reingreso: 758, aprobadas: 2386, rechazos: 538, cobertura: 282.0, revisores: 91, capacidad: 45500 }
+        { semana: "Sem 01", mes: "Ene", nuevas: 4306, reingresos: 201, demanda: 4507, atendidas: 734, atendidas_primera: 544, atendidas_reingreso: 190, aprobadas: 431, rechazos: 303, cobertura: 16.3, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 02", mes: "Ene", nuevas: 21642, reingresos: 3715, demanda: 25357, atendidas: 14452, atendidas_primera: 10708, atendidas_reingreso: 3744, aprobadas: 8201, rechazos: 6251, cobertura: 57.0, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 03", mes: "Ene", nuevas: 18072, reingresos: 4421, demanda: 22493, atendidas: 20411, atendidas_primera: 15124, atendidas_reingreso: 5287, aprobadas: 11480, rechazos: 8931, cobertura: 90.7, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 04", mes: "Ene", nuevas: 16406, reingresos: 4259, demanda: 20665, atendidas: 17323, atendidas_primera: 12835, atendidas_reingreso: 4488, aprobadas: 10483, rechazos: 6840, cobertura: 83.8, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 05", mes: "Feb", nuevas: 14357, reingresos: 3282, demanda: 17639, atendidas: 13302, atendidas_primera: 9856, atendidas_reingreso: 3446, aprobadas: 7922, rechazos: 5380, cobertura: 75.4, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 06", mes: "Feb", nuevas: 12095, reingresos: 3526, demanda: 15621, atendidas: 13447, atendidas_primera: 9963, atendidas_reingreso: 3484, aprobadas: 7835, rechazos: 5612, cobertura: 86.1, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 07", mes: "Feb", nuevas: 11348, reingresos: 3436, demanda: 14784, atendidas: 13120, atendidas_primera: 9721, atendidas_reingreso: 3399, aprobadas: 7944, rechazos: 5176, cobertura: 88.7, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 08", mes: "Feb", nuevas: 10811, reingresos: 2734, demanda: 13545, atendidas: 10400, atendidas_primera: 7706, atendidas_reingreso: 2694, aprobadas: 6238, rechazos: 4162, cobertura: 76.8, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 09", mes: "Mar", nuevas: 10426, reingresos: 3222, demanda: 13648, atendidas: 11428, atendidas_primera: 8467, atendidas_reingreso: 2961, aprobadas: 6576, rechazos: 4852, cobertura: 83.7, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 10", mes: "Mar", nuevas: 10454, reingresos: 3088, demanda: 13542, atendidas: 11269, atendidas_primera: 8349, atendidas_reingreso: 2920, aprobadas: 6498, rechazos: 4771, cobertura: 83.2, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 11", mes: "Mar", nuevas: 9719, reingresos: 2944, demanda: 12663, atendidas: 10471, atendidas_primera: 7758, atendidas_reingreso: 2713, aprobadas: 6159, rechazos: 4312, cobertura: 82.7, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 12", mes: "Mar", nuevas: 9178, reingresos: 2916, demanda: 12094, atendidas: 10791, atendidas_primera: 7995, atendidas_reingreso: 2796, aprobadas: 6266, rechazos: 4525, cobertura: 89.2, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 13", mes: "Mar", nuevas: 1577, reingresos: 834, demanda: 2411, atendidas: 3384, atendidas_primera: 2507, atendidas_reingreso: 877, aprobadas: 2057, rechazos: 1327, cobertura: 140.4, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 17", mes: "Abr", nuevas: 1943, reingresos: 323, demanda: 2266, atendidas: 710, atendidas_primera: 526, atendidas_reingreso: 184, aprobadas: 273, rechazos: 437, cobertura: 31.3, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 18", mes: "May", nuevas: 8725, reingresos: 2166, demanda: 10891, atendidas: 7406, atendidas_primera: 5487, atendidas_reingreso: 1919, aprobadas: 4159, rechazos: 3247, cobertura: 68.0, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 19", mes: "May", nuevas: 7713, reingresos: 2308, demanda: 10021, atendidas: 9386, atendidas_primera: 6954, atendidas_reingreso: 2432, aprobadas: 5940, rechazos: 3446, cobertura: 93.7, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 20", mes: "May", nuevas: 374, reingresos: 306, demanda: 680, atendidas: 1456, atendidas_primera: 1079, atendidas_reingreso: 377, aprobadas: 933, rechazos: 523, cobertura: 214.1, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 24", mes: "Jun", nuevas: 3115, reingresos: 881, demanda: 3996, atendidas: 2360, atendidas_primera: 1749, atendidas_reingreso: 611, aprobadas: 1342, rechazos: 1018, cobertura: 59.1, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 25", mes: "Jun", nuevas: 5421, reingresos: 1658, demanda: 7079, atendidas: 7027, atendidas_primera: 5206, atendidas_reingreso: 1821, aprobadas: 4774, rechazos: 2253, cobertura: 99.3, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 30", mes: "Jul", nuevas: 3039, reingresos: 736, demanda: 3775, atendidas: 1253, atendidas_primera: 928, atendidas_reingreso: 325, aprobadas: 333, rechazos: 920, cobertura: 33.2, revisores: 88, capacidad: 44000 },
+        { semana: "Sem 31", mes: "Jul", nuevas: 624, reingresos: 413, demanda: 1037, atendidas: 2924, atendidas_primera: 2166, atendidas_reingreso: 758, aprobadas: 2386, rechazos: 538, cobertura: 282.0, revisores: 88, capacidad: 44000 }
       ];
 
       function renderCapacidadTable(scale = currentCapacidadScale) {
@@ -2957,7 +2957,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               },
               {
                 type: 'line',
-                label: 'Capacidad Semanal',
+                label: 'Capacidad Planta (88 rev)',
                 data: dataCapacidad,
                 borderColor: '#6366f1',
                 backgroundColor: 'transparent',
@@ -3064,9 +3064,9 @@ const formatMinutesToTime = (minDecimal: number) => {
                     if (context.dataset.label && context.dataset.label.includes('Demanda')) {
                       return ` 🔷 Demanda: ${rawVal.toLocaleString()} solicitudes`;
                     }
-                    if (context.dataset.label && (context.dataset.label.includes('Sostenible') || context.dataset.label.includes('Capacidad') || context.dataset.label.includes('Cap. Semanal'))) {
-                      const rev = item ? item.revisores : 'N/D';
-                      return ` ➖ Cap. Semanal (${rev} rev): ${rawVal.toLocaleString()} exp`;
+                    if (context.dataset.label && (context.dataset.label.includes('Sostenible') || context.dataset.label.includes('Capacidad') || context.dataset.label.includes('Cap. Semanal') || context.dataset.label.includes('Planta'))) {
+                      const rev = item ? item.revisores : 88;
+                      return ` ➖ Capacidad Planta (${rev} rev): ${rawVal.toLocaleString()} exp`;
                     }
                     if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Nuevos'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
