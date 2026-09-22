@@ -621,76 +621,23 @@ const formatMinutesToTime = (minDecimal: number) => {
                     </div>
                   </div>
 
-                </div>
-
-                <!-- PANEL INFERIOR: RESUMEN ANALÍTICO Y TABLA DE RESPALDO -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center pt-2">
-                  
-                  <!-- Resumen Tabular Compacto -->
-                  <div class="lg:col-span-5 bg-white/60 backdrop-blur-md border border-slate-200/70 rounded-xl p-3.5 shadow-2xs">
-                    <div class="flex items-center justify-between border-b border-slate-200/70 pb-2 mb-2">
-                      <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Matriz Numérica Consolidada</span>
-                      <span class="text-[10px] font-mono font-bold text-slate-500">183,054 Total</span>
-                    </div>
-                    <div class="space-y-1.5 text-xs">
-                      <div class="flex justify-between items-center text-slate-700">
-                        <span class="flex items-center gap-1.5">
-                          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                          Revisiones de APROBACIÓN (Rama A)
-                        </span>
-                        <span class="font-mono font-bold text-emerald-700">108,230 (59.12%)</span>
-                      </div>
-                      <div class="flex justify-between items-center text-slate-700">
-                        <span class="flex items-center gap-1.5">
-                          <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                          Revisiones de RECHAZO (Rama B)
-                        </span>
-                        <span class="font-mono font-bold text-rose-700">74,824 (40.88%)</span>
-                      </div>
-                      <div class="pl-3.5 space-y-1 text-[11px] text-slate-500 border-l-2 border-rose-200">
-                        <div class="flex justify-between">
-                          <span>↳ 1er Rechazo Superado (Subsanó):</span>
-                          <span class="font-mono font-semibold text-slate-700">23,823</span>
-                        </div>
-                        <div class="flex justify-between">
-                          <span>↳ 1er Rechazo Definitivo (Sin Subsanar):</span>
-                          <span class="font-mono font-semibold text-slate-700">27,204</span>
-                        </div>
-                        <div class="flex justify-between">
-                          <span>↳ Re-Rechazos por Reincidencia:</span>
-                          <span class="font-mono font-semibold text-slate-700">23,797</span>
-                        </div>
-                        <div class="flex justify-between text-slate-700 font-bold border-t border-slate-200/60 pt-0.5">
-                          <span>Suma Rama B (Rechazos):</span>
-                          <span class="font-mono text-rose-700">74,824 (100.0%)</span>
-                        </div>
-                      </div>
-                      <div class="flex justify-between items-center font-bold text-slate-900 border-t border-slate-200/80 pt-1.5">
-                        <span>TOTAL REVISIONES REALIZADAS</span>
-                        <span class="font-mono">183,054 (100.0%)</span>
-                      </div>
-                    </div>
+                <!-- 3 PÍLDORAS EJECUTIVAS DE IMPACTO OPERATIVO (SIN REPETIR LA MATRIZ NUMÉRICA) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                  <div class="p-3 bg-indigo-50/70 border border-indigo-200/80 rounded-2xl text-center backdrop-blur-xs shadow-2xs hover:shadow-xs transition-all">
+                    <div class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Sobrecarga por Re-trabajo</div>
+                    <div class="text-xl font-black text-indigo-950 font-mono mt-0.5">1.35x</div>
+                    <p class="text-[11px] text-indigo-700/90 mt-0.5 font-medium">+35% de esfuerzo sobre el volumen base</p>
                   </div>
-
-                  <!-- 3 Diagnósticos Operativos -->
-                  <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                    <div class="p-2.5 bg-indigo-50/70 border border-indigo-200/70 rounded-xl text-center backdrop-blur-xs shadow-2xs">
-                      <div class="text-[10px] font-bold text-indigo-800 uppercase">Sobrecarga Re-trabajo</div>
-                      <div class="text-base font-black text-indigo-950 font-mono mt-0.5">1.35x</div>
-                      <p class="text-[10px] text-indigo-600 mt-0.5">+35% esfuerzo humano</p>
-                    </div>
-                    <div class="p-2.5 bg-amber-50/70 border border-amber-200/70 rounded-xl text-center backdrop-blur-xs shadow-2xs">
-                      <div class="text-[10px] font-bold text-amber-800 uppercase">Reincidencia Rechazos</div>
-                      <div class="text-base font-black text-amber-950 font-mono mt-0.5">1.47x</div>
-                      <p class="text-[10px] text-amber-600 mt-0.5">23,797 rechazos repetidos</p>
-                    </div>
-                    <div class="p-2.5 bg-rose-50/70 border border-rose-200/70 rounded-xl text-center backdrop-blur-xs shadow-2xs">
-                      <div class="text-[10px] font-bold text-rose-800 uppercase">Fricción Resolutiva</div>
-                      <div class="text-base font-black text-rose-950 font-mono mt-0.5">40.88%</div>
-                      <p class="text-[10px] text-rose-600 mt-0.5">4 de 10 son rechazos</p>
-                    </div>
+                  <div class="p-3 bg-amber-50/70 border border-amber-200/80 rounded-2xl text-center backdrop-blur-xs shadow-2xs hover:shadow-xs transition-all">
+                    <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Tasa de Reincidencia</div>
+                    <div class="text-xl font-black text-amber-950 font-mono mt-0.5">1.47x</div>
+                    <p class="text-[11px] text-amber-700/90 mt-0.5 font-medium">Rechazos múltiples por caso con fricción</p>
                   </div>
-
+                  <div class="p-3 bg-rose-50/70 border border-rose-200/80 rounded-2xl text-center backdrop-blur-xs shadow-2xs hover:shadow-xs transition-all">
+                    <div class="text-[10px] font-bold text-rose-800 uppercase tracking-wider">Fricción de Entrada</div>
+                    <div class="text-xl font-black text-rose-950 font-mono mt-0.5">40.88%</div>
+                    <p class="text-[11px] text-rose-700/90 mt-0.5 font-medium">4 de cada 10 evaluaciones son observaciones</p>
+                  </div>
                 </div>
 
               </div>
