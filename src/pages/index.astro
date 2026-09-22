@@ -3447,13 +3447,14 @@ const formatMinutesToTime = (minDecimal: number) => {
       async function initRevisoresTable() {
         if (revisoresRawData.length === 0) {
           try {
-            const resp = await fetch('/data/revisores_rendimiento.json');
+            const base = (typeof window !== 'undefined' && window.__BASE_URL__) ? window.__BASE_URL__.replace(/\/$/, '') : '';
+            const resp = await fetch(`${base}/data/revisores_rendimiento.json`.replace('//', '/'));
             if (resp.ok) {
               const json = await resp.json();
               revisoresRawData = json.revisores || [];
             }
           } catch (e) {
-            console.warn('No se pudo cargar /data/revisores_rendimiento.json:', e);
+            console.warn('No se pudo cargar revisores_rendimiento.json:', e);
           }
         }
         applyRevisoresFiltersAndRender();
@@ -3873,7 +3874,8 @@ const formatMinutesToTime = (minDecimal: number) => {
         }
 
         try {
-          const resp = await fetch(`/data/revisores_detalle/${encodeURIComponent(revisorId)}.json`);
+          const base = (typeof window !== 'undefined' && window.__BASE_URL__) ? window.__BASE_URL__.replace(/\/$/, '') : '';
+          const resp = await fetch(`${base}/data/revisores_detalle/${encodeURIComponent(revisorId)}.json`.replace('//', '/'));
           if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
           const data = await resp.json();
           currentMRevData = data;

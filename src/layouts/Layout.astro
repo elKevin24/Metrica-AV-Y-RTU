@@ -6,6 +6,8 @@ interface Props {
 }
 
 const { title = "Visor Estratégico BI | SAT Guatemala" } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL || '/';
+const normalizePath = (path: string) => `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 ---
 
 <!DOCTYPE html>
@@ -17,11 +19,14 @@ const { title = "Visor Estratégico BI | SAT Guatemala" } = Astro.props;
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>{title}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="stylesheet" href="/css/tailwind.css" />
-  <script is:inline src="/vendor/chart.umd.js"></script>
-  <script is:inline src="/vendor/lucide.min.js"></script>
-  <script is:inline src="/js/olap-engine.js"></script>
+  <link rel="icon" type="image/svg+xml" href={normalizePath('favicon.svg')} />
+  <link rel="stylesheet" href={normalizePath('css/tailwind.css')} />
+  <script is:inline define:vars={{ baseUrl: baseUrl.endsWith('/') ? baseUrl : baseUrl + '/' }}>
+    window.__BASE_URL__ = baseUrl;
+  </script>
+  <script is:inline src={normalizePath('vendor/chart.umd.js')}></script>
+  <script is:inline src={normalizePath('vendor/lucide.min.js')}></script>
+  <script is:inline src={normalizePath('js/olap-engine.js')}></script>
 </head>
 <body class="text-slate-800 h-full min-h-screen flex overflow-hidden selection:bg-blue-200 antialiased">
   <slot />

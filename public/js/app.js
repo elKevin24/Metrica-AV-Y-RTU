@@ -245,7 +245,8 @@
     if (!tableEl || !tbody) return;
     if (tableEl.dataset.initialized === 'true') return;
 
-    fetch('/data/auditoria_muestra.json')
+    const base = (typeof window !== 'undefined' && window.__BASE_URL__) ? window.__BASE_URL__.replace(/\/$/, '') : '';
+    fetch(`${base}/data/auditoria_muestra.json`.replace('//', '/'))
       .then(r => r.json())
       .then(data => {
         if (!data || !data.muestra_expedientes) return;

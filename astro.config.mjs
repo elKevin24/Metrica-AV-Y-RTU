@@ -1,13 +1,17 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  outDir: './dist_site',
+  site: 'https://elKevin24.github.io',
+  base: '/Metrica-AV-Y-RTU',
+  outDir: './dist',
   devToolbar: {
     enabled: false
   },
   integrations: [
-    react()
+    react(),
+    tailwind()
   ],
   server: {
     host: '0.0.0.0',
@@ -22,3 +26,4 @@ export default defineConfig({
     }
   }
 });
+

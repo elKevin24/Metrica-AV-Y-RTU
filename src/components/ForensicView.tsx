@@ -39,6 +39,13 @@ interface Sort {
   asc: boolean;
 }
 
+const getAssetUrl = (p: string) => {
+  const base = (typeof window !== 'undefined' && (window as any).__BASE_URL__) 
+    ? (window as any).__BASE_URL__ 
+    : (import.meta.env.BASE_URL || '/');
+  return `${base.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
+};
+
 async function fetchWithRetry(url: string, retries = 3, delay = 400): Promise<Response> {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -55,7 +62,7 @@ async function fetchWithRetry(url: string, retries = 3, delay = 400): Promise<Re
 
 async function loadChunk(index: number): Promise<unknown> {
   const padded = String(index).padStart(3, '0');
-  const res = await fetchWithRetry(`/data/forensic/chunk_${padded}.json`, 3, 400);
+  const res = await fetchWithRetry(getAssetUrl(`data/forensic/chunk_${padded}.json`), 3, 400);
   const raw = await res.text();
   const sanitized = raw.replace(/:\s*NaN\b/g, ': null').replace(/:\s*Infinity\b/g, ': null');
   return JSON.parse(sanitized);
@@ -121,7 +128,7 @@ export default function ForensicView() {
 
   const loadAuditoriaFallback = async () => {
     try {
-      const fallbackRes = await fetchWithRetry('/data/auditoria_muestra.json', 3, 500);
+      const fallbackRes = await fetchWithRetry(getAssetUrl('data/auditoria_muestra.json'), 3, 500);
       const fallbackData = await fallbackRes.json();
       const rawMuestra = fallbackData.muestra_expedientes || [];
       allCases.current = rawMuestra.map((m: Record<string, unknown>) => ({
@@ -174,7 +181,7 @@ export default function ForensicView() {
 
     let idx: { total?: number; chunks?: number } | null = null;
     try {
-      const idxRes = await fetchWithRetry('/data/forensic/index.json', 2, 300);
+      const idxRes = await fetchWithRetry(getAssetUrl('data/forensic/index.json'), 2, 300);
       idx = await idxRes.json();
     } catch (idxErr) {
       console.warn('[ForensicView] No se pudo cargar index.json, usando fallback:', idxErr);

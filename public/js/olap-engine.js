@@ -738,9 +738,11 @@
   // ─── 6. CARGADOR DEL CUBO Y POBLADOR DE SELECTS ────────────────────────
   window.loadOlapCube = async function() {
     try {
-      const res = await fetch('/data/cubo_olap.json');
+      const base = (typeof window !== 'undefined' && window.__BASE_URL__) ? window.__BASE_URL__.replace(/\/$/, '') : '';
+      const url = `${base}/data/cubo_olap.json`.replace('//', '/');
+      const res = await fetch(url);
       if (!res.ok) {
-        console.warn('[OLAP] No se pudo cargar /data/cubo_olap.json:', res.status);
+        console.warn('[OLAP] No se pudo cargar cubo_olap.json:', res.status);
         return;
       }
 
