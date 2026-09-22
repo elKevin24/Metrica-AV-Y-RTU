@@ -1,59 +1,23 @@
 ---
-// CausalidadView.astro - Módulo de Análisis Causal, Relaciones & Flujos de Retrabajo (SAT Guatemala)
+// CausalidadView.astro - Gráfico de Dispersión Estratégico con 4 Cuadrantes Operativos
 import fs from 'node:fs';
 import path from 'node:path';
 
-// Carga y procesamiento de datos relacionales
-let flowData = {
-  totalIngresos: 135433,
-  ftr: 84406,
-  primerRechazo: 51027,
-  subsanadas: 23823,
-  desercion: 27204,
-  pctFtr: 62.3,
-  pctPrimerRechazo: 37.7,
-  pctSubsanacionExito: 46.7,
-  pctDesercion: 53.3,
-  tasaRetrabajoGlobal: 20.7,
-  totalReingresos: 47369
-};
-
-let semanasData: any[] = [];
 let scatterPoints: any[] = [];
+let totalCasos = 0;
 
 try {
-  const capPath = path.join(process.cwd(), 'public', 'data', 'capacidad_semanal.json');
-  if (fs.existsSync(capPath)) {
-    const cap = JSON.parse(fs.readFileSync(capPath, 'utf-8'));
-    if (cap.semanas) semanasData = cap.semanas;
-    if (cap.resumen) {
-      flowData.tasaRetrabajoGlobal = cap.resumen.presion_reingreso_pct || 20.7;
-      flowData.totalReingresos = cap.resumen.total_reingresos || 47369;
-    }
-  }
-
   const cuboPath = path.join(process.cwd(), 'public', 'data', 'cubo_olap.json');
   if (fs.existsSync(cuboPath)) {
     const cuboRaw = JSON.parse(fs.readFileSync(cuboPath, 'utf-8'));
-    if (cuboRaw && cuboRaw.meta) {
-      flowData.totalIngresos = cuboRaw.meta.total_atendidas || 135628;
-      flowData.ftr = cuboRaw.meta.total_ftr || 84406;
-      flowData.primerRechazo = cuboRaw.meta.total_rechazos || 51027;
-      flowData.subsanadas = cuboRaw.meta.total_subsanadas || 23823;
-      flowData.desercion = Math.max(0, flowData.primerRechazo - flowData.subsanadas);
-      flowData.pctFtr = Number(((flowData.ftr / flowData.totalIngresos) * 100).toFixed(1));
-      flowData.pctPrimerRechazo = Number(((flowData.primerRechazo / flowData.totalIngresos) * 100).toFixed(1));
-      flowData.pctSubsanacionExito = Number(((flowData.subsanadas / flowData.primerRechazo) * 100).toFixed(1));
-      flowData.pctDesercion = Number(((flowData.desercion / flowData.primerRechazo) * 100).toFixed(1));
-    }
     const rows = cuboRaw.cubo || [];
     
-    // Extraer puntos válidos para el scatter plot (Cola vs Rechazo)
     rows.forEach((r: any) => {
       if (r.atendidas >= 30 && r.t_cola_count > 0 && ['CENTRAL', 'OCCIDENTE', 'NORORIENTE', 'SUR'].includes(r.region)) {
         const avgCola = r.t_cola_sum / r.t_cola_count;
         const rechazoPct = (r.con_rechazo / r.atendidas) * 100;
         if (avgCola > 0 && avgCola < 180 && rechazoPct >= 2 && rechazoPct <= 85) {
+          totalCasos += Math.round(r.atendidas);
           scatterPoints.push({
             region: r.region,
             ges: r.ges,
@@ -67,803 +31,463 @@ try {
     });
   }
 } catch (err) {
-  // Manejo de contingencia silencioso con métricas base
+  // Manejo silencioso de contingencia
 }
+
+// Estadísticas de los 4 cuadrantes (Umbrales: X = 24h, Y = 25%)
+const UMBRAL_COLA = 24;
+const UMBRAL_RECHAZO = 25;
+
+let q1Count = 0, q1Vol = 0; // Q1: Cola <= 24, Rechazo > 25 (Filtro Rápido / Riguroso)
+let q2Count = 0, q2Vol = 0; // Q2: Cola > 24, Rechazo > 25 (Zona Crítica)
+let q3Count = 0, q3Vol = 0; // Q3: Cola <= 24, Rechazo <= 25 (Excelencia FTR)
+let q4Count = 0, q4Vol = 0; // Q4: Cola > 24, Rechazo <= 25 (Congestión Capacidad)
+
+scatterPoints.forEach(p => {
+  if (p.x <= UMBRAL_COLA && p.y > UMBRAL_RECHAZO) { q1Count++; q1Vol += p.vol; }
+  else if (p.x > UMBRAL_COLA && p.y > UMBRAL_RECHAZO) { q2Count++; q2Vol += p.vol; }
+  else if (p.x <= UMBRAL_COLA && p.y <= UMBRAL_RECHAZO) { q3Count++; q3Vol += p.vol; }
+  else { q4Count++; q4Vol += p.vol; }
+});
 
 const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
 ---
 
 <div id="causalidadViewContainer" class="space-y-6 select-none">
 
-  <!-- ENCABEZADO DE LA SECCIÓN RELACIONAL -->
-  <div id="causalidadHeaderCard" class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card bg-white/75 backdrop-blur-xl border border-white/60 shadow-xs rounded-2xl p-5">
-    <div class="space-y-1">
-      <div class="flex items-center gap-2.5">
-        <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-violet-500/20">
-          <i data-lucide="git-fork" class="w-4 h-4"></i>
-        </span>
-        <div>
-          <h3 class="text-sm font-bold text-slate-800 tracking-tight">
-            Análisis Causal, Trazabilidad & Flujos de Retrabajo
-          </h3>
-          <p class="text-[11px] text-slate-500">
-            Relaciones causa-efecto: del ingreso inicial a la revisión, impacto de causales por región y la presión de reingresos sobre la capacidad.
-          </p>
+  <!-- TARJETA PRINCIPAL DEL GRÁFICO DE DISPERSIÓN CON 4 CUADRANTES -->
+  <div class="glass-card bg-white/80 backdrop-blur-xl border border-white/70 rounded-3xl p-5 sm:p-7 shadow-lg space-y-6">
+    
+    <!-- HEADER: TÍTULO Y FILTROS POR REGIÓN -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200/60 pb-5">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/10 text-blue-800 border border-blue-300/60">
+            Matriz de Diagnóstico Operativo
+          </span>
+          <span class="text-slate-300 text-xs">•</span>
+          <span class="text-xs font-semibold text-slate-500">{scatterPoints.length} Muestras Agrupadas · {fmt(totalCasos)} Gestiones</span>
         </div>
-      </div>
-    </div>
-    
-    <!-- BADGES ESTRATÉGICOS -->
-    <div class="flex flex-wrap items-center gap-2">
-      <span class="text-[11px] font-mono font-semibold px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 border border-slate-200/80 shadow-2xs">
-        {fmt(flowData.totalIngresos)} Expedientes Únicos
-      </span>
-      <span class="text-[11px] font-semibold px-3 py-1.5 rounded-xl bg-violet-50 text-violet-700 border border-violet-200/80 flex items-center gap-1.5 shadow-2xs">
-        <span class="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
-        {flowData.tasaRetrabajoGlobal}% Presión de Reingresos
-      </span>
-      <span class="text-[11px] font-semibold px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-2xs">
-        {flowData.pctSubsanacionExito}% Tasa de Recuperación
-      </span>
-    </div>
-  </div>
-
-  <!-- FILA 1: CUATRO KPIS RELACIONALES DE ALTO IMPACTO -->
-  <div id="causalKpisGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    
-    <!-- KPI 1: EFICIENCIA FTR -->
-    <div id="kpiCardFtrRel" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 p-4 rounded-2xl shadow-xs relative overflow-hidden transition-all duration-300 hover:shadow-md">
-      <div class="flex items-center justify-between">
-        <span class="text-[11px] font-bold tracking-wider uppercase text-slate-500">Resolución Limpia (FTR)</span>
-        <span class="p-1.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200/60">
-          <i data-lucide="check-check" class="w-4 h-4"></i>
-        </span>
-      </div>
-      <div class="mt-2 flex items-baseline gap-2">
-        <span class="text-2xl font-black tracking-tight text-slate-800">{flowData.pctFtr}%</span>
-        <span class="text-xs font-medium text-slate-500">al primer intento</span>
-      </div>
-      <div class="mt-2 text-[11px] text-slate-600 flex items-center justify-between border-t border-slate-100 pt-2 font-mono">
-        <span>{fmt(flowData.ftr)} expedientes</span>
-        <span class="text-emerald-600 font-semibold">Cero Retrabajo</span>
-      </div>
-    </div>
-
-    <!-- KPI 2: CARGA DE RETRABAJO -->
-    <div id="kpiCardRetrabajo" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 p-4 rounded-2xl shadow-xs relative overflow-hidden transition-all duration-300 hover:shadow-md">
-      <div class="flex items-center justify-between">
-        <span class="text-[11px] font-bold tracking-wider uppercase text-slate-500">Presión de Reingreso</span>
-        <span class="p-1.5 rounded-xl bg-amber-50 text-amber-600 border border-amber-200/60">
-          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-        </span>
-      </div>
-      <div class="mt-2 flex items-baseline gap-2">
-        <span class="text-2xl font-black tracking-tight text-slate-800">{flowData.tasaRetrabajoGlobal}%</span>
-        <span class="text-xs font-medium text-amber-600 font-semibold">de la demanda</span>
-      </div>
-      <div class="mt-2 text-[11px] text-slate-600 flex items-center justify-between border-t border-slate-100 pt-2 font-mono">
-        <span>{fmt(flowData.totalReingresos)} atenciones</span>
-        <span class="text-amber-700 font-semibold">2ª o 3ª Revisión</span>
-      </div>
-    </div>
-
-    <!-- KPI 3: CONVERSIÓN DE SUBSANACIÓN -->
-    <div id="kpiCardSubsanacion" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 p-4 rounded-2xl shadow-xs relative overflow-hidden transition-all duration-300 hover:shadow-md">
-      <div class="flex items-center justify-between">
-        <span class="text-[11px] font-bold tracking-wider uppercase text-slate-500">Éxito de Subsanación</span>
-        <span class="p-1.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-200/60">
-          <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-        </span>
-      </div>
-      <div class="mt-2 flex items-baseline gap-2">
-        <span class="text-2xl font-black tracking-tight text-slate-800">{flowData.pctSubsanacionExito}%</span>
-        <span class="text-xs font-medium text-slate-500">recuperadas</span>
-      </div>
-      <div class="mt-2 text-[11px] text-slate-600 flex items-center justify-between border-t border-slate-100 pt-2 font-mono">
-        <span>{fmt(flowData.subsanadas)} aprobadas</span>
-        <span class="text-blue-600 font-semibold">Post-Observación</span>
-      </div>
-    </div>
-
-    <!-- KPI 4: TASA DE DESERCIÓN -->
-    <div id="kpiCardDesercion" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 p-4 rounded-2xl shadow-xs relative overflow-hidden transition-all duration-300 hover:shadow-md">
-      <div class="flex items-center justify-between">
-        <span class="text-[11px] font-bold tracking-wider uppercase text-slate-500">Fuga / Deserción</span>
-        <span class="p-1.5 rounded-xl bg-rose-50 text-rose-600 border border-rose-200/60">
-          <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-        </span>
-      </div>
-      <div class="mt-2 flex items-baseline gap-2">
-        <span class="text-2xl font-black tracking-tight text-rose-700">{flowData.pctDesercion}%</span>
-        <span class="text-xs font-medium text-rose-600 font-semibold">de los observados</span>
-      </div>
-      <div class="mt-2 text-[11px] text-slate-600 flex items-center justify-between border-t border-slate-100 pt-2 font-mono">
-        <span>{fmt(flowData.desercion)} cancelados</span>
-        <span class="text-rose-600 font-semibold">Vencimiento / Abandono</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FILA 2: DIAGRAMA SANKEY / EMBUDO DE TRAZABILIDAD DEL EXPEDIENTE -->
-  <div id="flujoExpedienteCard" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-xs space-y-5">
-    
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
-      <div>
-        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-          <i data-lucide="shuffle" class="w-4 h-4 text-violet-600"></i>
-          Embudo de Trazabilidad & Flujo de Retrabajo
-        </h4>
-        <p class="text-[11px] text-slate-500 mt-0.5">
-          Ciclo de vida del trámite: del ingreso ciudadano a la bifurcación FTR vs. Observados, y su posterior destino de recuperación o deserción.
+        <h3 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+          <i data-lucide="grid" class="w-5 h-5 text-blue-600"></i>
+          Dispersión Operativa: Tiempo en Cola vs. Tasa de Rechazo
+        </h3>
+        <p class="text-xs text-slate-500 max-w-2xl leading-relaxed">
+          Evaluación cruzada del tiempo de espera en buzón (horas hábiles) frente a la tasa de observaciones y rechazo. Las líneas divisorias en <strong>24h hábiles (Meta SLA)</strong> y <strong>25% de rechazo</strong> delimitan los 4 cuadrantes.
         </p>
       </div>
-      <span class="text-[11px] font-mono text-slate-600 bg-white/80 border border-slate-200/80 px-2.5 py-1 rounded-lg font-bold">
-        135,433 Gestiones Únicas
-      </span>
+
+      <!-- FILTRO DE REGIONES -->
+      <div class="flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/80 shrink-0 self-start lg:self-center overflow-x-auto max-w-full">
+        <button onclick="window.filterScatterRegion('TODAS')" id="btnScatterTODAS" class="scatter-reg-btn px-3 py-1.5 text-xs font-bold rounded-xl bg-white text-blue-700 shadow-xs transition-all cursor-pointer">
+          Todas
+        </button>
+        <button onclick="window.filterScatterRegion('CENTRAL')" id="btnScatterCENTRAL" class="scatter-reg-btn px-3 py-1.5 text-xs font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer">
+          Central
+        </button>
+        <button onclick="window.filterScatterRegion('OCCIDENTE')" id="btnScatterOCCIDENTE" class="scatter-reg-btn px-3 py-1.5 text-xs font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer">
+          Occidente
+        </button>
+        <button onclick="window.filterScatterRegion('NORORIENTE')" id="btnScatterNORORIENTE" class="scatter-reg-btn px-3 py-1.5 text-xs font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer">
+          Nororiente
+        </button>
+        <button onclick="window.filterScatterRegion('SUR')" id="btnScatterSUR" class="scatter-reg-btn px-3 py-1.5 text-xs font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer">
+          Sur
+        </button>
+      </div>
     </div>
 
-    <!-- NODOS VISUALES DEL FLUJO (SANKEY SCHEMATIC) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center pt-2">
+    <!-- CANVAS DEL GRÁFICO DE DISPERSIÓN (OCUPA EL ESPACIO COMPLETO) -->
+    <div class="relative w-full h-[420px] sm:h-[480px] bg-gradient-to-b from-slate-50/50 to-white/70 rounded-2xl border border-slate-200/70 p-2 sm:p-4">
+      <canvas id="chartScatterColaRechazo"></canvas>
+    </div>
+
+    <!-- LEYENDA ESTRATÉGICA: 4 CUADRANTES BIEN MARCADOS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
       
-      <!-- NODO 1: ENTRADA -->
-      <div class="p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100/80 border border-slate-200/80 shadow-xs flex flex-col justify-between h-48 relative">
-        <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Etapa 1: Ingreso</span>
-          <span class="text-[10px] font-mono bg-white px-2 py-0.5 rounded-md text-slate-600 border border-slate-200">100% Demanda</span>
-        </div>
+      <!-- CUADRANTE 3: EXCELENCIA OPERATIVA (FTR) (Verde) -->
+      <div class="glass-card bg-emerald-50/80 border-2 border-emerald-300/80 rounded-2xl p-4 shadow-xs hover:shadow-md transition-all relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-400/10 rounded-full blur-xl pointer-events-none"></div>
         <div>
-          <div class="text-2xl font-black text-slate-800 tracking-tight">{fmt(flowData.totalIngresos)}</div>
-          <p class="text-xs text-slate-500 font-medium">Expedientes recibidos en buzón digital</p>
-        </div>
-        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-          <div class="bg-blue-600 h-full w-full"></div>
-        </div>
-        <div class="text-[10px] text-slate-400 font-mono">Distribución: 1ª asignación a revisor</div>
-      </div>
-
-      <!-- NODO 2: PRIMERA REVISIÓN (BIFURCACIÓN) -->
-      <div class="space-y-3">
-        <!-- Rama A: FTR -->
-        <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/70 shadow-2xs">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-emerald-800 flex items-center gap-1.5">
-              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
-              FTR Aprobación Limpia
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider">
+              Q3 · Inferior Izq.
             </span>
-            <span class="text-xs font-mono font-bold text-emerald-700">{flowData.pctFtr}%</span>
-          </div>
-          <div class="text-lg font-black text-emerald-900 mt-1">{fmt(flowData.ftr)}</div>
-          <p class="text-[10px] text-emerald-700 mt-0.5">Expedientes sin incidencias resueltos al primer contacto</p>
-        </div>
-
-        <!-- Rama B: Observadas -->
-        <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200/70 shadow-2xs">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-amber-800 flex items-center gap-1.5">
-              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
-              Primer Rechazo / Observadas
+            <span class="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300">
+              {q3Count} grupos ({fmt(q3Vol)} casos)
             </span>
-            <span class="text-xs font-mono font-bold text-amber-700">{flowData.pctPrimerRechazo}%</span>
           </div>
-          <div class="text-lg font-black text-amber-900 mt-1">{fmt(flowData.primerRechazo)}</div>
-          <p class="text-[10px] text-amber-700 mt-0.5">Requieren notificación y subsanación ciudadana</p>
+          <h4 class="text-sm font-black text-emerald-950 mt-2 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+            Excelencia Operativa (FTR)
+          </h4>
+          <p class="text-[11px] font-semibold text-emerald-800/90 mt-0.5">
+            Cola ≤ 24h & Rechazo ≤ 25%
+          </p>
+          <p class="text-xs text-emerald-900/80 mt-2 leading-relaxed">
+            Zona ideal de máxima eficiencia. Asignación inmediata con alta calidad documental y aprobación limpia al primer intento.
+          </p>
+        </div>
+        <div class="mt-3 pt-2.5 border-t border-emerald-200/80 flex items-center justify-between text-[11px]">
+          <span class="text-emerald-700 font-bold">Estado:</span>
+          <span class="font-mono font-black text-emerald-900">ÓPTIMO / REFERENTE</span>
         </div>
       </div>
 
-      <!-- NODO 3: DESTINO DEL RECHAZO (DESENLACE) -->
-      <div class="space-y-3">
-        <!-- Rama C: Subsanada -->
-        <div class="p-3 rounded-xl bg-blue-50/70 border border-blue-200/70 shadow-2xs">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-blue-800 flex items-center gap-1.5">
-              <i data-lucide="check-check" class="w-3.5 h-3.5 text-blue-600"></i>
-              Subsanadas Exitosas
+      <!-- CUADRANTE 1: FILTRO RÁPIDO & RIGUROSO (Azul) -->
+      <div class="glass-card bg-indigo-50/80 border-2 border-indigo-300/80 rounded-2xl p-4 shadow-xs hover:shadow-md transition-all relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-400/10 rounded-full blur-xl pointer-events-none"></div>
+        <div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider">
+              Q1 · Superior Izq.
             </span>
-            <span class="text-xs font-mono font-bold text-blue-700">{flowData.pctSubsanacionExito}%</span>
-          </div>
-          <div class="text-lg font-black text-blue-900 mt-1">{fmt(flowData.subsanadas)}</div>
-          <p class="text-[10px] text-blue-700 mt-0.5">Contribuyente corrigió observaciones y obtuvo aprobación</p>
-        </div>
-
-        <!-- Rama D: Deserción / Abandono -->
-        <div class="p-3 rounded-xl bg-rose-50/70 border border-rose-200/70 shadow-2xs">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-rose-800 flex items-center gap-1.5">
-              <i data-lucide="x" class="w-3.5 h-3.5 text-rose-600"></i>
-              Deserción / Canceladas
+            <span class="text-[10px] font-mono font-bold text-indigo-800 bg-indigo-100/90 px-2 py-0.5 rounded-full border border-indigo-300">
+              {q1Count} grupos ({fmt(q1Vol)} casos)
             </span>
-            <span class="text-xs font-mono font-bold text-rose-700">{flowData.pctDesercion}%</span>
           </div>
-          <div class="text-lg font-black text-rose-900 mt-1">{fmt(flowData.desercion)}</div>
-          <p class="text-[10px] text-rose-700 mt-0.5">Vencimiento de plazo legal o abandono del expediente</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- GRÁFICO CANVAS DE CONVERSIÓN DE ETAPAS -->
-    <div class="pt-2 border-t border-slate-200/60">
-      <div class="h-44 relative w-full">
-        <canvas id="chartFlujoEmbudo"></canvas>
-      </div>
-      <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 font-mono">
-        <span>* El 46.7% de los trámites que sufren un primer rechazo logran recuperarse mediante subsanación.</span>
-        <span class="text-slate-700 font-semibold">Tasa de Pérdida en Proceso: 20.1% sobre el total inicial</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FILA 3: MATRIZ CAUSAL (HEATMAP) Y DISPERSIÓN FORENSE (SCATTER PLOT) -->
-  <div class="space-y-5">
-    
-    <!-- TARJETA A: MATRIZ CAUSAL DE RECHAZO (HEATMAP + COMPARATIVA) -->
-    <div id="matrizCausalCard" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-xs space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
-        <div>
-          <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="scale" class="w-4 h-4 text-indigo-600"></i>
-            Matriz Causal: Motivo de Observación por Región
+          <h4 class="text-sm font-black text-indigo-950 mt-2 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0"></span>
+            Filtro Rápido & Riguroso
           </h4>
-          <p class="text-[11px] text-slate-500 mt-0.5">
-            Concentración de inconsistencias que disparan el rechazo formal.
+          <p class="text-[11px] font-semibold text-indigo-800/90 mt-0.5">
+            Cola ≤ 24h & Rechazo > 25%
+          </p>
+          <p class="text-xs text-indigo-900/80 mt-2 leading-relaxed">
+            Atención ágil en tiempo pero con alto índice de observaciones por requisitos formales o biometría.
           </p>
         </div>
-        <div class="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200/80">
-          <button id="btnCausalPct" onclick="switchCausalView('pct')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-white text-indigo-700 shadow-2xs transition-all">
-            Porcentaje %
-          </button>
-          <button id="btnCausalVol" onclick="switchCausalView('vol')" class="px-2.5 py-1 text-[11px] font-medium rounded-lg text-slate-600 hover:text-slate-800 transition-all">
-            Volumen Casos
-          </button>
+        <div class="mt-3 pt-2.5 border-t border-indigo-200/80 flex items-center justify-between text-[11px]">
+          <span class="text-indigo-700 font-bold">Foco:</span>
+          <span class="font-mono font-black text-indigo-900">GUÍAS AL USUARIO</span>
         </div>
       </div>
 
-      <!-- TABLA HEATMAP VISUAL -->
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs border-collapse font-sans">
-          <thead>
-            <tr class="border-b border-slate-200 text-slate-400 font-semibold text-[10px] uppercase tracking-wider">
-              <th class="py-2 px-2">Causal Macro</th>
-              <th class="py-2 px-2 text-center">Central</th>
-              <th class="py-2 px-2 text-center">Occidente</th>
-              <th class="py-2 px-2 text-center">Nororiente</th>
-              <th class="py-2 px-2 text-center">Sur</th>
-              <th class="py-2 px-2 text-center font-bold text-slate-700">Promedio</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyCausalHeatmap" class="divide-y divide-slate-100 text-slate-700">
-            <!-- Renglón 1: DOCUMENTACION_DPI -->
-            <tr class="hover:bg-slate-50/60 transition-colors">
-              <td class="py-2 px-2 font-medium flex items-center gap-1.5 text-slate-800">
-                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                Documentación DPI / Ilegible
-              </td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-bold bg-rose-100/80 text-rose-800 text-[11px]">80.8%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-bold bg-rose-100/80 text-rose-800 text-[11px]">74.8%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-bold bg-rose-100/80 text-rose-800 text-[11px]">75.7%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-bold bg-rose-100/80 text-rose-800 text-[11px]">75.9%</span></td>
-              <td class="py-2 px-2 text-center font-bold text-rose-900 font-mono">76.8%</td>
-            </tr>
-            <!-- Renglón 2: VIDEO_CONFIRMACION -->
-            <tr class="hover:bg-slate-50/60 transition-colors">
-              <td class="py-2 px-2 font-medium flex items-center gap-1.5 text-slate-800">
-                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                Video Confirmación / Biometría
-              </td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-semibold bg-amber-100/70 text-amber-800 text-[11px]">11.1%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-semibold bg-amber-100/70 text-amber-800 text-[11px]">15.2%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-semibold bg-amber-100/70 text-amber-800 text-[11px]">12.8%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono font-semibold bg-amber-100/70 text-amber-800 text-[11px]">11.1%</span></td>
-              <td class="py-2 px-2 text-center font-bold text-amber-900 font-mono">12.5%</td>
-            </tr>
-            <!-- Renglón 3: OTROS -->
-            <tr class="hover:bg-slate-50/60 transition-colors">
-              <td class="py-2 px-2 font-medium flex items-center gap-1.5 text-slate-800">
-                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-                Otros Motivos / Formato
-              </td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-100 text-slate-700 text-[11px]">7.3%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-100 text-slate-700 text-[11px]">8.1%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-100 text-slate-700 text-[11px]">8.7%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-100 text-slate-700 text-[11px]">12.3%</span></td>
-              <td class="py-2 px-2 text-center font-bold text-slate-700 font-mono">9.1%</td>
-            </tr>
-            <!-- Renglón 4: DATOS_INCONSISTENTES -->
-            <tr class="hover:bg-slate-50/60 transition-colors">
-              <td class="py-2 px-2 font-medium flex items-center gap-1.5 text-slate-800">
-                <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-                Datos Inconsistentes / NIT
-              </td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-blue-50 text-blue-700 text-[11px]">0.5%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-blue-50 text-blue-700 text-[11px]">1.2%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-blue-50 text-blue-700 text-[11px]">2.1%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-blue-50 text-blue-700 text-[11px]">0.2%</span></td>
-              <td class="py-2 px-2 text-center font-bold text-blue-900 font-mono">1.0%</td>
-            </tr>
-            <!-- Renglón 5: REPRESENTACION_LEGAL -->
-            <tr class="hover:bg-slate-50/60 transition-colors">
-              <td class="py-2 px-2 font-medium flex items-center gap-1.5 text-slate-800">
-                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-                Representación Legal / Mandato
-              </td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-50 text-slate-500 text-[11px]">0.3%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-50 text-slate-500 text-[11px]">0.6%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-50 text-slate-500 text-[11px]">0.5%</span></td>
-              <td class="py-2 px-2 text-center"><span class="cell-val inline-block px-2 py-0.5 rounded-md font-mono bg-slate-50 text-slate-500 text-[11px]">0.0%</span></td>
-              <td class="py-2 px-2 text-center font-bold text-purple-900 font-mono">0.4%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-    <!-- TARJETA B: DISPERSIÓN FORENSE (SCATTER PLOT COLA VS RECHAZO) -->
-    <div id="scatterColaRechazoCard" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-xs space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
+      <!-- CUADRANTE 4: CONGESTIÓN POR CAPACIDAD (Ámbar) -->
+      <div class="glass-card bg-amber-50/80 border-2 border-amber-300/80 rounded-2xl p-4 shadow-xs hover:shadow-md transition-all relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-400/10 rounded-full blur-xl pointer-events-none"></div>
         <div>
-          <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="activity" class="w-4 h-4 text-blue-600"></i>
-            Dispersión: Tiempo en Cola vs. Tasa de Rechazo
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white text-[10px] font-black uppercase tracking-wider">
+              Q4 · Inferior Der.
+            </span>
+            <span class="text-[10px] font-mono font-bold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded-full border border-amber-300">
+              {q4Count} grupos ({fmt(q4Vol)} casos)
+            </span>
+          </div>
+          <h4 class="text-sm font-black text-amber-950 mt-2 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+            Congestión por Capacidad
           </h4>
-          <p class="text-[11px] text-slate-500 mt-0.5">
-            Correlación entre congestión de bandeja (horas en espera) y el rigor de la revisión.
+          <p class="text-[11px] font-semibold text-amber-800/90 mt-0.5">
+            Cola > 24h & Rechazo ≤ 25%
+          </p>
+          <p class="text-xs text-amber-900/80 mt-2 leading-relaxed">
+            Expedientes con documentación correcta pero retenidos por acumulación en bandeja o falta de revisores activos.
           </p>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="text-[10px] font-mono bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md border border-blue-200/80">
-            56 Muestras Agrupadas
-          </span>
+        <div class="mt-3 pt-2.5 border-t border-amber-200/80 flex items-center justify-between text-[11px]">
+          <span class="text-amber-700 font-bold">Foco:</span>
+          <span class="font-mono font-black text-amber-900">BALANCEO DE CARGAS</span>
         </div>
       </div>
 
-      <!-- SCATTER CANVAS -->
-      <div class="h-80 relative w-full">
-        <canvas id="chartScatterColaRechazo"></canvas>
-      </div>
-
-      <!-- LEYENDA Y EXPLICACIÓN DE CUADRANTES -->
-      <div class="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-slate-200/60 font-sans">
-        <div class="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/60">
-          <span class="font-bold text-emerald-800 flex items-center gap-1 text-[11px]">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Cuadrante Eficiente (&lt;30h / &lt;25%)
-          </span>
-          <p class="text-[10px] text-emerald-700 mt-1 leading-snug">
-            Procesamiento ágil con baja fricción. Casos en Occidente y Nororiente destacan en esta zona.
-          </p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/70">
-          <span class="font-bold text-amber-800 flex items-center gap-1 text-[11px]">
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-            Cuadrante de Fricción (&gt;40h / &gt;28%)
-          </span>
-          <p class="text-[10px] text-amber-700 mt-1 leading-snug">
-            Largas esperas acompañadas de mayor rechazo formal. Típico en expedientes con validación de poderes o DPI.
-          </p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FILA 4: CORRELACIÓN TEMPORAL DE DEMANDA & CURVA DE REACCIÓN CIUDADANA -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-
-    <!-- TARJETA C: PENALIZACIÓN DE TIEMPO DE CICLO POR CAUSAL DE RETRABAJO -->
-    <div id="penalizacionCicloCard" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-xs space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
+      <!-- CUADRANTE 2: ZONA CRÍTICA DE RETRABAJO (Rojo) -->
+      <div class="glass-card bg-rose-50/80 border-2 border-rose-300/80 rounded-2xl p-4 shadow-xs hover:shadow-md transition-all relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-rose-400/10 rounded-full blur-xl pointer-events-none"></div>
         <div>
-          <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="hourglass" class="w-4 h-4 text-rose-600"></i>
-            Penalización de Ciclo por Causal: Horas Hábiles Acumuladas
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-rose-600 text-white text-[10px] font-black uppercase tracking-wider">
+              Q2 · Superior Der.
+            </span>
+            <span class="text-[10px] font-mono font-bold text-rose-800 bg-rose-100/90 px-2 py-0.5 rounded-full border border-rose-300">
+              {q2Count} grupos ({fmt(q2Vol)} casos)
+            </span>
+          </div>
+          <h4 class="text-sm font-black text-rose-950 mt-2 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></span>
+            Zona Crítica de Retrabajo
           </h4>
-          <p class="text-[11px] text-slate-500 mt-0.5">
-            Costo real en días hábiles: comparación entre un expediente FTR limpio frente al retraso inducido por cada causal.
+          <p class="text-[11px] font-semibold text-rose-800/90 mt-0.5">
+            Cola > 24h & Rechazo > 25%
+          </p>
+          <p class="text-xs text-rose-900/80 mt-2 leading-relaxed">
+            Máxima fricción operativa. Esperas prolongadas en cola combinadas con altas tasas de rechazo, provocando abandono.
           </p>
         </div>
-        <span class="text-[10px] font-mono text-rose-700 bg-rose-50 border border-rose-200/60 px-2 py-0.5 rounded-md font-bold">
-          Meta SLA: &le; 24h
-        </span>
+        <div class="mt-3 pt-2.5 border-t border-rose-200/80 flex items-center justify-between text-[11px]">
+          <span class="text-rose-700 font-bold">Estado:</span>
+          <span class="font-mono font-black text-rose-900">INTERVENCIÓN URGENTE</span>
+        </div>
       </div>
 
-      <!-- CANVAS PENALIZACIÓN DE CICLO -->
-      <div class="h-64 relative w-full">
-        <canvas id="chartPenalizacionCiclo"></canvas>
-      </div>
-
-      <!-- MÉTRICAS DE MULTIPLICADOR DE IMPACTO -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t border-slate-200/60 text-xs font-sans">
-        <div class="p-2 rounded-xl bg-emerald-50/70 border border-emerald-200/60 text-center">
-          <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">FTR Limpio</span>
-          <span class="text-sm font-black text-emerald-900 font-mono">18.4h</span>
-          <span class="text-[10px] text-emerald-600 block">2.3 días hábiles</span>
-        </div>
-        <div class="p-2 rounded-xl bg-blue-50/70 border border-blue-200/60 text-center">
-          <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Datos / NIT</span>
-          <span class="text-sm font-black text-blue-900 font-mono">76.1h</span>
-          <span class="text-[10px] text-blue-600 block">4.1x retraso</span>
-        </div>
-        <div class="p-2 rounded-xl bg-amber-50/70 border border-amber-200/60 text-center">
-          <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Video / Biometría</span>
-          <span class="text-sm font-black text-amber-900 font-mono">112.5h</span>
-          <span class="text-[10px] text-amber-600 block">6.1x retraso</span>
-        </div>
-        <div class="p-2 rounded-xl bg-rose-50/70 border border-rose-200/60 text-center">
-          <span class="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">DPI Ilegible</span>
-          <span class="text-sm font-black text-rose-900 font-mono">181.9h</span>
-          <span class="text-[10px] text-rose-600 block font-bold">9.9x retraso</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TARJETA D: CURVA DE REACCIÓN / TIEMPO DE SUBSANACIÓN DEL CIUDADANO -->
-    <div id="latenciaSubsanacionCard" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-xs space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
-        <div>
-          <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="timer" class="w-4 h-4 text-emerald-600"></i>
-            Latencia de Respuesta del Contribuyente (Subsanación)
-          </h4>
-          <p class="text-[11px] text-slate-500 mt-0.5">
-            Tiempo transcurrido desde la notificación de rechazo hasta el reingreso con corrección.
-          </p>
-        </div>
-        <span class="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-md font-bold">
-          65.5% en &lt;24h
-        </span>
-      </div>
-
-      <!-- CANVAS LATENCIA -->
-      <div class="h-64 relative w-full">
-        <canvas id="chartLatenciaSubsanacion"></canvas>
-      </div>
-
-      <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200/60 text-xs text-slate-600 space-y-1">
-        <div class="flex items-center justify-between font-medium">
-          <span class="text-slate-800 font-bold flex items-center gap-1.5">
-            <i data-lucide="info" class="w-3.5 h-3.5 text-blue-600"></i>
-            Hallazgo Clave de Supervivencia:
-          </span>
-          <span class="font-mono text-[11px] font-semibold text-rose-700">Punto Crítico: 72 horas</span>
-        </div>
-        <p class="text-[11px] text-slate-500 leading-relaxed">
-          Los expedientes que no se subsanan dentro de las primeras 72 horas laborales tienen una tasa de abandono definitivo del 78.4%. Activar recordatorios vía SMS/Correo a las 48h recuperaría aproximadamente 4,200 trámites al año.
-        </p>
-      </div>
     </div>
 
   </div>
 
 </div>
 
-<!-- SCRIPT DE CONTROL E INICIALIZACIÓN DE GRÁFICOS RELACIONALES -->
-<script is:inline define:vars={{ flowData, semanasData, scatterPoints }}>
-  // Variables y datasets precargados
-  window.__flowData = flowData;
-  window.__semanasData = semanasData;
+<!-- SCRIPT DEL GRÁFICO DE DISPERSIÓN CON 4 CUADRANTES -->
+<script is:inline define:vars={{ scatterPoints, UMBRAL_COLA, UMBRAL_RECHAZO }}>
   window.__scatterPoints = scatterPoints;
+  window.__currentScatterRegion = 'TODAS';
+  let scatterChartInstance = null;
 
-  // Toggle de visualización en la tabla causal (Porcentaje vs Volumen)
-  window.switchCausalView = function(mode) {
-    const btnPct = document.getElementById('btnCausalPct');
-    const btnVol = document.getElementById('btnCausalVol');
-    const rows = document.querySelectorAll('#tbodyCausalHeatmap tr');
+  // Plugin personalizado de Chart.js para dibujar los 4 cuadrantes claramente
+  const quadrantsPlugin = {
+    id: 'quadrantsPlugin',
+    beforeDraw(chart) {
+      const { ctx, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+      if (!x || !y) return;
 
-    const volData = [
-      ['10,411', '3,629', '2,678', '2,813', '19,531'],
-      ['1,428', '739', '452', '411', '3,030'],
-      ['945', '393', '309', '455', '2,102'],
-      ['59', '57', '73', '9', '198'],
-      ['35', '27', '16', '0', '78']
-    ];
+      const xMid = x.getPixelForValue(UMBRAL_COLA);
+      const yMid = y.getPixelForValue(UMBRAL_RECHAZO);
 
-    const pctData = [
-      ['80.8%', '74.8%', '75.7%', '75.9%', '76.8%'],
-      ['11.1%', '15.2%', '12.8%', '11.1%', '12.5%'],
-      ['7.3%', '8.1%', '8.7%', '12.3%', '9.1%'],
-      ['0.5%', '1.2%', '2.1%', '0.2%', '1.0%'],
-      ['0.3%', '0.6%', '0.5%', '0.0%', '0.4%']
-    ];
+      // 1. Fondos traslúcidos diferenciados para cada cuadrante
+      ctx.save();
+      
+      // Q1: Superior Izquierdo (X <= 24, Y > 25) - Azul/Índigo sutil
+      ctx.fillStyle = 'rgba(99, 102, 241, 0.04)';
+      ctx.fillRect(left, top, Math.max(0, xMid - left), Math.max(0, yMid - top));
 
-    if (mode === 'vol') {
-      if (btnVol) {
-        btnVol.className = 'px-2.5 py-1 text-[11px] font-bold rounded-lg bg-white text-indigo-700 shadow-2xs transition-all';
-      }
-      if (btnPct) {
-        btnPct.className = 'px-2.5 py-1 text-[11px] font-medium rounded-lg text-slate-600 hover:text-slate-800 transition-all';
-      }
-      rows.forEach((tr, rIdx) => {
-        const cells = tr.querySelectorAll('.cell-val');
-        cells.forEach((c, cIdx) => {
-          if (volData[rIdx] && volData[rIdx][cIdx]) c.textContent = volData[rIdx][cIdx];
-        });
-        const totalCell = tr.querySelector('td:last-child');
-        if (totalCell && volData[rIdx]) totalCell.textContent = volData[rIdx][4];
-      });
-    } else {
-      if (btnPct) {
-        btnPct.className = 'px-2.5 py-1 text-[11px] font-bold rounded-lg bg-white text-indigo-700 shadow-2xs transition-all';
-      }
-      if (btnVol) {
-        btnVol.className = 'px-2.5 py-1 text-[11px] font-medium rounded-lg text-slate-600 hover:text-slate-800 transition-all';
-      }
-      rows.forEach((tr, rIdx) => {
-        const cells = tr.querySelectorAll('.cell-val');
-        cells.forEach((c, cIdx) => {
-          if (pctData[rIdx] && pctData[rIdx][cIdx]) c.textContent = pctData[rIdx][cIdx];
-        });
-        const totalCell = tr.querySelector('td:last-child');
-        if (totalCell && pctData[rIdx]) totalCell.textContent = pctData[rIdx][4];
-      });
+      // Q2: Superior Derecho (X > 24, Y > 25) - Rojo/Rosa sutil
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.05)';
+      ctx.fillRect(xMid, top, Math.max(0, right - xMid), Math.max(0, yMid - top));
+
+      // Q3: Inferior Izquierdo (X <= 24, Y <= 25) - Verde sutil
+      ctx.fillStyle = 'rgba(16, 185, 129, 0.05)';
+      ctx.fillRect(left, yMid, Math.max(0, xMid - left), Math.max(0, bottom - yMid));
+
+      // Q4: Inferior Derecho (X > 24, Y <= 25) - Ámbar sutil
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.04)';
+      ctx.fillRect(xMid, yMid, Math.max(0, right - xMid), Math.max(0, bottom - yMid));
+
+      // 2. Líneas divisorias punteadas claras
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#64748b';
+      ctx.setLineDash([5, 4]);
+
+      // Línea vertical (X = 24h)
+      ctx.beginPath();
+      ctx.moveTo(xMid, top);
+      ctx.lineTo(xMid, bottom);
+      ctx.stroke();
+
+      // Línea horizontal (Y = 25%)
+      ctx.beginPath();
+      ctx.moveTo(left, yMid);
+      ctx.lineTo(right, yMid);
+      ctx.stroke();
+
+      // 3. Etiquetas visuales de los 4 cuadrantes impresas dentro del canvas
+      ctx.setLineDash([]);
+      ctx.font = 'bold 10px Inter, sans-serif';
+
+      // Q1: Sup. Izq.
+      ctx.fillStyle = '#4338ca';
+      ctx.fillText('Q1: FILTRO RÁPIDO & RIGUROSO (≤24h, >25%)', left + 12, top + 18);
+
+      // Q2: Sup. Der.
+      ctx.fillStyle = '#be123c';
+      ctx.fillText('Q2: ZONA CRÍTICA DE RETRABAJO (>24h, >25%)', Math.max(xMid + 12, right - 260), top + 18);
+
+      // Q3: Inf. Izq.
+      ctx.fillStyle = '#047857';
+      ctx.fillText('Q3: EXCELENCIA OPERATIVA (≤24h, ≤25%)', left + 12, bottom - 12);
+
+      // Q4: Inf. Der.
+      ctx.fillStyle = '#b45309';
+      ctx.fillText('Q4: CONGESTIÓN POR CAPACIDAD (>24h, ≤25%)', Math.max(xMid + 12, right - 260), bottom - 12);
+
+      // 4. Badges identificadores en las líneas divisorias
+      // Badge Eje X (24h)
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.roundRect(xMid - 36, bottom + 4, 72, 16, 4);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 9px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('SLA: 24.0h', xMid, bottom + 15);
+
+      // Badge Eje Y (25%)
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.roundRect(left - 48, yMid - 8, 44, 16, 4);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText('25.0%', left - 26, yMid + 4);
+
+      ctx.restore();
     }
   };
 
-  // Inicializador de todos los gráficos de la pestaña
+  // Función para determinar el cuadrante de un punto
+  function getPointQuadrant(x, y) {
+    if (x <= UMBRAL_COLA && y > UMBRAL_RECHAZO) return 'Q1: Filtro Rápido & Riguroso';
+    if (x > UMBRAL_COLA && y > UMBRAL_RECHAZO) return 'Q2: Zona Crítica de Retrabajo';
+    if (x <= UMBRAL_COLA && y <= UMBRAL_RECHAZO) return 'Q3: Excelencia Operativa (FTR)';
+    return 'Q4: Congestión por Capacidad';
+  }
+
+  // Inicialización del gráfico
   window.initCausalidadCharts = function() {
     if (typeof Chart === 'undefined') return;
 
-    // Paleta de colores consistente con la aplicación
-    const colors = {
-      blue: '#2563eb',
-      emerald: '#059669',
-      amber: '#d97706',
-      rose: '#e11d48',
-      violet: '#7c3aed',
-      slate: '#64748b'
+    const ctxScatter = document.getElementById('chartScatterColaRechazo');
+    if (!ctxScatter) return;
+
+    if (scatterChartInstance) {
+      scatterChartInstance.destroy();
+    }
+
+    const regColors = {
+      'CENTRAL': { border: '#2563eb', bg: 'rgba(37, 99, 235, 0.75)' },
+      'OCCIDENTE': { border: '#059669', bg: 'rgba(5, 150, 105, 0.75)' },
+      'NORORIENTE': { border: '#d97706', bg: 'rgba(217, 119, 6, 0.75)' },
+      'SUR': { border: '#7c3aed', bg: 'rgba(124, 58, 237, 0.75)' }
     };
 
-    // 1. GRÁFICO: EMBUDO DE TRAZABILIDAD
-    const ctxFlujo = document.getElementById('chartFlujoEmbudo');
-    if (ctxFlujo && !Chart.getChart('chartFlujoEmbudo')) {
-      new Chart(ctxFlujo, {
-        type: 'bar',
-        data: {
-          labels: ['1. Ingreso Inicial', '2A. FTR Limpio', '2B. Observadas', '3A. Subsanadas', '3B. Deserción'],
-          datasets: [{
-            label: 'Volumen de Expedientes',
-            data: [
-              window.__flowData.totalIngresos,
-              window.__flowData.ftr,
-              window.__flowData.primerRechazo,
-              window.__flowData.subsanadas,
-              window.__flowData.desercion
-            ],
-            backgroundColor: [
-              '#3b82f6', // blue
-              '#10b981', // emerald
-              '#f59e0b', // amber
-              '#0284c7', // light blue
-              '#f43f5e'  // rose
-            ],
-            borderRadius: 8,
-            borderSkipped: false,
-            barThickness: 28
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  const val = ctx.parsed.x || 0;
-                  const pct = ((val / window.__flowData.totalIngresos) * 100).toFixed(1);
-                  return ` ${val.toLocaleString()} expedientes (${pct}% del ingreso inicial)`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              grid: { color: 'rgba(226, 232, 240, 0.6)' },
-              ticks: {
-                callback: (v) => `${(v / 1000).toFixed(0)}k`,
-                font: { size: 10 }
-              }
-            },
-            y: {
-              grid: { display: false },
-              ticks: { font: { size: 11, weight: 'bold' }, color: '#334155' }
-            }
-          }
-        }
-      });
-    }
+    const targetRegions = window.__currentScatterRegion === 'TODAS'
+      ? ['CENTRAL', 'OCCIDENTE', 'NORORIENTE', 'SUR']
+      : [window.__currentScatterRegion];
 
-    // 3. GRÁFICO: DISPERSIÓN (ESPERA EN COLA VS RECHAZO)
-    const ctxScatter = document.getElementById('chartScatterColaRechazo');
-    if (ctxScatter && !Chart.getChart('chartScatterColaRechazo')) {
-      const regColors = {
-        'CENTRAL': '#2563eb',
-        'OCCIDENTE': '#059669',
-        'NORORIENTE': '#d97706',
-        'SUR': '#7c3aed'
+    const scatterDatasets = targetRegions.map(reg => {
+      const pts = (window.__scatterPoints || [])
+        .filter(p => p.region === reg)
+        .map(p => ({
+          x: p.x,
+          y: p.y,
+          r: Math.max(5, Math.min(18, Math.sqrt(p.vol) / 7.5)),
+          vol: p.vol,
+          ges: p.ges,
+          mes: p.mes,
+          quadrant: getPointQuadrant(p.x, p.y)
+        }));
+
+      return {
+        label: reg,
+        data: pts,
+        backgroundColor: regColors[reg].bg,
+        borderColor: regColors[reg].border,
+        borderWidth: 1.5,
+        hoverBorderWidth: 3,
+        hoverRadius: (ctx) => (ctx.raw?.r || 8) + 3
       };
+    });
 
-      const scatterDatasets = ['CENTRAL', 'OCCIDENTE', 'NORORIENTE', 'SUR'].map(reg => {
-        const pts = (window.__scatterPoints || [])
-          .filter(p => p.region === reg)
-          .map(p => ({
-            x: p.x,
-            y: p.y,
-            r: Math.max(4, Math.min(14, Math.sqrt(p.vol) / 9)),
-            vol: p.vol,
-            ges: p.ges,
-            mes: p.mes
-          }));
-
-        return {
-          label: reg,
-          data: pts,
-          backgroundColor: regColors[reg] + 'aa',
-          borderColor: regColors[reg],
-          borderWidth: 1.5
-        };
-      });
-
-      new Chart(ctxScatter, {
-        type: 'bubble',
-        data: { datasets: scatterDatasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { boxWidth: 8, font: { size: 10 } }
-            },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  const raw = ctx.raw;
-                  return [
-                    ` ${ctx.dataset.label} - ${raw.ges || 'Gestión'} (Mes ${raw.mes})`,
-                    ` Cola Promedio: ${raw.x}h hábiles`,
-                    ` Tasa de Rechazo: ${raw.y}%`,
-                    ` Volumen Atendido: ${raw.vol ? raw.vol.toLocaleString() : 'N/A'} casos`
-                  ];
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              title: { display: true, text: 'Tiempo Promedio en Cola (Horas)', font: { size: 10, weight: 'bold' } },
-              grid: { color: 'rgba(226, 232, 240, 0.6)' },
-              ticks: { callback: (v) => `${v}h`, font: { size: 10 } }
-            },
-            y: {
-              title: { display: true, text: 'Tasa de Rechazo Emitida (%)', font: { size: 10, weight: 'bold' } },
-              grid: { color: 'rgba(226, 232, 240, 0.6)' },
-              ticks: { callback: (v) => `${v}%`, font: { size: 10 } }
-            }
-          }
-        }
-      });
-    }
-
-    // 4. GRÁFICO: PENALIZACIÓN DE CICLO POR CAUSAL DE RETRABAJO (HORAS HÁBILES)
-    const ctxPenalizacion = document.getElementById('chartPenalizacionCiclo');
-    if (ctxPenalizacion && !Chart.getChart('chartPenalizacionCiclo')) {
-      new Chart(ctxPenalizacion, {
-        type: 'bar',
-        data: {
-          labels: [
-            '1. FTR Limpio (Sin Incidencias)',
-            '2. Subsanación: Inconsistencia Datos',
-            '3. Subsanación: Video Confirmación',
-            '4. Subsanación: Documento DPI',
-            '5. 3ª Ronda Crítica (Límite Legal)'
-          ],
-          datasets: [{
-            label: 'Tiempo Promedio de Resolución (Horas Hábiles)',
-            data: [18.4, 76.1, 112.5, 181.9, 312.4],
-            backgroundColor: [
-              '#10b981', // emerald
-              '#3b82f6', // blue
-              '#f59e0b', // amber
-              '#f43f5e', // rose
-              '#881337'  // dark red / crimson
-            ],
-            borderRadius: 6,
-            barThickness: 22
-          }]
+    scatterChartInstance = new Chart(ctxScatter, {
+      type: 'bubble',
+      data: { datasets: scatterDatasets },
+      plugins: [quadrantsPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: { top: 25, bottom: 25, left: 20, right: 25 }
         },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  const val = ctx.parsed.x || 0;
-                  const dias = (val / 8).toFixed(1);
-                  const mult = (val / 18.4).toFixed(1);
-                  return [
-                    ` Duración: ${val}h hábiles (~${dias} días laborales)`,
-                    ` Factor de Retraso: ${mult}x respecto al FTR limpio`
-                  ];
-                }
-              }
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              boxWidth: 10,
+              boxHeight: 10,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              font: { size: 11, weight: 'bold', family: 'Inter, sans-serif' },
+              color: '#334155'
             }
           },
-          scales: {
-            x: {
-              title: { display: true, text: 'Horas Hábiles Acumuladas hasta la Revisión Final', font: { size: 10, weight: 'bold' } },
-              grid: { color: 'rgba(226, 232, 240, 0.6)' },
-              ticks: { callback: (v) => `${v}h`, font: { size: 10 } }
-            },
-            y: {
-              grid: { display: false },
-              ticks: { font: { size: 10, weight: '600' }, color: '#334155' }
+          tooltip: {
+            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+            titleFont: { size: 12, weight: 'bold', family: 'Inter, sans-serif' },
+            bodyFont: { size: 11, family: 'Inter, sans-serif' },
+            padding: 12,
+            cornerRadius: 10,
+            borderColor: 'rgba(255, 255, 255, 0.15)',
+            borderWidth: 1,
+            callbacks: {
+              title: (ctx) => {
+                const raw = ctx[0]?.raw;
+                return `${raw?.ges || 'Trámite'} · Región ${ctx[0]?.dataset?.label}`;
+              },
+              label: (ctx) => {
+                const raw = ctx.raw;
+                return [
+                  ` Cuadrante: ${raw.quadrant}`,
+                  ` Espera en Cola: ${raw.x}h hábiles`,
+                  ` Tasa de Rechazo: ${raw.y}%`,
+                  ` Volumen Atendido: ${raw.vol ? raw.vol.toLocaleString() : 'N/A'} gestiones`,
+                  ` Periodo: Mes ${raw.mes}`
+                ];
+              }
             }
           }
-        }
-      });
-    }
-
-    // 5. GRÁFICO: LATENCIA DE SUBSANACIÓN
-    const ctxLatencia = document.getElementById('chartLatenciaSubsanacion');
-    if (ctxLatencia && !Chart.getChart('chartLatenciaSubsanacion')) {
-      new Chart(ctxLatencia, {
-        type: 'bar',
-        data: {
-          labels: ['< 8h (Mismo día)', '8h - 24h (Día +1)', '24h - 72h (Día 2-3)', '3 - 5 Días', '> 5 Días (Riesgo)'],
-          datasets: [{
-            label: '% Contribuyentes que Reingresan',
-            data: [38.4, 27.1, 18.5, 9.8, 6.2],
-            backgroundColor: [
-              '#10b981', // emerald
-              '#3b82f6', // blue
-              '#8b5cf6', // violet
-              '#f59e0b', // amber
-              '#f43f5e'  // rose
-            ],
-            borderRadius: 6,
-            barThickness: 24
-          }]
         },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => ` ${ctx.parsed.x}% de los expedientes subsanados`
-              }
+        scales: {
+          x: {
+            min: 0,
+            max: 110,
+            title: {
+              display: true,
+              text: 'Tiempo Promedio en Cola de Asignación (Horas Hábiles de 8h)',
+              font: { size: 11, weight: 'bold', family: 'Inter, sans-serif' },
+              color: '#475569',
+              padding: { top: 12 }
+            },
+            grid: {
+              color: 'rgba(226, 232, 240, 0.7)'
+            },
+            ticks: {
+              callback: (v) => `${v}h`,
+              font: { size: 10, family: 'monospace' },
+              color: '#64748b'
             }
           },
-          scales: {
-            x: {
-              max: 50,
-              grid: { color: 'rgba(226, 232, 240, 0.6)' },
-              ticks: { callback: (v) => `${v}%`, font: { size: 10 } }
+          y: {
+            min: 0,
+            max: 50,
+            title: {
+              display: true,
+              text: 'Tasa de Rechazo / Observación Emitida (%)',
+              font: { size: 11, weight: 'bold', family: 'Inter, sans-serif' },
+              color: '#475569',
+              padding: { bottom: 12 }
             },
-            y: {
-              grid: { display: false },
-              ticks: { font: { size: 10, weight: '600' }, color: '#334155' }
+            grid: {
+              color: 'rgba(226, 232, 240, 0.7)'
+            },
+            ticks: {
+              callback: (v) => `${v}%`,
+              font: { size: 10, family: 'monospace' },
+              color: '#64748b'
             }
           }
         }
-      });
+      }
+    });
+  };
+
+  // Filtrado de región interactivo
+  window.filterScatterRegion = function(region) {
+    window.__currentScatterRegion = region;
+    
+    // Actualizar estilos de los botones
+    document.querySelectorAll('.scatter-reg-btn').forEach(btn => {
+      btn.className = 'scatter-reg-btn px-3 py-1.5 text-xs font-medium rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer';
+    });
+
+    const activeBtn = document.getElementById(`btnScatter${region}`);
+    if (activeBtn) {
+      activeBtn.className = 'scatter-reg-btn px-3 py-1.5 text-xs font-bold rounded-xl bg-white text-blue-700 shadow-xs transition-all cursor-pointer';
     }
 
-    if (typeof lucide !== 'undefined') {
-      lucide.createIcons();
+    if (typeof window.initCausalidadCharts === 'function') {
+      window.initCausalidadCharts();
     }
   };
 
-  // Inicializar al cargar el DOM o si ya está listo
+  // Inicializar al cargar el DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(window.initCausalidadCharts, 100);

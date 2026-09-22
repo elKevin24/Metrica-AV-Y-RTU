@@ -7,6 +7,7 @@ import KpiCard from '../components/KpiCard.astro';
 import ChartCard from '../components/ChartCard.astro';
 import ForensicView from '../components/ForensicView';
 import CausalidadView from '../components/CausalidadView.astro';
+import ConclusionesView from '../components/ConclusionesView.astro';
 import RechazosTrendChart from '../components/RechazosTrendChart';
 
 import fs from 'node:fs';
@@ -1584,6 +1585,13 @@ const formatMinutesToTime = (minDecimal: number) => {
             <ForensicView client:load />
           </div>
 
+          <!-- ============================================== -->
+          <!-- TAB 6: CONCLUSIONES & DICTAMEN ESTRATÉGICO    -->
+          <!-- ============================================== -->
+          <div id="tab-conclusiones" class="tab-content space-y-6">
+            <ConclusionesView />
+          </div>
+
         </div>
       </main>
 
@@ -2061,7 +2069,8 @@ const formatMinutesToTime = (minDecimal: number) => {
         'tab-tiempos': 'Tiempos & SLAs (8h)',
         'tab-revisores': 'Revisores & Atenciones',
         'tab-relaciones': 'Causalidad & Flujos',
-        'tab-casos': 'Auditoría Forense'
+        'tab-casos': 'Auditoría Forense',
+        'tab-conclusiones': 'Conclusiones & Estrategia'
       };
 
       window.switchTab = function(targetId, shouldScroll = true) {
@@ -2226,7 +2235,7 @@ const formatMinutesToTime = (minDecimal: number) => {
           return;
         }
         if (!['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
-          const map = { '1': 'tab-general', '2': 'tab-tiempos', '3': 'tab-revisores', '4': 'tab-relaciones', '5': 'tab-casos' };
+          const map = { '1': 'tab-general', '2': 'tab-tiempos', '3': 'tab-revisores', '4': 'tab-relaciones', '5': 'tab-casos', '6': 'tab-conclusiones' };
           if (map[e.key]) window.switchTab(map[e.key], true);
         }
       });
