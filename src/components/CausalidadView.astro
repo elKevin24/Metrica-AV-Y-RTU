@@ -296,7 +296,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
   </div>
 
   <!-- FILA 3: MATRIZ CAUSAL (HEATMAP) Y DISPERSIÓN FORENSE (SCATTER PLOT) -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+  <div class="space-y-5">
     
     <!-- TARJETA A: MATRIZ CAUSAL DE RECHAZO (HEATMAP + COMPARATIVA) -->
     <div id="matrizCausalCard" class="glass-card bg-white/75 backdrop-blur-xl border border-white/60 rounded-2xl p-5 shadow-xs space-y-4">
@@ -398,10 +398,6 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
         </table>
       </div>
 
-      <!-- GRÁFICO APILADO 100% -->
-      <div class="h-44 relative w-full pt-1">
-        <canvas id="chartCausalComparativa"></canvas>
-      </div>
     </div>
 
     <!-- TARJETA B: DISPERSIÓN FORENSE (SCATTER PLOT COLA VS RECHAZO) -->
@@ -424,7 +420,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
       </div>
 
       <!-- SCATTER CANVAS -->
-      <div class="h-64 relative w-full">
+      <div class="h-80 relative w-full">
         <canvas id="chartScatterColaRechazo"></canvas>
       </div>
 
@@ -674,72 +670,6 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
             y: {
               grid: { display: false },
               ticks: { font: { size: 11, weight: 'bold' }, color: '#334155' }
-            }
-          }
-        }
-      });
-    }
-
-    // 2. GRÁFICO: DISTRIBUCIÓN CAUSAL APILADA (100%)
-    const ctxCausal = document.getElementById('chartCausalComparativa');
-    if (ctxCausal && !Chart.getChart('chartCausalComparativa')) {
-      new Chart(ctxCausal, {
-        type: 'bar',
-        data: {
-          labels: ['Central', 'Occidente', 'Nororiente', 'Sur'],
-          datasets: [
-            {
-              label: 'Documentación DPI',
-              data: [80.8, 74.8, 75.7, 75.9],
-              backgroundColor: '#f43f5e'
-            },
-            {
-              label: 'Video Confirmación',
-              data: [11.1, 15.2, 12.8, 11.1],
-              backgroundColor: '#f59e0b'
-            },
-            {
-              label: 'Otros Formatos',
-              data: [7.3, 8.1, 8.7, 12.3],
-              backgroundColor: '#94a3b8'
-            },
-            {
-              label: 'Datos Inconsistentes',
-              data: [0.5, 1.2, 2.1, 0.2],
-              backgroundColor: '#3b82f6'
-            },
-            {
-              label: 'Representación Legal',
-              data: [0.3, 0.6, 0.5, 0.0],
-              backgroundColor: '#8b5cf6'
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { boxWidth: 10, font: { size: 10 } }
-            },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
-              }
-            }
-          },
-          scales: {
-            x: {
-              stacked: true,
-              grid: { display: false },
-              ticks: { font: { size: 11, weight: '600' } }
-            },
-            y: {
-              stacked: true,
-              max: 100,
-              grid: { color: 'rgba(226, 232, 240, 0.6)' },
-              ticks: { callback: (v) => `${v}%`, font: { size: 10 } }
             }
           }
         }
