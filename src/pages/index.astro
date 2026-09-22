@@ -2914,14 +2914,6 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const mesCompleto = item ? (monthNames[item.mes] || item.mes) : '';
                     return item ? `📅 ${item.semana} — Mes de ${mesCompleto}` : '';
                   },
-                  beforeBody: function(items) {
-                    if (!items || items.length === 0) return '';
-                    const idx = items[0].dataIndex;
-                    const item = (currentFilteredCapacidadData || capacidadData)[idx];
-                    if (!item) return '';
-                    const cap = item.capacidad != null ? item.capacidad.toLocaleString() : 'N/D';
-                    return `👥 Capacidad Semanal: ${item.revisores} analistas × 100/d = ${cap} exp/sem`;
-                  },
                   label: function(context) {
                     const rawVal = context.raw != null ? context.raw : 0;
                     const idx = context.dataIndex;
@@ -2929,33 +2921,33 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const atendidas = item ? (item.atendidas || 0) : 0;
 
                     if (context.dataset.yAxisID === 'y1') {
-                      return ` 📈 Cobertura de Demanda: ${typeof rawVal === 'number' ? rawVal.toFixed(1) : rawVal}%`;
+                      return ` 📈 Cobertura: ${typeof rawVal === 'number' ? rawVal.toFixed(1) : rawVal}%`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Demanda')) {
-                      return ` 🔷 Demanda Total Recibida: ${rawVal.toLocaleString()} solicitudes`;
+                      return ` 🔷 Demanda: ${rawVal.toLocaleString()} solicitudes`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Sostenible')) {
                       const rev = item ? item.revisores : 'N/D';
-                      return ` ➖ Capacidad Semanal (${rev} analistas): ${rawVal.toLocaleString()} exp/sem`;
+                      return ` ➖ Cap. Semanal (${rev} rev): ${rawVal.toLocaleString()} exp`;
                     }
                     if (context.dataset.label && (context.dataset.label.includes('Teórica') || context.dataset.label.includes('55,000'))) {
-                      return ` 🎯 Capacidad Teórica Plena (110 analistas): ${rawVal.toLocaleString()} exp/sem`;
+                      return ` 🎯 Cap. Teórica (110 rev): 55,000 exp`;
                     }
                     if (context.dataset.label && (context.dataset.label.includes('1ª Vuelta') || context.dataset.label.includes('Directas'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
-                      return ` 🟩 1ª Vuelta (Directas): ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
+                      return ` 🟩 1ª Vuelta: ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
                     if (context.dataset.label && (context.dataset.label.includes('Retrabajo') || context.dataset.label.includes('Subsanaciones'))) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
-                      return ` 🟧 Retrabajo (Subsanaciones): ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
+                      return ` 🟧 Retrabajo: ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Aprobaciones')) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
-                      return ` 🟩 Aprobaciones Emitidas: ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
+                      return ` 🟩 Aprobadas: ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
                     if (context.dataset.label && context.dataset.label.includes('Rechazos')) {
                       const pct = atendidas > 0 ? ((rawVal / atendidas) * 100).toFixed(1) : '0';
-                      return ` 🟥 Rechazos Emitidos: ${rawVal.toLocaleString()} exp (${pct}% del atendido)`;
+                      return ` 🟥 Rechazos: ${rawVal.toLocaleString()} exp (${pct}%)`;
                     }
                     const lbl = context.dataset.label || 'Valor';
                     return ` ${lbl}: ${rawVal.toLocaleString()} exp.`;
@@ -2966,26 +2958,14 @@ const formatMinutesToTime = (minDecimal: number) => {
                     const item = (currentFilteredCapacidadData || capacidadData)[idx];
                     if (!item) return '';
                     const atendidas = item.atendidas || 0;
-                    const reingreso = item.atendidas_reingreso || 0;
-                    const rechazos = item.rechazos || 0;
                     const cap = item.capacidad || 55000;
-                    const pctRetrabajo = atendidas > 0 ? ((reingreso / atendidas) * 100).toFixed(1) : '0';
-                    const pctRechazo = atendidas > 0 ? ((rechazos / atendidas) * 100).toFixed(1) : '0';
                     const holgura = cap - atendidas;
                     const holguraStr = holgura >= 0 ? `+${holgura.toLocaleString()}` : `${holgura.toLocaleString()}`;
-                    const pctCap = cap > 0 ? ((atendidas / cap) * 100).toFixed(1) : '0';
+                    const cob = item.cobertura != null ? item.cobertura.toFixed(1) : '0';
 
-                    if (currentCapacidadSegmentation === 'dictamen') {
-                      return `─────────────────────────────\n` +
-                             `Total Dictaminado: ${atendidas.toLocaleString()} expedientes\n` +
-                             `🚫 Tasa de Rechazos: ${pctRechazo}% (${rechazos.toLocaleString()} exp)\n` +
-                             `🛡️ Holgura de Capacidad: ${holguraStr} exp (${pctCap}% utilizada)`;
-                    } else {
-                      return `─────────────────────────────\n` +
-                             `Total Atendido: ${atendidas.toLocaleString()} expedientes\n` +
-                             `⚠️ Esfuerzo en Retrabajo: ${pctRetrabajo}% (${reingreso.toLocaleString()} exp)\n` +
-                             `🛡️ Holgura de Capacidad: ${holguraStr} exp (${pctCap}% utilizada)`;
-                    }
+                    return `─────────────────────────────\n` +
+                           `Total Atendido: ${atendidas.toLocaleString()} expedientes\n` +
+                           `Cobertura Demanda: ${cob}% | Holgura Planta: ${holguraStr} exp`;
                   }
                 }
               }
