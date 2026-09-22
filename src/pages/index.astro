@@ -1311,33 +1311,33 @@ const formatMinutesToTime = (minDecimal: number) => {
                 <canvas id="chartCapacidadSemanal"></canvas>
               </div>
 
-              <!-- Leyenda Descriptiva Unificada en Barra Horizontal Única -->
-              <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs">
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-md bg-emerald-500 shrink-0"></span>
-                  <span class="font-bold text-slate-800 text-[11px]">1ª Vuelta (Directas):</span>
+              <!-- Leyenda Descriptiva Unificada en 1 Sola Línea Horizontal (4 Columnas) -->
+              <div class="grid grid-cols-4 gap-2 p-2 bg-slate-50/90 border border-slate-200/80 rounded-xl text-xs">
+                <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">1ª Vuelta:</span>
                   <span class="font-mono font-bold text-emerald-800 text-xs">135,628</span>
-                  <span class="text-[10px] text-slate-400 font-medium">(74.1%)</span>
+                  <span class="text-[10px] text-slate-400 font-medium hidden sm:inline">(74%)</span>
                 </div>
 
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-md bg-amber-500 shrink-0"></span>
-                  <span class="font-bold text-slate-800 text-[11px]">Retrabajo Subsanado:</span>
+                <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Retrabajo:</span>
                   <span class="font-mono font-bold text-amber-800 text-xs">47,426</span>
-                  <span class="text-[10px] text-slate-400 font-medium">(25.9%)</span>
+                  <span class="text-[10px] text-slate-400 font-medium hidden sm:inline">(26%)</span>
                 </div>
 
-                <div class="flex items-center gap-2">
-                  <span class="w-3.5 h-1 rounded-full bg-blue-600 shrink-0"></span>
-                  <span class="font-bold text-slate-800 text-[11px]">Demanda Recibida:</span>
+                <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
+                  <span class="w-3 h-1 rounded-full bg-blue-600 shrink-0"></span>
+                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Demanda:</span>
                   <span class="font-mono font-bold text-blue-800 text-xs">228,714</span>
                 </div>
 
-                <div class="flex items-center gap-2">
-                  <span class="w-3.5 h-0.5 bg-indigo-600 border-t border-dashed shrink-0"></span>
-                  <span class="font-bold text-slate-800 text-[11px]">Capacidad Planta:</span>
+                <div class="flex items-center gap-1.5 justify-center bg-white py-1.5 px-1.5 rounded-lg border border-slate-200/70 shadow-2xs truncate">
+                  <span class="w-3 h-0.5 bg-indigo-600 border-t border-dashed shrink-0"></span>
+                  <span class="font-bold text-slate-700 text-[11px] whitespace-nowrap">Capacidad:</span>
                   <span class="font-mono font-bold text-indigo-800 text-xs">55,000</span>
-                  <span class="text-[10px] text-slate-400 font-medium">exp/sem</span>
+                  <span class="text-[10px] text-slate-400 font-medium hidden sm:inline">/sem</span>
                 </div>
               </div>
             </div>
@@ -1973,7 +1973,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (targetId === 'tab-relaciones') {
           if (typeof initCausalidadCharts === 'function') initCausalidadCharts();
           setTimeout(() => {
-            ['chartFlujoEmbudo', 'chartScatterColaRechazo', 'chartScatterEsfuerzo', 'chartPenalizacionCiclo', 'chartLatenciaSubsanacion'].forEach(id => {
+            ['chartFlujoEmbudo', 'chartScatterColaRechazo', 'chartPenalizacionCiclo', 'chartLatenciaSubsanacion'].forEach(id => {
               const ch = Chart.getChart(id);
               if (ch) ch.resize();
             });
@@ -2658,7 +2658,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (!ctx) return;
         if (capacidadChartInstance) return;
 
-        const labels = capacidadData.map(d => d.semana);
+        const labels = capacidadData.map(d => d.semana.replace('Sem ', 'S'));
         const dataDemanda = capacidadData.map(d => d.demanda);
         const dataCapacidad = capacidadData.map(d => d.capacidad);
         const dataAtendidasPrimera = capacidadData.map(d => d.atendidas_primera);
@@ -2964,7 +2964,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                 stacked: true,
                 grid: { display: false },
                 ticks: {
-                  font: { size: 9.5, weight: '600' },
+                  font: { size: 9, weight: '700', family: 'Inter, system-ui, sans-serif' },
                   color: '#475569',
                   maxRotation: 0,
                   minRotation: 0,
@@ -2974,7 +2974,7 @@ const formatMinutesToTime = (minDecimal: number) => {
             },
             layout: {
               padding: {
-                bottom: 24,
+                bottom: 26,
                 left: 4,
                 right: 4
               }
@@ -2991,7 +2991,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         const data = currentFilteredCapacidadData || capacidadData;
         const scale = currentCapacidadScale || 1;
 
-        capacidadChartInstance.data.labels = data.map(d => d.semana);
+        capacidadChartInstance.data.labels = data.map(d => d.semana.replace('Sem ', 'S'));
         capacidadChartInstance.data.datasets[0].data = data.map(d => Math.round(d.demanda * scale));
         capacidadChartInstance.data.datasets[1].data = data.map(d => Math.min(115, d.cobertura));
         capacidadChartInstance.data.datasets[2].data = data.map(d => Math.round(d.atendidas_primera * scale));
