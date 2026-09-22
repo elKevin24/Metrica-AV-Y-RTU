@@ -573,14 +573,14 @@
 
     // 4. Rechazo
     if (c.cr === 1 && c.frz) {
-      html += tlStep('rose', 'Dictamen de Rechazo', fmtDate(c.frz), c.m ? `Motivo: ${c.m}` : 'Sin motivo registrado');
+      html += tlStep('rose', 'Revisión de Rechazo', fmtDate(c.frz), c.m ? `Motivo: ${c.m}` : 'Sin motivo registrado');
     }
 
     // 5. Finalización
     if (c.ff) {
-      let fc = 'emerald', ft = 'Dictamen Final: Aprobado';
-      if (c.e && c.e.includes('RECHAZADA')) { fc = 'rose'; ft = 'Dictamen Final: Rechazado'; }
-      else if (c.e && c.e.includes('CANCELADA')) { fc = 'amber'; ft = 'Dictamen Final: Cancelado'; }
+      let fc = 'emerald', ft = 'Revisión Final: Aprobado';
+      if (c.e && c.e.includes('RECHAZADA')) { fc = 'rose'; ft = 'Revisión Final: Rechazado'; }
+      else if (c.e && c.e.includes('CANCELADA')) { fc = 'amber'; ft = 'Revisión Final: Cancelado'; }
       else if (c.e === 'NO CONFIRMADA') { fc = 'slate'; ft = 'Sin Confirmar'; }
       else if (c.e === 'CREADA') { fc = 'blue'; ft = 'Solo Creada'; }
 

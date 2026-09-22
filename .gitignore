@@ -8,3 +8,7 @@ dist/
 src/data/
 public/data/forensic/
 public/data/forensic_cases.json
+__pycache__/
+*.pyc
+.venv/
+

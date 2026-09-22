@@ -8,6 +8,13 @@
     "total_cal_horas": 83.41,
     "total_hab_horas": 19.15
   },
+  "bandas_velocidad": {
+    "RAPIDA (15s-2m)": 107058,
+    "SIN_DATO": 46784,
+    "ESTANDAR (2m-10m)": 25357,
+    "EXTENSA (>10m)": 3104,
+    "FLASH (<15s)": 109
+  },
   "estados": {
     "APROBADA": 108229,
     "NO CONFIRMADA": 32380,

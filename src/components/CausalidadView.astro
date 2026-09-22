@@ -76,7 +76,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
             Análisis Causal, Trazabilidad & Flujos de Retrabajo
           </h3>
           <p class="text-[11px] text-slate-500">
-            Relaciones causa-efecto: del ingreso inicial al dictamen, impacto de causales por región y la presión de reingresos sobre la capacidad.
+            Relaciones causa-efecto: del ingreso inicial a la revisión, impacto de causales por región y la presión de reingresos sobre la capacidad.
           </p>
         </div>
       </div>
@@ -211,7 +211,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
         <div class="text-[10px] text-slate-400 font-mono">Distribución: 1ª asignación a revisor</div>
       </div>
 
-      <!-- NODO 2: PRIMER DICTAMEN (BIFURCACIÓN) -->
+      <!-- NODO 2: PRIMERA REVISIÓN (BIFURCACIÓN) -->
       <div class="space-y-3">
         <!-- Rama A: FTR -->
         <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/70 shadow-2xs">
@@ -402,7 +402,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
             Dispersión: Tiempo en Cola vs. Tasa de Rechazo
           </h4>
           <p class="text-[11px] text-slate-500 mt-0.5">
-            Correlación entre congestión de bandeja (horas en espera) y el rigor del dictamen.
+            Correlación entre congestión de bandeja (horas en espera) y el rigor de la revisión.
           </p>
         </div>
         <div class="flex items-center gap-2">
@@ -856,7 +856,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
           },
           scales: {
             x: {
-              title: { display: true, text: 'Horas Hábiles Acumuladas hasta Dictamen Final', font: { size: 10, weight: 'bold' } },
+              title: { display: true, text: 'Horas Hábiles Acumuladas hasta la Revisión Final', font: { size: 10, weight: 'bold' } },
               grid: { color: 'rgba(226, 232, 240, 0.6)' },
               ticks: { callback: (v) => `${v}h`, font: { size: 10 } }
             },

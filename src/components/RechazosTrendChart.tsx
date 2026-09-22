@@ -139,7 +139,7 @@ export const RechazosTrendChart: React.FC<Props> = ({ initialData = DEFAULT_SEMA
             </div>
 
             <div className="flex items-center justify-between text-slate-300 border-t border-slate-800/80 pt-1">
-              <span className="text-slate-400">Total Dictámenes:</span>
+              <span className="text-slate-400">Total Revisiones:</span>
               <span className="font-mono font-semibold text-slate-200">{fmt(dataPoint.atendidas)}</span>
             </div>
 
@@ -180,7 +180,7 @@ export const RechazosTrendChart: React.FC<Props> = ({ initialData = DEFAULT_SEMA
             Tendencia Temporal de Rechazos (Auditoría Semanal)
           </h3>
           <p className="text-xs text-slate-500 max-w-3xl">
-            Comportamiento de los <strong>74,824 dictámenes de rechazo</strong> a lo largo de las semanas evaluadas, identificando picos de inconsistencias en expedientes y la estabilización del criterio revisor.
+            Comportamiento de los <strong>74,824 revisiones de rechazo</strong> a lo largo de las semanas evaluadas, identificando picos de inconsistencias en expedientes y la estabilización del criterio revisor.
           </p>
         </div>
 
@@ -263,7 +263,7 @@ export const RechazosTrendChart: React.FC<Props> = ({ initialData = DEFAULT_SEMA
           <div className="text-lg sm:text-xl font-black text-rose-900 font-mono mt-0.5" id="statRechazosTotal">
             {fmt(kpis.totalRechazos)}
           </div>
-          <div className="text-[10px] text-rose-700 mt-0.5">Dictámenes desfavorables</div>
+          <div className="text-[10px] text-rose-700 mt-0.5">Revisiones desfavorables</div>
         </div>
 
         <div className="p-3 bg-amber-50/70 border border-amber-200/70 rounded-xl backdrop-blur-xs">

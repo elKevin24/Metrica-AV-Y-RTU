@@ -157,7 +157,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   subtitle="Observadas con causal o motivo formal"
                   icon="x-circle"
                   borderColor="amber"
-                  trendText="Dictámenes adversos en bandeja"
+                  trendText="Revisiones adversos en bandeja"
                   trendType="warning"
                   valueId="kpiRechazos"
                   badgeId="kpiRechazosBadge"
@@ -251,7 +251,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     Distribución Global de Desenlace
                   </h3>
                   <p class="text-[11px] text-slate-500 mt-0.5">
-                    Primer dictamen de evaluadores humanos: Aprobación directa a la 1ª vez (FTR) vs Expedientes con Rechazo
+                    Primera revisión de los revisores: Aprobación directa a la 1ª vez (FTR) vs Expedientes con Rechazo
                   </p>
                 </div>
                 <div class="flex items-center gap-2">
@@ -334,7 +334,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               </div>
             </div>
 
-              <!-- SECCIÓN FORENSE: ÁRBOL DE DESGLOSE DE LOS 183,054 DICTÁMENES HUMANOS -->
+              <!-- SECCIÓN FORENSE: ÁRBOL DE DESGLOSE DE LOS 183,054 REVISIONES HUMANOS -->
               <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-6 transition-all duration-300">
                 
                 <!-- Encabezado con Contexto Diferenciador -->
@@ -349,7 +349,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     </div>
                     <h3 class="text-sm sm:text-base font-bold text-slate-800 tracking-tight mt-1 flex items-center gap-2">
                       <i data-lucide="git-fork" class="w-4 h-4 text-indigo-600"></i>
-                      Árbol de Decisión: Desglose de los 183,054 Dictámenes Humanos
+                      Árbol de Decisión: Desglose de los 183,054 Revisiones Humanos
                     </h3>
                     <p class="text-xs text-slate-500 mt-0.5 max-w-3xl">
                       Flujo resolutivo de fondo ejecutado por los auditores fiscales: de la carga global emitida a las ramas de aprobación y rechazo, concluyendo en el destino final de cada trámite.
@@ -367,11 +367,11 @@ const formatMinutesToTime = (minDecimal: number) => {
                 <div class="bg-white/40 backdrop-blur-md border border-white/80 rounded-2xl p-4 sm:p-6 shadow-xs">
                   
                   <!-- ============================================== -->
-                  <!-- NIVEL 1: NODO RAÍZ (TOTAL DICTÁMENES HUMANOS)  -->
+                  <!-- NIVEL 1: NODO RAÍZ (TOTAL REVISIONES HUMANOS)  -->
                   <!-- ============================================== -->
                   <div class="max-w-md mx-auto bg-slate-900/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-md border border-slate-700/80 text-center relative z-10">
                     <div class="text-[10px] font-extrabold uppercase tracking-widest text-indigo-200">Nivel 1: Raíz Operativa Humana</div>
-                    <div class="text-xs font-bold text-indigo-100 uppercase mt-0.5">Total Dictámenes Emitidos</div>
+                    <div class="text-xs font-bold text-indigo-100 uppercase mt-0.5">Total Revisiones Emitidos</div>
                     <div class="text-3xl font-black font-mono tracking-tight text-white mt-1">183,054</div>
                     <div class="inline-flex items-center gap-1.5 px-3 py-0.5 mt-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/40 text-[11px] font-bold text-indigo-200 font-mono">
                       <span>100.0% Carga de Trabajo</span>
@@ -402,7 +402,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     <!-- Rama Izquierda: APROBACIÓN -->
                     <div class="bg-emerald-50/70 backdrop-blur-xs border border-emerald-300/80 rounded-2xl p-4 shadow-xs text-center relative">
                       <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800">Rama A: Desenlace Favorable</div>
-                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-0.5">Dictámenes de APROBACIÓN</h4>
+                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-0.5">Revisiones de APROBACIÓN</h4>
                       <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700 mt-1">108,230</div>
                       <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-900 border border-emerald-300/80 text-[11px] font-black font-mono mt-1">
                         59.12% de la carga (108,229 casos)
@@ -415,13 +415,13 @@ const formatMinutesToTime = (minDecimal: number) => {
                     <!-- Rama Derecha: RECHAZO -->
                     <div class="bg-rose-50/70 backdrop-blur-xs border border-rose-300/80 rounded-2xl p-4 shadow-xs text-center relative">
                       <div class="text-[10px] font-extrabold uppercase tracking-wider text-rose-800">Rama B: Fricción & Observaciones</div>
-                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-0.5">Dictámenes de RECHAZO</h4>
+                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-0.5">Revisiones de RECHAZO</h4>
                       <div class="text-2xl sm:text-3xl font-black font-mono text-rose-700 mt-1">74,824</div>
                       <span class="inline-block px-2.5 py-0.5 rounded-full bg-rose-100/90 text-rose-900 border border-rose-300/80 text-[11px] font-black font-mono mt-1">
                         40.88% de la carga (51,027 casos únicos)
                       </span>
                       <p class="text-[10px] text-slate-500 mt-1.5">
-                        74,824 dictámenes desfavorables: 51,027 en 1er rechazo + 23,797 reincidencias (1.47x por caso)
+                        74,824 revisiones desfavorables: 51,027 en 1er rechazo + 23,797 reincidencias (1.47x por caso)
                       </p>
                     </div>
 
@@ -523,7 +523,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                           <div class="text-[11px] font-bold text-amber-600 font-mono">31.8% de rechazos</div>
                         </div>
                         <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          1er dictamen de rechazo en casos que lograron corregir y pasar a Hoja 2.
+                          1ª revisión de rechazo en casos que lograron corregir y pasar a Hoja 2.
                         </p>
                       </div>
 
@@ -538,7 +538,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                           <div class="text-[11px] font-bold text-rose-600 font-mono">36.4% de rechazos</div>
                         </div>
                         <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          1er dictamen de rechazo en casos sin subsanación (deserción o caducidad).
+                          1ª revisión de rechazo en casos sin subsanación (deserción o caducidad).
                         </p>
                       </div>
 
@@ -553,7 +553,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                           <div class="text-[11px] font-bold text-purple-600 font-mono">31.8% de rechazos</div>
                         </div>
                         <p class="text-[10px] text-slate-500 mt-2 border-t border-slate-100 pt-1.5">
-                          Dictámenes de rechazo adicionales por fallas repetidas en 2ª o 3ª vuelta.
+                          Revisiones de rechazo adicionales por fallas repetidas en 2ª o 3ª vuelta.
                         </p>
                       </div>
                     </div>
@@ -563,7 +563,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <!-- Nota explicativa y cuadre matemático -->
                   <div class="mt-3.5 p-3 bg-indigo-50/70 border border-indigo-200/70 rounded-xl text-center text-[11px] text-indigo-950 font-medium backdrop-blur-xs">
                     <span class="font-bold text-indigo-950">Cuadre Matemático de Trazabilidad (Sin Fuga de Datos):</span>
-                    La suma de la Rama B cuadra al 100%: <strong>23,823</strong> (casos que subsanaron) + <strong>27,204</strong> (casos sin subsanar) = <strong>51,027</strong> expedientes observados en su primer intento. Al sumar los <strong>23,797</strong> dictámenes de reincidencia (segundas/terceras rondas fallidas), se alcanzan con exactitud los <strong>74,824 dictámenes de rechazo</strong> (23,823 + 27,204 + 23,797 = 74,824). Sumado a los 108,230 dictámenes de aprobación, completan los <strong>183,054 dictámenes humanos emitidos</strong>.
+                    La suma de la Rama B cuadra al 100%: <strong>23,823</strong> (casos que subsanaron) + <strong>27,204</strong> (casos sin subsanar) = <strong>51,027</strong> expedientes observados en su primer intento. Al sumar los <strong>23,797</strong> revisiones de reincidencia (segundas/terceras rondas fallidas), se alcanzan con exactitud los <strong>74,824 revisiones de rechazo</strong> (23,823 + 27,204 + 23,797 = 74,824). Sumado a los 108,230 revisiones de aprobación, completan los <strong>183,054 revisiones humanos emitidos</strong>.
                   </div>
 
                 </div>
@@ -581,14 +581,14 @@ const formatMinutesToTime = (minDecimal: number) => {
                       <div class="flex justify-between items-center text-slate-700">
                         <span class="flex items-center gap-1.5">
                           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                          Dictámenes de APROBACIÓN (Rama A)
+                          Revisiones de APROBACIÓN (Rama A)
                         </span>
                         <span class="font-mono font-bold text-emerald-700">108,230 (59.12%)</span>
                       </div>
                       <div class="flex justify-between items-center text-slate-700">
                         <span class="flex items-center gap-1.5">
                           <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                          Dictámenes de RECHAZO (Rama B)
+                          Revisiones de RECHAZO (Rama B)
                         </span>
                         <span class="font-mono font-bold text-rose-700">74,824 (40.88%)</span>
                       </div>
@@ -611,7 +611,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                         </div>
                       </div>
                       <div class="flex justify-between items-center font-bold text-slate-900 border-t border-slate-200/80 pt-1.5">
-                        <span>TOTAL DICTÁMENES EMITIDOS</span>
+                        <span>TOTAL REVISIONES EMITIDOS</span>
                         <span class="font-mono">183,054 (100.0%)</span>
                       </div>
                     </div>
@@ -732,7 +732,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               <div class="glass-card p-4 rounded-2xl relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 group">
                 <div class="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-60"></div>
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Dictamen Activo</span>
+                  <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Revisión Activa</span>
                   <span class="p-1.5 bg-indigo-50/80 text-indigo-600 rounded-lg backdrop-blur-xs">
                     <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
                   </span>
@@ -888,7 +888,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   <div>
                     <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
                       <i data-lucide="check-circle-2" class="w-4 h-4 text-indigo-600"></i>
-                      2. Tasa de Dictamen: Aprobadas vs. Rechazadas
+                      2. Tasa de Revisión: Aprobadas vs. Rechazadas
                     </h4>
                     <span class="text-[10px] text-slate-500">Efectividad resolutiva y fricción documental regional</span>
                   </div>
@@ -1520,7 +1520,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                     Auditoría Semanal de Capacidad y Atenciones
                   </h4>
                   <p class="text-[11px] text-slate-500 mt-0.5">
-                    Productividad semanal por revisor, dictámenes emitidos y balance operativo (Estándar auditado: 100 expedientes/día por revisor).
+                    Productividad semanal por revisor, revisiones emitidos y balance operativo (Estándar auditado: 100 expedientes/día por revisor).
                   </p>
                 </div>
                 <div class="text-[11px] font-mono text-slate-600 bg-white/80 px-2.5 py-1 rounded-lg border border-slate-200/80 shadow-2xs backdrop-blur-xs">
@@ -1536,7 +1536,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                       <th class="py-2.5 px-2.5 text-center text-indigo-300">Revisores Planta</th>
                       <th class="py-2.5 px-3 text-right text-indigo-300" title="Capacidad de 100 expedientes/día calculada con los revisores de planta activos cada semana">Cap. Planta Dinámica (100/d)</th>
                       <th class="py-2.5 px-3 text-right bg-slate-800/60">Demanda Total</th>
-                      <th class="py-2.5 px-3 text-right text-emerald-300">Dictámenes (1ªV + Reing)</th>
+                      <th class="py-2.5 px-3 text-right text-emerald-300">Revisiones (1ªV + Reing)</th>
                       <th class="py-2.5 px-3 text-center">Carga Asignada</th>
                       <th class="py-2.5 px-3 text-center">Ritmo Real</th>
                       <th class="py-2.5 px-3 text-right">Balance Neto</th>
@@ -1581,7 +1581,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   Picos de Demanda Inicial (Sem 02 - 04)
                 </div>
                 <p class="text-[11px] text-slate-600 leading-relaxed">
-                  En el primer mes ingresaron más de <b>20,000 gestiones semanales</b>. Los revisores alcanzaron su récord de dictámenes en Sem 03 con <b>20,411 evaluaciones</b> (90.7% de la demanda evacuada en esa semana).
+                  En el primer mes ingresaron más de <b>20,000 gestiones semanales</b>. Los revisores alcanzaron su récord de revisiones en Sem 03 con <b>20,411 evaluaciones</b> (90.7% de la demanda evacuada en esa semana).
                 </p>
               </div>
 
@@ -1591,7 +1591,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   Régimen Estable (Sem 06 - 12)
                 </div>
                 <p class="text-[11px] text-slate-600 leading-relaxed">
-                  El ritmo de evacuación se mantuvo estable entre <b>82% y 89%</b> de la demanda entrante, con una productividad sostenida de <b>11,300 dictámenes semanales</b> emitidos por el equipo.
+                  El ritmo de evacuación se mantuvo estable entre <b>82% y 89%</b> de la demanda entrante, con una productividad sostenida de <b>11,300 revisiones semanales</b> emitidos por el equipo.
                 </p>
               </div>
 
@@ -1772,7 +1772,7 @@ const formatMinutesToTime = (minDecimal: number) => {
               <div class="mt-2.5 pt-2 border-t border-rose-200/70 text-[11px] text-rose-800 leading-snug space-y-1">
                 <p>Expediente rezagado por radicación previa a fin de semana largo y ventana de remesa fiscal (44.3 jornadas de 8h).</p>
                 <div class="text-[10px] font-mono text-rose-700 bg-rose-100/50 px-2 py-0.5 rounded border border-rose-200/60">
-                  Ej. 20267AV22C8F63F: dictamen tomó solo 1m 19s
+                  Ej. 20267AV22C8F63F: revisión tomó solo 1m 19s
                 </div>
               </div>
             </div>
