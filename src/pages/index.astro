@@ -3255,11 +3255,15 @@ const formatMinutesToTime = (minDecimal: number) => {
           if (valB == null) valB = 0;
 
           if (typeof valA === 'string') {
-            return revisoresSortAsc 
+            const cmp = revisoresSortAsc 
               ? valA.localeCompare(valB) 
               : valB.localeCompare(valA);
+            if (cmp !== 0) return cmp;
+          } else {
+            const diff = revisoresSortAsc ? (valA - valB) : (valB - valA);
+            if (diff !== 0) return diff;
           }
-          return revisoresSortAsc ? (valA - valB) : (valB - valA);
+          return (b.total || 0) - (a.total || 0);
         });
 
         revisoresFilteredData = list;
@@ -3309,9 +3313,10 @@ const formatMinutesToTime = (minDecimal: number) => {
         const kpiAprob = document.getElementById('kpiRevAprobacion');
         if (kpiAprob) kpiAprob.textContent = `${tasaAprob}%`;
 
-        const validTiempos = list.filter(r => r.tiempo_prom_min != null && r.tiempo_prom_min > 0);
-        const avgTiempo = validTiempos.length > 0 
-          ? (validTiempos.reduce((acc, r) => acc + (r.tiempo_prom_min || 0), 0) / validTiempos.length).toFixed(1) 
+        const totalAtencionesValidas = list.reduce((acc, r) => acc + (r.tiempo_prom_min > 0 ? (r.total || 0) : 0), 0);
+        const sumTiempoPonderado = list.reduce((acc, r) => acc + ((r.tiempo_prom_min || 0) * (r.total || 0)), 0);
+        const avgTiempo = totalAtencionesValidas > 0 
+          ? (sumTiempoPonderado / totalAtencionesValidas).toFixed(1) 
           : '0.0';
         const kpiTiempo = document.getElementById('kpiRevTiempoProm');
         if (kpiTiempo) kpiTiempo.textContent = `${avgTiempo} min`;
