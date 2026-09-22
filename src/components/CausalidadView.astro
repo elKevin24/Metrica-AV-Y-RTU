@@ -35,6 +35,17 @@ try {
   const cuboPath = path.join(process.cwd(), 'public', 'data', 'cubo_olap.json');
   if (fs.existsSync(cuboPath)) {
     const cuboRaw = JSON.parse(fs.readFileSync(cuboPath, 'utf-8'));
+    if (cuboRaw && cuboRaw.meta) {
+      flowData.totalIngresos = cuboRaw.meta.total_atendidas || 135628;
+      flowData.ftr = cuboRaw.meta.total_ftr || 84406;
+      flowData.primerRechazo = cuboRaw.meta.total_rechazos || 51027;
+      flowData.subsanadas = cuboRaw.meta.total_subsanadas || 23823;
+      flowData.desercion = Math.max(0, flowData.primerRechazo - flowData.subsanadas);
+      flowData.pctFtr = Number(((flowData.ftr / flowData.totalIngresos) * 100).toFixed(1));
+      flowData.pctPrimerRechazo = Number(((flowData.primerRechazo / flowData.totalIngresos) * 100).toFixed(1));
+      flowData.pctSubsanacionExito = Number(((flowData.subsanadas / flowData.primerRechazo) * 100).toFixed(1));
+      flowData.pctDesercion = Number(((flowData.desercion / flowData.primerRechazo) * 100).toFixed(1));
+    }
     const rows = cuboRaw.cubo || [];
     
     // Extraer puntos válidos para el scatter plot (Cola vs Rechazo)
