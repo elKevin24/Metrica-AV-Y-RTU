@@ -25,8 +25,6 @@ import {
   Layers,
   Calendar
 } from 'lucide-react';
-import { DEFAULT_SLA_DATA } from '../data/sla_30_dias_data';
-
 export interface DiaSlaData {
   fecha: string;
   diaSemana: string;
@@ -59,7 +57,7 @@ export interface DiaSlaData {
   };
 }
 
-interface PeriodoData {
+export interface PeriodoData {
   id: string;
   nombre: string;
   descripcion: string;
@@ -100,6 +98,67 @@ export interface SlaDatasetJson {
     enero: PeriodoData;
   };
 }
+
+const DEFAULT_SLA_DATA: SlaDatasetJson = {
+  resumen: {
+    dias_analizados: 30,
+    rango_fechas: "2026-04-29 al 2026-07-27",
+    cumplimiento_promedio_8h: 54.3,
+    cumplimiento_minimo_8h: 0.0,
+    cumplimiento_maximo_8h: 91.9,
+    tiempo_habil_promedio: 13.74,
+    tiempo_cola_promedio: 6.58,
+    total_ingresadas_30d: 19221,
+    total_atendidas_30d: 19220,
+    dias_criticos: 14,
+    dias_moderados: 14,
+    dias_controlados: 2,
+    peor_dia: {
+      fecha: "2026-07-21",
+      cumplimiento: 0.0,
+      diagnostico: "Demora en Buzón (20.0h cola)",
+      tiempoCola: 20.0
+    },
+    mejor_dia: {
+      fecha: "2026-07-27",
+      cumplimiento: 91.9,
+      diagnostico: "Presión en Buzón (6.1h) • Efecto Lunes / Fin de Semana"
+    },
+    conclusion_cuellos_botella: "El análisis temporal de 30 días demuestra que el principal cuello de botella para el cumplimiento de las 8 horas hábiles reside en el tiempo de espera en el Buzón General (cola previa a asignación), el cual explica más del 85% de la dispersión en los días críticos, agravado por picos de demanda en días lunes y fines de mes."
+  },
+  serie_diaria: [
+    {
+      fecha: "2026-07-27",
+      diaSemana: "Lun",
+      etiquetaCorta: "27 Jul",
+      diaMes: 27,
+      totalIngresadas: 1845,
+      atendidas: 1845,
+      aprobadas: 1512,
+      rechazos: 520,
+      tasaRechazo: 28.2,
+      cumplimientoSla8h: 91.9,
+      cumplimientoSla24h: 98.2,
+      metaSla8h: 80.0,
+      tiempoHabilPromedio: 5.8,
+      tiempoColaPromedio: 2.1,
+      tiempoAtencionPromedio: 3.7,
+      esCuelloBotella: false,
+      severidad: "CONTROLADO",
+      severidadNivel: 1,
+      colorSeveridad: "#10b981",
+      badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      factorPrincipal: "Operación Estable",
+      diagnostico: "Alta Eficiencia • Cumplimiento Óptimo",
+      regiones: {
+        CENTRAL: { total: 680, pct_8h: 93.5, avg_ciclo: 5.2 },
+        OCCIDENTE: { total: 490, pct_8h: 91.2, avg_ciclo: 5.9 },
+        SUR: { total: 375, pct_8h: 90.1, avg_ciclo: 6.1 },
+        NORORIENTE: { total: 300, pct_8h: 92.0, avg_ciclo: 5.7 }
+      }
+    }
+  ]
+};
 
 interface Props {
   initialData?: SlaDatasetJson;
