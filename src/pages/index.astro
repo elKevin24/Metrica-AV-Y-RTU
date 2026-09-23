@@ -6,11 +6,12 @@ import FilterRibbon from '../components/FilterRibbon';
 import KpiCard from '../components/KpiCard.astro';
 import ChartCard from '../components/ChartCard.astro';
 import ForensicView from '../components/ForensicView';
-import CausalidadView from '../components/CausalidadView.astro';
+import CiclosAtencionView from '../components/CiclosAtencionView';
 import ConclusionesView from '../components/ConclusionesView.astro';
 import RechazosTrendChart from '../components/RechazosTrendChart';
 import Sla8hTrendChart from '../components/Sla8hTrendChart';
 import RevisoresDailyTrendChart from '../components/RevisoresDailyTrendChart';
+import DimensionamientoRegional from '../components/DimensionamientoRegional';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -264,6 +265,46 @@ const formatMinutesToTime = (minDecimal: number) => {
                   contextId="kpiCoberturaCtx"
                   trendId="kpiCoberturaTrend"
                 />
+              </div>
+            </div>
+
+            <!-- ACCESO DIRECTO DESTACADO A DIMENSIONAMIENTO REGIONAL (MINIMALISTA) -->
+            <div class="p-4 rounded-xl bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800 shadow-2xs">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700/80 flex items-center justify-center shrink-0">
+                  <i data-lucide="calculator" class="w-5 h-5 text-slate-300"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="text-sm font-semibold text-white tracking-tight">
+                      Dimensionamiento Regional para SLA &le; 8 Horas Hábiles
+                    </h4>
+                    <span class="text-[10px] font-mono text-emerald-400 font-medium tracking-wide">
+                      · Superávit 5.5x
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-400 mt-0.5">
+                    Dotación necesaria por región: <span class="text-slate-200">Central: 6-9</span> · <span class="text-slate-200">Occidente: 3-5</span> · <span class="text-slate-200">Sur: 3-4</span> · <span class="text-slate-200">Nororiente: 3-4</span> analistas titulares continuos.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 shrink-0 self-stretch md:self-auto">
+                <button 
+                  type="button"
+                  onclick="switchTab('tab-tiempos'); setTimeout(() => document.getElementById('dimensionamiento-regional-section')?.scrollIntoView({behavior: 'smooth'}), 100);"
+                  class="flex-1 md:flex-none px-3.5 py-2 rounded-lg bg-white text-slate-900 hover:bg-slate-100 text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <span>Ver en Tiempos & SLA</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                </button>
+                <button 
+                  type="button"
+                  onclick="switchTab('tab-revisores'); setTimeout(() => document.getElementById('dimensionamiento-regional-section')?.scrollIntoView({behavior: 'smooth'}), 100);"
+                  class="flex-1 md:flex-none px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <span>Ver en Revisores</span>
+                  <i data-lucide="users" class="w-3.5 h-3.5 text-slate-400"></i>
+                </button>
               </div>
             </div>
 
@@ -816,6 +857,11 @@ const formatMinutesToTime = (minDecimal: number) => {
             <!-- ============================================================== -->
             <Sla8hTrendChart client:load initialData={slaData} />
 
+            <!-- ============================================================== -->
+            <!-- COMPONENTE: DIMENSIONAMIENTO REGIONAL DE REVISORES (SLA ≤ 8H)  -->
+            <!-- ============================================================== -->
+            <DimensionamientoRegional client:load />
+
             <!-- FILA 1: DISTRIBUCIÓN NACIONAL SLA POR TRAMOS HÁBILES -->
             <div class="glass-card rounded-2xl p-5 space-y-4 transition-all duration-300">
               <div class="flex items-center justify-between border-b border-slate-200/60 pb-3">
@@ -1171,6 +1217,11 @@ const formatMinutesToTime = (minDecimal: number) => {
             </div>
 
 
+
+            <!-- ============================================================== -->
+            <!-- COMPONENTE: DIMENSIONAMIENTO REGIONAL DE REVISORES (SLA ≤ 8H)  -->
+            <!-- ============================================================== -->
+            <DimensionamientoRegional client:load />
 
             <!-- FICHA METODOLÓGICA: CAPACIDAD TEÓRICA INSTALADA (ESTÁNDAR: 100 CASOS/DÍA = 71.4% CAPACIDAD) -->
             <!-- FICHA METODOLÓGICA: CAPACIDAD TEÓRICA INSTALADA (88 REVISORES DE PLANTA) -->
@@ -1599,10 +1650,10 @@ const formatMinutesToTime = (minDecimal: number) => {
           </div>
 
           <!-- ============================================== -->
-          <!-- TAB 4: CAUSALIDAD & FLUJOS DE RETRABAJO       -->
+          <!-- TAB 4: CICLOS & TIEMPOS DE ATENCIÓN POR REGIONAL -->
           <!-- ============================================== -->
           <div id="tab-relaciones" class="tab-content space-y-6">
-            <CausalidadView />
+            <CiclosAtencionView client:load />
           </div>
 
           <!-- ============================================== -->
@@ -1651,11 +1702,14 @@ const formatMinutesToTime = (minDecimal: number) => {
         <button onclick="switchTab('tab-tiempos'); toggleCommandPalette();" class="w-full text-left p-2 rounded-xl hover:bg-white/60 flex items-center gap-2 font-medium transition-colors">
           <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i> Análisis de Tiempos & SLA
         </button>
+        <button onclick="switchTab('tab-revisores'); toggleCommandPalette(); setTimeout(() => document.getElementById('dimensionamiento-regional-section')?.scrollIntoView({behavior: 'smooth'}), 100);" class="w-full text-left p-2 rounded-xl hover:bg-white/60 flex items-center gap-2 font-medium transition-colors">
+          <i data-lucide="calculator" class="w-4 h-4 text-blue-600"></i> Dimensionamiento por Regional (Revisores para SLA ≤ 8h)
+        </button>
         <button onclick="switchTab('tab-revisores'); toggleCommandPalette();" class="w-full text-left p-2 rounded-xl hover:bg-white/60 flex items-center gap-2 font-medium transition-colors">
-          <i data-lucide="users" class="w-4 h-4 text-amber-600"></i> Capacidad Operativa
+          <i data-lucide="users" class="w-4 h-4 text-amber-600"></i> Capacidad Operativa & Revisores
         </button>
         <button onclick="switchTab('tab-relaciones'); toggleCommandPalette();" class="w-full text-left p-2 rounded-xl hover:bg-white/60 flex items-center gap-2 font-medium transition-colors">
-          <i data-lucide="git-fork" class="w-4 h-4 text-violet-600"></i> Causalidad & Flujos de Retrabajo
+          <i data-lucide="layers" class="w-4 h-4 text-violet-600"></i> Ciclos & Tiempos de Atención por Regional
         </button>
         <button onclick="switchTab('tab-casos'); toggleCommandPalette();" class="w-full text-left p-2 rounded-xl hover:bg-white/60 flex items-center gap-2 font-medium transition-colors">
           <i data-lucide="search" class="w-4 h-4 text-cyan-600"></i> Auditoría Forense de Expedientes
@@ -2095,7 +2149,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         'tab-general': 'Resumen Ejecutivo',
         'tab-tiempos': 'Tiempos & SLAs (8h)',
         'tab-revisores': 'Revisores & Atenciones',
-        'tab-relaciones': 'Causalidad & Flujos',
+        'tab-relaciones': 'Ciclos & Tiempos de Atención',
         'tab-casos': 'Auditoría Forense',
         'tab-conclusiones': 'Conclusiones & Estrategia'
       };
