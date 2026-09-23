@@ -51,5 +51,24 @@ def ensure_chunks():
         except Exception as e:
             print("  [ensure_forensic] Error generando revisores_detalle:", e)
 
+    # Asegurar datos diarios de 30 días para SLA 8h
+    sla_path = os.path.join(BASE_DIR, 'public', 'data', 'sla_30_dias.json')
+    if not os.path.exists(sla_path):
+        try:
+            import subprocess
+            subprocess.run([sys.executable, os.path.join(BASE_DIR, 'scripts', 'calc_30d_sla.py')], check=True)
+            print("  [ensure_forensic] sla_30_dias.json generado con éxito.")
+        except Exception as e:
+            print("  [ensure_forensic] Error generando sla_30_dias.json:", e)
+
+    # Asegurar datos diarios por revisor
+    diario_path = os.path.join(BASE_DIR, 'public', 'data', 'revisores_diario.json')
+    if not os.path.exists(diario_path):
+        try:
+            import subprocess
+            subprocess.run([sys.executable, os.path.join(BASE_DIR, 'scripts', 'generate_revisores_diario.py')], check=True)
+        except Exception as e:
+            print("  [ensure_forensic] Error generando revisores_diario.json:", e)
+
 if __name__ == '__main__':
     ensure_chunks()

@@ -1,0 +1,4284 @@
+{
+  "resumen": {
+    "dias_analizados": 30,
+    "rango_fechas": "2026-04-29 al 2026-07-27",
+    "cumplimiento_promedio_8h": 54.3,
+    "cumplimiento_minimo_8h": 0.0,
+    "cumplimiento_maximo_8h": 91.9,
+    "tiempo_habil_promedio": 13.74,
+    "tiempo_cola_promedio": 6.58,
+    "total_ingresadas_30d": 19221,
+    "total_atendidas_30d": 19220,
+    "dias_criticos": 14,
+    "dias_moderados": 14,
+    "dias_controlados": 2,
+    "peor_dia": {
+      "fecha": "2026-07-21",
+      "cumplimiento": 0.0,
+      "diagnostico": "Demora en Buzón (20.0h cola)",
+      "tiempoCola": 20.0
+    },
+    "mejor_dia": {
+      "fecha": "2026-07-27",
+      "cumplimiento": 91.9,
+      "diagnostico": "Presión en Buzón (6.1h) • Efecto Lunes / Fin de Semana"
+    },
+    "conclusion_cuellos_botella": "El análisis temporal de 30 días demuestra que el principal cuello de botella para el cumplimiento de las 8 horas hábiles reside en el tiempo de espera en el Buzón General (cola previa a asignación), el cual explica más del 85% de la dispersión en los días críticos, agravado por picos de demanda en días lunes y fines de mes."
+  },
+  "serie_diaria": [
+    {
+      "fecha": "2026-04-29",
+      "diaSemana": "Mié",
+      "etiquetaCorta": "29 Abr",
+      "diaMes": 29,
+      "totalIngresadas": 1279,
+      "atendidas": 1279,
+      "aprobadas": 1020,
+      "rechazos": 532,
+      "tasaRechazo": 41.6,
+      "cumplimientoSla8h": 58.7,
+      "cumplimientoSla24h": 81.5,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 13.03,
+      "tiempoColaPromedio": 3.6,
+      "tiempoAtencionPromedio": 9.43,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Fricción Documental (41.6% rech)",
+      "diagnostico": "Fricción Documental (41.6% rech) • Efecto Cierre Mensual",
+      "regiones": {
+        "CENTRAL": {
+          "total": 445,
+          "pct_8h": 59.8,
+          "avg_ciclo": 15.73
+        },
+        "OCCIDENTE": {
+          "total": 316,
+          "pct_8h": 66.8,
+          "avg_ciclo": 11.69
+        },
+        "SUR": {
+          "total": 274,
+          "pct_8h": 81.4,
+          "avg_ciclo": 7.86
+        },
+        "NORORIENTE": {
+          "total": 244,
+          "pct_8h": 20.9,
+          "avg_ciclo": 15.65
+        }
+      }
+    },
+    {
+      "fecha": "2026-04-30",
+      "diaSemana": "Jue",
+      "etiquetaCorta": "30 Abr",
+      "diaMes": 30,
+      "totalIngresadas": 1030,
+      "atendidas": 1030,
+      "aprobadas": 866,
+      "rechazos": 385,
+      "tasaRechazo": 37.4,
+      "cumplimientoSla8h": 73.2,
+      "cumplimientoSla24h": 85.0,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 11.25,
+      "tiempoColaPromedio": 3.5,
+      "tiempoAtencionPromedio": 7.75,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Efecto Cierre Mensual",
+      "diagnostico": "Efecto Cierre Mensual",
+      "regiones": {
+        "CENTRAL": {
+          "total": 340,
+          "pct_8h": 68.8,
+          "avg_ciclo": 11.63
+        },
+        "OCCIDENTE": {
+          "total": 257,
+          "pct_8h": 67.7,
+          "avg_ciclo": 12.24
+        },
+        "SUR": {
+          "total": 202,
+          "pct_8h": 83.7,
+          "avg_ciclo": 7.21
+        },
+        "NORORIENTE": {
+          "total": 231,
+          "pct_8h": 76.6,
+          "avg_ciclo": 13.12
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-01",
+      "diaSemana": "Vie",
+      "etiquetaCorta": "01 May",
+      "diaMes": 1,
+      "totalIngresadas": 474,
+      "atendidas": 474,
+      "aprobadas": 403,
+      "rechazos": 149,
+      "tasaRechazo": 31.4,
+      "cumplimientoSla8h": 58.2,
+      "cumplimientoSla24h": 84.4,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 14.55,
+      "tiempoColaPromedio": 5.94,
+      "tiempoAtencionPromedio": 8.61,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Presión en Buzón (5.9h)",
+      "diagnostico": "Presión en Buzón (5.9h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 129,
+          "pct_8h": 58.1,
+          "avg_ciclo": 17.33
+        },
+        "OCCIDENTE": {
+          "total": 125,
+          "pct_8h": 11.2,
+          "avg_ciclo": 21.54
+        },
+        "SUR": {
+          "total": 99,
+          "pct_8h": 91.9,
+          "avg_ciclo": 3.68
+        },
+        "NORORIENTE": {
+          "total": 121,
+          "pct_8h": 79.3,
+          "avg_ciclo": 13.25
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-02",
+      "diaSemana": "Sáb",
+      "etiquetaCorta": "02 May",
+      "diaMes": 2,
+      "totalIngresadas": 408,
+      "atendidas": 408,
+      "aprobadas": 333,
+      "rechazos": 149,
+      "tasaRechazo": 36.5,
+      "cumplimientoSla8h": 39.0,
+      "cumplimientoSla24h": 76.2,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 19.74,
+      "tiempoColaPromedio": 7.83,
+      "tiempoAtencionPromedio": 11.91,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (7.8h cola)",
+      "diagnostico": "Demora en Buzón (7.8h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 141,
+          "pct_8h": 23.4,
+          "avg_ciclo": 26.71
+        },
+        "OCCIDENTE": {
+          "total": 97,
+          "pct_8h": 4.1,
+          "avg_ciclo": 20.33
+        },
+        "SUR": {
+          "total": 91,
+          "pct_8h": 72.5,
+          "avg_ciclo": 11.4
+        },
+        "NORORIENTE": {
+          "total": 79,
+          "pct_8h": 70.9,
+          "avg_ciclo": 16.18
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-03",
+      "diaSemana": "Dom",
+      "etiquetaCorta": "03 May",
+      "diaMes": 3,
+      "totalIngresadas": 246,
+      "atendidas": 246,
+      "aprobadas": 209,
+      "rechazos": 87,
+      "tasaRechazo": 35.4,
+      "cumplimientoSla8h": 27.6,
+      "cumplimientoSla24h": 80.9,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 17.97,
+      "tiempoColaPromedio": 9.45,
+      "tiempoAtencionPromedio": 8.52,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (9.4h cola)",
+      "diagnostico": "Demora en Buzón (9.4h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 99,
+          "pct_8h": 4.0,
+          "avg_ciclo": 20.85
+        },
+        "OCCIDENTE": {
+          "total": 55,
+          "pct_8h": 1.8,
+          "avg_ciclo": 20.57
+        },
+        "SUR": {
+          "total": 53,
+          "pct_8h": 67.9,
+          "avg_ciclo": 13.89
+        },
+        "NORORIENTE": {
+          "total": 39,
+          "pct_8h": 69.2,
+          "avg_ciclo": 12.54
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-04",
+      "diaSemana": "Lun",
+      "etiquetaCorta": "04 May",
+      "diaMes": 4,
+      "totalIngresadas": 1345,
+      "atendidas": 1345,
+      "aprobadas": 1187,
+      "rechazos": 365,
+      "tasaRechazo": 27.1,
+      "cumplimientoSla8h": 44.1,
+      "cumplimientoSla24h": 87.3,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 14.33,
+      "tiempoColaPromedio": 7.69,
+      "tiempoAtencionPromedio": 6.64,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (7.7h cola)",
+      "diagnostico": "Demora en Buzón (7.7h cola) • Efecto Lunes / Fin de Semana",
+      "regiones": {
+        "CENTRAL": {
+          "total": 424,
+          "pct_8h": 32.3,
+          "avg_ciclo": 17.4
+        },
+        "OCCIDENTE": {
+          "total": 358,
+          "pct_8h": 3.4,
+          "avg_ciclo": 17.45
+        },
+        "SUR": {
+          "total": 287,
+          "pct_8h": 83.6,
+          "avg_ciclo": 8.03
+        },
+        "NORORIENTE": {
+          "total": 276,
+          "pct_8h": 73.9,
+          "avg_ciclo": 12.1
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-05",
+      "diaSemana": "Mar",
+      "etiquetaCorta": "05 May",
+      "diaMes": 5,
+      "totalIngresadas": 1288,
+      "atendidas": 1288,
+      "aprobadas": 1098,
+      "rechazos": 421,
+      "tasaRechazo": 32.7,
+      "cumplimientoSla8h": 37.3,
+      "cumplimientoSla24h": 85.2,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 15.34,
+      "tiempoColaPromedio": 7.59,
+      "tiempoAtencionPromedio": 7.75,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (7.6h cola)",
+      "diagnostico": "Demora en Buzón (7.6h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 405,
+          "pct_8h": 5.7,
+          "avg_ciclo": 21.05
+        },
+        "OCCIDENTE": {
+          "total": 326,
+          "pct_8h": 51.5,
+          "avg_ciclo": 14.86
+        },
+        "SUR": {
+          "total": 279,
+          "pct_8h": 81.0,
+          "avg_ciclo": 6.23
+        },
+        "NORORIENTE": {
+          "total": 278,
+          "pct_8h": 22.7,
+          "avg_ciclo": 16.73
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-06",
+      "diaSemana": "Mié",
+      "etiquetaCorta": "06 May",
+      "diaMes": 6,
+      "totalIngresadas": 1216,
+      "atendidas": 1216,
+      "aprobadas": 988,
+      "rechazos": 415,
+      "tasaRechazo": 34.1,
+      "cumplimientoSla8h": 51.6,
+      "cumplimientoSla24h": 83.6,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 15.56,
+      "tiempoColaPromedio": 6.63,
+      "tiempoAtencionPromedio": 8.93,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Presión en Buzón (6.6h)",
+      "diagnostico": "Presión en Buzón (6.6h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 388,
+          "pct_8h": 4.9,
+          "avg_ciclo": 21.99
+        },
+        "OCCIDENTE": {
+          "total": 308,
+          "pct_8h": 67.5,
+          "avg_ciclo": 14.08
+        },
+        "SUR": {
+          "total": 263,
+          "pct_8h": 75.3,
+          "avg_ciclo": 11.87
+        },
+        "NORORIENTE": {
+          "total": 257,
+          "pct_8h": 79.0,
+          "avg_ciclo": 11.41
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-07",
+      "diaSemana": "Jue",
+      "etiquetaCorta": "07 May",
+      "diaMes": 7,
+      "totalIngresadas": 1074,
+      "atendidas": 1074,
+      "aprobadas": 856,
+      "rechazos": 404,
+      "tasaRechazo": 37.6,
+      "cumplimientoSla8h": 55.6,
+      "cumplimientoSla24h": 80.7,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 15.74,
+      "tiempoColaPromedio": 5.61,
+      "tiempoAtencionPromedio": 10.13,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Presión en Buzón (5.6h)",
+      "diagnostico": "Presión en Buzón (5.6h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 313,
+          "pct_8h": 18.2,
+          "avg_ciclo": 26.07
+        },
+        "OCCIDENTE": {
+          "total": 291,
+          "pct_8h": 57.4,
+          "avg_ciclo": 15.59
+        },
+        "SUR": {
+          "total": 221,
+          "pct_8h": 83.7,
+          "avg_ciclo": 7.4
+        },
+        "NORORIENTE": {
+          "total": 249,
+          "pct_8h": 75.5,
+          "avg_ciclo": 10.33
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-08",
+      "diaSemana": "Vie",
+      "etiquetaCorta": "08 May",
+      "diaMes": 8,
+      "totalIngresadas": 730,
+      "atendidas": 730,
+      "aprobadas": 603,
+      "rechazos": 218,
+      "tasaRechazo": 29.9,
+      "cumplimientoSla8h": 74.0,
+      "cumplimientoSla24h": 81.2,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 14.7,
+      "tiempoColaPromedio": 3.75,
+      "tiempoAtencionPromedio": 10.95,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Operación Normal",
+      "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+      "regiones": {
+        "CENTRAL": {
+          "total": 167,
+          "pct_8h": 57.5,
+          "avg_ciclo": 22.56
+        },
+        "OCCIDENTE": {
+          "total": 210,
+          "pct_8h": 70.5,
+          "avg_ciclo": 17.59
+        },
+        "SUR": {
+          "total": 191,
+          "pct_8h": 84.3,
+          "avg_ciclo": 9.53
+        },
+        "NORORIENTE": {
+          "total": 162,
+          "pct_8h": 83.3,
+          "avg_ciclo": 8.93
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-09",
+      "diaSemana": "Sáb",
+      "etiquetaCorta": "09 May",
+      "diaMes": 9,
+      "totalIngresadas": 120,
+      "atendidas": 120,
+      "aprobadas": 85,
+      "rechazos": 52,
+      "tasaRechazo": 43.3,
+      "cumplimientoSla8h": 59.2,
+      "cumplimientoSla24h": 72.5,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 19.55,
+      "tiempoColaPromedio": 3.4,
+      "tiempoAtencionPromedio": 16.15,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Fricción Documental (43.3% rech)",
+      "diagnostico": "Fricción Documental (43.3% rech)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 50,
+          "pct_8h": 44.0,
+          "avg_ciclo": 27.68
+        },
+        "OCCIDENTE": {
+          "total": 34,
+          "pct_8h": 85.3,
+          "avg_ciclo": 12.47
+        },
+        "SUR": {
+          "total": 17,
+          "pct_8h": 47.1,
+          "avg_ciclo": 19.61
+        },
+        "NORORIENTE": {
+          "total": 19,
+          "pct_8h": 63.2,
+          "avg_ciclo": 10.75
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-10",
+      "diaSemana": "Dom",
+      "etiquetaCorta": "10 May",
+      "diaMes": 10,
+      "totalIngresadas": 110,
+      "atendidas": 110,
+      "aprobadas": 80,
+      "rechazos": 44,
+      "tasaRechazo": 40.0,
+      "cumplimientoSla8h": 69.1,
+      "cumplimientoSla24h": 73.6,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 19.46,
+      "tiempoColaPromedio": 2.02,
+      "tiempoAtencionPromedio": 17.44,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Fricción Documental (40.0% rech)",
+      "diagnostico": "Fricción Documental (40.0% rech)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 89,
+          "pct_8h": 68.5,
+          "avg_ciclo": 20.36
+        },
+        "OCCIDENTE": {
+          "total": 19,
+          "pct_8h": 68.4,
+          "avg_ciclo": 17.14
+        },
+        "SUR": {
+          "total": 1,
+          "pct_8h": 100.0,
+          "avg_ciclo": 1.2
+        },
+        "NORORIENTE": {
+          "total": 1,
+          "pct_8h": 100.0,
+          "avg_ciclo": 1.1
+        }
+      }
+    },
+    {
+      "fecha": "2026-05-11",
+      "diaSemana": "Lun",
+      "etiquetaCorta": "11 May",
+      "diaMes": 11,
+      "totalIngresadas": 270,
+      "atendidas": 270,
+      "aprobadas": 239,
+      "rechazos": 54,
+      "tasaRechazo": 20.0,
+      "cumplimientoSla8h": 77.4,
+      "cumplimientoSla24h": 89.6,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 9.8,
+      "tiempoColaPromedio": 3.91,
+      "tiempoAtencionPromedio": 5.89,
+      "esCuelloBotella": false,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Efecto Lunes / Fin de Semana",
+      "diagnostico": "Efecto Lunes / Fin de Semana",
+      "regiones": {
+        "CENTRAL": {
+          "total": 127,
+          "pct_8h": 81.9,
+          "avg_ciclo": 8.21
+        },
+        "OCCIDENTE": {
+          "total": 45,
+          "pct_8h": 86.7,
+          "avg_ciclo": 8.04
+        },
+        "SUR": {
+          "total": 51,
+          "pct_8h": 76.5,
+          "avg_ciclo": 10.32
+        },
+        "NORORIENTE": {
+          "total": 47,
+          "pct_8h": 57.4,
+          "avg_ciclo": 15.22
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-10",
+      "diaSemana": "Mié",
+      "etiquetaCorta": "10 Jun",
+      "diaMes": 10,
+      "totalIngresadas": 315,
+      "atendidas": 315,
+      "aprobadas": 282,
+      "rechazos": 147,
+      "tasaRechazo": 46.7,
+      "cumplimientoSla8h": 50.2,
+      "cumplimientoSla24h": 88.6,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 12.74,
+      "tiempoColaPromedio": 6.77,
+      "tiempoAtencionPromedio": 5.97,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (6.8h)",
+      "diagnostico": "Presión en Buzón (6.8h) • Fricción Documental (46.7% rech)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 137,
+          "pct_8h": 53.3,
+          "avg_ciclo": 13.27
+        },
+        "OCCIDENTE": {
+          "total": 27,
+          "pct_8h": 44.4,
+          "avg_ciclo": 15.48
+        },
+        "SUR": {
+          "total": 46,
+          "pct_8h": 2.2,
+          "avg_ciclo": 16.27
+        },
+        "NORORIENTE": {
+          "total": 105,
+          "pct_8h": 68.6,
+          "avg_ciclo": 9.8
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-11",
+      "diaSemana": "Jue",
+      "etiquetaCorta": "11 Jun",
+      "diaMes": 11,
+      "totalIngresadas": 809,
+      "atendidas": 809,
+      "aprobadas": 747,
+      "rechazos": 251,
+      "tasaRechazo": 31.0,
+      "cumplimientoSla8h": 61.7,
+      "cumplimientoSla24h": 93.6,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 8.99,
+      "tiempoColaPromedio": 5.4,
+      "tiempoAtencionPromedio": 3.59,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (5.4h)",
+      "diagnostico": "Presión en Buzón (5.4h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 243,
+          "pct_8h": 65.4,
+          "avg_ciclo": 11.26
+        },
+        "OCCIDENTE": {
+          "total": 226,
+          "pct_8h": 84.5,
+          "avg_ciclo": 4.59
+        },
+        "SUR": {
+          "total": 162,
+          "pct_8h": 1.9,
+          "avg_ciclo": 15.51
+        },
+        "NORORIENTE": {
+          "total": 178,
+          "pct_8h": 82.0,
+          "avg_ciclo": 5.54
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-12",
+      "diaSemana": "Vie",
+      "etiquetaCorta": "12 Jun",
+      "diaMes": 12,
+      "totalIngresadas": 905,
+      "atendidas": 905,
+      "aprobadas": 820,
+      "rechazos": 282,
+      "tasaRechazo": 31.2,
+      "cumplimientoSla8h": 65.2,
+      "cumplimientoSla24h": 95.6,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 7.51,
+      "tiempoColaPromedio": 3.8,
+      "tiempoAtencionPromedio": 3.71,
+      "esCuelloBotella": false,
+      "severidad": "CONTROLADO",
+      "severidadNivel": 1,
+      "colorSeveridad": "#10b981",
+      "badgeBg": "bg-emerald-50 text-emerald-700 border-emerald-200",
+      "factorPrincipal": "Operación Normal",
+      "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+      "regiones": {
+        "CENTRAL": {
+          "total": 245,
+          "pct_8h": 73.1,
+          "avg_ciclo": 9.14
+        },
+        "OCCIDENTE": {
+          "total": 261,
+          "pct_8h": 85.1,
+          "avg_ciclo": 4.12
+        },
+        "SUR": {
+          "total": 194,
+          "pct_8h": 5.7,
+          "avg_ciclo": 13.08
+        },
+        "NORORIENTE": {
+          "total": 205,
+          "pct_8h": 86.8,
+          "avg_ciclo": 4.59
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-13",
+      "diaSemana": "Sáb",
+      "etiquetaCorta": "13 Jun",
+      "diaMes": 13,
+      "totalIngresadas": 406,
+      "atendidas": 406,
+      "aprobadas": 367,
+      "rechazos": 121,
+      "tasaRechazo": 29.8,
+      "cumplimientoSla8h": 64.0,
+      "cumplimientoSla24h": 95.8,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 7.33,
+      "tiempoColaPromedio": 4.45,
+      "tiempoAtencionPromedio": 2.88,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Operación Normal",
+      "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+      "regiones": {
+        "CENTRAL": {
+          "total": 128,
+          "pct_8h": 79.7,
+          "avg_ciclo": 5.51
+        },
+        "OCCIDENTE": {
+          "total": 80,
+          "pct_8h": 85.0,
+          "avg_ciclo": 5.4
+        },
+        "SUR": {
+          "total": 98,
+          "pct_8h": 6.1,
+          "avg_ciclo": 13.12
+        },
+        "NORORIENTE": {
+          "total": 100,
+          "pct_8h": 84.0,
+          "avg_ciclo": 5.5
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-14",
+      "diaSemana": "Dom",
+      "etiquetaCorta": "14 Jun",
+      "diaMes": 14,
+      "totalIngresadas": 221,
+      "atendidas": 221,
+      "aprobadas": 196,
+      "rechazos": 84,
+      "tasaRechazo": 38.0,
+      "cumplimientoSla8h": 57.0,
+      "cumplimientoSla24h": 87.8,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 13.16,
+      "tiempoColaPromedio": 5.97,
+      "tiempoAtencionPromedio": 7.19,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (6.0h)",
+      "diagnostico": "Presión en Buzón (6.0h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 93,
+          "pct_8h": 61.3,
+          "avg_ciclo": 13.38
+        },
+        "OCCIDENTE": {
+          "total": 54,
+          "pct_8h": 75.9,
+          "avg_ciclo": 8.16
+        },
+        "SUR": {
+          "total": 41,
+          "pct_8h": 9.8,
+          "avg_ciclo": 17.61
+        },
+        "NORORIENTE": {
+          "total": 33,
+          "pct_8h": 72.7,
+          "avg_ciclo": 15.22
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-15",
+      "diaSemana": "Lun",
+      "etiquetaCorta": "15 Jun",
+      "diaMes": 15,
+      "totalIngresadas": 1289,
+      "atendidas": 1289,
+      "aprobadas": 1168,
+      "rechazos": 365,
+      "tasaRechazo": 28.3,
+      "cumplimientoSla8h": 51.2,
+      "cumplimientoSla24h": 91.5,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 11.95,
+      "tiempoColaPromedio": 6.75,
+      "tiempoAtencionPromedio": 5.2,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (6.8h)",
+      "diagnostico": "Presión en Buzón (6.8h) • Efecto Lunes / Fin de Semana",
+      "regiones": {
+        "CENTRAL": {
+          "total": 370,
+          "pct_8h": 49.7,
+          "avg_ciclo": 13.86
+        },
+        "OCCIDENTE": {
+          "total": 369,
+          "pct_8h": 85.6,
+          "avg_ciclo": 6.25
+        },
+        "SUR": {
+          "total": 245,
+          "pct_8h": 1.2,
+          "avg_ciclo": 16.07
+        },
+        "NORORIENTE": {
+          "total": 305,
+          "pct_8h": 51.5,
+          "avg_ciclo": 13.22
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-16",
+      "diaSemana": "Mar",
+      "etiquetaCorta": "16 Jun",
+      "diaMes": 16,
+      "totalIngresadas": 1153,
+      "atendidas": 1152,
+      "aprobadas": 1017,
+      "rechazos": 318,
+      "tasaRechazo": 27.6,
+      "cumplimientoSla8h": 36.0,
+      "cumplimientoSla24h": 88.9,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 14.12,
+      "tiempoColaPromedio": 7.26,
+      "tiempoAtencionPromedio": 6.86,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (7.3h cola)",
+      "diagnostico": "Demora en Buzón (7.3h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 393,
+          "pct_8h": 5.1,
+          "avg_ciclo": 20.31
+        },
+        "OCCIDENTE": {
+          "total": 280,
+          "pct_8h": 83.2,
+          "avg_ciclo": 5.11
+        },
+        "SUR": {
+          "total": 243,
+          "pct_8h": 21.4,
+          "avg_ciclo": 14.73
+        },
+        "NORORIENTE": {
+          "total": 237,
+          "pct_8h": 46.4,
+          "avg_ciclo": 13.91
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-17",
+      "diaSemana": "Mié",
+      "etiquetaCorta": "17 Jun",
+      "diaMes": 17,
+      "totalIngresadas": 891,
+      "atendidas": 891,
+      "aprobadas": 766,
+      "rechazos": 249,
+      "tasaRechazo": 27.9,
+      "cumplimientoSla8h": 48.1,
+      "cumplimientoSla24h": 88.7,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 13.83,
+      "tiempoColaPromedio": 6.8,
+      "tiempoAtencionPromedio": 7.03,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (6.8h)",
+      "diagnostico": "Presión en Buzón (6.8h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 275,
+          "pct_8h": 4.0,
+          "avg_ciclo": 21.31
+        },
+        "OCCIDENTE": {
+          "total": 239,
+          "pct_8h": 83.7,
+          "avg_ciclo": 6.85
+        },
+        "SUR": {
+          "total": 194,
+          "pct_8h": 44.8,
+          "avg_ciclo": 12.16
+        },
+        "NORORIENTE": {
+          "total": 183,
+          "pct_8h": 71.6,
+          "avg_ciclo": 13.46
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-18",
+      "diaSemana": "Jue",
+      "etiquetaCorta": "18 Jun",
+      "diaMes": 18,
+      "totalIngresadas": 695,
+      "atendidas": 695,
+      "aprobadas": 627,
+      "rechazos": 150,
+      "tasaRechazo": 21.6,
+      "cumplimientoSla8h": 74.7,
+      "cumplimientoSla24h": 90.5,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 9.21,
+      "tiempoColaPromedio": 4.28,
+      "tiempoAtencionPromedio": 4.93,
+      "esCuelloBotella": false,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Operación Normal",
+      "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+      "regiones": {
+        "CENTRAL": {
+          "total": 75,
+          "pct_8h": 18.7,
+          "avg_ciclo": 21.57
+        },
+        "OCCIDENTE": {
+          "total": 243,
+          "pct_8h": 88.5,
+          "avg_ciclo": 5.24
+        },
+        "SUR": {
+          "total": 170,
+          "pct_8h": 64.1,
+          "avg_ciclo": 11.02
+        },
+        "NORORIENTE": {
+          "total": 207,
+          "pct_8h": 87.4,
+          "avg_ciclo": 7.9
+        }
+      }
+    },
+    {
+      "fecha": "2026-06-19",
+      "diaSemana": "Vie",
+      "etiquetaCorta": "19 Jun",
+      "diaMes": 19,
+      "totalIngresadas": 151,
+      "atendidas": 151,
+      "aprobadas": 138,
+      "rechazos": 28,
+      "tasaRechazo": 18.5,
+      "cumplimientoSla8h": 79.5,
+      "cumplimientoSla24h": 92.7,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 9.58,
+      "tiempoColaPromedio": 5.37,
+      "tiempoAtencionPromedio": 4.21,
+      "esCuelloBotella": false,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (5.4h)",
+      "diagnostico": "Presión en Buzón (5.4h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 4,
+          "pct_8h": 50.0,
+          "avg_ciclo": 20.15
+        },
+        "OCCIDENTE": {
+          "total": 78,
+          "pct_8h": 83.3,
+          "avg_ciclo": 9.58
+        },
+        "SUR": {
+          "total": 29,
+          "pct_8h": 51.7,
+          "avg_ciclo": 15.17
+        },
+        "NORORIENTE": {
+          "total": 40,
+          "pct_8h": 95.0,
+          "avg_ciclo": 4.48
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-21",
+      "diaSemana": "Mar",
+      "etiquetaCorta": "21 Jul",
+      "diaMes": 21,
+      "totalIngresadas": 276,
+      "atendidas": 276,
+      "aprobadas": 238,
+      "rechazos": 92,
+      "tasaRechazo": 33.3,
+      "cumplimientoSla8h": 0.0,
+      "cumplimientoSla24h": 44.9,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 27.81,
+      "tiempoColaPromedio": 20.0,
+      "tiempoAtencionPromedio": 7.81,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (20.0h cola)",
+      "diagnostico": "Demora en Buzón (20.0h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 41,
+          "pct_8h": 0.0,
+          "avg_ciclo": 30.9
+        },
+        "OCCIDENTE": {
+          "total": 21,
+          "pct_8h": 0.0,
+          "avg_ciclo": 36.47
+        },
+        "SUR": {
+          "total": 194,
+          "pct_8h": 0.0,
+          "avg_ciclo": 26.03
+        },
+        "NORORIENTE": {
+          "total": 20,
+          "pct_8h": 0.0,
+          "avg_ciclo": 29.65
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-22",
+      "diaSemana": "Mié",
+      "etiquetaCorta": "22 Jul",
+      "diaMes": 22,
+      "totalIngresadas": 404,
+      "atendidas": 404,
+      "aprobadas": 356,
+      "rechazos": 130,
+      "tasaRechazo": 32.2,
+      "cumplimientoSla8h": 0.0,
+      "cumplimientoSla24h": 86.4,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 22.44,
+      "tiempoColaPromedio": 15.33,
+      "tiempoAtencionPromedio": 7.11,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (15.3h cola)",
+      "diagnostico": "Demora en Buzón (15.3h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 66,
+          "pct_8h": 0.0,
+          "avg_ciclo": 21.38
+        },
+        "OCCIDENTE": {
+          "total": 32,
+          "pct_8h": 0.0,
+          "avg_ciclo": 24.78
+        },
+        "SUR": {
+          "total": 281,
+          "pct_8h": 0.0,
+          "avg_ciclo": 22.04
+        },
+        "NORORIENTE": {
+          "total": 25,
+          "pct_8h": 0.0,
+          "avg_ciclo": 26.83
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-23",
+      "diaSemana": "Jue",
+      "etiquetaCorta": "23 Jul",
+      "diaMes": 23,
+      "totalIngresadas": 516,
+      "atendidas": 516,
+      "aprobadas": 464,
+      "rechazos": 180,
+      "tasaRechazo": 34.9,
+      "cumplimientoSla8h": 0.2,
+      "cumplimientoSla24h": 97.9,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 16.24,
+      "tiempoColaPromedio": 11.39,
+      "tiempoAtencionPromedio": 4.85,
+      "esCuelloBotella": true,
+      "severidad": "CRÍTICO",
+      "severidadNivel": 3,
+      "colorSeveridad": "#ef4444",
+      "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+      "factorPrincipal": "Demora en Buzón (11.4h cola)",
+      "diagnostico": "Demora en Buzón (11.4h cola)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 92,
+          "pct_8h": 1.1,
+          "avg_ciclo": 15.0
+        },
+        "OCCIDENTE": {
+          "total": 49,
+          "pct_8h": 0.0,
+          "avg_ciclo": 15.95
+        },
+        "SUR": {
+          "total": 317,
+          "pct_8h": 0.0,
+          "avg_ciclo": 16.6
+        },
+        "NORORIENTE": {
+          "total": 58,
+          "pct_8h": 0.0,
+          "avg_ciclo": 16.44
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-24",
+      "diaSemana": "Vie",
+      "etiquetaCorta": "24 Jul",
+      "diaMes": 24,
+      "totalIngresadas": 825,
+      "atendidas": 825,
+      "aprobadas": 796,
+      "rechazos": 172,
+      "tasaRechazo": 20.8,
+      "cumplimientoSla8h": 60.7,
+      "cumplimientoSla24h": 98.9,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 7.46,
+      "tiempoColaPromedio": 5.76,
+      "tiempoAtencionPromedio": 1.7,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (5.8h)",
+      "diagnostico": "Presión en Buzón (5.8h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 244,
+          "pct_8h": 78.7,
+          "avg_ciclo": 5.2
+        },
+        "OCCIDENTE": {
+          "total": 164,
+          "pct_8h": 82.3,
+          "avg_ciclo": 3.87
+        },
+        "SUR": {
+          "total": 185,
+          "pct_8h": 2.7,
+          "avg_ciclo": 12.31
+        },
+        "NORORIENTE": {
+          "total": 232,
+          "pct_8h": 72.8,
+          "avg_ciclo": 8.5
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-25",
+      "diaSemana": "Sáb",
+      "etiquetaCorta": "25 Jul",
+      "diaMes": 25,
+      "totalIngresadas": 353,
+      "atendidas": 353,
+      "aprobadas": 337,
+      "rechazos": 80,
+      "tasaRechazo": 22.7,
+      "cumplimientoSla8h": 77.9,
+      "cumplimientoSla24h": 97.2,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 8.17,
+      "tiempoColaPromedio": 4.88,
+      "tiempoAtencionPromedio": 3.29,
+      "esCuelloBotella": false,
+      "severidad": "CONTROLADO",
+      "severidadNivel": 1,
+      "colorSeveridad": "#10b981",
+      "badgeBg": "bg-emerald-50 text-emerald-700 border-emerald-200",
+      "factorPrincipal": "Presión en Buzón (4.9h)",
+      "diagnostico": "Presión en Buzón (4.9h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 163,
+          "pct_8h": 81.0,
+          "avg_ciclo": 7.62
+        },
+        "OCCIDENTE": {
+          "total": 106,
+          "pct_8h": 89.6,
+          "avg_ciclo": 5.12
+        },
+        "SUR": {
+          "total": 5,
+          "pct_8h": 40.0,
+          "avg_ciclo": 39.78
+        },
+        "NORORIENTE": {
+          "total": 79,
+          "pct_8h": 58.2,
+          "avg_ciclo": 11.38
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-26",
+      "diaSemana": "Dom",
+      "etiquetaCorta": "26 Jul",
+      "diaMes": 26,
+      "totalIngresadas": 187,
+      "atendidas": 187,
+      "aprobadas": 178,
+      "rechazos": 40,
+      "tasaRechazo": 21.4,
+      "cumplimientoSla8h": 84.5,
+      "cumplimientoSla24h": 96.3,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 10.49,
+      "tiempoColaPromedio": 6.24,
+      "tiempoAtencionPromedio": 4.25,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (6.2h)",
+      "diagnostico": "Presión en Buzón (6.2h)",
+      "regiones": {
+        "CENTRAL": {
+          "total": 92,
+          "pct_8h": 77.2,
+          "avg_ciclo": 11.23
+        },
+        "OCCIDENTE": {
+          "total": 87,
+          "pct_8h": 92.0,
+          "avg_ciclo": 9.46
+        },
+        "SUR": {
+          "total": 3,
+          "pct_8h": 66.7,
+          "avg_ciclo": 27.63
+        },
+        "NORORIENTE": {
+          "total": 5,
+          "pct_8h": 100.0,
+          "avg_ciclo": 4.68
+        }
+      }
+    },
+    {
+      "fecha": "2026-07-27",
+      "diaSemana": "Lun",
+      "etiquetaCorta": "27 Jul",
+      "diaMes": 27,
+      "totalIngresadas": 235,
+      "atendidas": 235,
+      "aprobadas": 224,
+      "rechazos": 29,
+      "tasaRechazo": 12.3,
+      "cumplimientoSla8h": 91.9,
+      "cumplimientoSla24h": 95.3,
+      "metaSla8h": 80.0,
+      "tiempoHabilPromedio": 10.15,
+      "tiempoColaPromedio": 6.08,
+      "tiempoAtencionPromedio": 4.07,
+      "esCuelloBotella": true,
+      "severidad": "MODERADO",
+      "severidadNivel": 2,
+      "colorSeveridad": "#f59e0b",
+      "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+      "factorPrincipal": "Presión en Buzón (6.1h)",
+      "diagnostico": "Presión en Buzón (6.1h) • Efecto Lunes / Fin de Semana",
+      "regiones": {
+        "CENTRAL": {
+          "total": 66,
+          "pct_8h": 86.4,
+          "avg_ciclo": 17.07
+        },
+        "OCCIDENTE": {
+          "total": 160,
+          "pct_8h": 96.2,
+          "avg_ciclo": 7.05
+        },
+        "SUR": {
+          "total": 4,
+          "pct_8h": 75.0,
+          "avg_ciclo": 9.6
+        },
+        "NORORIENTE": {
+          "total": 5,
+          "pct_8h": 40.0,
+          "avg_ciclo": 18.28
+        }
+      }
+    }
+  ],
+  "periodos": {
+    "reciente": {
+      "id": "reciente",
+      "nombre": "Últimos 30 Días Operativos (Abr – Jul)",
+      "descripcion": "Fase estabilizada con demanda regular y distribución regional activa",
+      "resumen": {
+        "dias_analizados": 30,
+        "rango_fechas": "2026-04-29 al 2026-07-27",
+        "cumplimiento_promedio_8h": 54.3,
+        "cumplimiento_minimo_8h": 0.0,
+        "cumplimiento_maximo_8h": 91.9,
+        "tiempo_habil_promedio": 13.74,
+        "tiempo_cola_promedio": 6.58,
+        "total_ingresadas_30d": 19221,
+        "total_atendidas_30d": 19220,
+        "dias_criticos": 14,
+        "dias_moderados": 14,
+        "dias_controlados": 2,
+        "peor_dia": {
+          "fecha": "2026-07-21",
+          "cumplimiento": 0.0,
+          "diagnostico": "Demora en Buzón (20.0h cola)",
+          "tiempoCola": 20.0
+        },
+        "mejor_dia": {
+          "fecha": "2026-07-27",
+          "cumplimiento": 91.9,
+          "diagnostico": "Presión en Buzón (6.1h) • Efecto Lunes / Fin de Semana"
+        },
+        "conclusion_cuellos_botella": "El análisis temporal de 30 días demuestra que el principal cuello de botella para el cumplimiento de las 8 horas hábiles reside en el tiempo de espera en el Buzón General (cola previa a asignación), el cual explica más del 85% de la dispersión en los días críticos, agravado por picos de demanda en días lunes y fines de mes."
+      },
+      "serie": [
+        {
+          "fecha": "2026-04-29",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "29 Abr",
+          "diaMes": 29,
+          "totalIngresadas": 1279,
+          "atendidas": 1279,
+          "aprobadas": 1020,
+          "rechazos": 532,
+          "tasaRechazo": 41.6,
+          "cumplimientoSla8h": 58.7,
+          "cumplimientoSla24h": 81.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 13.03,
+          "tiempoColaPromedio": 3.6,
+          "tiempoAtencionPromedio": 9.43,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Fricción Documental (41.6% rech)",
+          "diagnostico": "Fricción Documental (41.6% rech) • Efecto Cierre Mensual",
+          "regiones": {
+            "CENTRAL": {
+              "total": 445,
+              "pct_8h": 59.8,
+              "avg_ciclo": 15.73
+            },
+            "OCCIDENTE": {
+              "total": 316,
+              "pct_8h": 66.8,
+              "avg_ciclo": 11.69
+            },
+            "SUR": {
+              "total": 274,
+              "pct_8h": 81.4,
+              "avg_ciclo": 7.86
+            },
+            "NORORIENTE": {
+              "total": 244,
+              "pct_8h": 20.9,
+              "avg_ciclo": 15.65
+            }
+          }
+        },
+        {
+          "fecha": "2026-04-30",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "30 Abr",
+          "diaMes": 30,
+          "totalIngresadas": 1030,
+          "atendidas": 1030,
+          "aprobadas": 866,
+          "rechazos": 385,
+          "tasaRechazo": 37.4,
+          "cumplimientoSla8h": 73.2,
+          "cumplimientoSla24h": 85.0,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 11.25,
+          "tiempoColaPromedio": 3.5,
+          "tiempoAtencionPromedio": 7.75,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Efecto Cierre Mensual",
+          "diagnostico": "Efecto Cierre Mensual",
+          "regiones": {
+            "CENTRAL": {
+              "total": 340,
+              "pct_8h": 68.8,
+              "avg_ciclo": 11.63
+            },
+            "OCCIDENTE": {
+              "total": 257,
+              "pct_8h": 67.7,
+              "avg_ciclo": 12.24
+            },
+            "SUR": {
+              "total": 202,
+              "pct_8h": 83.7,
+              "avg_ciclo": 7.21
+            },
+            "NORORIENTE": {
+              "total": 231,
+              "pct_8h": 76.6,
+              "avg_ciclo": 13.12
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-01",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "01 May",
+          "diaMes": 1,
+          "totalIngresadas": 474,
+          "atendidas": 474,
+          "aprobadas": 403,
+          "rechazos": 149,
+          "tasaRechazo": 31.4,
+          "cumplimientoSla8h": 58.2,
+          "cumplimientoSla24h": 84.4,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 14.55,
+          "tiempoColaPromedio": 5.94,
+          "tiempoAtencionPromedio": 8.61,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (5.9h)",
+          "diagnostico": "Presión en Buzón (5.9h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 129,
+              "pct_8h": 58.1,
+              "avg_ciclo": 17.33
+            },
+            "OCCIDENTE": {
+              "total": 125,
+              "pct_8h": 11.2,
+              "avg_ciclo": 21.54
+            },
+            "SUR": {
+              "total": 99,
+              "pct_8h": 91.9,
+              "avg_ciclo": 3.68
+            },
+            "NORORIENTE": {
+              "total": 121,
+              "pct_8h": 79.3,
+              "avg_ciclo": 13.25
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-02",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "02 May",
+          "diaMes": 2,
+          "totalIngresadas": 408,
+          "atendidas": 408,
+          "aprobadas": 333,
+          "rechazos": 149,
+          "tasaRechazo": 36.5,
+          "cumplimientoSla8h": 39.0,
+          "cumplimientoSla24h": 76.2,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 19.74,
+          "tiempoColaPromedio": 7.83,
+          "tiempoAtencionPromedio": 11.91,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (7.8h cola)",
+          "diagnostico": "Demora en Buzón (7.8h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 141,
+              "pct_8h": 23.4,
+              "avg_ciclo": 26.71
+            },
+            "OCCIDENTE": {
+              "total": 97,
+              "pct_8h": 4.1,
+              "avg_ciclo": 20.33
+            },
+            "SUR": {
+              "total": 91,
+              "pct_8h": 72.5,
+              "avg_ciclo": 11.4
+            },
+            "NORORIENTE": {
+              "total": 79,
+              "pct_8h": 70.9,
+              "avg_ciclo": 16.18
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-03",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "03 May",
+          "diaMes": 3,
+          "totalIngresadas": 246,
+          "atendidas": 246,
+          "aprobadas": 209,
+          "rechazos": 87,
+          "tasaRechazo": 35.4,
+          "cumplimientoSla8h": 27.6,
+          "cumplimientoSla24h": 80.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 17.97,
+          "tiempoColaPromedio": 9.45,
+          "tiempoAtencionPromedio": 8.52,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (9.4h cola)",
+          "diagnostico": "Demora en Buzón (9.4h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 99,
+              "pct_8h": 4.0,
+              "avg_ciclo": 20.85
+            },
+            "OCCIDENTE": {
+              "total": 55,
+              "pct_8h": 1.8,
+              "avg_ciclo": 20.57
+            },
+            "SUR": {
+              "total": 53,
+              "pct_8h": 67.9,
+              "avg_ciclo": 13.89
+            },
+            "NORORIENTE": {
+              "total": 39,
+              "pct_8h": 69.2,
+              "avg_ciclo": 12.54
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-04",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "04 May",
+          "diaMes": 4,
+          "totalIngresadas": 1345,
+          "atendidas": 1345,
+          "aprobadas": 1187,
+          "rechazos": 365,
+          "tasaRechazo": 27.1,
+          "cumplimientoSla8h": 44.1,
+          "cumplimientoSla24h": 87.3,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 14.33,
+          "tiempoColaPromedio": 7.69,
+          "tiempoAtencionPromedio": 6.64,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (7.7h cola)",
+          "diagnostico": "Demora en Buzón (7.7h cola) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 424,
+              "pct_8h": 32.3,
+              "avg_ciclo": 17.4
+            },
+            "OCCIDENTE": {
+              "total": 358,
+              "pct_8h": 3.4,
+              "avg_ciclo": 17.45
+            },
+            "SUR": {
+              "total": 287,
+              "pct_8h": 83.6,
+              "avg_ciclo": 8.03
+            },
+            "NORORIENTE": {
+              "total": 276,
+              "pct_8h": 73.9,
+              "avg_ciclo": 12.1
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-05",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "05 May",
+          "diaMes": 5,
+          "totalIngresadas": 1288,
+          "atendidas": 1288,
+          "aprobadas": 1098,
+          "rechazos": 421,
+          "tasaRechazo": 32.7,
+          "cumplimientoSla8h": 37.3,
+          "cumplimientoSla24h": 85.2,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 15.34,
+          "tiempoColaPromedio": 7.59,
+          "tiempoAtencionPromedio": 7.75,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (7.6h cola)",
+          "diagnostico": "Demora en Buzón (7.6h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 405,
+              "pct_8h": 5.7,
+              "avg_ciclo": 21.05
+            },
+            "OCCIDENTE": {
+              "total": 326,
+              "pct_8h": 51.5,
+              "avg_ciclo": 14.86
+            },
+            "SUR": {
+              "total": 279,
+              "pct_8h": 81.0,
+              "avg_ciclo": 6.23
+            },
+            "NORORIENTE": {
+              "total": 278,
+              "pct_8h": 22.7,
+              "avg_ciclo": 16.73
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-06",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "06 May",
+          "diaMes": 6,
+          "totalIngresadas": 1216,
+          "atendidas": 1216,
+          "aprobadas": 988,
+          "rechazos": 415,
+          "tasaRechazo": 34.1,
+          "cumplimientoSla8h": 51.6,
+          "cumplimientoSla24h": 83.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 15.56,
+          "tiempoColaPromedio": 6.63,
+          "tiempoAtencionPromedio": 8.93,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (6.6h)",
+          "diagnostico": "Presión en Buzón (6.6h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 388,
+              "pct_8h": 4.9,
+              "avg_ciclo": 21.99
+            },
+            "OCCIDENTE": {
+              "total": 308,
+              "pct_8h": 67.5,
+              "avg_ciclo": 14.08
+            },
+            "SUR": {
+              "total": 263,
+              "pct_8h": 75.3,
+              "avg_ciclo": 11.87
+            },
+            "NORORIENTE": {
+              "total": 257,
+              "pct_8h": 79.0,
+              "avg_ciclo": 11.41
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-07",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "07 May",
+          "diaMes": 7,
+          "totalIngresadas": 1074,
+          "atendidas": 1074,
+          "aprobadas": 856,
+          "rechazos": 404,
+          "tasaRechazo": 37.6,
+          "cumplimientoSla8h": 55.6,
+          "cumplimientoSla24h": 80.7,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 15.74,
+          "tiempoColaPromedio": 5.61,
+          "tiempoAtencionPromedio": 10.13,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (5.6h)",
+          "diagnostico": "Presión en Buzón (5.6h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 313,
+              "pct_8h": 18.2,
+              "avg_ciclo": 26.07
+            },
+            "OCCIDENTE": {
+              "total": 291,
+              "pct_8h": 57.4,
+              "avg_ciclo": 15.59
+            },
+            "SUR": {
+              "total": 221,
+              "pct_8h": 83.7,
+              "avg_ciclo": 7.4
+            },
+            "NORORIENTE": {
+              "total": 249,
+              "pct_8h": 75.5,
+              "avg_ciclo": 10.33
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-08",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "08 May",
+          "diaMes": 8,
+          "totalIngresadas": 730,
+          "atendidas": 730,
+          "aprobadas": 603,
+          "rechazos": 218,
+          "tasaRechazo": 29.9,
+          "cumplimientoSla8h": 74.0,
+          "cumplimientoSla24h": 81.2,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 14.7,
+          "tiempoColaPromedio": 3.75,
+          "tiempoAtencionPromedio": 10.95,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Operación Normal",
+          "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+          "regiones": {
+            "CENTRAL": {
+              "total": 167,
+              "pct_8h": 57.5,
+              "avg_ciclo": 22.56
+            },
+            "OCCIDENTE": {
+              "total": 210,
+              "pct_8h": 70.5,
+              "avg_ciclo": 17.59
+            },
+            "SUR": {
+              "total": 191,
+              "pct_8h": 84.3,
+              "avg_ciclo": 9.53
+            },
+            "NORORIENTE": {
+              "total": 162,
+              "pct_8h": 83.3,
+              "avg_ciclo": 8.93
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-09",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "09 May",
+          "diaMes": 9,
+          "totalIngresadas": 120,
+          "atendidas": 120,
+          "aprobadas": 85,
+          "rechazos": 52,
+          "tasaRechazo": 43.3,
+          "cumplimientoSla8h": 59.2,
+          "cumplimientoSla24h": 72.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 19.55,
+          "tiempoColaPromedio": 3.4,
+          "tiempoAtencionPromedio": 16.15,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Fricción Documental (43.3% rech)",
+          "diagnostico": "Fricción Documental (43.3% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 50,
+              "pct_8h": 44.0,
+              "avg_ciclo": 27.68
+            },
+            "OCCIDENTE": {
+              "total": 34,
+              "pct_8h": 85.3,
+              "avg_ciclo": 12.47
+            },
+            "SUR": {
+              "total": 17,
+              "pct_8h": 47.1,
+              "avg_ciclo": 19.61
+            },
+            "NORORIENTE": {
+              "total": 19,
+              "pct_8h": 63.2,
+              "avg_ciclo": 10.75
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-10",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "10 May",
+          "diaMes": 10,
+          "totalIngresadas": 110,
+          "atendidas": 110,
+          "aprobadas": 80,
+          "rechazos": 44,
+          "tasaRechazo": 40.0,
+          "cumplimientoSla8h": 69.1,
+          "cumplimientoSla24h": 73.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 19.46,
+          "tiempoColaPromedio": 2.02,
+          "tiempoAtencionPromedio": 17.44,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Fricción Documental (40.0% rech)",
+          "diagnostico": "Fricción Documental (40.0% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 89,
+              "pct_8h": 68.5,
+              "avg_ciclo": 20.36
+            },
+            "OCCIDENTE": {
+              "total": 19,
+              "pct_8h": 68.4,
+              "avg_ciclo": 17.14
+            },
+            "SUR": {
+              "total": 1,
+              "pct_8h": 100.0,
+              "avg_ciclo": 1.2
+            },
+            "NORORIENTE": {
+              "total": 1,
+              "pct_8h": 100.0,
+              "avg_ciclo": 1.1
+            }
+          }
+        },
+        {
+          "fecha": "2026-05-11",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "11 May",
+          "diaMes": 11,
+          "totalIngresadas": 270,
+          "atendidas": 270,
+          "aprobadas": 239,
+          "rechazos": 54,
+          "tasaRechazo": 20.0,
+          "cumplimientoSla8h": 77.4,
+          "cumplimientoSla24h": 89.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 9.8,
+          "tiempoColaPromedio": 3.91,
+          "tiempoAtencionPromedio": 5.89,
+          "esCuelloBotella": false,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Efecto Lunes / Fin de Semana",
+          "diagnostico": "Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 127,
+              "pct_8h": 81.9,
+              "avg_ciclo": 8.21
+            },
+            "OCCIDENTE": {
+              "total": 45,
+              "pct_8h": 86.7,
+              "avg_ciclo": 8.04
+            },
+            "SUR": {
+              "total": 51,
+              "pct_8h": 76.5,
+              "avg_ciclo": 10.32
+            },
+            "NORORIENTE": {
+              "total": 47,
+              "pct_8h": 57.4,
+              "avg_ciclo": 15.22
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-10",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "10 Jun",
+          "diaMes": 10,
+          "totalIngresadas": 315,
+          "atendidas": 315,
+          "aprobadas": 282,
+          "rechazos": 147,
+          "tasaRechazo": 46.7,
+          "cumplimientoSla8h": 50.2,
+          "cumplimientoSla24h": 88.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 12.74,
+          "tiempoColaPromedio": 6.77,
+          "tiempoAtencionPromedio": 5.97,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (6.8h)",
+          "diagnostico": "Presión en Buzón (6.8h) • Fricción Documental (46.7% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 137,
+              "pct_8h": 53.3,
+              "avg_ciclo": 13.27
+            },
+            "OCCIDENTE": {
+              "total": 27,
+              "pct_8h": 44.4,
+              "avg_ciclo": 15.48
+            },
+            "SUR": {
+              "total": 46,
+              "pct_8h": 2.2,
+              "avg_ciclo": 16.27
+            },
+            "NORORIENTE": {
+              "total": 105,
+              "pct_8h": 68.6,
+              "avg_ciclo": 9.8
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-11",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "11 Jun",
+          "diaMes": 11,
+          "totalIngresadas": 809,
+          "atendidas": 809,
+          "aprobadas": 747,
+          "rechazos": 251,
+          "tasaRechazo": 31.0,
+          "cumplimientoSla8h": 61.7,
+          "cumplimientoSla24h": 93.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 8.99,
+          "tiempoColaPromedio": 5.4,
+          "tiempoAtencionPromedio": 3.59,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (5.4h)",
+          "diagnostico": "Presión en Buzón (5.4h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 243,
+              "pct_8h": 65.4,
+              "avg_ciclo": 11.26
+            },
+            "OCCIDENTE": {
+              "total": 226,
+              "pct_8h": 84.5,
+              "avg_ciclo": 4.59
+            },
+            "SUR": {
+              "total": 162,
+              "pct_8h": 1.9,
+              "avg_ciclo": 15.51
+            },
+            "NORORIENTE": {
+              "total": 178,
+              "pct_8h": 82.0,
+              "avg_ciclo": 5.54
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-12",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "12 Jun",
+          "diaMes": 12,
+          "totalIngresadas": 905,
+          "atendidas": 905,
+          "aprobadas": 820,
+          "rechazos": 282,
+          "tasaRechazo": 31.2,
+          "cumplimientoSla8h": 65.2,
+          "cumplimientoSla24h": 95.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 7.51,
+          "tiempoColaPromedio": 3.8,
+          "tiempoAtencionPromedio": 3.71,
+          "esCuelloBotella": false,
+          "severidad": "CONTROLADO",
+          "severidadNivel": 1,
+          "colorSeveridad": "#10b981",
+          "badgeBg": "bg-emerald-50 text-emerald-700 border-emerald-200",
+          "factorPrincipal": "Operación Normal",
+          "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+          "regiones": {
+            "CENTRAL": {
+              "total": 245,
+              "pct_8h": 73.1,
+              "avg_ciclo": 9.14
+            },
+            "OCCIDENTE": {
+              "total": 261,
+              "pct_8h": 85.1,
+              "avg_ciclo": 4.12
+            },
+            "SUR": {
+              "total": 194,
+              "pct_8h": 5.7,
+              "avg_ciclo": 13.08
+            },
+            "NORORIENTE": {
+              "total": 205,
+              "pct_8h": 86.8,
+              "avg_ciclo": 4.59
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-13",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "13 Jun",
+          "diaMes": 13,
+          "totalIngresadas": 406,
+          "atendidas": 406,
+          "aprobadas": 367,
+          "rechazos": 121,
+          "tasaRechazo": 29.8,
+          "cumplimientoSla8h": 64.0,
+          "cumplimientoSla24h": 95.8,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 7.33,
+          "tiempoColaPromedio": 4.45,
+          "tiempoAtencionPromedio": 2.88,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Operación Normal",
+          "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+          "regiones": {
+            "CENTRAL": {
+              "total": 128,
+              "pct_8h": 79.7,
+              "avg_ciclo": 5.51
+            },
+            "OCCIDENTE": {
+              "total": 80,
+              "pct_8h": 85.0,
+              "avg_ciclo": 5.4
+            },
+            "SUR": {
+              "total": 98,
+              "pct_8h": 6.1,
+              "avg_ciclo": 13.12
+            },
+            "NORORIENTE": {
+              "total": 100,
+              "pct_8h": 84.0,
+              "avg_ciclo": 5.5
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-14",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "14 Jun",
+          "diaMes": 14,
+          "totalIngresadas": 221,
+          "atendidas": 221,
+          "aprobadas": 196,
+          "rechazos": 84,
+          "tasaRechazo": 38.0,
+          "cumplimientoSla8h": 57.0,
+          "cumplimientoSla24h": 87.8,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 13.16,
+          "tiempoColaPromedio": 5.97,
+          "tiempoAtencionPromedio": 7.19,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (6.0h)",
+          "diagnostico": "Presión en Buzón (6.0h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 93,
+              "pct_8h": 61.3,
+              "avg_ciclo": 13.38
+            },
+            "OCCIDENTE": {
+              "total": 54,
+              "pct_8h": 75.9,
+              "avg_ciclo": 8.16
+            },
+            "SUR": {
+              "total": 41,
+              "pct_8h": 9.8,
+              "avg_ciclo": 17.61
+            },
+            "NORORIENTE": {
+              "total": 33,
+              "pct_8h": 72.7,
+              "avg_ciclo": 15.22
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-15",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "15 Jun",
+          "diaMes": 15,
+          "totalIngresadas": 1289,
+          "atendidas": 1289,
+          "aprobadas": 1168,
+          "rechazos": 365,
+          "tasaRechazo": 28.3,
+          "cumplimientoSla8h": 51.2,
+          "cumplimientoSla24h": 91.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 11.95,
+          "tiempoColaPromedio": 6.75,
+          "tiempoAtencionPromedio": 5.2,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (6.8h)",
+          "diagnostico": "Presión en Buzón (6.8h) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 370,
+              "pct_8h": 49.7,
+              "avg_ciclo": 13.86
+            },
+            "OCCIDENTE": {
+              "total": 369,
+              "pct_8h": 85.6,
+              "avg_ciclo": 6.25
+            },
+            "SUR": {
+              "total": 245,
+              "pct_8h": 1.2,
+              "avg_ciclo": 16.07
+            },
+            "NORORIENTE": {
+              "total": 305,
+              "pct_8h": 51.5,
+              "avg_ciclo": 13.22
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-16",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "16 Jun",
+          "diaMes": 16,
+          "totalIngresadas": 1153,
+          "atendidas": 1152,
+          "aprobadas": 1017,
+          "rechazos": 318,
+          "tasaRechazo": 27.6,
+          "cumplimientoSla8h": 36.0,
+          "cumplimientoSla24h": 88.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 14.12,
+          "tiempoColaPromedio": 7.26,
+          "tiempoAtencionPromedio": 6.86,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (7.3h cola)",
+          "diagnostico": "Demora en Buzón (7.3h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 393,
+              "pct_8h": 5.1,
+              "avg_ciclo": 20.31
+            },
+            "OCCIDENTE": {
+              "total": 280,
+              "pct_8h": 83.2,
+              "avg_ciclo": 5.11
+            },
+            "SUR": {
+              "total": 243,
+              "pct_8h": 21.4,
+              "avg_ciclo": 14.73
+            },
+            "NORORIENTE": {
+              "total": 237,
+              "pct_8h": 46.4,
+              "avg_ciclo": 13.91
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-17",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "17 Jun",
+          "diaMes": 17,
+          "totalIngresadas": 891,
+          "atendidas": 891,
+          "aprobadas": 766,
+          "rechazos": 249,
+          "tasaRechazo": 27.9,
+          "cumplimientoSla8h": 48.1,
+          "cumplimientoSla24h": 88.7,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 13.83,
+          "tiempoColaPromedio": 6.8,
+          "tiempoAtencionPromedio": 7.03,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (6.8h)",
+          "diagnostico": "Presión en Buzón (6.8h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 275,
+              "pct_8h": 4.0,
+              "avg_ciclo": 21.31
+            },
+            "OCCIDENTE": {
+              "total": 239,
+              "pct_8h": 83.7,
+              "avg_ciclo": 6.85
+            },
+            "SUR": {
+              "total": 194,
+              "pct_8h": 44.8,
+              "avg_ciclo": 12.16
+            },
+            "NORORIENTE": {
+              "total": 183,
+              "pct_8h": 71.6,
+              "avg_ciclo": 13.46
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-18",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "18 Jun",
+          "diaMes": 18,
+          "totalIngresadas": 695,
+          "atendidas": 695,
+          "aprobadas": 627,
+          "rechazos": 150,
+          "tasaRechazo": 21.6,
+          "cumplimientoSla8h": 74.7,
+          "cumplimientoSla24h": 90.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 9.21,
+          "tiempoColaPromedio": 4.28,
+          "tiempoAtencionPromedio": 4.93,
+          "esCuelloBotella": false,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Operación Normal",
+          "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+          "regiones": {
+            "CENTRAL": {
+              "total": 75,
+              "pct_8h": 18.7,
+              "avg_ciclo": 21.57
+            },
+            "OCCIDENTE": {
+              "total": 243,
+              "pct_8h": 88.5,
+              "avg_ciclo": 5.24
+            },
+            "SUR": {
+              "total": 170,
+              "pct_8h": 64.1,
+              "avg_ciclo": 11.02
+            },
+            "NORORIENTE": {
+              "total": 207,
+              "pct_8h": 87.4,
+              "avg_ciclo": 7.9
+            }
+          }
+        },
+        {
+          "fecha": "2026-06-19",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "19 Jun",
+          "diaMes": 19,
+          "totalIngresadas": 151,
+          "atendidas": 151,
+          "aprobadas": 138,
+          "rechazos": 28,
+          "tasaRechazo": 18.5,
+          "cumplimientoSla8h": 79.5,
+          "cumplimientoSla24h": 92.7,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 9.58,
+          "tiempoColaPromedio": 5.37,
+          "tiempoAtencionPromedio": 4.21,
+          "esCuelloBotella": false,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (5.4h)",
+          "diagnostico": "Presión en Buzón (5.4h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 4,
+              "pct_8h": 50.0,
+              "avg_ciclo": 20.15
+            },
+            "OCCIDENTE": {
+              "total": 78,
+              "pct_8h": 83.3,
+              "avg_ciclo": 9.58
+            },
+            "SUR": {
+              "total": 29,
+              "pct_8h": 51.7,
+              "avg_ciclo": 15.17
+            },
+            "NORORIENTE": {
+              "total": 40,
+              "pct_8h": 95.0,
+              "avg_ciclo": 4.48
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-21",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "21 Jul",
+          "diaMes": 21,
+          "totalIngresadas": 276,
+          "atendidas": 276,
+          "aprobadas": 238,
+          "rechazos": 92,
+          "tasaRechazo": 33.3,
+          "cumplimientoSla8h": 0.0,
+          "cumplimientoSla24h": 44.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 27.81,
+          "tiempoColaPromedio": 20.0,
+          "tiempoAtencionPromedio": 7.81,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (20.0h cola)",
+          "diagnostico": "Demora en Buzón (20.0h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 41,
+              "pct_8h": 0.0,
+              "avg_ciclo": 30.9
+            },
+            "OCCIDENTE": {
+              "total": 21,
+              "pct_8h": 0.0,
+              "avg_ciclo": 36.47
+            },
+            "SUR": {
+              "total": 194,
+              "pct_8h": 0.0,
+              "avg_ciclo": 26.03
+            },
+            "NORORIENTE": {
+              "total": 20,
+              "pct_8h": 0.0,
+              "avg_ciclo": 29.65
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-22",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "22 Jul",
+          "diaMes": 22,
+          "totalIngresadas": 404,
+          "atendidas": 404,
+          "aprobadas": 356,
+          "rechazos": 130,
+          "tasaRechazo": 32.2,
+          "cumplimientoSla8h": 0.0,
+          "cumplimientoSla24h": 86.4,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 22.44,
+          "tiempoColaPromedio": 15.33,
+          "tiempoAtencionPromedio": 7.11,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (15.3h cola)",
+          "diagnostico": "Demora en Buzón (15.3h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 66,
+              "pct_8h": 0.0,
+              "avg_ciclo": 21.38
+            },
+            "OCCIDENTE": {
+              "total": 32,
+              "pct_8h": 0.0,
+              "avg_ciclo": 24.78
+            },
+            "SUR": {
+              "total": 281,
+              "pct_8h": 0.0,
+              "avg_ciclo": 22.04
+            },
+            "NORORIENTE": {
+              "total": 25,
+              "pct_8h": 0.0,
+              "avg_ciclo": 26.83
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-23",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "23 Jul",
+          "diaMes": 23,
+          "totalIngresadas": 516,
+          "atendidas": 516,
+          "aprobadas": 464,
+          "rechazos": 180,
+          "tasaRechazo": 34.9,
+          "cumplimientoSla8h": 0.2,
+          "cumplimientoSla24h": 97.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 16.24,
+          "tiempoColaPromedio": 11.39,
+          "tiempoAtencionPromedio": 4.85,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (11.4h cola)",
+          "diagnostico": "Demora en Buzón (11.4h cola)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 92,
+              "pct_8h": 1.1,
+              "avg_ciclo": 15.0
+            },
+            "OCCIDENTE": {
+              "total": 49,
+              "pct_8h": 0.0,
+              "avg_ciclo": 15.95
+            },
+            "SUR": {
+              "total": 317,
+              "pct_8h": 0.0,
+              "avg_ciclo": 16.6
+            },
+            "NORORIENTE": {
+              "total": 58,
+              "pct_8h": 0.0,
+              "avg_ciclo": 16.44
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-24",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "24 Jul",
+          "diaMes": 24,
+          "totalIngresadas": 825,
+          "atendidas": 825,
+          "aprobadas": 796,
+          "rechazos": 172,
+          "tasaRechazo": 20.8,
+          "cumplimientoSla8h": 60.7,
+          "cumplimientoSla24h": 98.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 7.46,
+          "tiempoColaPromedio": 5.76,
+          "tiempoAtencionPromedio": 1.7,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (5.8h)",
+          "diagnostico": "Presión en Buzón (5.8h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 244,
+              "pct_8h": 78.7,
+              "avg_ciclo": 5.2
+            },
+            "OCCIDENTE": {
+              "total": 164,
+              "pct_8h": 82.3,
+              "avg_ciclo": 3.87
+            },
+            "SUR": {
+              "total": 185,
+              "pct_8h": 2.7,
+              "avg_ciclo": 12.31
+            },
+            "NORORIENTE": {
+              "total": 232,
+              "pct_8h": 72.8,
+              "avg_ciclo": 8.5
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-25",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "25 Jul",
+          "diaMes": 25,
+          "totalIngresadas": 353,
+          "atendidas": 353,
+          "aprobadas": 337,
+          "rechazos": 80,
+          "tasaRechazo": 22.7,
+          "cumplimientoSla8h": 77.9,
+          "cumplimientoSla24h": 97.2,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 8.17,
+          "tiempoColaPromedio": 4.88,
+          "tiempoAtencionPromedio": 3.29,
+          "esCuelloBotella": false,
+          "severidad": "CONTROLADO",
+          "severidadNivel": 1,
+          "colorSeveridad": "#10b981",
+          "badgeBg": "bg-emerald-50 text-emerald-700 border-emerald-200",
+          "factorPrincipal": "Presión en Buzón (4.9h)",
+          "diagnostico": "Presión en Buzón (4.9h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 163,
+              "pct_8h": 81.0,
+              "avg_ciclo": 7.62
+            },
+            "OCCIDENTE": {
+              "total": 106,
+              "pct_8h": 89.6,
+              "avg_ciclo": 5.12
+            },
+            "SUR": {
+              "total": 5,
+              "pct_8h": 40.0,
+              "avg_ciclo": 39.78
+            },
+            "NORORIENTE": {
+              "total": 79,
+              "pct_8h": 58.2,
+              "avg_ciclo": 11.38
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-26",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "26 Jul",
+          "diaMes": 26,
+          "totalIngresadas": 187,
+          "atendidas": 187,
+          "aprobadas": 178,
+          "rechazos": 40,
+          "tasaRechazo": 21.4,
+          "cumplimientoSla8h": 84.5,
+          "cumplimientoSla24h": 96.3,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 10.49,
+          "tiempoColaPromedio": 6.24,
+          "tiempoAtencionPromedio": 4.25,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (6.2h)",
+          "diagnostico": "Presión en Buzón (6.2h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 92,
+              "pct_8h": 77.2,
+              "avg_ciclo": 11.23
+            },
+            "OCCIDENTE": {
+              "total": 87,
+              "pct_8h": 92.0,
+              "avg_ciclo": 9.46
+            },
+            "SUR": {
+              "total": 3,
+              "pct_8h": 66.7,
+              "avg_ciclo": 27.63
+            },
+            "NORORIENTE": {
+              "total": 5,
+              "pct_8h": 100.0,
+              "avg_ciclo": 4.68
+            }
+          }
+        },
+        {
+          "fecha": "2026-07-27",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "27 Jul",
+          "diaMes": 27,
+          "totalIngresadas": 235,
+          "atendidas": 235,
+          "aprobadas": 224,
+          "rechazos": 29,
+          "tasaRechazo": 12.3,
+          "cumplimientoSla8h": 91.9,
+          "cumplimientoSla24h": 95.3,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 10.15,
+          "tiempoColaPromedio": 6.08,
+          "tiempoAtencionPromedio": 4.07,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (6.1h)",
+          "diagnostico": "Presión en Buzón (6.1h) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 66,
+              "pct_8h": 86.4,
+              "avg_ciclo": 17.07
+            },
+            "OCCIDENTE": {
+              "total": 160,
+              "pct_8h": 96.2,
+              "avg_ciclo": 7.05
+            },
+            "SUR": {
+              "total": 4,
+              "pct_8h": 75.0,
+              "avg_ciclo": 9.6
+            },
+            "NORORIENTE": {
+              "total": 5,
+              "pct_8h": 40.0,
+              "avg_ciclo": 18.28
+            }
+          }
+        }
+      ]
+    },
+    "enero": {
+      "id": "enero",
+      "nombre": "Ventana Inicial de Enero (31 Días de Alta Presión)",
+      "descripcion": "Lanzamiento masivo con más de 80,000 expedientes y picos de cuello de botella",
+      "resumen": {
+        "dias_analizados": 31,
+        "rango_fechas": "2026-01-01 al 2026-01-31",
+        "cumplimiento_promedio_8h": 33.8,
+        "cumplimiento_minimo_8h": 0.0,
+        "cumplimiento_maximo_8h": 79.8,
+        "tiempo_habil_promedio": 21.57,
+        "tiempo_cola_promedio": 11.63,
+        "total_ingresadas_30d": 52462,
+        "total_atendidas_30d": 52345,
+        "dias_criticos": 27,
+        "dias_moderados": 4,
+        "dias_controlados": 0,
+        "peor_dia": {
+          "fecha": "2026-01-06",
+          "cumplimiento": 0.0,
+          "diagnostico": "Demora en Buzón (22.5h cola) • Pico Extremo (2,849 exp) • Fricción Documental (45.1% rech)",
+          "tiempoCola": 22.53
+        },
+        "mejor_dia": {
+          "fecha": "2026-01-23",
+          "cumplimiento": 79.8,
+          "diagnostico": "Pico de Demanda (1,949 exp)"
+        },
+        "conclusion_cuellos_botella": "El análisis temporal de 30 días demuestra que el principal cuello de botella para el cumplimiento de las 8 horas hábiles reside en el tiempo de espera en el Buzón General (cola previa a asignación), el cual explica más del 85% de la dispersión en los días críticos, agravado por picos de demanda en días lunes y fines de mes."
+      },
+      "serie": [
+        {
+          "fecha": "2026-01-01",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "01 Ene",
+          "diaMes": 1,
+          "totalIngresadas": 154,
+          "atendidas": 154,
+          "aprobadas": 91,
+          "rechazos": 104,
+          "tasaRechazo": 67.5,
+          "cumplimientoSla8h": 19.5,
+          "cumplimientoSla24h": 58.4,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 26.61,
+          "tiempoColaPromedio": 11.84,
+          "tiempoAtencionPromedio": 14.77,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (11.8h cola)",
+          "diagnostico": "Demora en Buzón (11.8h cola) • Fricción Documental (67.5% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 98,
+              "pct_8h": 3.1,
+              "avg_ciclo": 31.27
+            },
+            "OCCIDENTE": {
+              "total": 13,
+              "pct_8h": 61.5,
+              "avg_ciclo": 18.34
+            },
+            "SUR": {
+              "total": 21,
+              "pct_8h": 42.9,
+              "avg_ciclo": 18.57
+            },
+            "NORORIENTE": {
+              "total": 22,
+              "pct_8h": 45.5,
+              "avg_ciclo": 18.4
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-02",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "02 Ene",
+          "diaMes": 2,
+          "totalIngresadas": 1408,
+          "atendidas": 1408,
+          "aprobadas": 1119,
+          "rechazos": 611,
+          "tasaRechazo": 43.4,
+          "cumplimientoSla8h": 42.6,
+          "cumplimientoSla24h": 78.8,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 15.3,
+          "tiempoColaPromedio": 7.06,
+          "tiempoAtencionPromedio": 8.24,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (7.1h cola)",
+          "diagnostico": "Demora en Buzón (7.1h cola) • Fricción Documental (43.4% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 579,
+              "pct_8h": 2.9,
+              "avg_ciclo": 22.91
+            },
+            "OCCIDENTE": {
+              "total": 261,
+              "pct_8h": 59.4,
+              "avg_ciclo": 13.21
+            },
+            "SUR": {
+              "total": 258,
+              "pct_8h": 74.4,
+              "avg_ciclo": 9.28
+            },
+            "NORORIENTE": {
+              "total": 310,
+              "pct_8h": 76.1,
+              "avg_ciclo": 7.84
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-03",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "03 Ene",
+          "diaMes": 3,
+          "totalIngresadas": 812,
+          "atendidas": 812,
+          "aprobadas": 609,
+          "rechazos": 366,
+          "tasaRechazo": 45.1,
+          "cumplimientoSla8h": 27.5,
+          "cumplimientoSla24h": 71.1,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 20.32,
+          "tiempoColaPromedio": 11.18,
+          "tiempoAtencionPromedio": 9.14,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (11.2h cola)",
+          "diagnostico": "Demora en Buzón (11.2h cola) • Fricción Documental (45.1% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 341,
+              "pct_8h": 1.2,
+              "avg_ciclo": 28.07
+            },
+            "OCCIDENTE": {
+              "total": 134,
+              "pct_8h": 61.2,
+              "avg_ciclo": 12.26
+            },
+            "SUR": {
+              "total": 149,
+              "pct_8h": 63.1,
+              "avg_ciclo": 14.71
+            },
+            "NORORIENTE": {
+              "total": 188,
+              "pct_8h": 22.9,
+              "avg_ciclo": 16.49
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-04",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "04 Ene",
+          "diaMes": 4,
+          "totalIngresadas": 564,
+          "atendidas": 564,
+          "aprobadas": 375,
+          "rechazos": 287,
+          "tasaRechazo": 50.9,
+          "cumplimientoSla8h": 9.0,
+          "cumplimientoSla24h": 47.0,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 28.23,
+          "tiempoColaPromedio": 16.71,
+          "tiempoAtencionPromedio": 11.52,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (16.7h cola)",
+          "diagnostico": "Demora en Buzón (16.7h cola) • Fricción Documental (50.9% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 266,
+              "pct_8h": 0.0,
+              "avg_ciclo": 35.59
+            },
+            "OCCIDENTE": {
+              "total": 110,
+              "pct_8h": 44.5,
+              "avg_ciclo": 19.88
+            },
+            "SUR": {
+              "total": 99,
+              "pct_8h": 0.0,
+              "avg_ciclo": 19.35
+            },
+            "NORORIENTE": {
+              "total": 89,
+              "pct_8h": 2.2,
+              "avg_ciclo": 26.43
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-05",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "05 Ene",
+          "diaMes": 5,
+          "totalIngresadas": 3000,
+          "atendidas": 2998,
+          "aprobadas": 2214,
+          "rechazos": 1295,
+          "tasaRechazo": 43.2,
+          "cumplimientoSla8h": 1.3,
+          "cumplimientoSla24h": 44.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 28.49,
+          "tiempoColaPromedio": 20.17,
+          "tiempoAtencionPromedio": 8.32,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (20.2h cola)",
+          "diagnostico": "Demora en Buzón (20.2h cola) • Pico Extremo (3,000 exp) • Fricción Documental (43.2% rech) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1366,
+              "pct_8h": 0.2,
+              "avg_ciclo": 40.69
+            },
+            "OCCIDENTE": {
+              "total": 569,
+              "pct_8h": 0.4,
+              "avg_ciclo": 18.02
+            },
+            "SUR": {
+              "total": 580,
+              "pct_8h": 5.3,
+              "avg_ciclo": 14.53
+            },
+            "NORORIENTE": {
+              "total": 485,
+              "pct_8h": 0.4,
+              "avg_ciclo": 23.15
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-06",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "06 Ene",
+          "diaMes": 6,
+          "totalIngresadas": 2849,
+          "atendidas": 2848,
+          "aprobadas": 2040,
+          "rechazos": 1285,
+          "tasaRechazo": 45.1,
+          "cumplimientoSla8h": 0.0,
+          "cumplimientoSla24h": 32.7,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 32.43,
+          "tiempoColaPromedio": 22.53,
+          "tiempoAtencionPromedio": 9.9,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (22.5h cola)",
+          "diagnostico": "Demora en Buzón (22.5h cola) • Pico Extremo (2,849 exp) • Fricción Documental (45.1% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1334,
+              "pct_8h": 0.0,
+              "avg_ciclo": 43.82
+            },
+            "OCCIDENTE": {
+              "total": 513,
+              "pct_8h": 0.0,
+              "avg_ciclo": 22.7
+            },
+            "SUR": {
+              "total": 520,
+              "pct_8h": 0.0,
+              "avg_ciclo": 16.0
+            },
+            "NORORIENTE": {
+              "total": 482,
+              "pct_8h": 0.2,
+              "avg_ciclo": 28.96
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-07",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "07 Ene",
+          "diaMes": 7,
+          "totalIngresadas": 2713,
+          "atendidas": 2708,
+          "aprobadas": 1963,
+          "rechazos": 1137,
+          "tasaRechazo": 42.0,
+          "cumplimientoSla8h": 2.5,
+          "cumplimientoSla24h": 43.2,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 33.88,
+          "tiempoColaPromedio": 24.96,
+          "tiempoAtencionPromedio": 8.92,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (25.0h cola)",
+          "diagnostico": "Demora en Buzón (25.0h cola) • Pico Extremo (2,713 exp) • Fricción Documental (42.0% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1276,
+              "pct_8h": 0.1,
+              "avg_ciclo": 48.82
+            },
+            "OCCIDENTE": {
+              "total": 477,
+              "pct_8h": 0.0,
+              "avg_ciclo": 23.44
+            },
+            "SUR": {
+              "total": 524,
+              "pct_8h": 12.8,
+              "avg_ciclo": 16.26
+            },
+            "NORORIENTE": {
+              "total": 436,
+              "pct_8h": 0.2,
+              "avg_ciclo": 22.91
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-08",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "08 Ene",
+          "diaMes": 8,
+          "totalIngresadas": 2521,
+          "atendidas": 2520,
+          "aprobadas": 1796,
+          "rechazos": 1070,
+          "tasaRechazo": 42.5,
+          "cumplimientoSla8h": 12.5,
+          "cumplimientoSla24h": 47.1,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 32.63,
+          "tiempoColaPromedio": 23.14,
+          "tiempoAtencionPromedio": 9.49,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (23.1h cola)",
+          "diagnostico": "Demora en Buzón (23.1h cola) • Pico Extremo (2,521 exp) • Fricción Documental (42.5% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1087,
+              "pct_8h": 0.9,
+              "avg_ciclo": 53.17
+            },
+            "OCCIDENTE": {
+              "total": 498,
+              "pct_8h": 24.5,
+              "avg_ciclo": 18.9
+            },
+            "SUR": {
+              "total": 474,
+              "pct_8h": 17.5,
+              "avg_ciclo": 15.78
+            },
+            "NORORIENTE": {
+              "total": 462,
+              "pct_8h": 21.6,
+              "avg_ciclo": 16.45
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-09",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "09 Ene",
+          "diaMes": 9,
+          "totalIngresadas": 2161,
+          "atendidas": 2160,
+          "aprobadas": 1558,
+          "rechazos": 901,
+          "tasaRechazo": 41.7,
+          "cumplimientoSla8h": 38.9,
+          "cumplimientoSla24h": 49.1,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 28.94,
+          "tiempoColaPromedio": 18.98,
+          "tiempoAtencionPromedio": 9.96,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (19.0h cola)",
+          "diagnostico": "Demora en Buzón (19.0h cola) • Pico de Demanda (2,161 exp) • Fricción Documental (41.7% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 878,
+              "pct_8h": 1.7,
+              "avg_ciclo": 52.34
+            },
+            "OCCIDENTE": {
+              "total": 429,
+              "pct_8h": 50.9,
+              "avg_ciclo": 17.09
+            },
+            "SUR": {
+              "total": 429,
+              "pct_8h": 65.3,
+              "avg_ciclo": 12.47
+            },
+            "NORORIENTE": {
+              "total": 425,
+              "pct_8h": 77.2,
+              "avg_ciclo": 9.16
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-10",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "10 Ene",
+          "diaMes": 10,
+          "totalIngresadas": 1029,
+          "atendidas": 1029,
+          "aprobadas": 714,
+          "rechazos": 461,
+          "tasaRechazo": 44.8,
+          "cumplimientoSla8h": 40.6,
+          "cumplimientoSla24h": 48.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 29.62,
+          "tiempoColaPromedio": 17.67,
+          "tiempoAtencionPromedio": 11.95,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (17.7h cola)",
+          "diagnostico": "Demora en Buzón (17.7h cola) • Fricción Documental (44.8% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 418,
+              "pct_8h": 2.4,
+              "avg_ciclo": 55.91
+            },
+            "OCCIDENTE": {
+              "total": 191,
+              "pct_8h": 47.6,
+              "avg_ciclo": 18.17
+            },
+            "SUR": {
+              "total": 213,
+              "pct_8h": 66.7,
+              "avg_ciclo": 11.91
+            },
+            "NORORIENTE": {
+              "total": 207,
+              "pct_8h": 84.5,
+              "avg_ciclo": 5.33
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-11",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "11 Ene",
+          "diaMes": 11,
+          "totalIngresadas": 631,
+          "atendidas": 630,
+          "aprobadas": 422,
+          "rechazos": 306,
+          "tasaRechazo": 48.6,
+          "cumplimientoSla8h": 21.7,
+          "cumplimientoSla24h": 37.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 35.71,
+          "tiempoColaPromedio": 23.17,
+          "tiempoAtencionPromedio": 12.54,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (23.2h cola)",
+          "diagnostico": "Demora en Buzón (23.2h cola) • Fricción Documental (48.6% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 331,
+              "pct_8h": 2.7,
+              "avg_ciclo": 54.58
+            },
+            "OCCIDENTE": {
+              "total": 101,
+              "pct_8h": 0.0,
+              "avg_ciclo": 20.4
+            },
+            "SUR": {
+              "total": 118,
+              "pct_8h": 59.8,
+              "avg_ciclo": 13.02
+            },
+            "NORORIENTE": {
+              "total": 81,
+              "pct_8h": 71.6,
+              "avg_ciclo": 10.46
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-12",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "12 Ene",
+          "diaMes": 12,
+          "totalIngresadas": 2803,
+          "atendidas": 2802,
+          "aprobadas": 2149,
+          "rechazos": 1089,
+          "tasaRechazo": 38.9,
+          "cumplimientoSla8h": 29.7,
+          "cumplimientoSla24h": 52.7,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 26.34,
+          "tiempoColaPromedio": 17.5,
+          "tiempoAtencionPromedio": 8.84,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (17.5h cola)",
+          "diagnostico": "Demora en Buzón (17.5h cola) • Pico Extremo (2,803 exp) • Fricción Documental (38.9% rech) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1105,
+              "pct_8h": 1.8,
+              "avg_ciclo": 47.37
+            },
+            "OCCIDENTE": {
+              "total": 533,
+              "pct_8h": 6.2,
+              "avg_ciclo": 16.44
+            },
+            "SUR": {
+              "total": 579,
+              "pct_8h": 55.4,
+              "avg_ciclo": 12.98
+            },
+            "NORORIENTE": {
+              "total": 586,
+              "pct_8h": 78.5,
+              "avg_ciclo": 8.84
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-13",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "13 Ene",
+          "diaMes": 13,
+          "totalIngresadas": 2566,
+          "atendidas": 2565,
+          "aprobadas": 1877,
+          "rechazos": 1098,
+          "tasaRechazo": 42.8,
+          "cumplimientoSla8h": 16.5,
+          "cumplimientoSla24h": 56.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 26.89,
+          "tiempoColaPromedio": 15.97,
+          "tiempoAtencionPromedio": 10.92,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (16.0h cola)",
+          "diagnostico": "Demora en Buzón (16.0h cola) • Pico Extremo (2,566 exp) • Fricción Documental (42.8% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1036,
+              "pct_8h": 1.0,
+              "avg_ciclo": 43.25
+            },
+            "OCCIDENTE": {
+              "total": 479,
+              "pct_8h": 1.0,
+              "avg_ciclo": 17.1
+            },
+            "SUR": {
+              "total": 502,
+              "pct_8h": 2.8,
+              "avg_ciclo": 18.05
+            },
+            "NORORIENTE": {
+              "total": 549,
+              "pct_8h": 71.9,
+              "avg_ciclo": 12.61
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-14",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "14 Ene",
+          "diaMes": 14,
+          "totalIngresadas": 2465,
+          "atendidas": 2462,
+          "aprobadas": 1840,
+          "rechazos": 981,
+          "tasaRechazo": 39.8,
+          "cumplimientoSla8h": 11.3,
+          "cumplimientoSla24h": 70.1,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 24.77,
+          "tiempoColaPromedio": 14.32,
+          "tiempoAtencionPromedio": 10.45,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (14.3h cola)",
+          "diagnostico": "Demora en Buzón (14.3h cola) • Pico de Demanda (2,465 exp) • Fricción Documental (39.8% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 1054,
+              "pct_8h": 0.5,
+              "avg_ciclo": 34.82
+            },
+            "OCCIDENTE": {
+              "total": 447,
+              "pct_8h": 0.2,
+              "avg_ciclo": 19.59
+            },
+            "SUR": {
+              "total": 489,
+              "pct_8h": 0.6,
+              "avg_ciclo": 20.26
+            },
+            "NORORIENTE": {
+              "total": 475,
+              "pct_8h": 56.5,
+              "avg_ciclo": 11.94
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-15",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "15 Ene",
+          "diaMes": 15,
+          "totalIngresadas": 1981,
+          "atendidas": 1980,
+          "aprobadas": 1491,
+          "rechazos": 791,
+          "tasaRechazo": 39.9,
+          "cumplimientoSla8h": 16.8,
+          "cumplimientoSla24h": 73.0,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 21.24,
+          "tiempoColaPromedio": 10.74,
+          "tiempoAtencionPromedio": 10.5,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (10.7h cola)",
+          "diagnostico": "Demora en Buzón (10.7h cola) • Pico de Demanda (1,981 exp) • Fricción Documental (39.9% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 833,
+              "pct_8h": 1.2,
+              "avg_ciclo": 28.35
+            },
+            "OCCIDENTE": {
+              "total": 397,
+              "pct_8h": 29.5,
+              "avg_ciclo": 15.78
+            },
+            "SUR": {
+              "total": 360,
+              "pct_8h": 20.9,
+              "avg_ciclo": 17.94
+            },
+            "NORORIENTE": {
+              "total": 391,
+              "pct_8h": 33.2,
+              "avg_ciclo": 14.68
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-16",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "16 Ene",
+          "diaMes": 16,
+          "totalIngresadas": 1737,
+          "atendidas": 1734,
+          "aprobadas": 1399,
+          "rechazos": 603,
+          "tasaRechazo": 34.8,
+          "cumplimientoSla8h": 61.1,
+          "cumplimientoSla24h": 80.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 13.27,
+          "tiempoColaPromedio": 4.78,
+          "tiempoAtencionPromedio": 8.49,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Presión en Buzón (4.8h)",
+          "diagnostico": "Presión en Buzón (4.8h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 625,
+              "pct_8h": 29.9,
+              "avg_ciclo": 21.01
+            },
+            "OCCIDENTE": {
+              "total": 359,
+              "pct_8h": 76.0,
+              "avg_ciclo": 9.97
+            },
+            "SUR": {
+              "total": 351,
+              "pct_8h": 75.2,
+              "avg_ciclo": 9.61
+            },
+            "NORORIENTE": {
+              "total": 402,
+              "pct_8h": 83.6,
+              "avg_ciclo": 7.44
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-17",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "17 Ene",
+          "diaMes": 17,
+          "totalIngresadas": 856,
+          "atendidas": 854,
+          "aprobadas": 699,
+          "rechazos": 302,
+          "tasaRechazo": 35.4,
+          "cumplimientoSla8h": 60.9,
+          "cumplimientoSla24h": 80.1,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 12.22,
+          "tiempoColaPromedio": 2.86,
+          "tiempoAtencionPromedio": 9.36,
+          "esCuelloBotella": true,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Operación Normal",
+          "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+          "regiones": {
+            "CENTRAL": {
+              "total": 286,
+              "pct_8h": 30.3,
+              "avg_ciclo": 21.46
+            },
+            "OCCIDENTE": {
+              "total": 184,
+              "pct_8h": 81.5,
+              "avg_ciclo": 6.68
+            },
+            "SUR": {
+              "total": 188,
+              "pct_8h": 73.4,
+              "avg_ciclo": 8.04
+            },
+            "NORORIENTE": {
+              "total": 198,
+              "pct_8h": 73.7,
+              "avg_ciclo": 8.09
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-18",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "18 Ene",
+          "diaMes": 18,
+          "totalIngresadas": 492,
+          "atendidas": 490,
+          "aprobadas": 351,
+          "rechazos": 237,
+          "tasaRechazo": 48.4,
+          "cumplimientoSla8h": 35.1,
+          "cumplimientoSla24h": 69.4,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 19.6,
+          "tiempoColaPromedio": 6.12,
+          "tiempoAtencionPromedio": 13.48,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (6.1h)",
+          "diagnostico": "Presión en Buzón (6.1h) • Fricción Documental (48.4% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 235,
+              "pct_8h": 2.6,
+              "avg_ciclo": 26.17
+            },
+            "OCCIDENTE": {
+              "total": 81,
+              "pct_8h": 72.8,
+              "avg_ciclo": 12.06
+            },
+            "SUR": {
+              "total": 93,
+              "pct_8h": 67.7,
+              "avg_ciclo": 12.12
+            },
+            "NORORIENTE": {
+              "total": 83,
+              "pct_8h": 53.7,
+              "avg_ciclo": 16.8
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-19",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "19 Ene",
+          "diaMes": 19,
+          "totalIngresadas": 2466,
+          "atendidas": 2460,
+          "aprobadas": 2062,
+          "rechazos": 846,
+          "tasaRechazo": 34.4,
+          "cumplimientoSla8h": 48.9,
+          "cumplimientoSla24h": 82.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 14.56,
+          "tiempoColaPromedio": 6.9,
+          "tiempoAtencionPromedio": 7.66,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (6.9h)",
+          "diagnostico": "Presión en Buzón (6.9h) • Pico de Demanda (2,466 exp) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 872,
+              "pct_8h": 37.4,
+              "avg_ciclo": 19.39
+            },
+            "OCCIDENTE": {
+              "total": 554,
+              "pct_8h": 73.5,
+              "avg_ciclo": 11.96
+            },
+            "SUR": {
+              "total": 521,
+              "pct_8h": 77.0,
+              "avg_ciclo": 8.48
+            },
+            "NORORIENTE": {
+              "total": 519,
+              "pct_8h": 13.5,
+              "avg_ciclo": 15.4
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-20",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "20 Ene",
+          "diaMes": 20,
+          "totalIngresadas": 2137,
+          "atendidas": 2113,
+          "aprobadas": 1734,
+          "rechazos": 694,
+          "tasaRechazo": 32.8,
+          "cumplimientoSla8h": 39.8,
+          "cumplimientoSla24h": 81.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 18.3,
+          "tiempoColaPromedio": 8.27,
+          "tiempoAtencionPromedio": 10.03,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (8.3h cola)",
+          "diagnostico": "Demora en Buzón (8.3h cola) • Pico de Demanda (2,137 exp)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 704,
+              "pct_8h": 55.2,
+              "avg_ciclo": 17.06
+            },
+            "OCCIDENTE": {
+              "total": 474,
+              "pct_8h": 17.8,
+              "avg_ciclo": 26.15
+            },
+            "SUR": {
+              "total": 455,
+              "pct_8h": 79.0,
+              "avg_ciclo": 9.69
+            },
+            "NORORIENTE": {
+              "total": 504,
+              "pct_8h": 2.8,
+              "avg_ciclo": 20.55
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-21",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "21 Ene",
+          "diaMes": 21,
+          "totalIngresadas": 2046,
+          "atendidas": 2029,
+          "aprobadas": 1646,
+          "rechazos": 679,
+          "tasaRechazo": 33.5,
+          "cumplimientoSla8h": 37.9,
+          "cumplimientoSla24h": 82.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 16.91,
+          "tiempoColaPromedio": 8.36,
+          "tiempoAtencionPromedio": 8.55,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (8.4h cola)",
+          "diagnostico": "Demora en Buzón (8.4h cola) • Pico de Demanda (2,046 exp)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 699,
+              "pct_8h": 62.1,
+              "avg_ciclo": 15.73
+            },
+            "OCCIDENTE": {
+              "total": 459,
+              "pct_8h": 2.6,
+              "avg_ciclo": 23.92
+            },
+            "SUR": {
+              "total": 438,
+              "pct_8h": 74.4,
+              "avg_ciclo": 11.59
+            },
+            "NORORIENTE": {
+              "total": 450,
+              "pct_8h": 1.1,
+              "avg_ciclo": 16.76
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-22",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "22 Ene",
+          "diaMes": 22,
+          "totalIngresadas": 1314,
+          "atendidas": 1276,
+          "aprobadas": 983,
+          "rechazos": 471,
+          "tasaRechazo": 36.9,
+          "cumplimientoSla8h": 46.6,
+          "cumplimientoSla24h": 81.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 16.22,
+          "tiempoColaPromedio": 6.65,
+          "tiempoAtencionPromedio": 9.57,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (6.7h)",
+          "diagnostico": "Presión en Buzón (6.7h)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 449,
+              "pct_8h": 56.0,
+              "avg_ciclo": 19.55
+            },
+            "OCCIDENTE": {
+              "total": 318,
+              "pct_8h": 22.3,
+              "avg_ciclo": 20.13
+            },
+            "SUR": {
+              "total": 272,
+              "pct_8h": 78.4,
+              "avg_ciclo": 8.61
+            },
+            "NORORIENTE": {
+              "total": 275,
+              "pct_8h": 29.5,
+              "avg_ciclo": 14.12
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-23",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "23 Ene",
+          "diaMes": 23,
+          "totalIngresadas": 1949,
+          "atendidas": 1949,
+          "aprobadas": 1660,
+          "rechazos": 605,
+          "tasaRechazo": 31.0,
+          "cumplimientoSla8h": 79.8,
+          "cumplimientoSla24h": 87.0,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 8.59,
+          "tiempoColaPromedio": 2.22,
+          "tiempoAtencionPromedio": 6.37,
+          "esCuelloBotella": false,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Pico de Demanda (1,949 exp)",
+          "diagnostico": "Pico de Demanda (1,949 exp)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 676,
+              "pct_8h": 74.0,
+              "avg_ciclo": 9.69
+            },
+            "OCCIDENTE": {
+              "total": 428,
+              "pct_8h": 78.0,
+              "avg_ciclo": 9.23
+            },
+            "SUR": {
+              "total": 384,
+              "pct_8h": 83.1,
+              "avg_ciclo": 7.45
+            },
+            "NORORIENTE": {
+              "total": 461,
+              "pct_8h": 87.2,
+              "avg_ciclo": 7.34
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-24",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "24 Ene",
+          "diaMes": 24,
+          "totalIngresadas": 876,
+          "atendidas": 876,
+          "aprobadas": 739,
+          "rechazos": 260,
+          "tasaRechazo": 29.7,
+          "cumplimientoSla8h": 76.6,
+          "cumplimientoSla24h": 83.8,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 8.98,
+          "tiempoColaPromedio": 1.4,
+          "tiempoAtencionPromedio": 7.58,
+          "esCuelloBotella": false,
+          "severidad": "MODERADO",
+          "severidadNivel": 2,
+          "colorSeveridad": "#f59e0b",
+          "badgeBg": "bg-amber-50 text-amber-700 border-amber-200",
+          "factorPrincipal": "Operación Normal",
+          "diagnostico": "Operación fluida dentro del umbral SLA de 8h",
+          "regiones": {
+            "CENTRAL": {
+              "total": 299,
+              "pct_8h": 66.9,
+              "avg_ciclo": 13.33
+            },
+            "OCCIDENTE": {
+              "total": 175,
+              "pct_8h": 73.1,
+              "avg_ciclo": 8.73
+            },
+            "SUR": {
+              "total": 183,
+              "pct_8h": 81.4,
+              "avg_ciclo": 6.87
+            },
+            "NORORIENTE": {
+              "total": 219,
+              "pct_8h": 88.6,
+              "avg_ciclo": 5.02
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-25",
+          "diaSemana": "Dom",
+          "etiquetaCorta": "25 Ene",
+          "diaMes": 25,
+          "totalIngresadas": 516,
+          "atendidas": 516,
+          "aprobadas": 369,
+          "rechazos": 249,
+          "tasaRechazo": 48.3,
+          "cumplimientoSla8h": 57.8,
+          "cumplimientoSla24h": 71.3,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 16.79,
+          "tiempoColaPromedio": 4.45,
+          "tiempoAtencionPromedio": 12.34,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Fricción Documental (48.3% rech)",
+          "diagnostico": "Fricción Documental (48.3% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 232,
+              "pct_8h": 48.3,
+              "avg_ciclo": 20.45
+            },
+            "OCCIDENTE": {
+              "total": 103,
+              "pct_8h": 63.1,
+              "avg_ciclo": 13.56
+            },
+            "SUR": {
+              "total": 101,
+              "pct_8h": 68.3,
+              "avg_ciclo": 13.01
+            },
+            "NORORIENTE": {
+              "total": 80,
+              "pct_8h": 65.0,
+              "avg_ciclo": 15.09
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-26",
+          "diaSemana": "Lun",
+          "etiquetaCorta": "26 Ene",
+          "diaMes": 26,
+          "totalIngresadas": 2419,
+          "atendidas": 2417,
+          "aprobadas": 1986,
+          "rechazos": 842,
+          "tasaRechazo": 34.8,
+          "cumplimientoSla8h": 48.3,
+          "cumplimientoSla24h": 79.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 15.75,
+          "tiempoColaPromedio": 7.04,
+          "tiempoAtencionPromedio": 8.71,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (7.0h cola)",
+          "diagnostico": "Demora en Buzón (7.0h cola) • Pico de Demanda (2,419 exp) • Efecto Lunes / Fin de Semana",
+          "regiones": {
+            "CENTRAL": {
+              "total": 794,
+              "pct_8h": 56.0,
+              "avg_ciclo": 18.22
+            },
+            "OCCIDENTE": {
+              "total": 546,
+              "pct_8h": 18.2,
+              "avg_ciclo": 18.34
+            },
+            "SUR": {
+              "total": 512,
+              "pct_8h": 76.8,
+              "avg_ciclo": 10.96
+            },
+            "NORORIENTE": {
+              "total": 567,
+              "pct_8h": 40.7,
+              "avg_ciclo": 14.15
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-27",
+          "diaSemana": "Mar",
+          "etiquetaCorta": "27 Ene",
+          "diaMes": 27,
+          "totalIngresadas": 2038,
+          "atendidas": 2034,
+          "aprobadas": 1541,
+          "rechazos": 879,
+          "tasaRechazo": 43.2,
+          "cumplimientoSla8h": 33.2,
+          "cumplimientoSla24h": 70.6,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 22.1,
+          "tiempoColaPromedio": 9.67,
+          "tiempoAtencionPromedio": 12.43,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (9.7h cola)",
+          "diagnostico": "Demora en Buzón (9.7h cola) • Pico de Demanda (2,038 exp) • Fricción Documental (43.2% rech)",
+          "regiones": {
+            "CENTRAL": {
+              "total": 794,
+              "pct_8h": 30.0,
+              "avg_ciclo": 26.28
+            },
+            "OCCIDENTE": {
+              "total": 454,
+              "pct_8h": 2.9,
+              "avg_ciclo": 26.37
+            },
+            "SUR": {
+              "total": 382,
+              "pct_8h": 34.8,
+              "avg_ciclo": 18.08
+            },
+            "NORORIENTE": {
+              "total": 408,
+              "pct_8h": 71.9,
+              "avg_ciclo": 12.95
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-28",
+          "diaSemana": "Mié",
+          "etiquetaCorta": "28 Ene",
+          "diaMes": 28,
+          "totalIngresadas": 1719,
+          "atendidas": 1717,
+          "aprobadas": 1345,
+          "rechazos": 691,
+          "tasaRechazo": 40.2,
+          "cumplimientoSla8h": 6.8,
+          "cumplimientoSla24h": 74.0,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 23.57,
+          "tiempoColaPromedio": 13.58,
+          "tiempoAtencionPromedio": 9.99,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (13.6h cola)",
+          "diagnostico": "Demora en Buzón (13.6h cola) • Fricción Documental (40.2% rech) • Efecto Cierre Mensual",
+          "regiones": {
+            "CENTRAL": {
+              "total": 648,
+              "pct_8h": 0.3,
+              "avg_ciclo": 22.93
+            },
+            "OCCIDENTE": {
+              "total": 382,
+              "pct_8h": 0.0,
+              "avg_ciclo": 32.45
+            },
+            "SUR": {
+              "total": 348,
+              "pct_8h": 0.3,
+              "avg_ciclo": 24.08
+            },
+            "NORORIENTE": {
+              "total": 341,
+              "pct_8h": 33.4,
+              "avg_ciclo": 14.34
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-29",
+          "diaSemana": "Jue",
+          "etiquetaCorta": "29 Ene",
+          "diaMes": 29,
+          "totalIngresadas": 1959,
+          "atendidas": 1959,
+          "aprobadas": 1567,
+          "rechazos": 677,
+          "tasaRechazo": 34.6,
+          "cumplimientoSla8h": 26.3,
+          "cumplimientoSla24h": 77.9,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 19.21,
+          "tiempoColaPromedio": 10.12,
+          "tiempoAtencionPromedio": 9.09,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Demora en Buzón (10.1h cola)",
+          "diagnostico": "Demora en Buzón (10.1h cola) • Pico de Demanda (1,959 exp) • Efecto Cierre Mensual",
+          "regiones": {
+            "CENTRAL": {
+              "total": 714,
+              "pct_8h": 10.8,
+              "avg_ciclo": 22.07
+            },
+            "OCCIDENTE": {
+              "total": 446,
+              "pct_8h": 23.5,
+              "avg_ciclo": 19.67
+            },
+            "SUR": {
+              "total": 413,
+              "pct_8h": 24.2,
+              "avg_ciclo": 18.66
+            },
+            "NORORIENTE": {
+              "total": 386,
+              "pct_8h": 60.4,
+              "avg_ciclo": 14.01
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-30",
+          "diaSemana": "Vie",
+          "etiquetaCorta": "30 Ene",
+          "diaMes": 30,
+          "totalIngresadas": 1500,
+          "atendidas": 1500,
+          "aprobadas": 1231,
+          "rechazos": 481,
+          "tasaRechazo": 32.1,
+          "cumplimientoSla8h": 58.3,
+          "cumplimientoSla24h": 80.5,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 14.16,
+          "tiempoColaPromedio": 5.81,
+          "tiempoAtencionPromedio": 8.35,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (5.8h)",
+          "diagnostico": "Presión en Buzón (5.8h) • Efecto Cierre Mensual",
+          "regiones": {
+            "CENTRAL": {
+              "total": 498,
+              "pct_8h": 22.5,
+              "avg_ciclo": 21.71
+            },
+            "OCCIDENTE": {
+              "total": 366,
+              "pct_8h": 64.5,
+              "avg_ciclo": 14.12
+            },
+            "SUR": {
+              "total": 316,
+              "pct_8h": 83.5,
+              "avg_ciclo": 8.44
+            },
+            "NORORIENTE": {
+              "total": 320,
+              "pct_8h": 81.9,
+              "avg_ciclo": 8.1
+            }
+          }
+        },
+        {
+          "fecha": "2026-01-31",
+          "diaSemana": "Sáb",
+          "etiquetaCorta": "31 Ene",
+          "diaMes": 31,
+          "totalIngresadas": 781,
+          "atendidas": 781,
+          "aprobadas": 608,
+          "rechazos": 289,
+          "tasaRechazo": 37.0,
+          "cumplimientoSla8h": 39.7,
+          "cumplimientoSla24h": 76.1,
+          "metaSla8h": 80.0,
+          "tiempoHabilPromedio": 17.09,
+          "tiempoColaPromedio": 6.24,
+          "tiempoAtencionPromedio": 10.85,
+          "esCuelloBotella": true,
+          "severidad": "CRÍTICO",
+          "severidadNivel": 3,
+          "colorSeveridad": "#ef4444",
+          "badgeBg": "bg-rose-50 text-rose-700 border-rose-200",
+          "factorPrincipal": "Presión en Buzón (6.2h)",
+          "diagnostico": "Presión en Buzón (6.2h) • Efecto Cierre Mensual",
+          "regiones": {
+            "CENTRAL": {
+              "total": 284,
+              "pct_8h": 11.6,
+              "avg_ciclo": 23.05
+            },
+            "OCCIDENTE": {
+              "total": 133,
+              "pct_8h": 2.3,
+              "avg_ciclo": 24.0
+            },
+            "SUR": {
+              "total": 180,
+              "pct_8h": 76.1,
+              "avg_ciclo": 10.84
+            },
+            "NORORIENTE": {
+              "total": 184,
+              "pct_8h": 74.5,
+              "avg_ciclo": 9.03
+            }
+          }
+        }
+      ]
+    }
+  }
+}

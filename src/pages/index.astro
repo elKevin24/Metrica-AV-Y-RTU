@@ -9,12 +9,16 @@ import ForensicView from '../components/ForensicView';
 import CausalidadView from '../components/CausalidadView.astro';
 import ConclusionesView from '../components/ConclusionesView.astro';
 import RechazosTrendChart from '../components/RechazosTrendChart';
+import Sla8hTrendChart from '../components/Sla8hTrendChart';
+import RevisoresDailyTrendChart from '../components/RevisoresDailyTrendChart';
 
 import fs from 'node:fs';
 import path from 'node:path';
 
 const cuboPath = path.join(process.cwd(), 'public', 'data', 'cubo_olap.json');
 const capacidadPath = path.join(process.cwd(), 'public', 'data', 'capacidad_semanal.json');
+const slaPath = path.join(process.cwd(), 'public', 'data', 'sla_30_dias.json');
+const revisoresDiarioPath = path.join(process.cwd(), 'public', 'data', 'revisores_diario.json');
 
 let dashboardData = {
   total_gestiones: 0,
@@ -29,6 +33,8 @@ let dashboardData = {
 };
 
 let semanasData: any[] = [];
+let slaData: any = null;
+let revisoresDiarioData: any = null;
 
 try {
   if (fs.existsSync(cuboPath)) {
@@ -47,6 +53,24 @@ try {
     if (capJson && capJson.semanas) {
       semanasData = capJson.semanas;
     }
+  }
+} catch (e) {
+  // Fallback silencioso
+}
+
+try {
+  if (fs.existsSync(slaPath)) {
+    const slaRaw = fs.readFileSync(slaPath, 'utf-8');
+    slaData = JSON.parse(slaRaw);
+  }
+} catch (e) {
+  // Fallback silencioso
+}
+
+try {
+  if (fs.existsSync(revisoresDiarioPath)) {
+    const rdRaw = fs.readFileSync(revisoresDiarioPath, 'utf-8');
+    revisoresDiarioData = JSON.parse(rdRaw);
   }
 } catch (e) {
   // Fallback silencioso
@@ -787,6 +811,11 @@ const formatMinutesToTime = (minDecimal: number) => {
 
             </div>
 
+            <!-- ============================================================== -->
+            <!-- EVOLUCIÓN TEMPORAL RECHARTS: MÉTRICA 8 HORAS & CUELLOS BOTELLA -->
+            <!-- ============================================================== -->
+            <Sla8hTrendChart client:load initialData={slaData} />
+
             <!-- FILA 1: DISTRIBUCIÓN NACIONAL SLA POR TRAMOS HÁBILES -->
             <div class="glass-card rounded-2xl p-5 space-y-4 transition-all duration-300">
               <div class="flex items-center justify-between border-b border-slate-200/60 pb-3">
@@ -1363,6 +1392,10 @@ const formatMinutesToTime = (minDecimal: number) => {
                 </div>
               </div>
             </div>
+
+            <!-- GRÁFICO RECHARTS DEDICADO: EVOLUCIÓN DIARIA Y DESEMPEÑO POR REVISOR -->
+            <RevisoresDailyTrendChart client:load initialData={revisoresDiarioData} />
+
             <!-- TABLA Y CONTROL DE REVISORES Y SUS ATENCIONES -->
             <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-4">
               <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3">
@@ -1379,8 +1412,28 @@ const formatMinutesToTime = (minDecimal: number) => {
                   </div>
                 </div>
 
-                <!-- Exportación CSV -->
-                <div class="flex items-center gap-2">
+                <!-- Exportación CSV y Selector de Vista -->
+                <div class="flex items-center gap-2 flex-wrap">
+                  <!-- Selector de Vista: Estándar vs Matriz Regional -->
+                  <div class="flex items-center bg-slate-100/90 p-1 rounded-xl border border-slate-200 text-xs gap-1 shadow-2xs">
+                    <button 
+                      type="button" 
+                      id="btnRevViewOperativa" 
+                      onclick="setRevisoresViewMode('operativa')" 
+                      class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all bg-white text-slate-900 shadow-xs flex items-center gap-1.5 cursor-pointer">
+                      <i data-lucide="activity" class="w-3.5 h-3.5 text-amber-500"></i>
+                      <span>Calidad & Tiempo</span>
+                    </button>
+                    <button 
+                      type="button" 
+                      id="btnRevViewMatriz" 
+                      onclick="setRevisoresViewMode('matriz_regional')" 
+                      class="px-3 py-1.5 rounded-lg font-medium text-xs transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 flex items-center gap-1.5 cursor-pointer">
+                      <i data-lucide="table" class="w-3.5 h-3.5 text-blue-600"></i>
+                      <span>🗺️ Matriz por Regional</span>
+                    </button>
+                  </div>
+
                   <button 
                     type="button" 
                     onclick="exportRevisoresCSV()" 
@@ -1461,34 +1514,8 @@ const formatMinutesToTime = (minDecimal: number) => {
               <!-- Tabla de Revisores y Atenciones -->
               <div class="overflow-x-auto max-h-[540px] rounded-xl border border-slate-200 shadow-2xs">
                 <table class="w-full text-left border-collapse text-xs">
-                  <thead class="bg-slate-900 text-white font-semibold sticky top-0 z-10 shadow-xs text-[11px]">
-                    <tr>
-                      <th class="py-3 px-3 w-12 text-center text-slate-400">#</th>
-                      <th id="thRev_revisor" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('revisor')" title="Clic para ordenar por Nombre de Revisor">
-                        <span>Revisor</span><span id="thRevIcon_revisor" class="text-slate-500 text-[10px] ml-1">⇅</span>
-                      </th>
-                      <th id="thRev_regional" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('regional')" title="Clic para ordenar por Regional">
-                        <span>Regional</span><span id="thRevIcon_regional" class="text-slate-500 text-[10px] ml-1">⇅</span>
-                      </th>
-                      <th id="thRev_total" class="py-3 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800 transition-colors bg-slate-800/80 group" onclick="handleRevisoresColSort('total')" title="Clic para ordenar por Total de Atenciones">
-                        <span>Total Atenciones</span><span id="thRevIcon_total" class="text-amber-400 text-[11px] font-black ml-1">▼</span>
-                      </th>
-                      <th id="thRev_prom_diario" class="py-3 px-3 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('prom_diario')" title="Clic para ordenar por Promedio Diario">
-                        <div class="flex items-center justify-end gap-1">
-                          <span>Ritmo Diario</span><span id="thRevIcon_prom_diario" class="text-slate-500 text-[10px] ml-0.5">⇅</span>
-                        </div>
-                        <div class="text-[9.5px] font-normal text-slate-400">Prom · Máx · Mín</div>
-                      </th>
-                      <th id="thRev_pct_aprobadas" class="py-3 px-3 text-left font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors min-w-[150px] group" onclick="handleRevisoresColSort('pct_aprobadas')" title="Clic para ordenar por Tasa de Aprobación">
-                        <span>Dictamen (Calidad)</span><span id="thRevIcon_pct_aprobadas" class="text-slate-500 text-[10px] ml-1">⇅</span>
-                      </th>
-                      <th id="thRev_tiempo_prom_min" class="py-3 px-3 text-right font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('tiempo_prom_min')" title="Clic para ordenar por Velocidad (Tiempo Promedio)">
-                        <span>Tiempo Prom.</span><span id="thRevIcon_tiempo_prom_min" class="text-slate-500 text-[10px] ml-1">⇅</span>
-                      </th>
-                      <th id="thRev_dias_activos" class="py-3 px-3 text-center text-slate-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('dias_activos')" title="Clic para ordenar por Días Activos">
-                        <span>Días Activos</span><span id="thRevIcon_dias_activos" class="text-slate-500 text-[10px] ml-1">⇅</span>
-                      </th>
-                    </tr>
+                  <thead id="theadRevisoresAtenciones" class="bg-slate-900 text-white font-semibold sticky top-0 z-10 shadow-xs text-[11px]">
+                    <!-- Encabezados renderizados dinámicamente según modo de vista -->
                   </thead>
                   <tbody id="tbodyRevisoresAtenciones" class="divide-y divide-slate-100 text-slate-700 font-mono bg-white">
                     <!-- Filas renderizadas dinámicamente -->
@@ -2114,12 +2141,14 @@ const formatMinutesToTime = (minDecimal: number) => {
           if (window.__lastOlapResult && typeof window.updateCharts === 'function') {
             window.updateCharts(window.__lastOlapResult);
           }
+          window.dispatchEvent(new Event('resize'));
           setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
             ['chartSlaDistribution', 'chartRegionalSla', 'chartRegionalDictamen', 'chartRegionalColaMensual', 'chartRegionalDemandaCapacidad'].forEach(id => {
               const ch = Chart.getChart(id);
               if (ch) ch.resize();
             });
-          }, 60);
+          }, 80);
         }
 
         if (targetId === 'tab-revisores') {
@@ -3522,13 +3551,102 @@ const formatMinutesToTime = (minDecimal: number) => {
         });
 
         revisoresFilteredData = list;
+        renderRevisoresTableHeader();
         updateRevisoresHeaderSortIndicators();
         renderRevisoresSummary(list);
         renderRevisoresTablePage();
       }
 
+      let revisoresViewMode = 'operativa'; // 'operativa' | 'matriz_regional'
+
+      window.setRevisoresViewMode = function(mode) {
+        revisoresViewMode = mode;
+        const btnOp = document.getElementById('btnRevViewOperativa');
+        const btnMat = document.getElementById('btnRevViewMatriz');
+        if (mode === 'operativa') {
+          if (btnOp) { btnOp.className = 'px-3 py-1.5 rounded-lg font-bold text-xs transition-all bg-white text-slate-900 shadow-xs flex items-center gap-1.5 cursor-pointer'; }
+          if (btnMat) { btnMat.className = 'px-3 py-1.5 rounded-lg font-medium text-xs transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 flex items-center gap-1.5 cursor-pointer'; }
+        } else {
+          if (btnOp) { btnOp.className = 'px-3 py-1.5 rounded-lg font-medium text-xs transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 flex items-center gap-1.5 cursor-pointer'; }
+          if (btnMat) { btnMat.className = 'px-3 py-1.5 rounded-lg font-bold text-xs transition-all bg-slate-900 text-white shadow-xs flex items-center gap-1.5 cursor-pointer'; }
+        }
+        renderRevisoresTableHeader();
+        updateRevisoresHeaderSortIndicators();
+        renderRevisoresTablePage();
+      };
+
+      function renderRevisoresTableHeader() {
+        const thead = document.getElementById('theadRevisoresAtenciones');
+        if (!thead) return;
+
+        if (revisoresViewMode === 'matriz_regional') {
+          thead.innerHTML = `
+            <tr>
+              <th class="py-3 px-2.5 w-10 text-center text-slate-400">#</th>
+              <th id="thRev_revisor" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('revisor')" title="Ordenar por Revisor">
+                <span>Revisor</span><span id="thRevIcon_revisor" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_regional" class="py-3 px-2.5 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('regional')" title="Ordenar por Sede Base">
+                <span>Base</span><span id="thRevIcon_regional" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_atendidas_central" class="py-3 px-2.5 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('atendidas_central')" title="Expedientes atendidos de Regional Central">
+                <span>Central</span><span id="thRevIcon_atendidas_central" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_atendidas_occidente" class="py-3 px-2.5 text-right font-bold text-indigo-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('atendidas_occidente')" title="Expedientes atendidos de Regional Occidente">
+                <span>Occidente</span><span id="thRevIcon_atendidas_occidente" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_atendidas_sur" class="py-3 px-2.5 text-right font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('atendidas_sur')" title="Expedientes atendidos de Regional Sur">
+                <span>Sur</span><span id="thRevIcon_atendidas_sur" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_atendidas_nororiente" class="py-3 px-2.5 text-right font-bold text-purple-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('atendidas_nororiente')" title="Expedientes atendidos de Regional Nororiente">
+                <span>Nororiente</span><span id="thRevIcon_atendidas_nororiente" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_total" class="py-3 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800 transition-colors bg-slate-800/80 group" onclick="handleRevisoresColSort('total')" title="Total Global Atenciones">
+                <span>Total</span><span id="thRevIcon_total" class="text-amber-400 text-[11px] font-black ml-1">▼</span>
+              </th>
+              <th id="thRev_pct_sede_base" class="py-3 px-3 text-left font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800 transition-colors min-w-[140px] group" onclick="handleRevisoresColSort('pct_sede_base')" title="Porcentaje atendido en su sede base vs apoyo a otras regionales">
+                <span>Sede Base vs Apoyo Trans-Regional</span><span id="thRevIcon_pct_sede_base" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_tiempo_prom_min" class="py-3 px-2.5 text-right font-bold text-amber-200 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('tiempo_prom_min')" title="Tiempo Promedio por Expediente">
+                <span>Tiempo</span><span id="thRevIcon_tiempo_prom_min" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+            </tr>
+          `;
+        } else {
+          thead.innerHTML = `
+            <tr>
+              <th class="py-3 px-3 w-12 text-center text-slate-400">#</th>
+              <th id="thRev_revisor" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('revisor')" title="Clic para ordenar por Nombre de Revisor">
+                <span>Revisor</span><span id="thRevIcon_revisor" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_regional" class="py-3 px-3 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('regional')" title="Clic para ordenar por Regional">
+                <span>Regional</span><span id="thRevIcon_regional" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_total" class="py-3 px-3 text-right font-bold text-white cursor-pointer select-none hover:bg-slate-800 transition-colors bg-slate-800/80 group" onclick="handleRevisoresColSort('total')" title="Clic para ordenar por Total de Atenciones">
+                <span>Total Atenciones</span><span id="thRevIcon_total" class="text-amber-400 text-[11px] font-black ml-1">▼</span>
+              </th>
+              <th id="thRev_prom_diario" class="py-3 px-3 text-right font-bold text-blue-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('prom_diario')" title="Clic para ordenar por Promedio Diario">
+                <div class="flex items-center justify-end gap-1">
+                  <span>Ritmo Diario</span><span id="thRevIcon_prom_diario" class="text-slate-500 text-[10px] ml-0.5">⇅</span>
+                </div>
+                <div class="text-[9.5px] font-normal text-slate-400">Prom · Máx · Mín</div>
+              </th>
+              <th id="thRev_pct_aprobadas" class="py-3 px-3 text-left font-bold text-emerald-300 cursor-pointer select-none hover:bg-slate-800 transition-colors min-w-[150px] group" onclick="handleRevisoresColSort('pct_aprobadas')" title="Clic para ordenar por Tasa de Aprobación">
+                <span>Dictamen (Calidad)</span><span id="thRevIcon_pct_aprobadas" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_tiempo_prom_min" class="py-3 px-3 text-right font-bold text-amber-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('tiempo_prom_min')" title="Clic para ordenar por Velocidad (Tiempo Promedio)">
+                <span>Tiempo Prom.</span><span id="thRevIcon_tiempo_prom_min" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+              <th id="thRev_dias_activos" class="py-3 px-3 text-center text-slate-300 cursor-pointer select-none hover:bg-slate-800 transition-colors group" onclick="handleRevisoresColSort('dias_activos')" title="Clic para ordenar por Días Activos">
+                <span>Días Activos</span><span id="thRevIcon_dias_activos" class="text-slate-500 text-[10px] ml-1">⇅</span>
+              </th>
+            </tr>
+          `;
+        }
+      }
+
       function updateRevisoresHeaderSortIndicators() {
-        const sortCols = ['revisor', 'regional', 'total', 'prom_diario', 'pct_aprobadas', 'tiempo_prom_min', 'dias_activos'];
+        const sortCols = ['revisor', 'regional', 'total', 'prom_diario', 'pct_aprobadas', 'tiempo_prom_min', 'dias_activos', 'atendidas_central', 'atendidas_occidente', 'atendidas_sur', 'atendidas_nororiente', 'pct_sede_base', 'pct_trans_regional'];
         sortCols.forEach(col => {
           const th = document.getElementById(`thRev_${col}`);
           const iconSpan = document.getElementById(`thRevIcon_${col}`);
@@ -3594,7 +3712,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (pageItems.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="8" class="text-center py-10 text-slate-400 font-sans">
+              <td colspan="${revisoresViewMode === 'matriz_regional' ? 10 : 8}" class="text-center py-10 text-slate-400 font-sans">
                 <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
                 <p class="font-medium text-slate-600">No se encontraron revisores que coincidan con los filtros.</p>
                 <button type="button" onclick="resetRevisoresFilters()" class="mt-2 text-xs text-blue-600 font-bold hover:underline cursor-pointer">Restablecer filtros</button>
@@ -3625,6 +3743,84 @@ const formatMinutesToTime = (minDecimal: number) => {
           const totalAt = (r.total || 0).toLocaleString();
           const barPct = Math.min(100, Math.round(((r.total || 0) / maxTotal) * 100));
 
+          const tiempoMin = r.tiempo_prom_min != null ? Number(r.tiempo_prom_min).toFixed(1) : '-';
+          const numTiempo = Number(tiempoMin);
+          let tiempoBadgeColor = 'text-slate-600 bg-slate-100 border-slate-200';
+          if (!isNaN(numTiempo)) {
+            if (numTiempo <= 2.5) tiempoBadgeColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
+            else if (numTiempo <= 5.0) tiempoBadgeColor = 'text-blue-700 bg-blue-50 border-blue-200';
+            else tiempoBadgeColor = 'text-amber-700 bg-amber-50 border-amber-200';
+          }
+
+          if (revisoresViewMode === 'matriz_regional') {
+            const cen = r.atendidas_central || 0;
+            const occ = r.atendidas_occidente || 0;
+            const sur = r.atendidas_sur || 0;
+            const nor = r.atendidas_nororiente || 0;
+            const pctBase = r.pct_sede_base != null ? Number(r.pct_sede_base) : 100;
+            const pctTrans = r.pct_trans_regional != null ? Number(r.pct_trans_regional) : 0;
+
+            const formatRegCell = (val, targetReg) => {
+              if (val === 0) return `<span class="text-slate-300 font-normal">0</span>`;
+              const isBase = reg === targetReg;
+              if (isBase) {
+                return `<span class="font-bold text-slate-900">${val.toLocaleString()}</span>`;
+              }
+              return `<span class="font-bold text-indigo-600 bg-indigo-50/70 px-1 py-0.2 rounded">${val.toLocaleString()}</span>`;
+            };
+
+            return `
+              <tr class="hover:bg-blue-50/60 transition-colors cursor-pointer group" onclick="openRevisorDetail('${r.revisor}')" title="Clic para ver desglose y atenciones detalladas de ${r.revisor}">
+                <td class="py-2.5 px-2.5 text-center text-slate-400 font-mono text-[11px] font-medium">${rank}</td>
+                <td class="py-2.5 px-3 font-sans text-slate-900">
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="event.stopPropagation(); openRevisorDetail('${r.revisor}')" class="text-xs text-blue-700 group-hover:text-blue-900 group-hover:underline font-bold tracking-tight text-left flex items-center gap-1 cursor-pointer">
+                      <span>${r.revisor || 'Sin ID'}</span>
+                      <i data-lucide="external-link" class="w-3 h-3 text-blue-500 opacity-60 group-hover:opacity-100"></i>
+                    </button>
+                    ${tipoBadge}
+                  </div>
+                </td>
+                <td class="py-2.5 px-2.5 font-sans">
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold border ${regBadgeColor}">
+                    ${reg}
+                  </span>
+                </td>
+                <td class="py-2.5 px-2.5 text-right font-mono text-xs ${reg === 'CENTRAL' ? 'bg-blue-50/30' : ''}">
+                  ${formatRegCell(cen, 'CENTRAL')}
+                </td>
+                <td class="py-2.5 px-2.5 text-right font-mono text-xs ${reg === 'OCCIDENTE' ? 'bg-indigo-50/30' : ''}">
+                  ${formatRegCell(occ, 'OCCIDENTE')}
+                </td>
+                <td class="py-2.5 px-2.5 text-right font-mono text-xs ${reg === 'SUR' ? 'bg-emerald-50/30' : ''}">
+                  ${formatRegCell(sur, 'SUR')}
+                </td>
+                <td class="py-2.5 px-2.5 text-right font-mono text-xs ${reg === 'NORORIENTE' ? 'bg-purple-50/30' : ''}">
+                  ${formatRegCell(nor, 'NORORIENTE')}
+                </td>
+                <td class="py-2.5 px-3 text-right font-mono text-xs font-black text-slate-900 bg-slate-50/50">
+                  ${totalAt}
+                </td>
+                <td class="py-2.5 px-3 text-left font-sans text-xs min-w-[140px]">
+                  <div class="flex items-center justify-between text-[10px] font-mono mb-0.5">
+                    <span class="font-bold text-slate-700">Base: ${pctBase.toFixed(0)}%</span>
+                    <span class="font-semibold text-indigo-700">${pctTrans > 0 ? `Apoyo: ${pctTrans.toFixed(0)}%` : '100% Base'}</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden flex">
+                    <div class="bg-blue-600 h-full" style="width: ${pctBase}%"></div>
+                    <div class="bg-indigo-500 h-full" style="width: ${pctTrans}%"></div>
+                  </div>
+                </td>
+                <td class="py-2.5 px-2.5 text-right font-mono text-xs">
+                  <span class="px-1.5 py-0.5 rounded border text-[10.5px] font-semibold ${tiempoBadgeColor}">
+                    ${tiempoMin}m
+                  </span>
+                </td>
+              </tr>
+            `;
+          }
+
+          // Vista Estándar (Operativa)
           const promDiario = r.prom_diario != null ? Number(r.prom_diario).toFixed(1) : '0.0';
           const numProm = Number(promDiario);
           let promBadge = 'text-slate-700 font-semibold';
@@ -3636,16 +3832,6 @@ const formatMinutesToTime = (minDecimal: number) => {
           const pctRech = Math.max(0, 100 - pctAprob);
           const aprobCount = (r.aprobadas || 0).toLocaleString();
           const rechCount = (r.rechazadas || 0).toLocaleString();
-
-          const tiempoMin = r.tiempo_prom_min != null ? Number(r.tiempo_prom_min).toFixed(1) : '-';
-          const numTiempo = Number(tiempoMin);
-          let tiempoBadgeColor = 'text-slate-600 bg-slate-100 border-slate-200';
-          if (!isNaN(numTiempo)) {
-            if (numTiempo <= 2.5) tiempoBadgeColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
-            else if (numTiempo <= 5.0) tiempoBadgeColor = 'text-blue-700 bg-blue-50 border-blue-200';
-            else tiempoBadgeColor = 'text-amber-700 bg-amber-50 border-amber-200';
-          }
-
           const dias = r.dias_activos || 1;
 
           return `
@@ -3828,13 +4014,19 @@ const formatMinutesToTime = (minDecimal: number) => {
 
       window.exportRevisoresCSV = function() {
         const list = revisoresFilteredData.length > 0 ? revisoresFilteredData : revisoresRawData;
-        const headers = ["Ranking", "Revisor", "Regional", "Tipo", "Total_Atenciones", "Promedio_Diario", "Pico_Max_Diario", "Min_Diario", "Aprobadas", "Rechazadas", "Pct_Aprobacion", "Tiempo_Promedio_Min", "Dias_Activos"];
+        const headers = ["Ranking", "Revisor", "Regional_Base", "Tipo", "Atendidas_Central", "Atendidas_Occidente", "Atendidas_Sur", "Atendidas_Nororiente", "Total_Atenciones", "Pct_Sede_Base", "Pct_Trans_Regional", "Promedio_Diario", "Pico_Max_Diario", "Min_Diario", "Aprobadas", "Rechazadas", "Pct_Aprobacion", "Tiempo_Promedio_Min", "Dias_Activos"];
         const rows = list.map((r, i) => [
           i + 1,
           `"${r.revisor || ''}"`,
           `"${r.regional || ''}"`,
           `"${r.tipo || ''}"`,
+          r.atendidas_central || 0,
+          r.atendidas_occidente || 0,
+          r.atendidas_sur || 0,
+          r.atendidas_nororiente || 0,
           r.total || 0,
+          r.pct_sede_base != null ? r.pct_sede_base : 100,
+          r.pct_trans_regional != null ? r.pct_trans_regional : 0,
           r.prom_diario || 0,
           r.max_dia || 0,
           r.min_dia != null ? r.min_dia : 0,
@@ -3849,7 +4041,7 @@ const formatMinutesToTime = (minDecimal: number) => {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `SAT_Revisores_Atenciones_${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute("download", `SAT_Revisores_Matriz_Regional_${new Date().toISOString().slice(0,10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

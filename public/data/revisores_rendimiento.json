@@ -30,7 +30,19 @@
       "ranking_velocidad_global": 1,
       "ranking_velocidad_regional": 1,
       "max_dia": 214,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 9447,
+      "atendidas_occidente": 135,
+      "atendidas_sur": 176,
+      "atendidas_nororiente": 129,
+      "por_regional": {
+        "CENTRAL": 9447,
+        "OCCIDENTE": 135,
+        "SUR": 176,
+        "NORORIENTE": 129
+      },
+      "pct_sede_base": 95.5,
+      "pct_trans_regional": 4.5
     },
     {
       "revisor": "AMVELIZM",
@@ -59,7 +71,19 @@
       "ranking_velocidad_global": 2,
       "ranking_velocidad_regional": 2,
       "max_dia": 262,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 238,
+      "atendidas_occidente": 69,
+      "atendidas_sur": 85,
+      "atendidas_nororiente": 8438,
+      "por_regional": {
+        "CENTRAL": 238,
+        "OCCIDENTE": 69,
+        "SUR": 85,
+        "NORORIENTE": 8438
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "MKNAJERA",
@@ -88,7 +112,19 @@
       "ranking_velocidad_global": 3,
       "ranking_velocidad_regional": 3,
       "max_dia": 208,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 302,
+      "atendidas_occidente": 107,
+      "atendidas_sur": 8177,
+      "atendidas_nororiente": 71,
+      "por_regional": {
+        "CENTRAL": 302,
+        "OCCIDENTE": 107,
+        "SUR": 8177,
+        "NORORIENTE": 71
+      },
+      "pct_sede_base": 94.5,
+      "pct_trans_regional": 5.5
     },
     {
       "revisor": "AMHERNAN",
@@ -117,7 +153,19 @@
       "ranking_velocidad_global": 4,
       "ranking_velocidad_regional": 4,
       "max_dia": 192,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 7358,
+      "atendidas_occidente": 117,
+      "atendidas_sur": 149,
+      "atendidas_nororiente": 113,
+      "por_regional": {
+        "CENTRAL": 7358,
+        "OCCIDENTE": 117,
+        "SUR": 149,
+        "NORORIENTE": 113
+      },
+      "pct_sede_base": 95.1,
+      "pct_trans_regional": 4.9
     },
     {
       "revisor": "FOMONZON",
@@ -146,7 +194,19 @@
       "ranking_velocidad_global": 5,
       "ranking_velocidad_regional": 5,
       "max_dia": 160,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 156,
+      "atendidas_occidente": 68,
+      "atendidas_sur": 58,
+      "atendidas_nororiente": 6559,
+      "por_regional": {
+        "CENTRAL": 156,
+        "OCCIDENTE": 68,
+        "SUR": 58,
+        "NORORIENTE": 6559
+      },
+      "pct_sede_base": 95.9,
+      "pct_trans_regional": 4.1
     },
     {
       "revisor": "MECABRER",
@@ -175,7 +235,19 @@
       "ranking_velocidad_global": 6,
       "ranking_velocidad_regional": 6,
       "max_dia": 200,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 109,
+      "atendidas_occidente": 5481,
+      "atendidas_sur": 65,
+      "atendidas_nororiente": 25,
+      "por_regional": {
+        "CENTRAL": 109,
+        "OCCIDENTE": 5481,
+        "SUR": 65,
+        "NORORIENTE": 25
+      },
+      "pct_sede_base": 96.5,
+      "pct_trans_regional": 3.5
     },
     {
       "revisor": "FACRUZRI",
@@ -204,7 +276,19 @@
       "ranking_velocidad_global": 7,
       "ranking_velocidad_regional": 7,
       "max_dia": 197,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 4904,
+      "atendidas_occidente": 66,
+      "atendidas_sur": 112,
+      "atendidas_nororiente": 83,
+      "por_regional": {
+        "CENTRAL": 4904,
+        "OCCIDENTE": 66,
+        "SUR": 112,
+        "NORORIENTE": 83
+      },
+      "pct_sede_base": 94.9,
+      "pct_trans_regional": 5.1
     },
     {
       "revisor": "EOVALIEN",
@@ -233,7 +317,19 @@
       "ranking_velocidad_global": 8,
       "ranking_velocidad_regional": 8,
       "max_dia": 181,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 161,
+      "atendidas_occidente": 52,
+      "atendidas_sur": 4682,
+      "atendidas_nororiente": 38,
+      "por_regional": {
+        "CENTRAL": 161,
+        "OCCIDENTE": 52,
+        "SUR": 4682,
+        "NORORIENTE": 38
+      },
+      "pct_sede_base": 94.9,
+      "pct_trans_regional": 5.1
     },
     {
       "revisor": "JRSILVAR",
@@ -262,7 +358,19 @@
       "ranking_velocidad_global": 9,
       "ranking_velocidad_regional": 9,
       "max_dia": 191,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 4452,
+      "atendidas_occidente": 56,
+      "atendidas_sur": 91,
+      "atendidas_nororiente": 63,
+      "por_regional": {
+        "CENTRAL": 4452,
+        "OCCIDENTE": 56,
+        "SUR": 91,
+        "NORORIENTE": 63
+      },
+      "pct_sede_base": 95.5,
+      "pct_trans_regional": 4.5
     },
     {
       "revisor": "BEORTEGA",
@@ -291,7 +399,19 @@
       "ranking_velocidad_global": 10,
       "ranking_velocidad_regional": 10,
       "max_dia": 194,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 74,
+      "atendidas_occidente": 31,
+      "atendidas_sur": 27,
+      "atendidas_nororiente": 3261,
+      "por_regional": {
+        "CENTRAL": 74,
+        "OCCIDENTE": 31,
+        "SUR": 27,
+        "NORORIENTE": 3261
+      },
+      "pct_sede_base": 96.1,
+      "pct_trans_regional": 3.9
     },
     {
       "revisor": "MJMARTIR",
@@ -320,7 +440,19 @@
       "ranking_velocidad_global": 11,
       "ranking_velocidad_regional": 11,
       "max_dia": 204,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 3097,
+      "atendidas_occidente": 35,
+      "atendidas_sur": 47,
+      "atendidas_nororiente": 49,
+      "por_regional": {
+        "CENTRAL": 3097,
+        "OCCIDENTE": 35,
+        "SUR": 47,
+        "NORORIENTE": 49
+      },
+      "pct_sede_base": 95.9,
+      "pct_trans_regional": 4.1
     },
     {
       "revisor": "EENAVARR",
@@ -349,7 +481,19 @@
       "ranking_velocidad_global": 12,
       "ranking_velocidad_regional": 12,
       "max_dia": 120,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 68,
+      "atendidas_occidente": 3106,
+      "atendidas_sur": 33,
+      "atendidas_nororiente": 17,
+      "por_regional": {
+        "CENTRAL": 68,
+        "OCCIDENTE": 3106,
+        "SUR": 33,
+        "NORORIENTE": 17
+      },
+      "pct_sede_base": 96.3,
+      "pct_trans_regional": 3.7
     },
     {
       "revisor": "RSISRODR",
@@ -378,7 +522,19 @@
       "ranking_velocidad_global": 13,
       "ranking_velocidad_regional": 13,
       "max_dia": 225,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 73,
+      "atendidas_occidente": 24,
+      "atendidas_sur": 26,
+      "atendidas_nororiente": 2663,
+      "por_regional": {
+        "CENTRAL": 73,
+        "OCCIDENTE": 24,
+        "SUR": 26,
+        "NORORIENTE": 2663
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "MLRIVERA",
@@ -407,7 +563,19 @@
       "ranking_velocidad_global": 14,
       "ranking_velocidad_regional": 14,
       "max_dia": 153,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 82,
+      "atendidas_occidente": 40,
+      "atendidas_sur": 2376,
+      "atendidas_nororiente": 18,
+      "por_regional": {
+        "CENTRAL": 82,
+        "OCCIDENTE": 40,
+        "SUR": 2376,
+        "NORORIENTE": 18
+      },
+      "pct_sede_base": 94.4,
+      "pct_trans_regional": 5.6
     },
     {
       "revisor": "APMIRAND",
@@ -436,7 +604,19 @@
       "ranking_velocidad_global": 15,
       "ranking_velocidad_regional": 15,
       "max_dia": 192,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 45,
+      "atendidas_occidente": 2322,
+      "atendidas_sur": 36,
+      "atendidas_nororiente": 22,
+      "por_regional": {
+        "CENTRAL": 45,
+        "OCCIDENTE": 2322,
+        "SUR": 36,
+        "NORORIENTE": 22
+      },
+      "pct_sede_base": 95.8,
+      "pct_trans_regional": 4.2
     },
     {
       "revisor": "JLTOJJER",
@@ -465,7 +645,19 @@
       "ranking_velocidad_global": 16,
       "ranking_velocidad_regional": 16,
       "max_dia": 89,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2285,
+      "atendidas_occidente": 31,
+      "atendidas_sur": 46,
+      "atendidas_nororiente": 28,
+      "por_regional": {
+        "CENTRAL": 2285,
+        "OCCIDENTE": 31,
+        "SUR": 46,
+        "NORORIENTE": 28
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "VHALVARA",
@@ -494,7 +686,19 @@
       "ranking_velocidad_global": 17,
       "ranking_velocidad_regional": 17,
       "max_dia": 79,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 56,
+      "atendidas_occidente": 32,
+      "atendidas_sur": 2123,
+      "atendidas_nororiente": 24,
+      "por_regional": {
+        "CENTRAL": 56,
+        "OCCIDENTE": 32,
+        "SUR": 2123,
+        "NORORIENTE": 24
+      },
+      "pct_sede_base": 95.0,
+      "pct_trans_regional": 5.0
     },
     {
       "revisor": "RAGUILAR",
@@ -523,7 +727,19 @@
       "ranking_velocidad_global": 18,
       "ranking_velocidad_regional": 18,
       "max_dia": 150,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 33,
+      "atendidas_occidente": 2091,
+      "atendidas_sur": 21,
+      "atendidas_nororiente": 10,
+      "por_regional": {
+        "CENTRAL": 33,
+        "OCCIDENTE": 2091,
+        "SUR": 21,
+        "NORORIENTE": 10
+      },
+      "pct_sede_base": 97.0,
+      "pct_trans_regional": 3.0
     },
     {
       "revisor": "JAHUESOF",
@@ -552,7 +768,19 @@
       "ranking_velocidad_global": 19,
       "ranking_velocidad_regional": 19,
       "max_dia": 328,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 75,
+      "atendidas_occidente": 22,
+      "atendidas_sur": 22,
+      "atendidas_nororiente": 1963,
+      "por_regional": {
+        "CENTRAL": 75,
+        "OCCIDENTE": 22,
+        "SUR": 22,
+        "NORORIENTE": 1963
+      },
+      "pct_sede_base": 94.3,
+      "pct_trans_regional": 5.7
     },
     {
       "revisor": "CACHANGC",
@@ -581,7 +809,19 @@
       "ranking_velocidad_global": 20,
       "ranking_velocidad_regional": 20,
       "max_dia": 172,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 40,
+      "atendidas_occidente": 1995,
+      "atendidas_sur": 27,
+      "atendidas_nororiente": 10,
+      "por_regional": {
+        "CENTRAL": 40,
+        "OCCIDENTE": 1995,
+        "SUR": 27,
+        "NORORIENTE": 10
+      },
+      "pct_sede_base": 96.3,
+      "pct_trans_regional": 3.7
     },
     {
       "revisor": "PAPEREZT",
@@ -610,7 +850,19 @@
       "ranking_velocidad_global": 21,
       "ranking_velocidad_regional": 21,
       "max_dia": 160,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 31,
+      "atendidas_occidente": 1987,
+      "atendidas_sur": 23,
+      "atendidas_nororiente": 8,
+      "por_regional": {
+        "CENTRAL": 31,
+        "OCCIDENTE": 1987,
+        "SUR": 23,
+        "NORORIENTE": 8
+      },
+      "pct_sede_base": 97.0,
+      "pct_trans_regional": 3.0
     },
     {
       "revisor": "YCMENDOZ",
@@ -639,7 +891,19 @@
       "ranking_velocidad_global": 22,
       "ranking_velocidad_regional": 22,
       "max_dia": 185,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1935,
+      "atendidas_occidente": 19,
+      "atendidas_sur": 29,
+      "atendidas_nororiente": 28,
+      "por_regional": {
+        "CENTRAL": 1935,
+        "OCCIDENTE": 19,
+        "SUR": 29,
+        "NORORIENTE": 28
+      },
+      "pct_sede_base": 96.2,
+      "pct_trans_regional": 3.8
     },
     {
       "revisor": "ROBETETA",
@@ -668,7 +932,19 @@
       "ranking_velocidad_global": 23,
       "ranking_velocidad_regional": 23,
       "max_dia": 142,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1862,
+      "atendidas_occidente": 39,
+      "atendidas_sur": 39,
+      "atendidas_nororiente": 22,
+      "por_regional": {
+        "CENTRAL": 1862,
+        "OCCIDENTE": 39,
+        "SUR": 39,
+        "NORORIENTE": 22
+      },
+      "pct_sede_base": 94.9,
+      "pct_trans_regional": 5.1
     },
     {
       "revisor": "CRAGUILA",
@@ -697,7 +973,19 @@
       "ranking_velocidad_global": 24,
       "ranking_velocidad_regional": 24,
       "max_dia": 138,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 27,
+      "atendidas_occidente": 1770,
+      "atendidas_sur": 21,
+      "atendidas_nororiente": 17,
+      "por_regional": {
+        "CENTRAL": 27,
+        "OCCIDENTE": 1770,
+        "SUR": 21,
+        "NORORIENTE": 17
+      },
+      "pct_sede_base": 96.5,
+      "pct_trans_regional": 3.5
     },
     {
       "revisor": "VMENDOZA",
@@ -726,7 +1014,19 @@
       "ranking_velocidad_global": 25,
       "ranking_velocidad_regional": 25,
       "max_dia": 81,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 31,
+      "atendidas_occidente": 1729,
+      "atendidas_sur": 18,
+      "atendidas_nororiente": 5,
+      "por_regional": {
+        "CENTRAL": 31,
+        "OCCIDENTE": 1729,
+        "SUR": 18,
+        "NORORIENTE": 5
+      },
+      "pct_sede_base": 97.0,
+      "pct_trans_regional": 3.0
     },
     {
       "revisor": "EESAMAYO",
@@ -755,7 +1055,19 @@
       "ranking_velocidad_global": 26,
       "ranking_velocidad_regional": 26,
       "max_dia": 51,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 26,
+      "atendidas_occidente": 1720,
+      "atendidas_sur": 16,
+      "atendidas_nororiente": 9,
+      "por_regional": {
+        "CENTRAL": 26,
+        "OCCIDENTE": 1720,
+        "SUR": 16,
+        "NORORIENTE": 9
+      },
+      "pct_sede_base": 97.1,
+      "pct_trans_regional": 2.9
     },
     {
       "revisor": "AMCALELA",
@@ -784,7 +1096,19 @@
       "ranking_velocidad_global": 27,
       "ranking_velocidad_regional": 27,
       "max_dia": 117,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 53,
+      "atendidas_occidente": 16,
+      "atendidas_sur": 1556,
+      "atendidas_nororiente": 10,
+      "por_regional": {
+        "CENTRAL": 53,
+        "OCCIDENTE": 16,
+        "SUR": 1556,
+        "NORORIENTE": 10
+      },
+      "pct_sede_base": 95.2,
+      "pct_trans_regional": 4.8
     },
     {
       "revisor": "DRHERRAR",
@@ -813,7 +1137,19 @@
       "ranking_velocidad_global": 28,
       "ranking_velocidad_regional": 28,
       "max_dia": 87,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1507,
+      "atendidas_occidente": 24,
+      "atendidas_sur": 38,
+      "atendidas_nororiente": 20,
+      "por_regional": {
+        "CENTRAL": 1507,
+        "OCCIDENTE": 24,
+        "SUR": 38,
+        "NORORIENTE": 20
+      },
+      "pct_sede_base": 94.8,
+      "pct_trans_regional": 5.2
     },
     {
       "revisor": "REGARCIB",
@@ -842,7 +1178,19 @@
       "ranking_velocidad_global": 29,
       "ranking_velocidad_regional": 29,
       "max_dia": 182,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 31,
+      "atendidas_occidente": 16,
+      "atendidas_sur": 18,
+      "atendidas_nororiente": 1428,
+      "por_regional": {
+        "CENTRAL": 31,
+        "OCCIDENTE": 16,
+        "SUR": 18,
+        "NORORIENTE": 1428
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "JJCOTOMM",
@@ -871,7 +1219,19 @@
       "ranking_velocidad_global": 30,
       "ranking_velocidad_regional": 30,
       "max_dia": 104,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 43,
+      "atendidas_occidente": 20,
+      "atendidas_sur": 1238,
+      "atendidas_nororiente": 5,
+      "por_regional": {
+        "CENTRAL": 43,
+        "OCCIDENTE": 20,
+        "SUR": 1238,
+        "NORORIENTE": 5
+      },
+      "pct_sede_base": 94.8,
+      "pct_trans_regional": 5.2
     },
     {
       "revisor": "SNSAQUIC",
@@ -900,7 +1260,19 @@
       "ranking_velocidad_global": 31,
       "ranking_velocidad_regional": 31,
       "max_dia": 175,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 45,
+      "atendidas_occidente": 13,
+      "atendidas_sur": 1121,
+      "atendidas_nororiente": 10,
+      "por_regional": {
+        "CENTRAL": 45,
+        "OCCIDENTE": 13,
+        "SUR": 1121,
+        "NORORIENTE": 10
+      },
+      "pct_sede_base": 94.3,
+      "pct_trans_regional": 5.7
     },
     {
       "revisor": "MRSALESR",
@@ -929,7 +1301,19 @@
       "ranking_velocidad_global": 32,
       "ranking_velocidad_regional": 32,
       "max_dia": 99,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1064,
+      "atendidas_occidente": 15,
+      "atendidas_sur": 19,
+      "atendidas_nororiente": 15,
+      "por_regional": {
+        "CENTRAL": 1064,
+        "OCCIDENTE": 15,
+        "SUR": 19,
+        "NORORIENTE": 15
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "ERCERNAA",
@@ -958,7 +1342,19 @@
       "ranking_velocidad_global": 33,
       "ranking_velocidad_regional": 33,
       "max_dia": 214,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 37,
+      "atendidas_occidente": 7,
+      "atendidas_sur": 9,
+      "atendidas_nororiente": 1003,
+      "por_regional": {
+        "CENTRAL": 37,
+        "OCCIDENTE": 7,
+        "SUR": 9,
+        "NORORIENTE": 1003
+      },
+      "pct_sede_base": 95.0,
+      "pct_trans_regional": 5.0
     },
     {
       "revisor": "JENATARE",
@@ -987,7 +1383,19 @@
       "ranking_velocidad_global": 34,
       "ranking_velocidad_regional": 34,
       "max_dia": 57,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 28,
+      "atendidas_occidente": 1000,
+      "atendidas_sur": 11,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 28,
+        "OCCIDENTE": 1000,
+        "SUR": 11,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 95.9,
+      "pct_trans_regional": 4.1
     },
     {
       "revisor": "ECPARMEN",
@@ -1016,7 +1424,19 @@
       "ranking_velocidad_global": 35,
       "ranking_velocidad_regional": 35,
       "max_dia": 129,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 20,
+      "atendidas_occidente": 996,
+      "atendidas_sur": 17,
+      "atendidas_nororiente": 9,
+      "por_regional": {
+        "CENTRAL": 20,
+        "OCCIDENTE": 996,
+        "SUR": 17,
+        "NORORIENTE": 9
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "KDTORRES",
@@ -1045,7 +1465,19 @@
       "ranking_velocidad_global": 36,
       "ranking_velocidad_regional": 36,
       "max_dia": 196,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 22,
+      "atendidas_occidente": 968,
+      "atendidas_sur": 15,
+      "atendidas_nororiente": 8,
+      "por_regional": {
+        "CENTRAL": 22,
+        "OCCIDENTE": 968,
+        "SUR": 15,
+        "NORORIENTE": 8
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "ABGARCIA",
@@ -1074,7 +1506,19 @@
       "ranking_velocidad_global": 37,
       "ranking_velocidad_regional": 37,
       "max_dia": 183,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 14,
+      "atendidas_occidente": 893,
+      "atendidas_sur": 14,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 14,
+        "OCCIDENTE": 893,
+        "SUR": 14,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 96.7,
+      "pct_trans_regional": 3.3
     },
     {
       "revisor": "YMMORARO",
@@ -1103,7 +1547,19 @@
       "ranking_velocidad_global": 38,
       "ranking_velocidad_regional": 38,
       "max_dia": 114,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 863,
+      "atendidas_occidente": 18,
+      "atendidas_sur": 20,
+      "atendidas_nororiente": 16,
+      "por_regional": {
+        "CENTRAL": 863,
+        "OCCIDENTE": 18,
+        "SUR": 20,
+        "NORORIENTE": 16
+      },
+      "pct_sede_base": 94.1,
+      "pct_trans_regional": 5.9
     },
     {
       "revisor": "AAORELLR",
@@ -1132,7 +1588,19 @@
       "ranking_velocidad_global": 39,
       "ranking_velocidad_regional": 39,
       "max_dia": 158,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 39,
+      "atendidas_occidente": 13,
+      "atendidas_sur": 852,
+      "atendidas_nororiente": 6,
+      "por_regional": {
+        "CENTRAL": 39,
+        "OCCIDENTE": 13,
+        "SUR": 852,
+        "NORORIENTE": 6
+      },
+      "pct_sede_base": 93.6,
+      "pct_trans_regional": 6.4
     },
     {
       "revisor": "EFBAUTIS",
@@ -1161,7 +1629,19 @@
       "ranking_velocidad_global": 40,
       "ranking_velocidad_regional": 40,
       "max_dia": 171,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 21,
+      "atendidas_occidente": 857,
+      "atendidas_sur": 5,
+      "atendidas_nororiente": 8,
+      "por_regional": {
+        "CENTRAL": 21,
+        "OCCIDENTE": 857,
+        "SUR": 5,
+        "NORORIENTE": 8
+      },
+      "pct_sede_base": 96.2,
+      "pct_trans_regional": 3.8
     },
     {
       "revisor": "KMDELEON",
@@ -1190,7 +1670,19 @@
       "ranking_velocidad_global": 41,
       "ranking_velocidad_regional": 41,
       "max_dia": 101,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 696,
+      "atendidas_occidente": 10,
+      "atendidas_sur": 18,
+      "atendidas_nororiente": 12,
+      "por_regional": {
+        "CENTRAL": 696,
+        "OCCIDENTE": 10,
+        "SUR": 18,
+        "NORORIENTE": 12
+      },
+      "pct_sede_base": 94.6,
+      "pct_trans_regional": 5.4
     },
     {
       "revisor": "JAGUERRC",
@@ -1219,7 +1711,19 @@
       "ranking_velocidad_global": 42,
       "ranking_velocidad_regional": 42,
       "max_dia": 127,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 20,
+      "atendidas_occidente": 6,
+      "atendidas_sur": 646,
+      "atendidas_nororiente": 6,
+      "por_regional": {
+        "CENTRAL": 20,
+        "OCCIDENTE": 6,
+        "SUR": 646,
+        "NORORIENTE": 6
+      },
+      "pct_sede_base": 95.3,
+      "pct_trans_regional": 4.7
     },
     {
       "revisor": "APRUIZMA",
@@ -1248,7 +1752,19 @@
       "ranking_velocidad_global": 43,
       "ranking_velocidad_regional": 43,
       "max_dia": 110,
-      "min_dia": 2
+      "min_dia": 2,
+      "atendidas_central": 17,
+      "atendidas_occidente": 5,
+      "atendidas_sur": 628,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 17,
+        "OCCIDENTE": 5,
+        "SUR": 628,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 96.0,
+      "pct_trans_regional": 4.0
     },
     {
       "revisor": "LIBARRIE",
@@ -1277,7 +1793,19 @@
       "ranking_velocidad_global": 44,
       "ranking_velocidad_regional": 44,
       "max_dia": 255,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 18,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 5,
+      "atendidas_nororiente": 629,
+      "por_regional": {
+        "CENTRAL": 18,
+        "OCCIDENTE": 2,
+        "SUR": 5,
+        "NORORIENTE": 629
+      },
+      "pct_sede_base": 96.2,
+      "pct_trans_regional": 3.8
     },
     {
       "revisor": "BEAVILAV",
@@ -1306,7 +1834,19 @@
       "ranking_velocidad_global": 45,
       "ranking_velocidad_regional": 45,
       "max_dia": 150,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 616,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 12,
+      "atendidas_nororiente": 8,
+      "por_regional": {
+        "CENTRAL": 616,
+        "OCCIDENTE": 1,
+        "SUR": 12,
+        "NORORIENTE": 8
+      },
+      "pct_sede_base": 96.7,
+      "pct_trans_regional": 3.3
     },
     {
       "revisor": "FMAZATES",
@@ -1335,7 +1875,19 @@
       "ranking_velocidad_global": 46,
       "ranking_velocidad_regional": 46,
       "max_dia": 68,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 578,
+      "atendidas_occidente": 6,
+      "atendidas_sur": 12,
+      "atendidas_nororiente": 9,
+      "por_regional": {
+        "CENTRAL": 578,
+        "OCCIDENTE": 6,
+        "SUR": 12,
+        "NORORIENTE": 9
+      },
+      "pct_sede_base": 95.5,
+      "pct_trans_regional": 4.5
     },
     {
       "revisor": "ANAMEXOY",
@@ -1364,7 +1916,19 @@
       "ranking_velocidad_global": 47,
       "ranking_velocidad_regional": 47,
       "max_dia": 144,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 588,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 9,
+      "atendidas_nororiente": 6,
+      "por_regional": {
+        "CENTRAL": 588,
+        "OCCIDENTE": 2,
+        "SUR": 9,
+        "NORORIENTE": 6
+      },
+      "pct_sede_base": 97.2,
+      "pct_trans_regional": 2.8
     },
     {
       "revisor": "EMPEREZM",
@@ -1393,7 +1957,19 @@
       "ranking_velocidad_global": 48,
       "ranking_velocidad_regional": 48,
       "max_dia": 92,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 19,
+      "atendidas_occidente": 9,
+      "atendidas_sur": 532,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 19,
+        "OCCIDENTE": 9,
+        "SUR": 532,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 94.3,
+      "pct_trans_regional": 5.7
     },
     {
       "revisor": "YNIXCOLI",
@@ -1422,7 +1998,19 @@
       "ranking_velocidad_global": 49,
       "ranking_velocidad_regional": 49,
       "max_dia": 54,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 10,
+      "atendidas_occidente": 538,
+      "atendidas_sur": 4,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 10,
+        "OCCIDENTE": 538,
+        "SUR": 4,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 97.3,
+      "pct_trans_regional": 2.7
     },
     {
       "revisor": "HPCARDON",
@@ -1451,7 +2039,19 @@
       "ranking_velocidad_global": 50,
       "ranking_velocidad_regional": 50,
       "max_dia": 119,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 7,
+      "atendidas_occidente": 505,
+      "atendidas_sur": 7,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 7,
+        "OCCIDENTE": 505,
+        "SUR": 7,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 97.3,
+      "pct_trans_regional": 2.7
     },
     {
       "revisor": "WJPALACI",
@@ -1480,7 +2080,19 @@
       "ranking_velocidad_global": 51,
       "ranking_velocidad_regional": 51,
       "max_dia": 98,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 19,
+      "atendidas_occidente": 4,
+      "atendidas_sur": 464,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 19,
+        "OCCIDENTE": 4,
+        "SUR": 464,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 94.5,
+      "pct_trans_regional": 5.5
     },
     {
       "revisor": "GAPERUSS",
@@ -1509,7 +2121,19 @@
       "ranking_velocidad_global": 52,
       "ranking_velocidad_regional": 52,
       "max_dia": 40,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 458,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 5,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 458,
+        "OCCIDENTE": 2,
+        "SUR": 5,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 98.5,
+      "pct_trans_regional": 1.5
     },
     {
       "revisor": "KEDIAZPA",
@@ -1538,7 +2162,19 @@
       "ranking_velocidad_global": 53,
       "ranking_velocidad_regional": 53,
       "max_dia": 54,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 12,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 447,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 12,
+        "OCCIDENTE": 1,
+        "SUR": 447,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 96.3,
+      "pct_trans_regional": 3.7
     },
     {
       "revisor": "BMESPINA",
@@ -1567,7 +2203,19 @@
       "ranking_velocidad_global": 54,
       "ranking_velocidad_regional": 54,
       "max_dia": 59,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 378,
+      "atendidas_occidente": 5,
+      "atendidas_sur": 6,
+      "atendidas_nororiente": 6,
+      "por_regional": {
+        "CENTRAL": 378,
+        "OCCIDENTE": 5,
+        "SUR": 6,
+        "NORORIENTE": 6
+      },
+      "pct_sede_base": 95.7,
+      "pct_trans_regional": 4.3
     },
     {
       "revisor": "YGLOPEZA",
@@ -1596,7 +2244,19 @@
       "ranking_velocidad_global": 55,
       "ranking_velocidad_regional": 55,
       "max_dia": 37,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 6,
+      "atendidas_occidente": 351,
+      "atendidas_sur": 2,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 6,
+        "OCCIDENTE": 351,
+        "SUR": 2,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 97.0,
+      "pct_trans_regional": 3.0
     },
     {
       "revisor": "VARIVERA",
@@ -1625,7 +2285,19 @@
       "ranking_velocidad_global": 56,
       "ranking_velocidad_regional": 56,
       "max_dia": 56,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 336,
+      "atendidas_occidente": 5,
+      "atendidas_sur": 6,
+      "atendidas_nororiente": 6,
+      "por_regional": {
+        "CENTRAL": 336,
+        "OCCIDENTE": 5,
+        "SUR": 6,
+        "NORORIENTE": 6
+      },
+      "pct_sede_base": 95.2,
+      "pct_trans_regional": 4.8
     },
     {
       "revisor": "JMRAMIRT",
@@ -1654,7 +2326,19 @@
       "ranking_velocidad_global": 57,
       "ranking_velocidad_regional": 57,
       "max_dia": 129,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 338,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 4,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 338,
+        "OCCIDENTE": 1,
+        "SUR": 4,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 97.7,
+      "pct_trans_regional": 2.3
     },
     {
       "revisor": "MMMARTIV",
@@ -1683,7 +2367,19 @@
       "ranking_velocidad_global": 58,
       "ranking_velocidad_regional": 58,
       "max_dia": 77,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 329,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 7,
+      "atendidas_nororiente": 6,
+      "por_regional": {
+        "CENTRAL": 329,
+        "OCCIDENTE": 2,
+        "SUR": 7,
+        "NORORIENTE": 6
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "AEQUIROA",
@@ -1712,7 +2408,19 @@
       "ranking_velocidad_global": 59,
       "ranking_velocidad_regional": 59,
       "max_dia": 122,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 9,
+      "atendidas_occidente": 310,
+      "atendidas_sur": 5,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 9,
+        "OCCIDENTE": 310,
+        "SUR": 5,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 95.1,
+      "pct_trans_regional": 4.9
     },
     {
       "revisor": "MDLAMORA",
@@ -1741,7 +2449,19 @@
       "ranking_velocidad_global": 60,
       "ranking_velocidad_regional": 60,
       "max_dia": 97,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 13,
+      "atendidas_occidente": 4,
+      "atendidas_sur": 292,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 13,
+        "OCCIDENTE": 4,
+        "SUR": 292,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 93.9,
+      "pct_trans_regional": 6.1
     },
     {
       "revisor": "SJGUZMAN",
@@ -1770,7 +2490,19 @@
       "ranking_velocidad_global": 61,
       "ranking_velocidad_regional": 61,
       "max_dia": 63,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 16,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 284,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 16,
+        "OCCIDENTE": 2,
+        "SUR": 284,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 93.1,
+      "pct_trans_regional": 6.9
     },
     {
       "revisor": "LVPAZPER",
@@ -1799,7 +2531,19 @@
       "ranking_velocidad_global": 62,
       "ranking_velocidad_regional": 62,
       "max_dia": 59,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 288,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 5,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 288,
+        "OCCIDENTE": 1,
+        "SUR": 5,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 97.0,
+      "pct_trans_regional": 3.0
     },
     {
       "revisor": "BJPEREZS",
@@ -1828,7 +2572,19 @@
       "ranking_velocidad_global": 63,
       "ranking_velocidad_regional": 63,
       "max_dia": 81,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 269,
+      "atendidas_occidente": 5,
+      "atendidas_sur": 4,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 269,
+        "OCCIDENTE": 5,
+        "SUR": 4,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 95.4,
+      "pct_trans_regional": 4.6
     },
     {
       "revisor": "CDLOZANO",
@@ -1857,7 +2613,19 @@
       "ranking_velocidad_global": 64,
       "ranking_velocidad_regional": 64,
       "max_dia": 93,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 5,
+      "atendidas_occidente": 4,
+      "atendidas_sur": 270,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 5,
+        "OCCIDENTE": 4,
+        "SUR": 270,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 95.7,
+      "pct_trans_regional": 4.3
     },
     {
       "revisor": "CMCRISTA",
@@ -1886,7 +2654,19 @@
       "ranking_velocidad_global": 65,
       "ranking_velocidad_regional": 65,
       "max_dia": 68,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 265,
+      "atendidas_occidente": 6,
+      "atendidas_sur": 4,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 265,
+        "OCCIDENTE": 6,
+        "SUR": 4,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 95.7,
+      "pct_trans_regional": 4.3
     },
     {
       "revisor": "WOROSALE",
@@ -1915,7 +2695,19 @@
       "ranking_velocidad_global": 66,
       "ranking_velocidad_regional": 66,
       "max_dia": 147,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 269,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 269,
+        "OCCIDENTE": 1,
+        "SUR": 3,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 98.2,
+      "pct_trans_regional": 1.8
     },
     {
       "revisor": "RADELCID",
@@ -1944,7 +2736,19 @@
       "ranking_velocidad_global": 67,
       "ranking_velocidad_regional": 67,
       "max_dia": 8,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 147,
+      "atendidas_occidente": 50,
+      "atendidas_sur": 39,
+      "atendidas_nororiente": 35,
+      "por_regional": {
+        "CENTRAL": 147,
+        "OCCIDENTE": 50,
+        "SUR": 39,
+        "NORORIENTE": 35
+      },
+      "pct_sede_base": 54.2,
+      "pct_trans_regional": 45.8
     },
     {
       "revisor": "MEHERNAD",
@@ -1973,7 +2777,19 @@
       "ranking_velocidad_global": 68,
       "ranking_velocidad_regional": 68,
       "max_dia": 11,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 106,
+      "atendidas_occidente": 59,
+      "atendidas_sur": 34,
+      "atendidas_nororiente": 40,
+      "por_regional": {
+        "CENTRAL": 106,
+        "OCCIDENTE": 59,
+        "SUR": 34,
+        "NORORIENTE": 40
+      },
+      "pct_sede_base": 44.4,
+      "pct_trans_regional": 55.6
     },
     {
       "revisor": "FKGUZMAN",
@@ -2002,7 +2818,19 @@
       "ranking_velocidad_global": 69,
       "ranking_velocidad_regional": 69,
       "max_dia": 125,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 224,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 7,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 224,
+        "OCCIDENTE": 2,
+        "SUR": 7,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 96.1,
+      "pct_trans_regional": 3.9
     },
     {
       "revisor": "VRHERNAND",
@@ -2031,7 +2859,19 @@
       "ranking_velocidad_global": 70,
       "ranking_velocidad_regional": 70,
       "max_dia": 50,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 13,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 212,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 13,
+        "OCCIDENTE": 1,
+        "SUR": 212,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 93.4,
+      "pct_trans_regional": 6.6
     },
     {
       "revisor": "GWBERGAN",
@@ -2060,7 +2900,19 @@
       "ranking_velocidad_global": 71,
       "ranking_velocidad_regional": 71,
       "max_dia": 10,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 101,
+      "atendidas_occidente": 58,
+      "atendidas_sur": 33,
+      "atendidas_nororiente": 31,
+      "por_regional": {
+        "CENTRAL": 101,
+        "OCCIDENTE": 58,
+        "SUR": 33,
+        "NORORIENTE": 31
+      },
+      "pct_sede_base": 45.3,
+      "pct_trans_regional": 54.7
     },
     {
       "revisor": "MRCHOCCH",
@@ -2089,7 +2941,19 @@
       "ranking_velocidad_global": 72,
       "ranking_velocidad_regional": 72,
       "max_dia": 77,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 3,
+      "atendidas_occidente": 3,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 215,
+      "por_regional": {
+        "CENTRAL": 3,
+        "OCCIDENTE": 3,
+        "SUR": 0,
+        "NORORIENTE": 215
+      },
+      "pct_sede_base": 97.3,
+      "pct_trans_regional": 2.7
     },
     {
       "revisor": "LGCALLEM",
@@ -2118,7 +2982,19 @@
       "ranking_velocidad_global": 73,
       "ranking_velocidad_regional": 73,
       "max_dia": 99,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 3,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 201,
+      "por_regional": {
+        "CENTRAL": 3,
+        "OCCIDENTE": 2,
+        "SUR": 3,
+        "NORORIENTE": 201
+      },
+      "pct_sede_base": 96.2,
+      "pct_trans_regional": 3.8
     },
     {
       "revisor": "ARBAMACA",
@@ -2147,7 +3023,19 @@
       "ranking_velocidad_global": 74,
       "ranking_velocidad_regional": 74,
       "max_dia": 72,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 168,
+      "atendidas_sur": 2,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 168,
+        "SUR": 2,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 96.0,
+      "pct_trans_regional": 4.0
     },
     {
       "revisor": "HYCHEXTE",
@@ -2176,7 +3064,19 @@
       "ranking_velocidad_global": 75,
       "ranking_velocidad_regional": 75,
       "max_dia": 50,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 146,
+      "atendidas_occidente": 3,
+      "atendidas_sur": 5,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 146,
+        "OCCIDENTE": 3,
+        "SUR": 5,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 93.6,
+      "pct_trans_regional": 6.4
     },
     {
       "revisor": "KGALFARO",
@@ -2205,7 +3105,19 @@
       "ranking_velocidad_global": 76,
       "ranking_velocidad_regional": 76,
       "max_dia": 33,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 159,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 159,
+        "SUR": 1,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 98.1,
+      "pct_trans_regional": 1.9
     },
     {
       "revisor": "EYHOMCUC",
@@ -2234,7 +3146,19 @@
       "ranking_velocidad_global": 77,
       "ranking_velocidad_regional": 77,
       "max_dia": 41,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 155,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 155,
+        "SUR": 3,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 96.9,
+      "pct_trans_regional": 3.1
     },
     {
       "revisor": "JRGIROND",
@@ -2263,7 +3187,19 @@
       "ranking_velocidad_global": 78,
       "ranking_velocidad_regional": 78,
       "max_dia": 36,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 133,
+      "atendidas_occidente": 4,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 3,
+      "por_regional": {
+        "CENTRAL": 133,
+        "OCCIDENTE": 4,
+        "SUR": 3,
+        "NORORIENTE": 3
+      },
+      "pct_sede_base": 93.0,
+      "pct_trans_regional": 7.0
     },
     {
       "revisor": "DAHERNAS",
@@ -2292,7 +3228,19 @@
       "ranking_velocidad_global": 79,
       "ranking_velocidad_regional": 79,
       "max_dia": 104,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 4,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 132,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 4,
+        "OCCIDENTE": 2,
+        "SUR": 132,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 95.0,
+      "pct_trans_regional": 5.0
     },
     {
       "revisor": "DISARCEN",
@@ -2321,7 +3269,19 @@
       "ranking_velocidad_global": 80,
       "ranking_velocidad_regional": 80,
       "max_dia": 52,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 134,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 134,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 97.8,
+      "pct_trans_regional": 2.2
     },
     {
       "revisor": "MNTEJADA",
@@ -2350,7 +3310,19 @@
       "ranking_velocidad_global": 81,
       "ranking_velocidad_regional": 81,
       "max_dia": 98,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 4,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 133,
+      "por_regional": {
+        "CENTRAL": 4,
+        "OCCIDENTE": 0,
+        "SUR": 1,
+        "NORORIENTE": 133
+      },
+      "pct_sede_base": 96.4,
+      "pct_trans_regional": 3.6
     },
     {
       "revisor": "RMLOPEZG",
@@ -2379,7 +3351,19 @@
       "ranking_velocidad_global": 82,
       "ranking_velocidad_regional": 82,
       "max_dia": 57,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 133,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 133,
+        "SUR": 3,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 96.4,
+      "pct_trans_regional": 3.6
     },
     {
       "revisor": "MVBARRIO",
@@ -2408,7 +3392,19 @@
       "ranking_velocidad_global": 83,
       "ranking_velocidad_regional": 83,
       "max_dia": 68,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 4,
+      "atendidas_occidente": 131,
+      "atendidas_sur": 2,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 4,
+        "OCCIDENTE": 131,
+        "SUR": 2,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 95.6,
+      "pct_trans_regional": 4.4
     },
     {
       "revisor": "MLLOPEZI",
@@ -2437,7 +3433,19 @@
       "ranking_velocidad_global": 84,
       "ranking_velocidad_regional": 84,
       "max_dia": 68,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 130,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 130,
+        "OCCIDENTE": 2,
+        "SUR": 3,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 96.3,
+      "pct_trans_regional": 3.7
     },
     {
       "revisor": "LAMENDEZ",
@@ -2466,7 +3474,19 @@
       "ranking_velocidad_global": 85,
       "ranking_velocidad_regional": 85,
       "max_dia": 51,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 3,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 118,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 3,
+        "OCCIDENTE": 0,
+        "SUR": 118,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 97.5,
+      "pct_trans_regional": 2.5
     },
     {
       "revisor": "JVQUINON",
@@ -2495,7 +3515,19 @@
       "ranking_velocidad_global": 86,
       "ranking_velocidad_regional": 86,
       "max_dia": 29,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 109,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 109,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 97.3,
+      "pct_trans_regional": 2.7
     },
     {
       "revisor": "AEMONTER",
@@ -2524,7 +3556,19 @@
       "ranking_velocidad_global": 87,
       "ranking_velocidad_regional": 87,
       "max_dia": 60,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 103,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 103,
+        "SUR": 0,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 98.1,
+      "pct_trans_regional": 1.9
     },
     {
       "revisor": "LGAGUIRR",
@@ -2553,7 +3597,19 @@
       "ranking_velocidad_global": 88,
       "ranking_velocidad_regional": 88,
       "max_dia": 63,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 97,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 97,
+        "OCCIDENTE": 1,
+        "SUR": 3,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 95.1,
+      "pct_trans_regional": 4.9
     },
     {
       "revisor": "OAGRAMAJ",
@@ -2582,7 +3638,19 @@
       "ranking_velocidad_global": 89,
       "ranking_velocidad_regional": 89,
       "max_dia": 51,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 85,
+      "atendidas_sur": 2,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 85,
+        "SUR": 2,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 95.5,
+      "pct_trans_regional": 4.5
     },
     {
       "revisor": "GCCIFUEN",
@@ -2611,7 +3679,19 @@
       "ranking_velocidad_global": 90,
       "ranking_velocidad_regional": 90,
       "max_dia": 26,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 86,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 86,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JAIZAGUI",
@@ -2640,7 +3720,19 @@
       "ranking_velocidad_global": 91,
       "ranking_velocidad_regional": 91,
       "max_dia": 6,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 81,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 81,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 97.6,
+      "pct_trans_regional": 2.4
     },
     {
       "revisor": "AYSANTOS",
@@ -2669,7 +3761,19 @@
       "ranking_velocidad_global": 92,
       "ranking_velocidad_regional": 92,
       "max_dia": 46,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 71,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 71,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 97.3,
+      "pct_trans_regional": 2.7
     },
     {
       "revisor": "MSMENCHU",
@@ -2698,7 +3802,19 @@
       "ranking_velocidad_global": 93,
       "ranking_velocidad_regional": 93,
       "max_dia": 49,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 71,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 71,
+        "SUR": 0,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 97.3,
+      "pct_trans_regional": 2.7
     },
     {
       "revisor": "CALOPEZP",
@@ -2727,7 +3843,19 @@
       "ranking_velocidad_global": 94,
       "ranking_velocidad_regional": 94,
       "max_dia": 5,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 68,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 2,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 68,
+        "OCCIDENTE": 0,
+        "SUR": 2,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 95.8,
+      "pct_trans_regional": 4.2
     },
     {
       "revisor": "SYGARCIA",
@@ -2756,7 +3884,19 @@
       "ranking_velocidad_global": 95,
       "ranking_velocidad_regional": 95,
       "max_dia": 6,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 58,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 58,
+        "OCCIDENTE": 1,
+        "SUR": 3,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 92.1,
+      "pct_trans_regional": 7.9
     },
     {
       "revisor": "CHTEPETP",
@@ -2785,7 +3925,19 @@
       "ranking_velocidad_global": 96,
       "ranking_velocidad_regional": 96,
       "max_dia": 40,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 54,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 3,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 54,
+        "OCCIDENTE": 0,
+        "SUR": 3,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 91.5,
+      "pct_trans_regional": 8.5
     },
     {
       "revisor": "CVPERALT",
@@ -2814,7 +3966,19 @@
       "ranking_velocidad_global": 97,
       "ranking_velocidad_regional": 97,
       "max_dia": 26,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 58,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 58
+      },
+      "pct_sede_base": 98.3,
+      "pct_trans_regional": 1.7
     },
     {
       "revisor": "AERODRIL",
@@ -2843,7 +4007,19 @@
       "ranking_velocidad_global": 98,
       "ranking_velocidad_regional": 98,
       "max_dia": 26,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 53,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 53,
+        "OCCIDENTE": 0,
+        "SUR": 1,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 98.1,
+      "pct_trans_regional": 1.9
     },
     {
       "revisor": "ARODRIGU",
@@ -2872,7 +4048,19 @@
       "ranking_velocidad_global": 99,
       "ranking_velocidad_regional": 99,
       "max_dia": 7,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 50,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 50,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "EGGILRAB",
@@ -2901,7 +4089,19 @@
       "ranking_velocidad_global": 100,
       "ranking_velocidad_regional": 100,
       "max_dia": 4,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 49,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 49,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "VMDELEON",
@@ -2930,7 +4130,19 @@
       "ranking_velocidad_global": 101,
       "ranking_velocidad_regional": 101,
       "max_dia": 16,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 48,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 48,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 98.0,
+      "pct_trans_regional": 2.0
     },
     {
       "revisor": "AMLOPEZF",
@@ -2959,7 +4171,19 @@
       "ranking_velocidad_global": 102,
       "ranking_velocidad_regional": 102,
       "max_dia": 5,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 45,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 1,
+        "SUR": 0,
+        "NORORIENTE": 45
+      },
+      "pct_sede_base": 97.8,
+      "pct_trans_regional": 2.2
     },
     {
       "revisor": "MKVALLAD",
@@ -2988,7 +4212,19 @@
       "ranking_velocidad_global": 103,
       "ranking_velocidad_regional": 103,
       "max_dia": 3,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 3,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 40,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 3,
+        "OCCIDENTE": 1,
+        "SUR": 40,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 90.9,
+      "pct_trans_regional": 9.1
     },
     {
       "revisor": "EMSEBAST",
@@ -3017,7 +4253,19 @@
       "ranking_velocidad_global": 104,
       "ranking_velocidad_regional": 104,
       "max_dia": 7,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 38,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 1,
+        "SUR": 38,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 95.0,
+      "pct_trans_regional": 5.0
     },
     {
       "revisor": "JAVHERNA",
@@ -3046,7 +4294,19 @@
       "ranking_velocidad_global": 105,
       "ranking_velocidad_regional": 105,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 33,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 33,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 97.1,
+      "pct_trans_regional": 2.9
     },
     {
       "revisor": "TJCALDER",
@@ -3075,7 +4335,19 @@
       "ranking_velocidad_global": 106,
       "ranking_velocidad_regional": 106,
       "max_dia": 14,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 33,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 33,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "SMCABREV",
@@ -3104,7 +4376,19 @@
       "ranking_velocidad_global": 107,
       "ranking_velocidad_regional": 107,
       "max_dia": 19,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 30,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 30
+      },
+      "pct_sede_base": 93.8,
+      "pct_trans_regional": 6.2
     },
     {
       "revisor": "EYOROZCL",
@@ -3133,7 +4417,19 @@
       "ranking_velocidad_global": 108,
       "ranking_velocidad_regional": 108,
       "max_dia": 25,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 29,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 29,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 93.5,
+      "pct_trans_regional": 6.5
     },
     {
       "revisor": "MEPEREZA",
@@ -3162,7 +4458,19 @@
       "ranking_velocidad_global": 109,
       "ranking_velocidad_regional": 109,
       "max_dia": 4,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 27,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 27,
+        "OCCIDENTE": 1,
+        "SUR": 1,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 90.0,
+      "pct_trans_regional": 10.0
     },
     {
       "revisor": "EIGNACIO",
@@ -3191,7 +4499,19 @@
       "ranking_velocidad_global": 110,
       "ranking_velocidad_regional": 110,
       "max_dia": 14,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 29,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 29,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "YXGOMEZC",
@@ -3220,7 +4540,19 @@
       "ranking_velocidad_global": 111,
       "ranking_velocidad_regional": 111,
       "max_dia": 12,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 27,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 0,
+        "SUR": 27,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 93.1,
+      "pct_trans_regional": 6.9
     },
     {
       "revisor": "AMDOMINE",
@@ -3249,7 +4581,19 @@
       "ranking_velocidad_global": 112,
       "ranking_velocidad_regional": 112,
       "max_dia": 10,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 27,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 27,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 96.4,
+      "pct_trans_regional": 3.6
     },
     {
       "revisor": "DMTAHUAL",
@@ -3278,7 +4622,19 @@
       "ranking_velocidad_global": 113,
       "ranking_velocidad_regional": 113,
       "max_dia": 4,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 27,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 27,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 96.4,
+      "pct_trans_regional": 3.6
     },
     {
       "revisor": "GATALEOR",
@@ -3307,7 +4663,19 @@
       "ranking_velocidad_global": 114,
       "ranking_velocidad_regional": 114,
       "max_dia": 14,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 27,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 27,
+        "SUR": 1,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 96.4,
+      "pct_trans_regional": 3.6
     },
     {
       "revisor": "JAYOCPAS",
@@ -3336,7 +4704,19 @@
       "ranking_velocidad_global": 115,
       "ranking_velocidad_regional": 115,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 24,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 1,
+      "por_regional": {
+        "CENTRAL": 24,
+        "OCCIDENTE": 2,
+        "SUR": 1,
+        "NORORIENTE": 1
+      },
+      "pct_sede_base": 85.7,
+      "pct_trans_regional": 14.3
     },
     {
       "revisor": "DMIXCOTC",
@@ -3365,7 +4745,19 @@
       "ranking_velocidad_global": 116,
       "ranking_velocidad_regional": 116,
       "max_dia": 3,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 23,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 23,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "CEMARTIN",
@@ -3394,7 +4786,19 @@
       "ranking_velocidad_global": 117,
       "ranking_velocidad_regional": 117,
       "max_dia": 3,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 22,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 22,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JHVARGAS",
@@ -3423,7 +4827,19 @@
       "ranking_velocidad_global": 118,
       "ranking_velocidad_regional": 118,
       "max_dia": 9,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 21,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 21,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JISMLOPE",
@@ -3452,7 +4868,19 @@
       "ranking_velocidad_global": 119,
       "ranking_velocidad_regional": 119,
       "max_dia": 11,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 21,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 21,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "AACARDEN",
@@ -3481,7 +4909,19 @@
       "ranking_velocidad_global": 120,
       "ranking_velocidad_regional": 120,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 19,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 19,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "EATOLVIX",
@@ -3510,7 +4950,19 @@
       "ranking_velocidad_global": 121,
       "ranking_velocidad_regional": 121,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 15,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 15,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "MVCARRER",
@@ -3539,7 +4991,19 @@
       "ranking_velocidad_global": 122,
       "ranking_velocidad_regional": 122,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 15,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 15,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JFRUANOE",
@@ -3568,7 +5032,19 @@
       "ranking_velocidad_global": 123,
       "ranking_velocidad_regional": 123,
       "max_dia": 8,
-      "min_dia": 3
+      "min_dia": 3,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 13,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 13,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 92.9,
+      "pct_trans_regional": 7.1
     },
     {
       "revisor": "DEBE DE INDICAR LOS DATOS EN UN   SOLO VIDEO",
@@ -3597,7 +5073,19 @@
       "ranking_velocidad_global": 124,
       "ranking_velocidad_regional": 124,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 12,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 12
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "AEFLORES",
@@ -3626,7 +5114,19 @@
       "ranking_velocidad_global": 125,
       "ranking_velocidad_regional": 125,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 10,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 10,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "KMALVARE",
@@ -3655,7 +5155,19 @@
       "ranking_velocidad_global": 126,
       "ranking_velocidad_regional": 126,
       "max_dia": 4,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 10,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 10,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "MDUARTEM",
@@ -3684,7 +5196,19 @@
       "ranking_velocidad_global": 127,
       "ranking_velocidad_regional": 127,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 9,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 9,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "LA PERSONA INTERESADA DEBE DE INDICAR LOS DATOS",
@@ -3713,7 +5237,19 @@
       "ranking_velocidad_global": 128,
       "ranking_velocidad_regional": 128,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 8,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 8
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "LELOPEZZ",
@@ -3742,7 +5278,19 @@
       "ranking_velocidad_global": 129,
       "ranking_velocidad_regional": 129,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 6,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 6,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "SPDUARTE",
@@ -3771,7 +5319,19 @@
       "ranking_velocidad_global": 130,
       "ranking_velocidad_regional": 130,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 5,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 1,
+        "NORORIENTE": 5
+      },
+      "pct_sede_base": 83.3,
+      "pct_trans_regional": 16.7
     },
     {
       "revisor": "DASORIAP",
@@ -3800,7 +5360,19 @@
       "ranking_velocidad_global": 131,
       "ranking_velocidad_regional": 131,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 5,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 5
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JDROLDAN",
@@ -3829,7 +5401,19 @@
       "ranking_velocidad_global": 132,
       "ranking_velocidad_regional": 132,
       "max_dia": 3,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 5,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 5
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "MYSANDOV",
@@ -3858,7 +5442,19 @@
       "ranking_velocidad_global": 133,
       "ranking_velocidad_regional": 133,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 5,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 5
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "AGMIJANG",
@@ -3887,7 +5483,19 @@
       "ranking_velocidad_global": 134,
       "ranking_velocidad_regional": 134,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 4,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 4,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "AGRGOMEZ",
@@ -3916,7 +5524,19 @@
       "ranking_velocidad_global": 135,
       "ranking_velocidad_regional": 135,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 4,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 4,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JCFELIXC",
@@ -3945,7 +5565,19 @@
       "ranking_velocidad_global": 136,
       "ranking_velocidad_regional": 136,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 4,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 4,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JMCHINCH",
@@ -3974,7 +5606,19 @@
       "ranking_velocidad_global": 137,
       "ranking_velocidad_regional": 137,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 4,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 4,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "MEAMPERE",
@@ -4003,7 +5647,19 @@
       "ranking_velocidad_global": 138,
       "ranking_velocidad_regional": 138,
       "max_dia": 2,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 1,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 50.0,
+      "pct_trans_regional": 50.0
     },
     {
       "revisor": "MLCASTAN",
@@ -4032,7 +5688,19 @@
       "ranking_velocidad_global": 139,
       "ranking_velocidad_regional": 139,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "NEAVALOS",
@@ -4061,7 +5729,19 @@
       "ranking_velocidad_global": 140,
       "ranking_velocidad_regional": 140,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 4,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 4
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "BGVELASQ",
@@ -4090,7 +5770,19 @@
       "ranking_velocidad_global": 141,
       "ranking_velocidad_regional": 141,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 3,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 3,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "HMROJASS",
@@ -4119,7 +5811,19 @@
       "ranking_velocidad_global": 142,
       "ranking_velocidad_regional": 142,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 3,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 3,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "BATUCMEN",
@@ -4148,7 +5852,19 @@
       "ranking_velocidad_global": 143,
       "ranking_velocidad_regional": 143,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "CAARANAG",
@@ -4177,7 +5893,19 @@
       "ranking_velocidad_global": 144,
       "ranking_velocidad_regional": 144,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 2,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 2,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "EMARMASH",
@@ -4206,7 +5934,19 @@
       "ranking_velocidad_global": 145,
       "ranking_velocidad_regional": 145,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JCPEREZV",
@@ -4235,7 +5975,19 @@
       "ranking_velocidad_global": 146,
       "ranking_velocidad_regional": 146,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "PMENDEZB",
@@ -4264,7 +6016,19 @@
       "ranking_velocidad_global": 147,
       "ranking_velocidad_regional": 147,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "RCHAJMOR",
@@ -4293,7 +6057,19 @@
       "ranking_velocidad_global": 148,
       "ranking_velocidad_regional": 148,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "SCSUCHIT",
@@ -4322,7 +6098,19 @@
       "ranking_velocidad_global": 149,
       "ranking_velocidad_regional": 149,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 2,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 2
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "TIESCOBA",
@@ -4351,7 +6139,19 @@
       "ranking_velocidad_global": 150,
       "ranking_velocidad_regional": 150,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 2,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 2,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "CAGONZAJ",
@@ -4380,7 +6180,19 @@
       "ranking_velocidad_global": 151,
       "ranking_velocidad_regional": 151,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "COLOCAR CORRECTAMENTE EL DPI EN EL VIDEO",
@@ -4409,7 +6221,19 @@
       "ranking_velocidad_global": 152,
       "ranking_velocidad_regional": 152,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "FLRECINO",
@@ -4438,7 +6262,19 @@
       "ranking_velocidad_global": 153,
       "ranking_velocidad_regional": 153,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 1,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "GEGUZMAN",
@@ -4467,7 +6303,19 @@
       "ranking_velocidad_global": 154,
       "ranking_velocidad_regional": 154,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 1,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 0,
+        "SUR": 1,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "IICHACON",
@@ -4496,7 +6344,19 @@
       "ranking_velocidad_global": 155,
       "ranking_velocidad_regional": 155,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JAACABAL",
@@ -4525,7 +6385,19 @@
       "ranking_velocidad_global": 156,
       "ranking_velocidad_regional": 156,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 1,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "JCRAMIRE",
@@ -4554,7 +6426,19 @@
       "ranking_velocidad_global": 157,
       "ranking_velocidad_regional": 157,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "LRYACABA",
@@ -4583,7 +6467,19 @@
       "ranking_velocidad_global": 158,
       "ranking_velocidad_regional": 158,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "RCAVILAL",
@@ -4612,7 +6508,19 @@
       "ranking_velocidad_global": 159,
       "ranking_velocidad_regional": 159,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 1,
+      "atendidas_occidente": 0,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 1,
+        "OCCIDENTE": 0,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "TJPERERA",
@@ -4641,7 +6549,19 @@
       "ranking_velocidad_global": 160,
       "ranking_velocidad_regional": 160,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 1,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     },
     {
       "revisor": "VIGALIND",
@@ -4670,7 +6590,19 @@
       "ranking_velocidad_global": 161,
       "ranking_velocidad_regional": 161,
       "max_dia": 1,
-      "min_dia": 1
+      "min_dia": 1,
+      "atendidas_central": 0,
+      "atendidas_occidente": 1,
+      "atendidas_sur": 0,
+      "atendidas_nororiente": 0,
+      "por_regional": {
+        "CENTRAL": 0,
+        "OCCIDENTE": 1,
+        "SUR": 0,
+        "NORORIENTE": 0
+      },
+      "pct_sede_base": 100.0,
+      "pct_trans_regional": 0.0
     }
   ]
 }
