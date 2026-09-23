@@ -48,13 +48,18 @@ export default function FilterRibbon() {
   }, []);
 
   const change = (key: keyof FilterState, value: string) => {
-    const el = document.getElementById(`sel${key[0].toUpperCase()}${key.slice(1)}`) as HTMLSelectElement | null;
     setF(prev => ({ ...prev, [key]: value }));
+    const id = `sel${key[0].toUpperCase()}${key.slice(1)}`;
+    const el = document.getElementById(id) as HTMLSelectElement | null;
     if (el) el.value = value;
     if (typeof window.applyFilters === 'function') window.applyFilters();
+    setTimeout(() => {
+      if (typeof window.applyFilters === 'function') window.applyFilters();
+    }, 20);
   };
 
   const reset = () => {
+    setF(INITIAL_FILTERS);
     if (typeof window.resetFilters === 'function') window.resetFilters();
   };
 

@@ -229,33 +229,60 @@ recent_30_keys = active_days[-30:] if len(active_days) >= 30 else active_days
 serie_reciente = process_days(recent_30_keys)
 summary_reciente = make_summary(serie_reciente)
 
-# 2. Ventana de Enero (Lanzamiento masivo, 31 días)
-ene_keys = [day for day in sorted_days if day.startswith('2026-01-') and daily[day]['total'] > 0][:31]
-serie_enero = process_days(ene_keys)
-summary_enero = make_summary(serie_enero)
+# 2. Todos los días del semestre
+serie_todos = process_days(sorted_days)
+summary_todos = make_summary(serie_todos)
+
+# 3. Meses individuales
+meses_config = [
+    ('2026-01', 'Enero 2026', 'Lanzamiento masivo inicial con alta demanda y saturación de buzón'),
+    ('2026-02', 'Febrero 2026', 'Fase de estabilización y desahogo de colas iniciales'),
+    ('2026-03', 'Marzo 2026', 'Operación regular y distribución trans-regional'),
+    ('2026-04', 'Abril 2026', 'Comportamiento trimestral y variaciones por asuetos'),
+    ('2026-05', 'Mayo 2026', 'Flujo operativo continuo con picos de fin de mes'),
+    ('2026-06', 'Junio 2026', 'Picos intermedios de demanda y colas controladas'),
+    ('2026-07', 'Julio 2026', 'Fase reciente con redistribución de cargas de trabajo')
+]
+
+periodos_dict = {
+    'todos': {
+        'id': 'todos',
+        'nombre': 'Todo el Semestre (Ene – Jul 2026)',
+        'descripcion': 'Vista longitudinal completa de todos los 182 días de operación',
+        'resumen': summary_todos,
+        'serie': serie_todos
+    },
+    'reciente': {
+        'id': 'reciente',
+        'nombre': 'Últimos 30 Días Operativos (Abr – Jul)',
+        'descripcion': 'Fase estabilizada con demanda regular y distribución regional activa',
+        'resumen': summary_reciente,
+        'serie': serie_reciente
+    }
+}
+
+for m_key, m_nombre, m_desc in meses_config:
+    m_days = [day for day in sorted_days if day.startswith(f"{m_key}-") and daily[day]['total'] > 0]
+    if m_days:
+        s_mes = process_days(m_days)
+        sum_mes = make_summary(s_mes)
+        periodos_dict[m_key] = {
+            'id': m_key,
+            'nombre': m_nombre,
+            'descripcion': m_desc,
+            'resumen': sum_mes,
+            'serie': s_mes
+        }
+# Legacy alias for backward compatibility
+periodos_dict['enero'] = periodos_dict['2026-01']
 
 final_output = {
     'resumen': summary_reciente,
     'serie_diaria': serie_reciente,
-    'periodos': {
-        'reciente': {
-            'id': 'reciente',
-            'nombre': 'Últimos 30 Días Operativos (Abr – Jul)',
-            'descripcion': 'Fase estabilizada con demanda regular y distribución regional activa',
-            'resumen': summary_reciente,
-            'serie': serie_reciente
-        },
-        'enero': {
-            'id': 'enero',
-            'nombre': 'Ventana Inicial de Enero (31 Días de Alta Presión)',
-            'descripcion': 'Lanzamiento masivo con más de 80,000 expedientes y picos de cuello de botella',
-            'resumen': summary_enero,
-            'serie': serie_enero
-        }
-    }
+    'periodos': periodos_dict
 }
 
 with open(out_path, 'w', encoding='utf-8') as out_f:
     json.dump(final_output, out_f, ensure_ascii=False, indent=2)
 
-print(f"Generated {out_path} with 2 full 30-day periods.")
+print(f"Generated {out_path} with {len(periodos_dict)} distinct periods including all months.")

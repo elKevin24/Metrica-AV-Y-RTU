@@ -14,7 +14,6 @@ import {
   Clock,
   AlertTriangle,
   ShieldCheck,
-  TrendingUp,
   AlertOctagon,
   ChevronDown,
   ChevronUp,
@@ -171,7 +170,7 @@ export const Sla8hTrendChart: React.FC<Props> = ({
 }) => {
   // Always initialize with robust data immediately
   const [dataset, setDataset] = useState<SlaDatasetJson>(initialData || DEFAULT_SLA_DATA);
-  const [periodoKey, setPeriodoKey] = useState<'reciente' | 'enero'>('reciente');
+  const [periodoKey, setPeriodoKey] = useState<string>('reciente');
   const [vistaModo, setVistaModo] = useState<'integral' | 'cumplimiento' | 'cuellos_botella' | 'volumen'>('integral');
   const [regionFilter, setRegionFilter] = useState<'TODAS' | 'CENTRAL' | 'OCCIDENTE' | 'SUR' | 'NORORIENTE'>('TODAS');
   const [resaltarCuellos, setResaltarCuellos] = useState<boolean>(true);
@@ -183,21 +182,51 @@ export const Sla8hTrendChart: React.FC<Props> = ({
   // Formatter helpers
   const fmt = (num: number) => new Intl.NumberFormat('es-GT').format(num);
 
+  const periodoLabel = useMemo(() => {
+    if (periodoKey === 'reciente') return 'Últimos 30D';
+    if (periodoKey === 'todos') return 'Semestre Completo';
+    if (periodoKey.startsWith('2026-')) {
+      const m = parseInt(periodoKey.split('-')[1], 10);
+      const names = ['', 'Enero 2026', 'Febrero 2026', 'Marzo 2026', 'Abril 2026', 'Mayo 2026', 'Junio 2026', 'Julio 2026'];
+      return names[m] || periodoKey;
+    }
+    return 'Periodo';
+  }, [periodoKey]);
+
   // Optional client-side background sync if prop changes or fetch is requested
   useEffect(() => {
-    if (initialData && initialData.serie_diaria) {
-      setDataset(initialData);
-    } else {
-      fetch(initialDataUrl)
-        .then(res => res.ok ? res.json() : null)
-        .then(data => {
-          if (data && data.serie_diaria) setDataset(data);
-        })
-        .catch(() => {
-          // Keep default data
-        });
-    }
-  }, [initialData, initialDataUrl]);
+    fetch(initialDataUrl)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && (data.serie_diaria || data.periodos)) setDataset(data);
+      })
+      .catch(() => {
+        if (initialData) setDataset(initialData);
+      });
+  }, [initialDataUrl]);
+
+  // Sync with global Ribbon filter events if month changes
+  useEffect(() => {
+    const handleGlobalSync = () => {
+      const selMes = (document.getElementById('selMes') as HTMLSelectElement | null)?.value;
+      const selReg = (document.getElementById('selRegion') as HTMLSelectElement | null)?.value;
+      if (selMes && selMes !== 'TODOS') {
+        const monthPad = String(selMes).padStart(2, '0');
+        const candidateKey = `2026-${monthPad}`;
+        setPeriodoKey(candidateKey);
+      }
+      if (selReg && ['TODAS', 'CENTRAL', 'OCCIDENTE', 'SUR', 'NORORIENTE'].includes(selReg)) {
+        setRegionFilter(selReg as any);
+      }
+    };
+
+    window.addEventListener('filters:sync', handleGlobalSync);
+    window.addEventListener('filters:updated', handleGlobalSync);
+    return () => {
+      window.removeEventListener('filters:sync', handleGlobalSync);
+      window.removeEventListener('filters:updated', handleGlobalSync);
+    };
+  }, []);
 
   // Handle auto resize whenever tab is clicked or view changed
   useEffect(() => {
@@ -493,11 +522,20 @@ export const Sla8hTrendChart: React.FC<Props> = ({
             <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider shrink-0">Periodo:</span>
             <select
               value={periodoKey}
-              onChange={e => setPeriodoKey(e.target.value as 'reciente' | 'enero')}
+              onChange={e => setPeriodoKey(e.target.value)}
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
               <option value="reciente">Últimos 30 Días Operativos (Abr – Jul)</option>
-              <option value="enero">Ventana Crítica Enero (Lanzamiento 31 Días)</option>
+              <option value="todos">Todo el Semestre (Ene – Jul 2026)</option>
+              <optgroup label="Filtrar por Mes Específico">
+                <option value="2026-01">Enero 2026</option>
+                <option value="2026-02">Febrero 2026</option>
+                <option value="2026-03">Marzo 2026</option>
+                <option value="2026-04">Abril 2026</option>
+                <option value="2026-05">Mayo 2026</option>
+                <option value="2026-06">Junio 2026</option>
+                <option value="2026-07">Julio 2026</option>
+              </optgroup>
             </select>
           </div>
 
@@ -532,11 +570,11 @@ export const Sla8hTrendChart: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 2. TARJETAS KPI DE DIAGNÓSTICO (30 DÍAS) */}
+      {/* 2. TARJETAS KPI DE DIAGNÓSTICO */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="p-3.5 rounded-xl bg-white/70 border border-slate-200/80 shadow-2xs space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Cumplimiento 30D</span>
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Cumplimiento ({periodoLabel})</span>
             <Target className="w-4 h-4 text-emerald-600" />
           </div>
           <div className="flex items-baseline gap-1.5">
@@ -555,8 +593,12 @@ export const Sla8hTrendChart: React.FC<Props> = ({
               style={{ width: `${Math.min(kpis.cumplimientoPromedio, 100)}%` }}
             />
           </div>
-          <span className="text-[10px] text-slate-500 block truncate">
-            Brecha hacia el estándar: {Math.max(0, Math.round((80 - kpis.cumplimientoPromedio) * 10) / 10)} pts
+          <span className="text-[10px] text-slate-600 font-medium block truncate">
+            {kpis.cumplimientoPromedio >= 80 ? (
+              <span className="text-emerald-600 font-bold">✓ Meta cumplida (+{Math.round((kpis.cumplimientoPromedio - 80) * 10) / 10} pts)</span>
+            ) : (
+              <span>Brecha hacia estándar: <strong className="text-rose-600">-{Math.round((80 - kpis.cumplimientoPromedio) * 10) / 10} pts</strong></span>
+            )}
           </span>
         </div>
 

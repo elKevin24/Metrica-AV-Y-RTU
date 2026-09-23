@@ -740,7 +740,7 @@ const formatMinutesToTime = (minDecimal: number) => {
                   </div>
 
                   <div class="flex items-baseline gap-2 mt-2">
-                    <span class="text-2xl font-black text-slate-900 font-mono tracking-tight">9h 29m</span>
+                    <span id="kpiTiempoColaTab2" class="text-2xl font-black text-slate-900 font-mono tracking-tight">9h 04m</span>
                     <span class="text-xs font-bold text-amber-700 bg-amber-50/80 border border-amber-200/60 px-2 py-0.5 rounded-full font-mono backdrop-blur-xs">
                       98.2% del ciclo
                     </span>
@@ -2629,6 +2629,117 @@ const formatMinutesToTime = (minDecimal: number) => {
         }
       }
       window.initTiemposCharts = initTiemposCharts;
+
+      // --- MOTOR DE FILTRADO OLAP CLIENT-SIDE ---
+      let __cuboData = null;
+      function formatDuration(hours) {
+        if (isNaN(hours) || hours <= 0) return '0h 00m';
+        const h = Math.floor(hours);
+        const m = Math.round((hours - h) * 60);
+        return `${h}h ${m < 10 ? '0' : ''}${m}m`;
+      }
+
+      async function getCuboData() {
+        if (__cuboData) return __cuboData;
+        try {
+          const basePath = (window.__BASE_URL__ || window.location.pathname).replace(/\/$/, '');
+          const res = await fetch(`${basePath}/data/cubo_olap.json`);
+          if (res.ok) {
+            const data = await res.json();
+            __cuboData = data.cubo || [];
+            return __cuboData;
+          }
+        } catch (e) {
+          console.error('Error cargando cubo OLAP:', e);
+        }
+        return [];
+      }
+
+      window.applyFilters = async function() {
+        const selRegionEl = document.getElementById('selRegion');
+        const selGestionEl = document.getElementById('selGestion');
+        const selMesEl = document.getElementById('selMes');
+        const selEstadoEl = document.getElementById('selEstado');
+        const selMacroEl = document.getElementById('selMacro');
+
+        const selRegion = selRegionEl ? selRegionEl.value : 'TODAS';
+        const selGestion = selGestionEl ? selGestionEl.value : 'TODAS';
+        const selMes = selMesEl ? selMesEl.value : 'TODOS';
+        const selEstado = selEstadoEl ? selEstadoEl.value : 'TODOS';
+        const selMacro = selMacroEl ? selMacroEl.value : 'TODAS';
+
+        const rows = await getCuboData();
+        if (!rows || rows.length === 0) return;
+
+        const filtered = rows.filter(function(r) {
+          if (selRegion !== 'TODAS' && r.region !== selRegion) return false;
+          if (selGestion !== 'TODAS' && r.ges !== selGestion) return false;
+          if (selMes !== 'TODOS' && String(r.mes) !== String(selMes)) return false;
+          if (selEstado !== 'TODOS' && r.est !== selEstado) return false;
+          if (selMacro !== 'TODAS' && r.macro !== selMacro) return false;
+          return true;
+        });
+
+        const total = filtered.reduce(function(acc, r) { return acc + (r.total || 0); }, 0);
+        const atendidas = filtered.reduce(function(acc, r) { return acc + (r.atendidas || 0); }, 0);
+        const aprobadas = filtered.reduce(function(acc, r) { return acc + (r.aprobadas || 0); }, 0);
+        const rechazos = filtered.reduce(function(acc, r) { return acc + (r.con_rechazo || 0); }, 0);
+        const ftr = filtered.reduce(function(acc, r) { return acc + (r.subsanadas || 0); }, 0);
+        const colaSum = filtered.reduce(function(acc, r) { return acc + (r.t_cola_hab_sum || 0); }, 0);
+        const colaCount = filtered.reduce(function(acc, r) { return acc + (r.t_cola_hab_count || 0); }, 0);
+        const avgColaHab = colaCount > 0 ? (colaSum / colaCount) : 0;
+
+        // 1. KPI Total Gestiones
+        const elTot = document.getElementById('kpiTotalGestiones');
+        if (elTot) elTot.textContent = total.toLocaleString('es-GT');
+
+        // 2. KPI Atendidas
+        const elAtn = document.getElementById('kpiAtendidas');
+        if (elAtn) elAtn.textContent = atendidas.toLocaleString('es-GT');
+        const elAtnBadge = document.getElementById('kpiAtendidasBadge');
+        if (elAtnBadge && total > 0) elAtnBadge.textContent = ((atendidas / total) * 100).toFixed(1) + '%';
+
+        // 3. KPI Espera en Buzón (Tab 1 & Tab 2)
+        const elCola = document.getElementById('kpiTiempoCola');
+        if (elCola) elCola.textContent = formatDuration(avgColaHab);
+        const cardBuzonVal = document.querySelector('#cardBuzon .text-2xl');
+        if (cardBuzonVal) cardBuzonVal.textContent = formatDuration(avgColaHab);
+
+        // 4. KPI Rechazos
+        const elRech = document.getElementById('kpiRechazos');
+        if (elRech) elRech.textContent = rechazos.toLocaleString('es-GT');
+        const elRechBadge = document.getElementById('kpiRechazosBadge');
+        if (elRechBadge && atendidas > 0) elRechBadge.textContent = ((rechazos / atendidas) * 100).toFixed(1) + '% de atendidas';
+
+        // 5. KPI FTR
+        const elFtr = document.getElementById('kpiFtr');
+        if (elFtr) elFtr.textContent = aprobadas.toLocaleString('es-GT');
+
+        // 6. Actualizar Gráfico de Estados si existe
+        if (window.Chart && typeof window.Chart.getChart === 'function') {
+          const chEstados = window.Chart.getChart('chartEstados');
+          if (chEstados && chEstados.data && chEstados.data.datasets && chEstados.data.datasets[0]) {
+            chEstados.data.datasets[0].data = [aprobadas, rechazos];
+            chEstados.update();
+          }
+        }
+
+        // 7. Notificar a componentes React (SLA Trend Chart, Revisores, etc.)
+        window.dispatchEvent(new CustomEvent('filters:sync', {
+          detail: { selRegion, selGestion, selMes, selEstado, selMacro, total, atendidas, avgColaHab }
+        }));
+        window.dispatchEvent(new CustomEvent('filters:updated', {
+          detail: { selRegion, selGestion, selMes, selEstado, selMacro, total, atendidas, avgColaHab }
+        }));
+      };
+
+      window.resetFilters = function() {
+        ['selRegion', 'selGestion', 'selMes', 'selEstado', 'selMacro'].forEach(function(id) {
+          const el = document.getElementById(id);
+          if (el) el.value = id === 'selRegion' || id === 'selGestion' || id === 'selMacro' ? 'TODAS' : 'TODOS';
+        });
+        window.applyFilters();
+      };
 
       if (typeof Chart !== 'undefined') {
         Chart.defaults.color = '#64748b';

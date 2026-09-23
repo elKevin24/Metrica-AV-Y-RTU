@@ -1,18 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Search, RefreshCw, MousePointerClick, FileQuestion, Clock } from 'lucide-react';
+import { Search, RefreshCw, MousePointerClick, FileQuestion, Clock, User, Timer } from 'lucide-react';
 
 interface ForensicCase {
   i: string;
   t: string;
   r: string;
   e: string;
+  u?: string | null;
+  nit?: string | null;
   fc?: string | null;
   fa?: string | null;
   fr?: string | null;
   ff?: string | null;
   frz?: string | null;
   tc?: number | null;
+  th?: number | null;
   tt?: number | null;
+  tth?: number | null;
+  ta?: number | null;
+  bv?: string | null;
   cr?: number;
   sb?: number;
   ft?: number;
@@ -25,7 +31,7 @@ const VALID_REGIONES = ['CENTRAL', 'OCCIDENTE', 'NORORIENTE', 'SUR'];
 const ORDER_ESTADOS = ['APROBADA', 'CANCELADA', 'NO CONFIRMADA', 'CREADA', 'RECHAZADA CON REQUERIMIENTO'];
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-type SortField = 'i' | 't' | 'tc';
+type SortField = 'i' | 't' | 'tc' | 'ta' | 'e';
 
 interface Filters {
   search: string;
@@ -94,6 +100,39 @@ function fmtCola(colaH?: number | null): { text: string; cls: string } {
   return { text, cls: 'text-emerald-600' };
 }
 
+function getAtencionSec(c: ForensicCase): number | null {
+  if (typeof c.ta === 'number' && !isNaN(c.ta)) return c.ta;
+  if (c.fa && (c.fr || c.ff)) {
+    const end = c.fr || c.ff;
+    const start = new Date(c.fa).getTime();
+    const finish = new Date(end!).getTime();
+    if (!isNaN(start) && !isNaN(finish)) {
+      const diff = (finish - start) / 1000;
+      if (diff >= 0 && diff < 86400 * 30) return diff;
+    }
+  }
+  return null;
+}
+
+function fmtAtencion(sec: number | null): { text: string; cls: string; label?: string } {
+  if (sec == null) return { text: '-', cls: 'text-slate-400' };
+  let text = '';
+  if (sec < 60) {
+    text = `${Math.round(sec)}s`;
+  } else if (sec < 3600) {
+    const m = Math.floor(sec / 60);
+    const s = Math.round(sec % 60);
+    text = s > 0 ? `${m}m ${s}s` : `${m}m`;
+  } else {
+    text = `${(sec / 3600).toFixed(1)}h`;
+  }
+
+  if (sec < 15) return { text, cls: 'text-indigo-600 font-bold', label: '<15s (Ultrarrápida)' };
+  if (sec <= 120) return { text, cls: 'text-emerald-700 font-semibold', label: '15s - 2m (Rápida)' };
+  if (sec <= 600) return { text, cls: 'text-blue-700 font-medium', label: '2m - 10m (Estándar)' };
+  return { text, cls: 'text-amber-700 font-bold', label: '>10m (Prolongada)' };
+}
+
 function badgeForEstado(estado: string): string {
   if (estado === 'APROBADA') return '<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold text-[10px]">Aprobada</span>';
   if (estado.includes('RECHAZADA')) return '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-md font-bold text-[10px]">Rechazada</span>';
@@ -122,7 +161,6 @@ export default function ForensicView() {
 
   const bump = () => {
     setDataVersion(v => v + 1);
-    const pct = Math.min(100, Math.round((allCases.current.length / (totalChunks.current * 5000 || 1)) * 100));
     setProgress({ loaded: allCases.current.length, total: totalChunks.current * 5000 });
   };
 
@@ -136,6 +174,8 @@ export default function ForensicView() {
         t: m.Gestion || '',
         r: m.Region || '',
         e: m.Estado || '',
+        u: (m.Operador as string) || null,
+        nit: (m.Nit as string) || null,
         fc: (m.FC as string) || ((m.FR as string) || null),
         fa: (m.FA as string) || ((m.FR as string) || null),
         fr: (m.FR as string) || null,
@@ -143,6 +183,7 @@ export default function ForensicView() {
         frz: (m.FRech as string) || null,
         tc: typeof m.Ciclo_Habil_Hrs === 'number' ? (m.Ciclo_Habil_Hrs as number) : null,
         tt: typeof m.Ciclo_Habil_Hrs === 'number' ? (m.Ciclo_Habil_Hrs as number) : null,
+        ta: typeof m.Atencion_Final_Sec === 'number' ? (m.Atencion_Final_Sec as number) : null,
         cr: m.FRech ? 1 : 0,
         sb: m.Ronda_Revision === '2DA_SUBSANADA' ? 1 : 0,
         ft: m.Estado === 'APROBADA' && !m.FRech ? 1 : 0,
@@ -268,6 +309,15 @@ export default function ForensicView() {
 
   const sorted = useMemo(() => {
     const cmp = (a: ForensicCase, b: ForensicCase) => {
+      if (sort.field === 'ta') {
+        const va = getAtencionSec(a);
+        const vb = getAtencionSec(b);
+        const numA = va != null ? va : (sort.asc ? Infinity : -Infinity);
+        const numB = vb != null ? vb : (sort.asc ? Infinity : -Infinity);
+        if (numA < numB) return sort.asc ? -1 : 1;
+        if (numA > numB) return sort.asc ? 1 : -1;
+        return 0;
+      }
       let va: string | number | null | undefined = a[sort.field];
       let vb: string | number | null | undefined = b[sort.field];
       if (va == null) va = sort.asc ? Infinity : -Infinity;
@@ -286,7 +336,14 @@ export default function ForensicView() {
     const conRechazo = sorted.filter(c => c.cr === 1).length;
     const aprobadas = sorted.filter(c => c.ft === 1).length;
     const avgCola = sorted.reduce((s, c) => s + (c.tc || 0), 0) / (total || 1);
-    return { total, conRechazo, aprobadas, avgCola };
+    
+    // Promedio de tiempo de atención en segundos
+    const validAtenciones = sorted.map(c => getAtencionSec(c)).filter((s): s is number => s !== null && s > 0);
+    const avgAtencionSec = validAtenciones.length > 0 
+      ? validAtenciones.reduce((acc, s) => acc + s, 0) / validAtenciones.length 
+      : 0;
+
+    return { total, conRechazo, aprobadas, avgCola, avgAtencionSec };
   }, [sorted]);
 
   useEffect(() => {
@@ -316,7 +373,7 @@ export default function ForensicView() {
   const selectedCase = selectedId ? allCases.current.find(x => x.i === selectedId) : null;
 
   const sortIndicator = (field: SortField, display: string) => (
-    <span id={'sort-' + field} className="text-slate-300">
+    <span id={'sort-' + field} className="text-slate-300 ml-0.5">
       {sort.field === field ? (sort.asc ? '▲' : '▼') : display}
     </span>
   );
@@ -423,7 +480,9 @@ export default function ForensicView() {
               <span className="mx-1">•</span>
               <span className="text-rose-600 font-bold">{stats.conRechazo.toLocaleString()}</span> rechazos
               <span className="mx-1">•</span>
-              Cola avg: <span className="font-bold text-slate-700">{stats.avgCola.toFixed(1)}h</span>
+              Cola avg: <span className="font-bold text-amber-700">{stats.avgCola.toFixed(1)}h</span>
+              <span className="mx-1">•</span>
+              Atención avg: <span className="font-bold text-blue-700">{fmtAtencion(stats.avgAtencionSec).text}</span>
             </>
           )}
         </div>
@@ -441,16 +500,21 @@ export default function ForensicView() {
                   <th className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-blue-600" onClick={() => onSort('t')}>
                     Trámite {sortIndicator('t', '↕')}
                   </th>
-                  <th className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-blue-600 text-right" onClick={() => onSort('tc')}>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-blue-600 text-right" onClick={() => onSort('tc')} title="Tiempo de espera en buzón regional">
                     T. Cola {sortIndicator('tc', '↕')}
                   </th>
-                  <th className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 text-center">Estado</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-indigo-700 uppercase tracking-wider border-b border-slate-200/60 cursor-pointer hover:text-indigo-900 text-right bg-indigo-50/40" onClick={() => onSort('ta')} title="Tiempo de revisión activa en pantalla del analista">
+                    T. Atención {sortIndicator('ta', '↕')}
+                  </th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/60 text-center cursor-pointer hover:text-blue-600" onClick={() => onSort('e')}>
+                    Estado {sortIndicator('e', '↕')}
+                  </th>
                 </tr>
               </thead>
               <tbody className="text-xs divide-y divide-slate-100">
                 {pageData.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-slate-400 text-xs">
+                    <td colSpan={5} className="px-4 py-8 text-center text-slate-400 text-xs">
                       {status === 'loading' && allCases.current.length === 0 ? 'Cargando expedientes...' : 'No se encontraron expedientes'}
                     </td>
                   </tr>
@@ -459,6 +523,8 @@ export default function ForensicView() {
                     const id = c.i || '';
                     const tramite = c.t || '-';
                     const cola = fmtCola(c.tc);
+                    const atnSec = getAtencionSec(c);
+                    const atencion = fmtAtencion(atnSec);
                     const estado = c.e || '-';
                     const isSelected = id === selectedId;
                     return (
@@ -470,8 +536,13 @@ export default function ForensicView() {
                         <td className={`px-3 py-2.5 font-mono font-semibold ${isSelected ? 'text-blue-900' : 'text-slate-700'} ${isSelected ? 'border-l-3 border-blue-600' : 'border-l-3 border-transparent'}`}>
                           {id}
                         </td>
-                        <td className="px-3 py-2.5 text-slate-600 truncate max-w-[140px]">{tramite}</td>
-                        <td className={`px-3 py-2.5 text-right font-mono ${cola.cls}`}>{cola.text}</td>
+                        <td className="px-3 py-2.5 text-slate-600 truncate max-w-[130px]" title={tramite}>{tramite}</td>
+                        <td className={`px-3 py-2.5 text-right font-mono ${cola.cls}`} title={`Espera en cola: ${cola.text}`}>
+                          {cola.text}
+                        </td>
+                        <td className={`px-3 py-2.5 text-right font-mono ${atencion.cls} bg-indigo-50/20`} title={atencion.label ? `Tiempo de atención en pantalla: ${atencion.text} (${atencion.label})` : `Tiempo de atención: ${atencion.text}`}>
+                          {atencion.text}
+                        </td>
                         <td className="px-3 py-2.5 text-center" dangerouslySetInnerHTML={{ __html: badgeForEstado(estado) }} />
                       </tr>
                     );
@@ -543,24 +614,47 @@ export default function ForensicView() {
 
 function renderTimeline(c: ForensicCase) {
   const steps: { color: string; title: string; date: string | null; detail: string | null }[] = [];
+  const atnSec = getAtencionSec(c);
+  const atnFmt = fmtAtencion(atnSec);
 
   if (c.fc) {
-    steps.push({ color: 'slate', title: 'Ingreso al Sistema', date: fmtDate(c.fc), detail: `Trámite: ${c.t || '-'} | Región: ${regionLabel(c.r)}` });
+    steps.push({ 
+      color: 'slate', 
+      title: 'Ingreso al Sistema', 
+      date: fmtDate(c.fc), 
+      detail: `Trámite: ${c.t || '-'} | Región: ${regionLabel(c.r)}${c.nit ? ` | ${c.nit}` : ''}` 
+    });
   }
 
   const delayColor = c.tc != null ? (c.tc > 24 ? 'rose' : c.tc > 8 ? 'amber' : 'emerald') : null;
   const delayDetail = c.fc && c.fa ? fmtDiff(c.fc, c.fa) || (c.tc != null ? c.tc.toFixed(1) + 'h' : '-') : null;
 
   if (c.fa) {
-    steps.push({ color: 'blue', title: 'Asignación a Revisor', date: fmtDate(c.fa), detail: 'Revisor recibió el expediente' });
+    steps.push({ 
+      color: 'blue', 
+      title: 'Asignación a Revisor', 
+      date: fmtDate(c.fa), 
+      detail: c.u ? `Revisor: ${c.u} (recibió el expediente en bandeja)` : 'Revisor recibió el expediente en bandeja' 
+    });
   }
 
   if (c.fr && c.fa) {
-    steps.push({ color: 'indigo', title: 'Revisión en Bandeja', date: fmtDate(c.fr), detail: `Tiempo activo: ${fmtDiff(c.fa, c.fr) || '-'}` });
+    const timeInTray = fmtDiff(c.fa, c.fr) || (atnSec != null ? atnFmt.text : '-');
+    steps.push({ 
+      color: 'indigo', 
+      title: 'Revisión Activa en Pantalla', 
+      date: fmtDate(c.fr), 
+      detail: `Tiempo de atención: ${atnFmt.text} ${atnFmt.label ? `(${atnFmt.label})` : ''} | En bandeja: ${timeInTray}` 
+    });
   }
 
   if (c.cr === 1 && c.frz) {
-    steps.push({ color: 'rose', title: 'Revisión de Rechazo', date: fmtDate(c.frz), detail: c.m ? `Motivo: ${c.m}` : 'Sin motivo registrado' });
+    steps.push({ 
+      color: 'rose', 
+      title: 'Dictamen de Rechazo', 
+      date: fmtDate(c.frz), 
+      detail: c.m ? `Motivo: ${c.m}` : 'Sin motivo registrado' 
+    });
   }
 
   if (c.ff) {
@@ -621,19 +715,30 @@ function renderTimeline(c: ForensicCase) {
       )}
 
       {c.ff && (
-        <div className={`mt-4 p-3 ${bgCard} border rounded-xl text-center`}>
-          <div className={`text-[10px] font-bold ${textTitle} uppercase tracking-wider`}>Resumen del Expediente</div>
-          <div className="grid grid-cols-3 gap-3 mt-2 text-xs">
-            <div>
-              <div className="text-[10px] text-slate-500">Cola</div>
-              <div className="font-mono font-bold text-slate-800">{c.tc != null ? c.tc.toFixed(1) + 'h' : '-'}</div>
+        <div className={`mt-4 p-3.5 ${bgCard} border rounded-xl text-center shadow-2xs`}>
+          <div className={`text-[10px] font-bold ${textTitle} uppercase tracking-wider flex items-center justify-between`}>
+            <span>Resumen Forense</span>
+            {c.u && (
+              <span className="text-slate-600 font-mono font-normal normal-case flex items-center gap-1 text-[11px]">
+                <User className="w-3 h-3 text-slate-400 inline" /> Revisor: <strong>{c.u}</strong>
+              </span>
+            )}
+          </div>
+          <div className="grid grid-cols-4 gap-2 mt-2.5 text-xs">
+            <div className="bg-white/70 rounded-lg p-1.5 border border-slate-200/60 text-center">
+              <div className="text-[9px] text-slate-500 uppercase font-bold">Cola Buzón</div>
+              <div className={`font-mono font-bold ${fmtCola(c.tc).cls}`}>{c.tc != null ? c.tc.toFixed(1) + 'h' : '-'}</div>
             </div>
-            <div>
-              <div className="text-[10px] text-slate-500">Ciclo Total</div>
+            <div className="bg-white/70 rounded-lg p-1.5 border border-slate-200/60 text-center">
+              <div className="text-[9px] text-indigo-700 uppercase font-bold">T. Atención</div>
+              <div className={`font-mono font-bold ${atnFmt.cls}`}>{atnFmt.text}</div>
+            </div>
+            <div className="bg-white/70 rounded-lg p-1.5 border border-slate-200/60 text-center">
+              <div className="text-[9px] text-slate-500 uppercase font-bold">Ciclo Total</div>
               <div className="font-mono font-bold text-slate-800">{c.tt != null ? c.tt.toFixed(1) + 'h' : '-'}</div>
             </div>
-            <div>
-              <div className="text-[10px] text-slate-500">Eventos</div>
+            <div className="bg-white/70 rounded-lg p-1.5 border border-slate-200/60 text-center">
+              <div className="text-[9px] text-slate-500 uppercase font-bold">Eventos</div>
               <div className="font-mono font-bold text-slate-800">{c.ne || '-'}</div>
             </div>
           </div>
