@@ -29,27 +29,32 @@ interface Props {
 }
 
 const DEFAULT_SEMANAS: SemanaData[] = [
-  { semana: 'Sem 01', nuevas: 4306, reingresos: 201, demanda: 4507, atendidas: 734, aprobadas: 431, rechazos: 303, cobertura: 16.3 },
-  { semana: 'Sem 02', nuevas: 21642, reingresos: 3715, demanda: 25357, atendidas: 14452, aprobadas: 8201, rechazos: 6251, cobertura: 57.0 },
-  { semana: 'Sem 03', nuevas: 18072, reingresos: 4421, demanda: 22493, atendidas: 20411, aprobadas: 11480, rechazos: 8931, cobertura: 90.7 },
-  { semana: 'Sem 04', nuevas: 16406, reingresos: 4259, demanda: 20665, atendidas: 17323, aprobadas: 10483, rechazos: 6840, cobertura: 83.8 },
-  { semana: 'Sem 05', nuevas: 14357, reingresos: 3282, demanda: 17639, atendidas: 13302, aprobadas: 7922, rechazos: 5380, cobertura: 75.4 },
-  { semana: 'Sem 06', nuevas: 12095, reingresos: 3526, demanda: 15621, atendidas: 13447, aprobadas: 7835, rechazos: 5612, cobertura: 86.1 },
-  { semana: 'Sem 07', nuevas: 11348, reingresos: 3436, demanda: 14784, atendidas: 13120, aprobadas: 7944, rechazos: 5176, cobertura: 88.7 },
-  { semana: 'Sem 08', nuevas: 10811, reingresos: 2734, demanda: 13545, atendidas: 10400, aprobadas: 6238, rechazos: 4162, cobertura: 76.8 },
-  { semana: 'Sem 09', nuevas: 10426, reingresos: 3222, demanda: 13648, atendidas: 11428, aprobadas: 6576, rechazos: 4852, cobertura: 83.7 },
-  { semana: 'Sem 10', nuevas: 10454, reingresos: 3088, demanda: 13542, atendidas: 11269, aprobadas: 6498, rechazos: 4771, cobertura: 83.2 },
-  { semana: 'Sem 11', nuevas: 9719, reingresos: 2944, demanda: 12663, atendidas: 10471, aprobadas: 6159, rechazos: 4312, cobertura: 82.7 },
-  { semana: 'Sem 12', nuevas: 9178, reingresos: 2916, demanda: 12094, atendidas: 10791, aprobadas: 6266, rechazos: 4525, cobertura: 89.2 },
-  { semana: 'Sem 13', nuevas: 1577, reingresos: 834, demanda: 2411, atendidas: 3384, aprobadas: 2057, rechazos: 1327, cobertura: 140.4 },
-  { semana: 'Sem 17', nuevas: 1943, reingresos: 323, demanda: 2266, atendidas: 710, aprobadas: 273, rechazos: 437, cobertura: 31.3 },
-  { semana: 'Sem 18', nuevas: 8725, reingresos: 2166, demanda: 10891, atendidas: 7406, aprobadas: 4159, rechazos: 3247, cobertura: 68.0 },
-  { semana: 'Sem 19', nuevas: 7713, reingresos: 2308, demanda: 10021, atendidas: 9386, aprobadas: 5940, rechazos: 3446, cobertura: 93.7 },
-  { semana: 'Sem 20', nuevas: 374, reingresos: 306, demanda: 680, atendidas: 1456, aprobadas: 933, rechazos: 523, cobertura: 214.1 },
-  { semana: 'Sem 24', nuevas: 3115, reingresos: 881, demanda: 3996, atendidas: 2360, aprobadas: 1342, rechazos: 1018, cobertura: 59.1 },
-  { semana: 'Sem 25', nuevas: 5421, reingresos: 1658, demanda: 7079, atendidas: 7027, aprobadas: 4774, rechazos: 2253, cobertura: 99.3 },
-  { semana: 'Sem 30', nuevas: 3039, reingresos: 736, demanda: 3775, atendidas: 1253, aprobadas: 333, rechazos: 920, cobertura: 33.2 },
-  { semana: 'Sem 31', nuevas: 624, reingresos: 413, demanda: 1037, atendidas: 2924, aprobadas: 2386, rechazos: 538, cobertura: 282.0 },
+  { semana: 'Sem 01', nuevas: 5989, reingresos: 1255, demanda: 7244, atendidas: 7244, aprobadas: 4909, rechazos: 2327, cobertura: 100.0 },
+  { semana: 'Sem 02', nuevas: 14904, reingresos: 2269, demanda: 17173, atendidas: 17173, aprobadas: 10707, rechazos: 6446, cobertura: 100.0 },
+  { semana: 'Sem 03', nuevas: 12900, reingresos: 2020, demanda: 14920, atendidas: 14920, aprobadas: 9806, rechazos: 5104, cobertura: 100.0 },
+  { semana: 'Sem 04', nuevas: 11304, reingresos: 1778, demanda: 13082, atendidas: 13082, aprobadas: 9193, rechazos: 3863, cobertura: 100.0 },
+  { semana: 'Sem 05', nuevas: 10882, reingresos: 1813, demanda: 12695, atendidas: 12695, aprobadas: 8601, rechazos: 4081, cobertura: 100.0 },
+  { semana: 'Sem 06', nuevas: 9308, reingresos: 1670, demanda: 10978, atendidas: 10978, aprobadas: 7539, rechazos: 3426, cobertura: 100.0 },
+  { semana: 'Sem 07', nuevas: 8855, reingresos: 1629, demanda: 10484, atendidas: 10484, aprobadas: 7291, rechazos: 3181, cobertura: 100.0 },
+  { semana: 'Sem 08', nuevas: 8362, reingresos: 1588, demanda: 9950, atendidas: 9950, aprobadas: 6757, rechazos: 3185, cobertura: 100.0 },
+  { semana: 'Sem 09', nuevas: 7990, reingresos: 1539, demanda: 9529, atendidas: 9529, aprobadas: 6455, rechazos: 3068, cobertura: 100.0 },
+  { semana: 'Sem 10', nuevas: 8038, reingresos: 1456, demanda: 9494, atendidas: 9494, aprobadas: 6504, rechazos: 2977, cobertura: 100.0 },
+  { semana: 'Sem 11', nuevas: 7547, reingresos: 1422, demanda: 8969, atendidas: 8969, aprobadas: 6135, rechazos: 2821, cobertura: 100.0 },
+  { semana: 'Sem 12', nuevas: 7166, reingresos: 1284, demanda: 8450, atendidas: 8450, aprobadas: 5683, rechazos: 2751, cobertura: 100.0 },
+  { semana: 'Sem 13', nuevas: 1194, reingresos: 169, demanda: 1363, atendidas: 1363, aprobadas: 1029, rechazos: 332, cobertura: 100.0 },
+  { semana: 'Sem 16', nuevas: 26, reingresos: 8, demanda: 34, atendidas: 34, aprobadas: 8, rechazos: 26, cobertura: 100.0 },
+  { semana: 'Sem 17', nuevas: 1489, reingresos: 341, demanda: 1830, atendidas: 1830, aprobadas: 1125, rechazos: 703, cobertura: 100.0 },
+  { semana: 'Sem 18', nuevas: 6176, reingresos: 1236, demanda: 7412, atendidas: 7412, aprobadas: 5047, rechazos: 2355, cobertura: 100.0 },
+  { semana: 'Sem 19', nuevas: 5883, reingresos: 933, demanda: 6816, atendidas: 6816, aprobadas: 4897, rechazos: 1907, cobertura: 100.0 },
+  { semana: 'Sem 20', nuevas: 270, reingresos: 23, demanda: 293, atendidas: 293, aprobadas: 239, rechazos: 53, cobertura: 100.0 },
+  { semana: 'Sem 21', nuevas: 35, reingresos: 9, demanda: 44, atendidas: 44, aprobadas: 34, rechazos: 10, cobertura: 100.0 },
+  { semana: 'Sem 22', nuevas: 7, reingresos: 1, demanda: 8, atendidas: 8, aprobadas: 2, rechazos: 6, cobertura: 100.0 },
+  { semana: 'Sem 23', nuevas: 32, reingresos: 7, demanda: 39, atendidas: 39, aprobadas: 7, rechazos: 32, cobertura: 100.0 },
+  { semana: 'Sem 24', nuevas: 2762, reingresos: 703, demanda: 3465, atendidas: 3465, aprobadas: 2498, rechazos: 962, cobertura: 100.0 },
+  { semana: 'Sem 25', nuevas: 4181, reingresos: 648, demanda: 4829, atendidas: 4829, aprobadas: 3716, rechazos: 1108, cobertura: 100.0 },
+  { semana: 'Sem 26', nuevas: 15, reingresos: 5, demanda: 20, atendidas: 20, aprobadas: 11, rechazos: 9, cobertura: 100.0 },
+  { semana: 'Sem 27', nuevas: 68, reingresos: 2, demanda: 70, atendidas: 70, aprobadas: 20, rechazos: 50, cobertura: 100.0 },
+  { semana: 'Sem 28', nuevas: 245, reingresos: 15, demanda: 260, atendidas: 260, aprobadas: 16, rechazos: 244, cobertura: 100.0 },
 ];
 
 export const RechazosTrendChart: React.FC<Props> = ({ initialData = DEFAULT_SEMANAS }) => {
@@ -64,12 +69,13 @@ export const RechazosTrendChart: React.FC<Props> = ({ initialData = DEFAULT_SEMA
   const chartData = useMemo(() => {
     let raw = initialData && initialData.length > 0 ? initialData : DEFAULT_SEMANAS;
     
+    const getWeekNum = (s: string) => parseInt(s.replace('Sem ', ''), 10) || 0;
     if (periodo === 'Q1') {
-      raw = raw.filter(d => ['Sem 01', 'Sem 02', 'Sem 03', 'Sem 04', 'Sem 05', 'Sem 06', 'Sem 07', 'Sem 08', 'Sem 09', 'Sem 10', 'Sem 11', 'Sem 12', 'Sem 13'].includes(d.semana));
+      raw = raw.filter(d => getWeekNum(d.semana) >= 1 && getWeekNum(d.semana) <= 13);
     } else if (periodo === 'Q2') {
-      raw = raw.filter(d => ['Sem 17', 'Sem 18', 'Sem 19', 'Sem 20', 'Sem 24', 'Sem 25'].includes(d.semana));
+      raw = raw.filter(d => getWeekNum(d.semana) >= 14 && getWeekNum(d.semana) <= 26);
     } else if (periodo === 'Q3') {
-      raw = raw.filter(d => ['Sem 30', 'Sem 31'].includes(d.semana));
+      raw = raw.filter(d => getWeekNum(d.semana) >= 27);
     }
 
     return raw.map(d => {

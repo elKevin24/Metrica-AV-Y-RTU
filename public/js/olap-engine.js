@@ -431,13 +431,13 @@
     setText('rowEstadoRechazadaCount', fmt(cntRechReq));
 
     // ── Tarjetas de Tab 3 (Capacidad Semanal) ──
-    const scale = r.totalCasos > 0 ? (r.totalCasos / 182414) : 1;
-    const nuevas = Math.round(181345 * scale);
-    const reingresos = Math.round(47369 * scale);
-    const atend = Math.round(182116 * scale);
+    const scale = r.totalCasos > 0 ? (r.totalCasos / 182412) : 1;
+    const nuevas = Math.round(135628 * scale);
+    const reingresos = Math.round(23823 * scale);
+    const atend = Math.round(159451 * scale);
     const demandaTotal = nuevas + reingresos;
-    const cob = demandaTotal > 0 ? ((atend / demandaTotal) * 100).toFixed(1) : '79.6';
-    const reingPct = demandaTotal > 0 ? ((reingresos / demandaTotal) * 100).toFixed(1) : '20.7';
+    const cob = demandaTotal > 0 ? ((atend / demandaTotal) * 100).toFixed(1) : '100.0';
+    const reingPct = demandaTotal > 0 ? ((reingresos / demandaTotal) * 100).toFixed(1) : '14.9';
 
     setText('kpiNuevasIngresadas', fmt(nuevas));
     setText('kpiReingresos', fmt(reingresos));
