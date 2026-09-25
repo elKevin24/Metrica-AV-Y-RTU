@@ -38,58 +38,30 @@ body {
 }
 
 /* ========================================================= */
-/* FULL-PAGE SCROLLING: SECCIONES ≈ PANTALLA (CSS SNAP)      */
+/* WORKSPACE VIEWPORT & TAB VIEW ENGINE                     */
 /* ========================================================= */
 .dashboard-scroll {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 1.25rem;
-  scroll-padding-bottom: 2.5rem;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
 }
 
-@media (min-width: 768px) {
-  .dashboard-scroll {
-    scroll-padding-top: 1.5rem;
-  }
-}
-
 .tab-content {
-  display: block;
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
-  min-height: calc(100vh - 4.5rem);
-  min-height: calc(100dvh - 4.5rem);
+  display: none;
+  min-height: calc(100vh - 7rem);
   box-sizing: border-box;
-  margin-bottom: 3.5rem;
   position: relative;
 }
 
-@media (max-width: 767px) {
-  .tab-content {
-    min-height: calc(100dvh - 8rem);
-    margin-bottom: 2.5rem;
-  }
-}
-
-.tab-content:last-child {
-  margin-bottom: 1.5rem;
-}
-
 .tab-content.active {
-  animation: pbiFadeIn 0.35s var(--ease-smooth) forwards;
+  display: block;
+  animation: pbiFadeIn 0.22s var(--ease-smooth) forwards;
 }
 
 /* Reducción de movimiento por accesibilidad */
 @media (prefers-reduced-motion: reduce) {
   .dashboard-scroll {
     scroll-behavior: auto !important;
-    scroll-snap-type: none !important;
-  }
-  .tab-content {
-    scroll-snap-align: none !important;
-    scroll-snap-stop: normal !important;
   }
   .tab-content.active {
     animation: none !important;

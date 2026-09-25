@@ -1,0 +1,796 @@
+{
+  "resumen": {
+    "totalCasosAtendidos": 135628,
+    "totalTramitesExtraordinarios": 36439,
+    "pctTramitesExtraordinarios": 26.87,
+    "tramitesFinSemana": 24351,
+    "tramitesSabado": 17036,
+    "tramitesDomingo": 7315,
+    "pctFinSemana": 17.95,
+    "tramitesFueraJornadaSemana": 12088,
+    "pctFueraJornadaSemana": 8.91,
+    "horasExtraHombreSpan": 2782.1,
+    "horasExtraHombreActivas": 1562.5,
+    "horasExtraFinSemanaSpan": 2782.1,
+    "horasDictamenTeorico": 1518.3,
+    "revisoresConHorasExtra": 142,
+    "totalRevisores": 161,
+    "jornadasExtraordinarias": 840
+  },
+  "regionales": [
+    {
+      "region": "CENTRAL",
+      "nombre": "Regional Central",
+      "total": 48427,
+      "estandar": 36604,
+      "finSemana": 9135,
+      "fueraHorario": 2688,
+      "totalExtra": 11823,
+      "pctExtra": 24.4,
+      "horasSpanExtra": 1274.0,
+      "horasActivasExtra": 567.8,
+      "revisoresConExtra": 107
+    },
+    {
+      "region": "OCCIDENTE",
+      "nombre": "Regional Occidente",
+      "total": 31276,
+      "estandar": 21323,
+      "finSemana": 6534,
+      "fueraHorario": 3419,
+      "totalExtra": 9953,
+      "pctExtra": 31.8,
+      "horasSpanExtra": 897.4,
+      "horasActivasExtra": 486.7,
+      "revisoresConExtra": 95
+    },
+    {
+      "region": "SUR",
+      "nombre": "Regional Sur",
+      "total": 28084,
+      "estandar": 20502,
+      "finSemana": 4126,
+      "fueraHorario": 3456,
+      "totalExtra": 7582,
+      "pctExtra": 27.0,
+      "horasSpanExtra": 398.1,
+      "horasActivasExtra": 336.1,
+      "revisoresConExtra": 90
+    },
+    {
+      "region": "NORORIENTE",
+      "nombre": "Regional Nororiente",
+      "total": 27841,
+      "estandar": 20760,
+      "finSemana": 4556,
+      "fueraHorario": 2525,
+      "totalExtra": 7081,
+      "pctExtra": 25.4,
+      "horasSpanExtra": 212.7,
+      "horasActivasExtra": 171.9,
+      "revisoresConExtra": 82
+    }
+  ],
+  "mensual": [
+    {
+      "mes": "2026-01",
+      "nombre": "Enero 2026",
+      "total": 49719,
+      "estandar": 29218,
+      "finSemana": 14609,
+      "fueraHorario": 5892,
+      "totalExtra": 20501,
+      "pctExtra": 41.2,
+      "horasSpanExtra": 1495.5,
+      "horasActivasExtra": 825.8
+    },
+    {
+      "mes": "2026-02",
+      "nombre": "Febrero 2026",
+      "total": 36188,
+      "estandar": 26664,
+      "finSemana": 5308,
+      "fueraHorario": 4216,
+      "totalExtra": 9524,
+      "pctExtra": 26.3,
+      "horasSpanExtra": 690.1,
+      "horasActivasExtra": 427.1
+    },
+    {
+      "mes": "2026-03",
+      "nombre": "Marzo 2026",
+      "total": 25481,
+      "estandar": 21506,
+      "finSemana": 2771,
+      "fueraHorario": 1204,
+      "totalExtra": 3975,
+      "pctExtra": 15.6,
+      "horasSpanExtra": 322.6,
+      "horasActivasExtra": 174.2
+    },
+    {
+      "mes": "2026-04",
+      "nombre": "Abril 2026",
+      "total": 5879,
+      "estandar": 5385,
+      "finSemana": 257,
+      "fueraHorario": 237,
+      "totalExtra": 494,
+      "pctExtra": 8.4,
+      "horasSpanExtra": 19.4,
+      "horasActivasExtra": 26.3
+    },
+    {
+      "mes": "2026-05",
+      "nombre": "Mayo 2026",
+      "total": 8002,
+      "estandar": 7299,
+      "finSemana": 448,
+      "fueraHorario": 255,
+      "totalExtra": 703,
+      "pctExtra": 8.8,
+      "horasSpanExtra": 89.3,
+      "horasActivasExtra": 37.0
+    },
+    {
+      "mes": "2026-06",
+      "nombre": "Junio 2026",
+      "total": 6987,
+      "estandar": 6407,
+      "finSemana": 456,
+      "fueraHorario": 124,
+      "totalExtra": 580,
+      "pctExtra": 8.3,
+      "horasSpanExtra": 61.7,
+      "horasActivasExtra": 33.7
+    },
+    {
+      "mes": "2026-07",
+      "nombre": "Julio 2026",
+      "total": 3368,
+      "estandar": 2707,
+      "finSemana": 502,
+      "fueraHorario": 159,
+      "totalExtra": 661,
+      "pctExtra": 19.6,
+      "horasSpanExtra": 103.4,
+      "horasActivasExtra": 38.4
+    },
+    {
+      "mes": "2026-08",
+      "nombre": "Agosto 2026",
+      "total": 4,
+      "estandar": 3,
+      "finSemana": 0,
+      "fueraHorario": 1,
+      "totalExtra": 1,
+      "pctExtra": 25.0,
+      "horasSpanExtra": 0.0,
+      "horasActivasExtra": 0.1
+    }
+  ],
+  "diasSemana": [
+    {
+      "dia": "Lunes",
+      "casos": 24145,
+      "pct": 17.8,
+      "esFinSemana": false
+    },
+    {
+      "dia": "Martes",
+      "casos": 22725,
+      "pct": 16.8,
+      "esFinSemana": false
+    },
+    {
+      "dia": "Miércoles",
+      "casos": 21008,
+      "pct": 15.5,
+      "esFinSemana": false
+    },
+    {
+      "dia": "Jueves",
+      "casos": 21823,
+      "pct": 16.1,
+      "esFinSemana": false
+    },
+    {
+      "dia": "Viernes",
+      "casos": 21576,
+      "pct": 15.9,
+      "esFinSemana": false
+    },
+    {
+      "dia": "Sábado",
+      "casos": 17036,
+      "pct": 12.6,
+      "esFinSemana": true
+    },
+    {
+      "dia": "Domingo",
+      "casos": 7315,
+      "pct": 5.4,
+      "esFinSemana": true
+    }
+  ],
+  "distribucionHoraria": [
+    {
+      "hora": 0,
+      "horaLabel": "00:00",
+      "casos": 0,
+      "pct": 0.0,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 1,
+      "horaLabel": "01:00",
+      "casos": 0,
+      "pct": 0.0,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 2,
+      "horaLabel": "02:00",
+      "casos": 0,
+      "pct": 0.0,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 3,
+      "horaLabel": "03:00",
+      "casos": 3,
+      "pct": 0.0,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 4,
+      "horaLabel": "04:00",
+      "casos": 9,
+      "pct": 0.01,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 5,
+      "horaLabel": "05:00",
+      "casos": 110,
+      "pct": 0.08,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 6,
+      "horaLabel": "06:00",
+      "casos": 602,
+      "pct": 0.44,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 7,
+      "horaLabel": "07:00",
+      "casos": 1932,
+      "pct": 1.42,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 8,
+      "horaLabel": "08:00",
+      "casos": 12131,
+      "pct": 8.94,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 9,
+      "horaLabel": "09:00",
+      "casos": 18817,
+      "pct": 13.87,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 10,
+      "horaLabel": "10:00",
+      "casos": 19398,
+      "pct": 14.3,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 11,
+      "horaLabel": "11:00",
+      "casos": 19881,
+      "pct": 14.66,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 12,
+      "horaLabel": "12:00",
+      "casos": 9078,
+      "pct": 6.69,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 13,
+      "horaLabel": "13:00",
+      "casos": 8125,
+      "pct": 5.99,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 14,
+      "horaLabel": "14:00",
+      "casos": 13333,
+      "pct": 9.83,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 15,
+      "horaLabel": "15:00",
+      "casos": 16998,
+      "pct": 12.53,
+      "esJornadaOrdinaria": true
+    },
+    {
+      "hora": 16,
+      "horaLabel": "16:00",
+      "casos": 5891,
+      "pct": 4.34,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 17,
+      "horaLabel": "17:00",
+      "casos": 4640,
+      "pct": 3.42,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 18,
+      "horaLabel": "18:00",
+      "casos": 2591,
+      "pct": 1.91,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 19,
+      "horaLabel": "19:00",
+      "casos": 882,
+      "pct": 0.65,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 20,
+      "horaLabel": "20:00",
+      "casos": 484,
+      "pct": 0.36,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 21,
+      "horaLabel": "21:00",
+      "casos": 359,
+      "pct": 0.26,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 22,
+      "horaLabel": "22:00",
+      "casos": 251,
+      "pct": 0.19,
+      "esJornadaOrdinaria": false
+    },
+    {
+      "hora": 23,
+      "horaLabel": "23:00",
+      "casos": 113,
+      "pct": 0.08,
+      "esJornadaOrdinaria": false
+    }
+  ],
+  "topRevisores": [
+    {
+      "revisor": "CACHANGC",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 2073,
+      "casosExtra": 1958,
+      "pctExtra": 94.5,
+      "casosFinSemana": 1113,
+      "casosNoche": 845,
+      "diasFinSemana": 13,
+      "horasSpanExtra": 72.7,
+      "horasActivasExtra": 84.0
+    },
+    {
+      "revisor": "AMVELIZM",
+      "regional": "NORORIENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 8831,
+      "casosExtra": 1717,
+      "pctExtra": 19.4,
+      "casosFinSemana": 885,
+      "casosNoche": 832,
+      "diasFinSemana": 6,
+      "horasSpanExtra": 32.1,
+      "horasActivasExtra": 32.0
+    },
+    {
+      "revisor": "JAHUESOF",
+      "regional": "NORORIENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 2082,
+      "casosExtra": 1663,
+      "pctExtra": 79.9,
+      "casosFinSemana": 1002,
+      "casosNoche": 661,
+      "diasFinSemana": 8,
+      "horasSpanExtra": 50.9,
+      "horasActivasExtra": 36.4
+    },
+    {
+      "revisor": "VHALVARA",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 2235,
+      "casosExtra": 1619,
+      "pctExtra": 72.4,
+      "casosFinSemana": 726,
+      "casosNoche": 893,
+      "diasFinSemana": 11,
+      "horasSpanExtra": 72.3,
+      "horasActivasExtra": 73.0
+    },
+    {
+      "revisor": "MJMARTIR",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 3231,
+      "casosExtra": 1588,
+      "pctExtra": 49.1,
+      "casosFinSemana": 1396,
+      "casosNoche": 192,
+      "diasFinSemana": 15,
+      "horasSpanExtra": 102.9,
+      "horasActivasExtra": 47.7
+    },
+    {
+      "revisor": "MLRIVERA",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 2517,
+      "casosExtra": 1473,
+      "pctExtra": 58.5,
+      "casosFinSemana": 545,
+      "casosNoche": 928,
+      "diasFinSemana": 6,
+      "horasSpanExtra": 54.7,
+      "horasActivasExtra": 67.1
+    },
+    {
+      "revisor": "FACRUZRI",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 5169,
+      "casosExtra": 1214,
+      "pctExtra": 23.5,
+      "casosFinSemana": 745,
+      "casosNoche": 469,
+      "diasFinSemana": 12,
+      "horasSpanExtra": 101.5,
+      "horasActivasExtra": 60.9
+    },
+    {
+      "revisor": "YCMENDOZ",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 2017,
+      "casosExtra": 1065,
+      "pctExtra": 52.8,
+      "casosFinSemana": 899,
+      "casosNoche": 166,
+      "diasFinSemana": 11,
+      "horasSpanExtra": 82.8,
+      "horasActivasExtra": 46.6
+    },
+    {
+      "revisor": "RSISRODR",
+      "regional": "NORORIENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 2786,
+      "casosExtra": 943,
+      "pctExtra": 33.8,
+      "casosFinSemana": 642,
+      "casosNoche": 301,
+      "diasFinSemana": 8,
+      "horasSpanExtra": 22.0,
+      "horasActivasExtra": 21.8
+    },
+    {
+      "revisor": "ROBETETA",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 1962,
+      "casosExtra": 920,
+      "pctExtra": 46.9,
+      "casosFinSemana": 827,
+      "casosNoche": 93,
+      "diasFinSemana": 13,
+      "horasSpanExtra": 80.5,
+      "horasActivasExtra": 26.6
+    },
+    {
+      "revisor": "APMIRAND",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 2426,
+      "casosExtra": 910,
+      "pctExtra": 37.5,
+      "casosFinSemana": 613,
+      "casosNoche": 297,
+      "diasFinSemana": 9,
+      "horasSpanExtra": 67.2,
+      "horasActivasExtra": 41.7
+    },
+    {
+      "revisor": "YMMORARO",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 917,
+      "casosExtra": 872,
+      "pctExtra": 95.1,
+      "casosFinSemana": 766,
+      "casosNoche": 106,
+      "diasFinSemana": 8,
+      "horasSpanExtra": 54.9,
+      "horasActivasExtra": 39.7
+    },
+    {
+      "revisor": "MECABRER",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 5688,
+      "casosExtra": 868,
+      "pctExtra": 15.3,
+      "casosFinSemana": 663,
+      "casosNoche": 205,
+      "diasFinSemana": 13,
+      "horasSpanExtra": 154.9,
+      "horasActivasExtra": 71.7
+    },
+    {
+      "revisor": "ABGARCIA",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 923,
+      "casosExtra": 836,
+      "pctExtra": 90.6,
+      "casosFinSemana": 662,
+      "casosNoche": 174,
+      "diasFinSemana": 7,
+      "horasSpanExtra": 73.7,
+      "horasActivasExtra": 34.0
+    },
+    {
+      "revisor": "ERCERNAA",
+      "regional": "NORORIENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 1056,
+      "casosExtra": 762,
+      "pctExtra": 72.2,
+      "casosFinSemana": 745,
+      "casosNoche": 17,
+      "diasFinSemana": 6,
+      "horasSpanExtra": 43.4,
+      "horasActivasExtra": 23.1
+    },
+    {
+      "revisor": "EFBAUTIS",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 891,
+      "casosExtra": 762,
+      "pctExtra": 85.5,
+      "casosFinSemana": 705,
+      "casosNoche": 57,
+      "diasFinSemana": 8,
+      "horasSpanExtra": 18.6,
+      "horasActivasExtra": 15.8
+    },
+    {
+      "revisor": "BEORTEGA",
+      "regional": "NORORIENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 3402,
+      "casosExtra": 720,
+      "pctExtra": 21.2,
+      "casosFinSemana": 490,
+      "casosNoche": 230,
+      "diasFinSemana": 4,
+      "horasSpanExtra": 19.6,
+      "horasActivasExtra": 21.4
+    },
+    {
+      "revisor": "ERCORZAN",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 9899,
+      "casosExtra": 663,
+      "pctExtra": 6.7,
+      "casosFinSemana": 292,
+      "casosNoche": 371,
+      "diasFinSemana": 12,
+      "horasSpanExtra": 86.5,
+      "horasActivasExtra": 47.3
+    },
+    {
+      "revisor": "VMENDOZA",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 1783,
+      "casosExtra": 663,
+      "pctExtra": 37.2,
+      "casosFinSemana": 327,
+      "casosNoche": 336,
+      "diasFinSemana": 12,
+      "horasSpanExtra": 87.1,
+      "horasActivasExtra": 31.5
+    },
+    {
+      "revisor": "SNSAQUIC",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 1189,
+      "casosExtra": 651,
+      "pctExtra": 54.8,
+      "casosFinSemana": 295,
+      "casosNoche": 356,
+      "diasFinSemana": 6,
+      "horasSpanExtra": 36.7,
+      "horasActivasExtra": 26.7
+    },
+    {
+      "revisor": "JENATARE",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 1043,
+      "casosExtra": 618,
+      "pctExtra": 59.3,
+      "casosFinSemana": 224,
+      "casosNoche": 394,
+      "diasFinSemana": 9,
+      "horasSpanExtra": 40.5,
+      "horasActivasExtra": 41.9
+    },
+    {
+      "revisor": "JAGUERRC",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 678,
+      "casosExtra": 603,
+      "pctExtra": 88.9,
+      "casosFinSemana": 392,
+      "casosNoche": 211,
+      "diasFinSemana": 8,
+      "horasSpanExtra": 33.9,
+      "horasActivasExtra": 18.4
+    },
+    {
+      "revisor": "ANAMEXOY",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 605,
+      "casosExtra": 569,
+      "pctExtra": 94.0,
+      "casosFinSemana": 464,
+      "casosNoche": 105,
+      "diasFinSemana": 7,
+      "horasSpanExtra": 31.3,
+      "horasActivasExtra": 20.7
+    },
+    {
+      "revisor": "HPCARDON",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 519,
+      "casosExtra": 482,
+      "pctExtra": 92.9,
+      "casosFinSemana": 253,
+      "casosNoche": 229,
+      "diasFinSemana": 4,
+      "horasSpanExtra": 40.1,
+      "horasActivasExtra": 20.8
+    },
+    {
+      "revisor": "EENAVARR",
+      "regional": "OCCIDENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 3224,
+      "casosExtra": 457,
+      "pctExtra": 14.2,
+      "casosFinSemana": 269,
+      "casosNoche": 188,
+      "diasFinSemana": 10,
+      "horasSpanExtra": 51.3,
+      "horasActivasExtra": 21.9
+    },
+    {
+      "revisor": "AAORELLR",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 910,
+      "casosExtra": 456,
+      "pctExtra": 50.1,
+      "casosFinSemana": 347,
+      "casosNoche": 109,
+      "diasFinSemana": 4,
+      "horasSpanExtra": 18.9,
+      "horasActivasExtra": 12.5
+    },
+    {
+      "revisor": "WJPALACI",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 491,
+      "casosExtra": 430,
+      "pctExtra": 87.6,
+      "casosFinSemana": 386,
+      "casosNoche": 44,
+      "diasFinSemana": 6,
+      "horasSpanExtra": 23.9,
+      "horasActivasExtra": 20.3
+    },
+    {
+      "revisor": "DRHERRAR",
+      "regional": "CENTRAL",
+      "tipo": "PLANTA",
+      "totalCasos": 1589,
+      "casosExtra": 419,
+      "pctExtra": 26.4,
+      "casosFinSemana": 212,
+      "casosNoche": 207,
+      "diasFinSemana": 8,
+      "horasSpanExtra": 79.8,
+      "horasActivasExtra": 37.1
+    },
+    {
+      "revisor": "JJCOTOMM",
+      "regional": "SUR",
+      "tipo": "PLANTA",
+      "totalCasos": 1306,
+      "casosExtra": 405,
+      "pctExtra": 31.0,
+      "casosFinSemana": 192,
+      "casosNoche": 213,
+      "diasFinSemana": 6,
+      "horasSpanExtra": 25.9,
+      "horasActivasExtra": 22.5
+    },
+    {
+      "revisor": "LIBARRIE",
+      "regional": "NORORIENTE",
+      "tipo": "PLANTA",
+      "totalCasos": 654,
+      "casosExtra": 371,
+      "pctExtra": 56.7,
+      "casosFinSemana": 238,
+      "casosNoche": 133,
+      "diasFinSemana": 3,
+      "horasSpanExtra": 5.1,
+      "horasActivasExtra": 5.6
+    }
+  ],
+  "conclusionesForense": [
+    {
+      "titulo": "Magnitud del Sobreesfuerzo",
+      "detalle": "Se requirieron 2,782.1 horas-hombre de extensión de jornada (span de guardia) y 1,562.5 horas-hombre de conexión activa neta para desahogar 36,439 trámites fuera de jornada ordinaria (26.9% del total)."
+    },
+    {
+      "titulo": "Operación en Fines de Semana",
+      "detalle": "17,036 trámites en sábados y 7,315 en domingos (total 24,351 trámites, 18.0%). Los revisores abrieron turnos masivos de choque para evitar el colapso del SLA de 8 horas hábiles al inicio de cada semana."
+    },
+    {
+      "titulo": "Concentración Crítica en Enero y Febrero",
+      "detalle": "En Enero 2026, el 41.2% de todos los trámites (20,501 casos) se dictaminaron en horario extraordinario (1,495.5 horas-hombre de span). En Febrero bajó al 26.3% (690.1 horas-hombre)."
+    },
+    {
+      "titulo": "Carga Absorbida por la Planta Titular",
+      "detalle": "El 97.6% del sobretiempo fue ejecutado por los mismos 88 revisores de planta titular, demostrando una altísima presión sobre el personal base frente a la rigidez de asignación por colas regionales."
+    }
+  ]
+}

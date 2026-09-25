@@ -118,22 +118,23 @@ const formatMinutesToTime = (minDecimal: number) => {
           <!-- ============================================== -->
           <div id="tab-general" class="tab-content active space-y-6">
             
-            <!-- TIER 1: VOLUMEN GLOBAL & SLAS PRIMARIOS -->
+            <!-- FILA PRINCIPAL: 4 KPIS EJECUTIVOS GLOBALES -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
                   <i data-lucide="bar-chart-2" class="w-4 h-4 text-blue-600"></i>
-                  Volumen Global & Cumplimiento SLA (Gestiones Únicas)
+                  Métricas Clave de Gestión (Resumen Consolidado)
                 </h3>
+                <span class="text-xs text-slate-500 font-mono">161 Revisores · 4 Direcciones Regionales</span>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 <KpiCard
-                  title="Gestiones Únicas"
+                  title="Gestiones Recibidas"
                   value={formatNumber(dashboardData.total_gestiones)}
                   badgeText="100%"
-                  contextText="Universo total deduplicado"
-                  subtitle="Expedientes consolidados (16 archivos)"
+                  contextText={`135,628 evaluadas por revisor (${((dashboardData.total_atendidas / dashboardData.total_gestiones) * 100).toFixed(1)}%)`}
+                  subtitle="Expedientes consolidados deduplicados"
                   icon="file-text"
                   borderColor="blue"
                   trendText="Base única por NumeroGestion"
@@ -144,89 +145,14 @@ const formatMinutesToTime = (minDecimal: number) => {
                 />
 
                 <KpiCard
-                  title="Atendidas por Humano"
-                  value={formatNumber(dashboardData.total_atendidas)}
-                  badgeText={`${((dashboardData.total_atendidas / dashboardData.total_gestiones) * 100).toFixed(1)}%`}
-                  contextText={`Resta: ${formatNumber(dashboardData.total_gestiones - dashboardData.total_atendidas)} sin revisión humana (25.6%)`}
-                  subtitle="Llegaron a bandeja con fecha de revisión"
-                  icon="users"
-                  borderColor="emerald"
-                  trendText="Expedientes evaluados por auditor fiscal"
-                  trendType="positive"
-                  valueId="kpiAtendidas"
-                  badgeId="kpiAtendidasBadge"
-                  contextId="kpiAtendidasCtx"
-                />
-
-                <KpiCard
-                  title="Espera en Buzón"
-                  value={formatHoursToTime(dashboardData.avg_cola_hab_h || 9.07)}
-                  badgeText="98.2% del ciclo"
-                  contextText="Horas hábiles netas (8h/día)"
-                  subtitle="Cola previa a asignación"
-                  icon="clock"
-                  borderColor="amber"
-                  trendText="Ver Dispersión (Mín, Media, Máx) ▾"
-                  trendType="warning"
-                  id="cardBuzonTab1"
-                  onClick="openBuzonModal()"
-                  valueId="kpiTiempoCola"
-                  badgeId="kpiTiempoColaBadge"
-                  contextId="kpiTiempoColaCtx"
-                />
-
-                <KpiCard
-                  title="Rechazos Emitidos"
-                  value={formatNumber(dashboardData.total_rechazos)}
-                  badgeText={`${((dashboardData.total_rechazos / dashboardData.total_atendidas) * 100).toFixed(1)}% de atendidas`}
-                  contextText="Base justa: evaluadas por humanos"
-                  subtitle="Observadas con causal o motivo formal"
-                  icon="x-circle"
-                  borderColor="amber"
-                  trendText="Revisiones adversas en bandeja"
-                  trendType="warning"
-                  valueId="kpiRechazos"
-                  badgeId="kpiRechazosBadge"
-                  contextId="kpiRechazosCtx"
-                />
-              </div>
-            </div>
-
-            <!-- TIER 2: CALIDAD, EFICIENCIA & RESPUESTA HUMANA -->
-            <div class="space-y-3">
-              <div class="flex items-center justify-between">
-                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                  <i data-lucide="activity" class="w-4 h-4 text-emerald-600"></i>
-                  Calidad, Eficiencia & Trazabilidad Operativa
-                </h3>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                <KpiCard
-                  title="Aprobadas Totales"
-                  value={formatNumber(dashboardData.total_aprobadas)}
-                  badgeText={`${((dashboardData.total_aprobadas / dashboardData.total_atendidas) * 100).toFixed(1)}% de atendidas`}
-                  contextText="84,406 directas FTR + 23,823 subsanadas"
-                  subtitle="Suma: 84,406 FTR directas + 23,823 subsanadas"
-                  icon="trending-up"
-                  borderColor="emerald"
-                  trendText="Desenlace favorable para el contribuyente"
-                  trendType="positive"
-                  valueId="kpiAprobacion"
-                  badgeId="kpiAprobacionBadge"
-                  contextId="kpiAprobacionCtx"
-                  trendId="kpiAprobacionTrend"
-                />
-
-                <KpiCard
                   title="Resolución 1er Intento (FTR)"
                   value={formatNumber(dashboardData.total_ftr)}
-                  badgeText={`${((dashboardData.total_ftr / dashboardData.total_atendidas) * 100).toFixed(1)}% de atendidas`}
+                  badgeText="62.2% de atendidas"
                   contextText="78.0% del total de aprobaciones"
-                  subtitle="Aprobadas limpias al primer ingreso"
+                  subtitle="Aprobadas limpias sin retrabajo"
                   icon="check-circle"
-                  borderColor="blue"
-                  trendText="Calidad documental sin re-trabajo"
+                  borderColor="emerald"
+                  trendText="Calidad documental directa"
                   trendType="positive"
                   valueId="kpiFTR"
                   badgeId="kpiFTRBadge"
@@ -235,76 +161,59 @@ const formatMinutesToTime = (minDecimal: number) => {
                 />
 
                 <KpiCard
-                  title="Subsanadas (Recuperadas)"
-                  value={formatNumber(dashboardData.total_subsanadas)}
-                  badgeText={`${((dashboardData.total_subsanadas / dashboardData.total_atendidas) * 100).toFixed(1)}% de atendidas`}
-                  contextText="46.7% de rescate sobre observadas"
-                  subtitle="Aprobadas tras subsanar observaciones"
-                  icon="refresh-cw"
+                  title="Rechazos / Observaciones"
+                  value={formatNumber(dashboardData.total_rechazos)}
+                  badgeText="37.6% de atendidas"
+                  contextText="23,823 subsanadas (46.7% rescate)"
+                  subtitle="Expedientes con reparo o causal formal"
+                  icon="alert-triangle"
                   borderColor="amber"
-                  trendText="22.0% del total de aprobaciones"
-                  trendType="positive"
-                  valueId="kpiSubsanadas"
-                  badgeId="kpiSubsanadasBadge"
-                  contextId="kpiSubsanadasCtx"
-                  trendId="kpiSubsanadasTrend"
+                  trendText="27,204 no subsanadas (deserción)"
+                  trendType="warning"
+                  valueId="kpiRechazos"
+                  badgeId="kpiRechazosBadge"
+                  contextId="kpiRechazosCtx"
                 />
 
                 <KpiCard
-                  title="Rechazos Sin Subsanar"
-                  value={formatNumber(dashboardData.total_rechazos - dashboardData.total_subsanadas)}
-                  badgeText={`${(((dashboardData.total_rechazos - dashboardData.total_subsanadas) / dashboardData.total_atendidas) * 100).toFixed(1)}% de atendidas`}
-                  contextText="53.3% de deserción tras ser observados"
-                  subtitle="Canceladas por vencimiento de plazo o deserción"
-                  icon="alert-octagon"
-                  borderColor="red"
-                  trendText="Expedientes no concluidos con éxito"
-                  trendType="negative"
-                  valueId="kpiCobertura"
-                  badgeId="kpiCoberturaBadge"
-                  contextId="kpiCoberturaCtx"
-                  trendId="kpiCoberturaTrend"
+                  title="Espera en Buzón"
+                  value={formatHoursToTime(dashboardData.avg_cola_hab_h || 9.07)}
+                  badgeText="98.2% del ciclo"
+                  contextText="Horas hábiles netas (8h/día)"
+                  subtitle="Cola previa a asignación del auditor"
+                  icon="clock"
+                  borderColor="indigo"
+                  trendText="Ver Dispersión (Mín, Media, Máx) ▾"
+                  trendType="warning"
+                  id="cardBuzonTab1"
+                  onClick="openBuzonModal()"
+                  valueId="kpiTiempoCola"
+                  badgeId="kpiTiempoColaBadge"
+                  contextId="kpiTiempoColaCtx"
                 />
               </div>
-            </div>
 
-            <!-- ACCESO DIRECTO DESTACADO A DIMENSIONAMIENTO REGIONAL (MINIMALISTA) -->
-            <div class="p-4 rounded-xl bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800 shadow-2xs">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700/80 flex items-center justify-center shrink-0">
-                  <i data-lucide="calculator" class="w-5 h-5 text-slate-300"></i>
+              <!-- LÍNEA SECUNDARIA DE TRAZABILIDAD (ZERO-PILL CON SEPARADORES TIPOGRÁFICOS) -->
+              <div class="px-4 py-2.5 rounded-xl bg-white/70 border border-slate-200/80 backdrop-blur-md flex flex-wrap items-center justify-between gap-y-2 text-xs text-slate-600 shadow-2xs">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-semibold text-slate-800">Aprobadas Totales:</span>
+                  <span class="font-mono font-bold text-emerald-700">108,229</span>
+                  <span class="text-slate-400 font-sans">(79.8% de atendidas)</span>
+                  <span class="text-slate-300" aria-hidden="true">·</span>
+                  <span class="font-semibold text-slate-800">Subsanadas Exitosas:</span>
+                  <span class="font-mono font-bold text-sky-700">23,823</span>
+                  <span class="text-slate-400 font-sans">(2ª vuelta)</span>
+                  <span class="text-slate-300" aria-hidden="true">·</span>
+                  <span class="font-semibold text-slate-800">Deserción Sin Subsanar:</span>
+                  <span class="font-mono font-bold text-rose-700">27,204</span>
+                  <span class="text-slate-300" aria-hidden="true">·</span>
+                  <span class="font-semibold text-slate-800">Revisión en Pantalla:</span>
+                  <span class="font-mono font-bold text-slate-900">3m 36s</span>
+                  <span class="text-slate-400 font-sans">(1.8% del ciclo)</span>
                 </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-semibold text-white tracking-tight">
-                      Dimensionamiento Regional para SLA &le; 8 Horas Hábiles
-                    </h4>
-                    <span class="text-[10px] font-mono text-emerald-400 font-medium tracking-wide">
-                      · Superávit 5.5x
-                    </span>
-                  </div>
-                  <p class="text-xs text-slate-400 mt-0.5">
-                    Dotación necesaria por región: <span class="text-slate-200">Central: 6-9</span> · <span class="text-slate-200">Occidente: 3-5</span> · <span class="text-slate-200">Sur: 3-4</span> · <span class="text-slate-200">Nororiente: 3-4</span> analistas titulares continuos.
-                  </p>
+                <div class="text-[11px] font-semibold text-slate-500">
+                  Sobreesfuerzo Re-trabajo: <span class="font-mono text-amber-700 font-bold">1.35x</span>
                 </div>
-              </div>
-              <div class="flex items-center gap-2 shrink-0 self-stretch md:self-auto">
-                <button 
-                  type="button"
-                  onclick="switchTab('tab-tiempos'); setTimeout(() => document.getElementById('dimensionamiento-regional-section')?.scrollIntoView({behavior: 'smooth'}), 100);"
-                  class="flex-1 md:flex-none px-3.5 py-2 rounded-lg bg-white text-slate-900 hover:bg-slate-100 text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  <span>Ver en Tiempos & SLA</span>
-                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-500"></i>
-                </button>
-                <button 
-                  type="button"
-                  onclick="switchTab('tab-revisores'); setTimeout(() => document.getElementById('dimensionamiento-regional-section')?.scrollIntoView({behavior: 'smooth'}), 100);"
-                  class="flex-1 md:flex-none px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <span>Ver en Revisores</span>
-                  <i data-lucide="users" class="w-3.5 h-3.5 text-slate-400"></i>
-                </button>
               </div>
             </div>
 
@@ -400,310 +309,120 @@ const formatMinutesToTime = (minDecimal: number) => {
               </div>
             </div>
 
-              <!-- SECCIÓN FORENSE: ÁRBOL DE DESGLOSE DE LOS 183,054 REVISIONES HUMANOS -->
-              <div class="glass-card rounded-3xl p-5 sm:p-7 space-y-6 transition-all duration-300 border border-slate-200/80 shadow-md">
+              <!-- SECCIÓN FORENSE: DESGLOSE DE LAS 183,054 EVALUACIONES HUMANAS -->
+              <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4 border border-slate-200/80 shadow-xs transition-all">
                 
-                <!-- Encabezado Ejecutivo con Factor de Retrabajo -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/60 pb-5">
-                  <div class="space-y-1">
-                    <div class="flex items-center gap-2 flex-wrap">
-                      <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-indigo-500/15 to-violet-500/15 text-indigo-800 border border-indigo-300/60 backdrop-blur-xs">
-                        Nivel 2: Carga Operativa Real
-                      </span>
-                      <span class="text-slate-300 text-xs">•</span>
-                      <span class="text-xs font-semibold text-slate-500">161 Evaluadores Activos · SAT Guatemala</span>
-                    </div>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                      <i data-lucide="git-fork" class="w-5 h-5 text-indigo-600"></i>
-                      Árbol de Decisión: Desglose de las 183,054 Evaluaciones Humanas
+                <!-- Encabezado Ejecutivo Limpio -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
+                  <div>
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                      <i data-lucide="git-fork" class="w-4 h-4 text-indigo-600"></i>
+                      Trazabilidad Operativa: Desglose de las 183,054 Evaluaciones Humanas
                     </h3>
-                    <p class="text-xs text-slate-500 max-w-3xl leading-relaxed">
-                      Trazabilidad completa de la carga ejecutada por auditores fiscales: desde el volumen global emitido hasta las bifurcaciones de aprobación, requerimientos y desenlace final sin fuga de datos.
+                    <p class="text-[11px] text-slate-500 mt-0.5">
+                      161 auditores fiscales evaluaron 135,628 expedientes únicos, generando 183,054 dictámenes totales (factor de retrabajo 1.35x).
                     </p>
                   </div>
-
-                  <!-- Mini Card de Factor de Retrabajo -->
-                  <div class="flex items-center gap-3 shrink-0">
-                    <div class="px-4 py-2.5 bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-transparent border border-amber-300/80 rounded-2xl text-right backdrop-blur-md shadow-xs">
-                      <div class="text-[10px] font-extrabold text-amber-800 uppercase tracking-wider flex items-center justify-end gap-1">
-                        <i data-lucide="repeat" class="w-3 h-3 text-amber-600"></i>
-                        Factor de Re-trabajo
-                      </div>
-                      <div class="text-xl font-black text-amber-950 font-mono mt-0.5">
-                        1.35x <span class="text-xs font-bold text-amber-700 font-sans">(+35% esfuerzo)</span>
-                      </div>
-                      <div class="text-[10px] text-amber-800/80 font-medium mt-0.5">
-                        47,426 re-evaluaciones adicionales
-                      </div>
-                    </div>
+                  <div class="flex items-center gap-2 text-xs">
+                    <span class="text-slate-500 font-medium">Factor de Re-trabajo:</span>
+                    <span class="font-mono font-bold text-amber-800 bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 rounded-md">
+                      1.35x (+47,426 re-evaluaciones)
+                    </span>
                   </div>
                 </div>
 
-                <!-- CONTENEDOR DEL ÁRBOL JERÁRQUICO RESOLUTIVO -->
-                <div class="bg-gradient-to-b from-slate-50/60 to-slate-100/30 backdrop-blur-md border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs space-y-6">
+                <!-- 3 ETAPAS RESOLUTIVAS EN GRID BALANCEADO (SIN SPAGHETTI SVG NI CAJAS REPETITIVAS) -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                   
-                  <!-- ============================================== -->
-                  <!-- NIVEL 1: NODO RAÍZ (TOTAL REVISIONES HUMANAS)  -->
-                  <!-- ============================================== -->
-                  <div class="max-w-lg mx-auto bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-5 rounded-2xl shadow-xl border border-indigo-500/30 text-center relative z-10 overflow-hidden group">
-                    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500"></div>
-                    <div class="text-[10px] font-black uppercase tracking-widest text-indigo-300 flex items-center justify-center gap-1.5">
-                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
-                      Nivel 1: Raíz Operativa Humana
-                    </div>
-                    <div class="text-xs font-bold text-slate-300 uppercase mt-1">Total Evaluaciones Realizadas</div>
-                    <div class="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white mt-1.5">183,054</div>
-                    
-                    <div class="flex items-center justify-center gap-2 mt-2 flex-wrap">
-                      <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-400/40 text-[11px] font-bold text-indigo-200 font-mono">
-                        100.0% Carga de Trabajo
-                      </span>
-                      <span class="text-[11px] text-slate-300 font-medium">
-                        (sobre 135,628 expedientes únicos atendidos)
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- CONECTORES SVG: NIVEL 1 -> NIVEL 2 (Curvas Bézier Fluidas) -->
-                  <div class="hidden sm:block w-full max-w-2xl mx-auto h-12 -my-2 relative">
-                    <svg class="w-full h-full" viewBox="0 0 600 48" fill="none" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="gradTreeL1ToGreen" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stop-color="#6366f1" />
-                          <stop offset="100%" stop-color="#10b981" />
-                        </linearGradient>
-                        <linearGradient id="gradTreeL1ToRose" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stop-color="#6366f1" />
-                          <stop offset="100%" stop-color="#f43f5e" />
-                        </linearGradient>
-                        <marker id="markerTreeGreen" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                          <path d="M 0 0 L 6 3 L 0 6 z" fill="#10b981"/>
-                        </marker>
-                        <marker id="markerTreeRose" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                          <path d="M 0 0 L 6 3 L 0 6 z" fill="#f43f5e"/>
-                        </marker>
-                      </defs>
-                      <path d="M 300 0 C 300 24, 150 16, 150 44" stroke="url(#gradTreeL1ToGreen)" stroke-width="2.5" fill="none" marker-end="url(#markerTreeGreen)" />
-                      <path d="M 300 0 C 300 24, 450 16, 450 44" stroke="url(#gradTreeL1ToRose)" stroke-width="2.5" fill="none" marker-end="url(#markerTreeRose)" />
-                    </svg>
-                  </div>
-
-                  <!-- ============================================== -->
-                  <!-- NIVEL 2: RAMAS PRINCIPALES (APROBACIÓN / RECHAZO)-->
-                  <!-- ============================================== -->
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
-                    
-                    <!-- Rama Izquierda: APROBACIÓN -->
-                    <div class="bg-gradient-to-b from-emerald-50/90 to-emerald-100/40 backdrop-blur-md border border-emerald-300/90 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5 text-center relative overflow-hidden">
-                      <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-400 via-emerald-500 to-transparent"></div>
-                      <div class="text-[10px] font-black uppercase tracking-wider text-emerald-800 flex items-center justify-center gap-1">
-                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
-                        Rama A: Desenlace Favorable
+                  <!-- Etapa 1: Carga Humana Total (3 cols) -->
+                  <div class="md:col-span-3 p-4 rounded-xl bg-slate-900 text-white flex flex-col justify-between border border-slate-800 shadow-2xs">
+                    <div>
+                      <div class="text-[10px] uppercase font-bold text-indigo-300 tracking-wider flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                        1. Carga Real Humana
                       </div>
-                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-1">Evaluaciones de APROBACIÓN</h4>
-                      <div class="text-3xl font-black font-mono text-emerald-700 mt-1">108,230</div>
-                      
-                      <div class="mt-2 flex items-center justify-center gap-2 flex-wrap">
-                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-black font-mono">
-                          59.12% de la carga humana
-                        </span>
-                        <span class="text-[11px] font-bold text-emerald-800">
-                          (108,229 casos únicos)
-                        </span>
-                      </div>
-                      
-                      <p class="text-[11px] text-emerald-900/80 mt-2 border-t border-emerald-200/60 pt-2 font-medium">
-                        Resoluciones favorables: <strong>84,406 directas (FTR)</strong> + <strong>23,823 subsanadas</strong>
+                      <div class="text-2xl sm:text-3xl font-black font-mono mt-1 text-white tracking-tight">183,054</div>
+                      <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                        Total de dictámenes emitidos por los 161 analistas fiscales en el período.
                       </p>
                     </div>
-
-                    <!-- Rama Derecha: RECHAZO -->
-                    <div class="bg-gradient-to-b from-rose-50/90 to-rose-100/40 backdrop-blur-md border border-rose-300/90 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5 text-center relative overflow-hidden">
-                      <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-rose-400 via-rose-500 to-transparent"></div>
-                      <div class="text-[10px] font-black uppercase tracking-wider text-rose-800 flex items-center justify-center gap-1">
-                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
-                        Rama B: Fricción & Observaciones
-                      </div>
-                      <h4 class="text-xs font-bold text-slate-800 uppercase mt-1">Evaluaciones de RECHAZO</h4>
-                      <div class="text-3xl font-black font-mono text-rose-700 mt-1">74,824</div>
-                      
-                      <div class="mt-2 flex items-center justify-center gap-2 flex-wrap">
-                        <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-900 border border-rose-300 text-[11px] font-black font-mono">
-                          40.88% de la carga humana
-                        </span>
-                        <span class="text-[11px] font-bold text-rose-800">
-                          (51,027 casos únicos)
-                        </span>
-                      </div>
-                      
-                      <p class="text-[11px] text-rose-900/80 mt-2 border-t border-rose-200/60 pt-2 font-medium">
-                        74,824 observaciones emitidas: <strong>51,027 en 1er intento</strong> + <strong>23,797 reincidencias (1.47x)</strong>
-                      </p>
-                    </div>
-
-                  </div>
-
-                  <!-- CONECTORES SVG: NIVEL 2 -> NIVEL 3 (Curvas Bézier hacia 5 Hojas) -->
-                  <div class="hidden sm:grid grid-cols-12 gap-3 max-w-5xl mx-auto h-12 -my-2">
-                    <!-- Conector Aprobaciones -> Hojas 1 & 2 (5 columnas) -->
-                    <div class="col-span-5">
-                      <svg class="w-full h-full" viewBox="0 0 250 48" fill="none" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id="gradTreeGreenToCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#10b981" />
-                            <stop offset="100%" stop-color="#06b6d4" />
-                          </linearGradient>
-                          <marker id="markerGreen" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                            <path d="M 0 0 L 6 3 L 0 6 z" fill="#10b981"/>
-                          </marker>
-                          <marker id="markerCyan" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                            <path d="M 0 0 L 6 3 L 0 6 z" fill="#06b6d4"/>
-                          </marker>
-                        </defs>
-                        <path d="M 125 0 C 125 24, 62 20, 62 44" stroke="#10b981" stroke-width="2.5" fill="none" marker-end="url(#markerGreen)" />
-                        <path d="M 125 0 C 125 24, 188 20, 188 44" stroke="url(#gradTreeGreenToCyan)" stroke-width="2.5" fill="none" marker-end="url(#markerCyan)" />
-                      </svg>
-                    </div>
-
-                    <!-- Conector Rechazos -> Hojas 3, 4 & 5 (7 columnas) -->
-                    <div class="col-span-7">
-                      <svg class="w-full h-full" viewBox="0 0 350 48" fill="none" preserveAspectRatio="none">
-                        <defs>
-                          <marker id="markerAmber" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                            <path d="M 0 0 L 6 3 L 0 6 z" fill="#f59e0b"/>
-                          </marker>
-                          <marker id="markerRose" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                            <path d="M 0 0 L 6 3 L 0 6 z" fill="#f43f5e"/>
-                          </marker>
-                          <marker id="markerPurple" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-                            <path d="M 0 0 L 6 3 L 0 6 z" fill="#a855f7"/>
-                          </marker>
-                        </defs>
-                        <path d="M 175 0 C 175 24, 58 20, 58 44" stroke="#f59e0b" stroke-width="2.5" fill="none" marker-end="url(#markerAmber)" />
-                        <path d="M 175 0 L 175 44" stroke="#f43f5e" stroke-width="2.5" fill="none" marker-end="url(#markerRose)" />
-                        <path d="M 175 0 C 175 24, 292 20, 292 44" stroke="#a855f7" stroke-width="2.5" fill="none" marker-end="url(#markerPurple)" />
-                      </svg>
+                    <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-800 mt-3 font-medium">
+                      Sobre 135,628 expedientes únicos
                     </div>
                   </div>
 
-                  <!-- ============================================== -->
-                  <!-- NIVEL 3: HOJAS DE DESTINO RESOLUTIVO FINAL     -->
-                  <!-- ============================================== -->
-                  <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 max-w-5xl mx-auto">
+                  <!-- Etapa 2: Bifurcación Resolutiva (4 cols) -->
+                  <div class="md:col-span-4 p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 flex flex-col justify-between space-y-3">
+                    <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
+                      2. Bifurcación en Bandeja
+                    </div>
                     
-                    <!-- RAMA A (5 cols): Hojas 1 & 2 -->
-                    <div class="sm:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <!-- Hoja 1: Aprobadas 1er Intento (FTR) -->
-                      <div class="glass-card bg-white/90 border border-emerald-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
+                    <div class="space-y-2">
+                      <div class="p-2.5 rounded-lg bg-emerald-50/90 border border-emerald-200/70 flex items-center justify-between">
                         <div>
-                          <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800">1. Aprobación Directa</span>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">FTR Limpia</span>
-                          </div>
-                          <div class="text-2xl font-black font-mono text-emerald-800 mt-2">84,406</div>
-                          <div class="text-[11px] font-bold text-emerald-700 font-mono mt-1">78.0% de aprobadas totales</div>
-                          <div class="text-[10px] text-emerald-800 font-semibold mt-0.5">62.2% de atendidas por humanos</div>
+                          <div class="text-xs font-bold text-emerald-900">Aprobaciones Favorables</div>
+                          <div class="text-[10px] text-emerald-700">84,406 FTR + 23,823 subsanadas</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
-                          Expedientes resueltos favorablemente al 1er intento sin generar retrabajo.
-                        </p>
+                        <div class="text-right">
+                          <div class="font-mono font-black text-emerald-800 text-base">108,230</div>
+                          <div class="text-[10px] font-bold text-emerald-700 font-mono">59.1%</div>
+                        </div>
                       </div>
 
-                      <!-- Hoja 2: Subsanadas Exitosas -->
-                      <div class="glass-card bg-white/90 border border-cyan-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-cyan-500 transition-all flex flex-col justify-between">
+                      <div class="p-2.5 rounded-lg bg-rose-50/90 border border-rose-200/70 flex items-center justify-between">
                         <div>
-                          <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase tracking-wider text-cyan-800">2. Subsanadas</span>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200">2ª Vuelta</span>
-                          </div>
-                          <div class="text-2xl font-black font-mono text-cyan-800 mt-2">23,823</div>
-                          <div class="text-[11px] font-bold text-cyan-700 font-mono mt-1">46.7% tasa de rescate</div>
-                          <div class="text-[10px] text-cyan-800 font-semibold mt-0.5">22.0% del total de aprobadas</div>
+                          <div class="text-xs font-bold text-rose-900">Rechazos / Observaciones</div>
+                          <div class="text-[10px] text-rose-700">51,027 1er intento + 23,797 reincidentes</div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
-                          Expedientes aprobados tras solventar observaciones previas del revisor.
-                        </p>
+                        <div class="text-right">
+                          <div class="font-mono font-black text-rose-800 text-base">74,824</div>
+                          <div class="text-[10px] font-bold text-rose-700 font-mono">40.9%</div>
+                        </div>
                       </div>
                     </div>
 
-                    <!-- RAMA B (7 cols): Hojas 3, 4 & 5 (Suma Exacta: 23,823 + 27,204 + 23,797 = 74,824) -->
-                    <div class="sm:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <!-- Hoja 3: Rechazos Superados -->
-                      <div class="glass-card bg-white/90 border border-amber-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-amber-500 transition-all flex flex-col justify-between">
-                        <div>
-                          <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase tracking-wider text-amber-800">3. Superados</span>
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Puente ⇄</span>
-                          </div>
-                          <div class="text-2xl font-black font-mono text-amber-800 mt-2">23,823</div>
-                          <div class="text-[11px] font-bold text-amber-700 font-mono mt-1">31.8% de rechazos</div>
-                        </div>
-                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
-                          1ª observación en casos que corrigieron y pasaron a la Hoja 2.
-                        </p>
-                      </div>
-
-                      <!-- Hoja 4: Rechazos Definitivos -->
-                      <div class="glass-card bg-white/90 border border-rose-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-rose-500 transition-all flex flex-col justify-between">
-                        <div>
-                          <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase tracking-wider text-rose-800">4. Definitivos</span>
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">Deserción</span>
-                          </div>
-                          <div class="text-2xl font-black font-mono text-rose-800 mt-2">27,204</div>
-                          <div class="text-[11px] font-bold text-rose-700 font-mono mt-1">36.4% de rechazos</div>
-                        </div>
-                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
-                          Observaciones sin subsanar por abandono o vencimiento del trámite.
-                        </p>
-                      </div>
-
-                      <!-- Hoja 5: Re-Rechazos por Reincidencia -->
-                      <div class="glass-card bg-white/90 border border-purple-400/60 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-purple-500 transition-all flex flex-col justify-between">
-                        <div>
-                          <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase tracking-wider text-purple-800">5. Reincidencias</span>
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">2ª/3ª Vuelta</span>
-                          </div>
-                          <div class="text-2xl font-black font-mono text-purple-800 mt-2">23,797</div>
-                          <div class="text-[11px] font-bold text-purple-700 font-mono mt-1">31.8% de rechazos</div>
-                        </div>
-                        <p class="text-[10px] text-slate-500 mt-2.5 border-t border-slate-100 pt-2">
-                          Evaluaciones de rechazo adicionales por fallas repetidas.
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <!-- Cuadre Matemático & ROI Operativo -->
-                  <div class="p-4 bg-gradient-to-r from-indigo-50/90 via-violet-50/80 to-blue-50/90 border border-indigo-200/80 rounded-2xl text-[11px] text-indigo-950 font-medium backdrop-blur-xs flex flex-col sm:flex-row items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-                      <i data-lucide="scale" class="w-4 h-4"></i>
-                    </div>
-                    <div class="flex-1 text-center sm:text-left leading-relaxed">
-                      <span class="font-extrabold text-indigo-950">Cuadre Matemático de Trazabilidad (100% Sin Fuga de Datos):</span>
-                      La Rama B suma con exactitud: <strong>23,823</strong> (subsanadas) + <strong>27,204</strong> (deserción) = <strong>51,027</strong> expedientes observados. Al sumar los <strong>23,797</strong> re-rechazos, se alcanzan con exactitud los <strong>74,824 rechazos emitidos</strong>. Con los <strong>108,230 favorables</strong>, totalizan las <strong>183,054 evaluaciones humanas</strong> registradas.
+                    <div class="text-[11px] text-slate-500 pt-1 border-t border-slate-200/60 font-medium">
+                      Tasa de reincidencia: 1.47x observaciones por caso con fricción
                     </div>
                   </div>
 
-                <!-- 3 PÍLDORAS EJECUTIVAS DE IMPACTO OPERATIVO (SIN REPETIR LA MATRIZ NUMÉRICA) -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                  <div class="p-3 bg-indigo-50/70 border border-indigo-200/80 rounded-2xl text-center backdrop-blur-xs shadow-2xs hover:shadow-xs transition-all">
-                    <div class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Sobrecarga por Re-trabajo</div>
-                    <div class="text-xl font-black text-indigo-950 font-mono mt-0.5">1.35x</div>
-                    <p class="text-[11px] text-indigo-700/90 mt-0.5 font-medium">+35% de esfuerzo sobre el volumen base</p>
+                  <!-- Etapa 3: Desenlace Final y Cuadre Matemático (5 cols) -->
+                  <div class="md:col-span-5 p-4 rounded-xl bg-white border border-slate-200/80 flex flex-col justify-between space-y-3">
+                    <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
+                      3. Desenlaces Auditados
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                      <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                        <div class="text-[10px] text-slate-500 font-medium">FTR (1er Intento)</div>
+                        <div class="text-sm font-black text-emerald-700 font-mono">84,406</div>
+                        <div class="text-[10px] text-slate-400">62.2% de atendidas</div>
+                      </div>
+
+                      <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                        <div class="text-[10px] text-slate-500 font-medium">Subsanadas (2ª Vuelta)</div>
+                        <div class="text-sm font-black text-sky-700 font-mono">23,823</div>
+                        <div class="text-[10px] text-slate-400">46.7% recuperadas</div>
+                      </div>
+
+                      <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                        <div class="text-[10px] text-slate-500 font-medium">Rechazos Definitivos</div>
+                        <div class="text-sm font-black text-rose-700 font-mono">27,204</div>
+                        <div class="text-[10px] text-slate-400">Deserción contribuyente</div>
+                      </div>
+
+                      <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                        <div class="text-[10px] text-slate-500 font-medium">Re-Rechazos Reincidentes</div>
+                        <div class="text-sm font-black text-purple-700 font-mono">23,797</div>
+                        <div class="text-[10px] text-slate-400">Retrabajo iterativo</div>
+                      </div>
+                    </div>
+
+                    <div class="text-[11px] text-slate-500 pt-1 border-t border-slate-100 font-mono">
+                      Cuadre exacto: 84,406 + 23,823 + 27,204 + 23,797 = 183,054 (100%)
+                    </div>
                   </div>
-                  <div class="p-3 bg-amber-50/70 border border-amber-200/80 rounded-2xl text-center backdrop-blur-xs shadow-2xs hover:shadow-xs transition-all">
-                    <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Tasa de Reincidencia</div>
-                    <div class="text-xl font-black text-amber-950 font-mono mt-0.5">1.47x</div>
-                    <p class="text-[11px] text-amber-700/90 mt-0.5 font-medium">Rechazos múltiples por caso con fricción</p>
-                  </div>
-                  <div class="p-3 bg-rose-50/70 border border-rose-200/80 rounded-2xl text-center backdrop-blur-xs shadow-2xs hover:shadow-xs transition-all">
-                    <div class="text-[10px] font-bold text-rose-800 uppercase tracking-wider">Fricción de Entrada</div>
-                    <div class="text-xl font-black text-rose-950 font-mono mt-0.5">40.88%</div>
-                    <p class="text-[11px] text-rose-700/90 mt-0.5 font-medium">4 de cada 10 evaluaciones son observaciones</p>
-                  </div>
+
                 </div>
 
               </div>
@@ -857,10 +576,23 @@ const formatMinutesToTime = (minDecimal: number) => {
             <!-- ============================================================== -->
             <Sla8hTrendChart client:load initialData={slaData} />
 
-            <!-- ============================================================== -->
-            <!-- COMPONENTE: DIMENSIONAMIENTO REGIONAL DE REVISORES (SLA ≤ 8H)  -->
-            <!-- ============================================================== -->
-            <DimensionamientoRegional client:load />
+            <!-- ENLACE CONTEXTUAL A REVISORES & DIMENSIONAMIENTO -->
+            <div class="px-4 py-3 rounded-xl bg-slate-50/80 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="calculator" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+                <span class="text-slate-600">
+                  <strong class="text-slate-800">Simulador de Dotación & Capacidad:</strong> Para calcular el requerimiento de analistas por región o auditar horas extraordinarias, consulte el módulo especializado.
+                </span>
+              </div>
+              <button 
+                type="button"
+                onclick="window.switchTab('tab-revisores')"
+                class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-800 hover:text-indigo-600 font-semibold text-xs whitespace-nowrap shadow-2xs transition cursor-pointer flex items-center gap-1.5 self-start sm:self-auto shrink-0"
+              >
+                <span>Ir a Revisores & Dotación</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
 
             <!-- FILA 1: DISTRIBUCIÓN NACIONAL SLA POR TRAMOS HÁBILES -->
             <div class="glass-card rounded-2xl p-5 space-y-4 transition-all duration-300">
@@ -2232,16 +1964,11 @@ const formatMinutesToTime = (minDecimal: number) => {
           lucide.createIcons();
         }
 
-        // Desplazamiento suave nativo a la sección (respetando prefers-reduced-motion)
-        if (shouldScroll && activeContent) {
-          isManualScrolling = true;
-          clearTimeout(scrollLockTimer);
-          const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          activeContent.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-          scrollLockTimer = setTimeout(() => {
-            isManualScrolling = false;
-          }, 700);
+        // Reset del scroll del canvas al inicio de la pestaña activa
+        if (scrollContainer) {
+          scrollContainer.scrollTop = 0;
         }
+        window.dispatchEvent(new Event('resize'));
       };
 
       tabBtns.forEach(btn => {
@@ -2251,32 +1978,6 @@ const formatMinutesToTime = (minDecimal: number) => {
           if (targetId) window.switchTab(targetId, true);
         });
       });
-
-      // Sincronización bidireccional de scroll con IntersectionObserver
-      if (typeof IntersectionObserver !== 'undefined' && tabContents.length > 0) {
-        const observerOptions = {
-          root: scrollContainer || null,
-          rootMargin: '-10% 0px -40% 0px',
-          threshold: [0.15, 0.35, 0.6]
-        };
-
-        const sectionObserver = new IntersectionObserver((entries) => {
-          if (isManualScrolling) return;
-
-          const visibleEntries = entries.filter(e => e.isIntersecting);
-          if (visibleEntries.length > 0) {
-            visibleEntries.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-            const topTarget = visibleEntries[0].target;
-            if (topTarget && topTarget.id && topTarget.id !== activeSectionId) {
-              window.switchTab(topTarget.id, false);
-            }
-          }
-        }, observerOptions);
-
-        tabContents.forEach(section => {
-          sectionObserver.observe(section);
-        });
-      }
 
       // 3. Command Palette & Shortcuts
       window.toggleCommandPalette = function() {
