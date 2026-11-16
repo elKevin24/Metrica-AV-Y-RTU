@@ -4281,6 +4281,10 @@ const formatMinutesToTime = (minDecimal: number) => {
         if (window.__lastOlapResult && typeof window.updateCharts === 'function') {
           window.updateCharts(window.__lastOlapResult);
         }
+        const hashTab = window.location.hash ? window.location.hash.replace('#', '') : '';
+        if (hashTab && document.getElementById(hashTab) && typeof window.switchTab === 'function') {
+          window.switchTab(hashTab, true);
+        }
       }, 100);
     })();
   </script>

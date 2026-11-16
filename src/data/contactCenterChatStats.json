@@ -1,0 +1,96 @@
+{
+  "anio": 2025,
+  "totales": {
+    "entrantes": 87083,
+    "atendidas": 81135,
+    "abandonadas": 5948,
+    "tasaAtencionPct": 93.17,
+    "tasaAbandonoPct": 6.83
+  },
+  "meses": [
+    {
+      "mes": "Enero",
+      "entrantes": 11997,
+      "atendidas": 11741,
+      "abandonadas": 256,
+      "tasaAtencionPct": 97.87
+    },
+    {
+      "mes": "Febrero",
+      "entrantes": 5974,
+      "atendidas": 5974,
+      "abandonadas": 0,
+      "tasaAtencionPct": 100.0
+    },
+    {
+      "mes": "Marzo",
+      "entrantes": 6009,
+      "atendidas": 5989,
+      "abandonadas": 20,
+      "tasaAtencionPct": 99.67
+    },
+    {
+      "mes": "Abril",
+      "entrantes": 6285,
+      "atendidas": 6144,
+      "abandonadas": 141,
+      "tasaAtencionPct": 97.76
+    },
+    {
+      "mes": "Mayo",
+      "entrantes": 5685,
+      "atendidas": 5643,
+      "abandonadas": 42,
+      "tasaAtencionPct": 99.26
+    },
+    {
+      "mes": "Junio",
+      "entrantes": 5020,
+      "atendidas": 4991,
+      "abandonadas": 29,
+      "tasaAtencionPct": 99.42
+    },
+    {
+      "mes": "Julio",
+      "entrantes": 7915,
+      "atendidas": 6753,
+      "abandonadas": 1162,
+      "tasaAtencionPct": 85.32
+    },
+    {
+      "mes": "Agosto",
+      "entrantes": 8908,
+      "atendidas": 7604,
+      "abandonadas": 1304,
+      "tasaAtencionPct": 85.36
+    },
+    {
+      "mes": "Septiembre",
+      "entrantes": 6498,
+      "atendidas": 6447,
+      "abandonadas": 51,
+      "tasaAtencionPct": 99.22
+    },
+    {
+      "mes": "Octubre",
+      "entrantes": 6620,
+      "atendidas": 6571,
+      "abandonadas": 49,
+      "tasaAtencionPct": 99.26
+    },
+    {
+      "mes": "Noviembre",
+      "entrantes": 8158,
+      "atendidas": 7836,
+      "abandonadas": 322,
+      "tasaAtencionPct": 96.05
+    },
+    {
+      "mes": "Diciembre",
+      "entrantes": 8014,
+      "atendidas": 5442,
+      "abandonadas": 2572,
+      "tasaAtencionPct": 67.91
+    }
+  ]
+}

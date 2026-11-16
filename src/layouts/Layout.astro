@@ -3,9 +3,10 @@ import '../styles/global.css';
 
 interface Props {
   title?: string;
+  loadOlap?: boolean;
 }
 
-const { title = "Visor Estratégico BI | SAT Guatemala" } = Astro.props;
+const { title = "Visor Estratégico BI | SAT Guatemala", loadOlap = true } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL || '/';
 const normalizePath = (path: string) => `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 ---
@@ -24,9 +25,9 @@ const normalizePath = (path: string) => `${baseUrl.replace(/\/$/, '')}/${path.re
   <script is:inline define:vars={{ baseUrl: baseUrl.endsWith('/') ? baseUrl : baseUrl + '/' }}>
     window.__BASE_URL__ = baseUrl;
   </script>
-  <script is:inline src={normalizePath('vendor/chart.umd.js')}></script>
+  {loadOlap && <script is:inline src={normalizePath('vendor/chart.umd.js')}></script>}
   <script is:inline src={normalizePath('vendor/lucide.min.js')}></script>
-  <script is:inline src={normalizePath('js/olap-engine.js')}></script>
+  {loadOlap && <script is:inline src={normalizePath('js/olap-engine.js')}></script>}
 </head>
 <body class="text-slate-800 h-full min-h-screen flex overflow-hidden selection:bg-blue-200 antialiased">
   <slot />

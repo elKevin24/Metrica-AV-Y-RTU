@@ -1,5 +1,23 @@
 ---
 // Sidebar.astro - Power BI / Tableau Style Collapsible Navigation with Fluid Spring Physics
+interface Props {
+  activePage?: 'av-rtu' | 'contact-center';
+}
+
+const { activePage = 'av-rtu' } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL || '/';
+const normalizePath = (path: string) => `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+const isAvRtu = activePage === 'av-rtu';
+const isContactCenter = activePage === 'contact-center';
+
+const avRtuItems = [
+  { id: 'tab-general', label: 'Resumen Ejecutivo', shortLabel: 'Resumen', title: 'Resumen Ejecutivo', icon: 'layout-dashboard' },
+  { id: 'tab-tiempos', label: 'Tiempos & SLAs (8h)', shortLabel: 'Tiempos', title: 'Análisis de Tiempos & SLA (8h)', icon: 'clock' },
+  { id: 'tab-revisores', label: 'Revisores & Atenciones', shortLabel: 'Revisores', title: 'Lista de Revisores y Atenciones', icon: 'users' },
+  { id: 'tab-relaciones', label: 'Ciclos & Tiempos', shortLabel: 'Ciclos', title: 'Ciclos & Tiempos de Atención por Regional', icon: 'layers' },
+  { id: 'tab-casos', label: 'Auditoría Forense', shortLabel: 'Casos', title: 'Auditoría Forense de Expedientes', icon: 'search' },
+  { id: 'tab-conclusiones', label: 'Conclusiones & Estrategia', shortLabel: 'Dictamen', title: 'Conclusiones & Dictamen Estratégico', icon: 'award' },
+];
 ---
 
 <!-- DESKTOP / TABLET SIDEBAR (md:flex) -->
@@ -15,7 +33,7 @@
       </div>
       <div class="sidebar-text flex flex-col ml-3 min-w-0">
         <span class="font-bold text-white tracking-tight text-xs truncate">Visor Estratégico BI</span>
-        <span class="text-[10px] text-blue-400 font-medium truncate">Agencia Virtual & RTU</span>
+        <span class="text-[10px] text-blue-400 font-medium truncate">AV, RTU &amp; Contact Center</span>
       </div>
     </div>
 
@@ -31,65 +49,50 @@
     </button>
   </div>
 
-  <!-- Enlaces de Navegación (5 módulos analíticos) -->
+  <!-- Enlaces de Navegación -->
   <div class="flex-1 py-3.5 flex flex-col gap-1.5 px-2.5 overflow-y-auto no-scrollbar">
     <div class="sidebar-text px-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
-      Módulos Analíticos
+      Agencia Virtual &amp; RTU
     </div>
 
-    <button 
-      class="tab-btn active-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium bg-blue-600 text-white shadow-lg shadow-blue-600/25 border border-blue-400/30 cursor-pointer group" 
-      data-target="tab-general"
-      title="Resumen Ejecutivo"
-    >
-      <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform"></i>
-      <span class="sidebar-text text-left truncate font-semibold">Resumen Ejecutivo</span>
-    </button>
+    {avRtuItems.map((item, idx) => (
+      isAvRtu ? (
+        <button
+          class={`tab-btn ${idx === 0 ? 'active-tab bg-blue-600 text-white shadow-lg shadow-blue-600/25 border-blue-400/30 font-semibold' : 'text-slate-400 hover:bg-white/[0.06] hover:text-white border-transparent font-medium'} w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs border cursor-pointer group transition-colors`}
+          data-target={item.id}
+          title={item.title}
+        >
+          <i data-lucide={item.icon} class={`w-4 h-4 shrink-0 ${idx === 0 ? 'group-hover:scale-110 transition-transform' : 'text-slate-400 group-hover:text-slate-200 transition-colors'}`}></i>
+          <span class="sidebar-text text-left truncate">{item.label}</span>
+        </button>
+      ) : (
+        <a
+          href={`${normalizePath('')}#${item.id}`}
+          class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer group transition-colors"
+          title={item.title}
+        >
+          <i data-lucide={item.icon} class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors"></i>
+          <span class="sidebar-text text-left truncate">{item.label}</span>
+        </a>
+      )
+    ))}
 
-    <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer group transition-colors" 
-      data-target="tab-tiempos"
-      title="Análisis de Tiempos & SLA (8h)"
-    >
-      <i data-lucide="clock" class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors"></i>
-      <span class="sidebar-text text-left truncate font-medium">Tiempos & SLAs (8h)</span>
-    </button>
+    <div class="sidebar-text px-2 pt-3 mt-2 border-t border-white/10 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+      Contact Center
+    </div>
 
-    <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer group transition-colors" 
-      data-target="tab-revisores"
-      title="Lista de Revisores y Atenciones"
+    <a
+      href={normalizePath('contact-center/')}
+      class={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs border cursor-pointer group transition-colors ${
+        isContactCenter
+          ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 border-blue-400/30 font-semibold'
+          : 'text-slate-400 hover:bg-white/[0.06] hover:text-white border-transparent font-medium'
+      }`}
+      title="Casos Especiales y Uso de Chat del Contact Center"
     >
-      <i data-lucide="users" class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors"></i>
-      <span class="sidebar-text text-left truncate font-medium">Revisores & Atenciones</span>
-    </button>
-
-    <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer group transition-colors" 
-      data-target="tab-relaciones"
-      title="Ciclos & Tiempos de Atención por Regional"
-    >
-      <i data-lucide="layers" class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors"></i>
-      <span class="sidebar-text text-left truncate font-medium">Ciclos & Tiempos</span>
-    </button>
-
-    <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer group transition-colors" 
-      data-target="tab-casos"
-      title="Auditoría Forense de Expedientes"
-    >
-      <i data-lucide="search" class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors"></i>
-      <span class="sidebar-text text-left truncate font-medium">Auditoría Forense</span>
-    </button>
-
-    <button 
-      class="tab-btn w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-white/[0.06] hover:text-white border border-transparent cursor-pointer group transition-colors" 
-      data-target="tab-conclusiones"
-      title="Conclusiones & Dictamen Estratégico"
-    >
-      <i data-lucide="award" class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors"></i>
-      <span class="sidebar-text text-left truncate font-medium">Conclusiones & Estrategia</span>
-    </button>
+      <i data-lucide="headphones" class={`w-4 h-4 shrink-0 ${isContactCenter ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'} transition-colors`}></i>
+      <span class="sidebar-text text-left truncate">Casos &amp; Chat 2025</span>
+    </a>
   </div>
 
   <!-- Bottom Quick Status & Settings -->
@@ -99,17 +102,19 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400 status-pulse-dot shrink-0"></span>
         <span class="sidebar-text font-medium truncate text-slate-300">Datos en Línea</span>
       </span>
-      <span class="sidebar-text font-mono text-slate-400 text-[10px] shrink-0">2026</span>
+      <span class="sidebar-text font-mono text-slate-400 text-[10px] shrink-0">2025–2026</span>
     </div>
 
-    <button 
-      onclick="toggleShortcutsModal()" 
-      class="w-full bg-white/[0.04] hover:bg-white/[0.08] active:scale-98 border border-white/10 rounded-xl flex items-center justify-center md:justify-start px-2.5 py-2 text-slate-400 hover:text-white transition-all backdrop-blur-md cursor-pointer group"
-      title="Atajos de teclado (Ctrl+K)"
-    >
-      <i data-lucide="keyboard" class="w-4 h-4 shrink-0 group-hover:text-blue-400 transition-colors"></i>
-      <span class="sidebar-text ml-2 text-xs font-medium truncate">Atajos (Ctrl+K)</span>
-    </button>
+    {isAvRtu && (
+      <button 
+        onclick="toggleShortcutsModal()" 
+        class="w-full bg-white/[0.04] hover:bg-white/[0.08] active:scale-98 border border-white/10 rounded-xl flex items-center justify-center md:justify-start px-2.5 py-2 text-slate-400 hover:text-white transition-all backdrop-blur-md cursor-pointer group"
+        title="Atajos de teclado (Ctrl+K)"
+      >
+        <i data-lucide="keyboard" class="w-4 h-4 shrink-0 group-hover:text-blue-400 transition-colors"></i>
+        <span class="sidebar-text ml-2 text-xs font-medium truncate">Atajos (Ctrl+K)</span>
+      </button>
+    )}
   </div>
 </aside>
 
@@ -121,87 +126,88 @@
     </div>
     <div class="flex flex-col min-w-0">
       <span class="font-bold text-white tracking-tight text-xs leading-none truncate">Visor BI Guatemala</span>
-      <span id="mobileCurrentTabLabel" class="text-[10px] text-blue-400 font-medium leading-tight truncate mt-0.5">Resumen Ejecutivo</span>
+      <span id="mobileCurrentTabLabel" class="text-[10px] text-blue-400 font-medium leading-tight truncate mt-0.5">
+        {isContactCenter ? 'Contact Center & Casos' : 'Resumen Ejecutivo'}
+      </span>
     </div>
   </div>
 
-  <!-- Mobile Quick Action Buttons -->
-  <div class="flex items-center gap-1.5 shrink-0">
-    <button 
-      onclick="toggleCommandPalette()" 
-      class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 flex items-center justify-center text-slate-300 transition cursor-pointer"
-      title="Búsqueda Rápida"
-      aria-label="Buscar"
-    >
-      <i data-lucide="search" class="w-3.5 h-3.5"></i>
-    </button>
+  {isAvRtu && (
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button 
+        onclick="toggleCommandPalette()" 
+        class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 flex items-center justify-center text-slate-300 transition cursor-pointer"
+        title="Búsqueda Rápida"
+        aria-label="Buscar"
+      >
+        <i data-lucide="search" class="w-3.5 h-3.5"></i>
+      </button>
 
-    <button 
-      onclick="toggleShortcutsModal()" 
-      class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 flex items-center justify-center text-slate-300 transition cursor-pointer"
-      title="Atajos"
-      aria-label="Atajos"
-    >
-      <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
-    </button>
-  </div>
+      <button 
+        onclick="toggleShortcutsModal()" 
+        class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 flex items-center justify-center text-slate-300 transition cursor-pointer"
+        title="Atajos"
+        aria-label="Atajos"
+      >
+        <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+  )}
 </header>
 
 <!-- MOBILE BOTTOM NAVIGATION (md:hidden) -->
 <nav class="md:hidden fixed bottom-0 inset-x-0 bg-slate-950/95 backdrop-blur-2xl border-t border-white/10 flex items-center justify-around px-1 py-1.5 z-40 safe-area-bottom shadow-2xl">
-  <button 
-    class="tab-btn active-tab flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-white bg-blue-600/90 transition-all border border-blue-400/30" 
-    data-target="tab-general"
-    data-label="Resumen Ejecutivo"
-  >
-    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-    <span class="text-[9px] font-bold tracking-tight leading-none">Resumen</span>
-  </button>
+  {avRtuItems.slice(0, 4).map((item, idx) => (
+    isAvRtu ? (
+      <button 
+        class={`tab-btn ${idx === 0 ? 'active-tab text-white bg-blue-600/90 border-blue-400/30 font-bold' : 'text-slate-400 hover:text-slate-200 border-transparent font-medium'} flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all border`}
+        data-target={item.id}
+        data-label={item.title}
+      >
+        <i data-lucide={item.icon} class={`w-4 h-4 ${idx === 0 ? '' : 'text-slate-400'}`}></i>
+        <span class="text-[9px] tracking-tight leading-none">{item.shortLabel}</span>
+      </button>
+    ) : (
+      <a 
+        href={`${normalizePath('')}#${item.id}`}
+        class="flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent"
+      >
+        <i data-lucide={item.icon} class="w-4 h-4 text-slate-400"></i>
+        <span class="text-[9px] font-medium tracking-tight leading-none">{item.shortLabel}</span>
+      </a>
+    )
+  ))}
 
-  <button 
-    class="tab-btn flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent" 
-    data-target="tab-tiempos"
-    data-label="Tiempos & SLAs"
-  >
-    <i data-lucide="clock" class="w-4 h-4 text-slate-400"></i>
-    <span class="text-[9px] font-medium tracking-tight leading-none">Tiempos</span>
-  </button>
+  {isAvRtu ? (
+    <button 
+      class="tab-btn flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent" 
+      data-target="tab-casos"
+      data-label="Auditoría Forense"
+    >
+      <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+      <span class="text-[9px] font-medium tracking-tight leading-none">Casos</span>
+    </button>
+  ) : (
+    <a 
+      href={`${normalizePath('')}#tab-casos`}
+      class="flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent"
+    >
+      <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+      <span class="text-[9px] font-medium tracking-tight leading-none">Forense</span>
+    </a>
+  )}
 
-  <button 
-    class="tab-btn flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent" 
-    data-target="tab-revisores"
-    data-label="Revisores & Atenciones"
+  <a 
+    href={normalizePath('contact-center/')}
+    class={`flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all border ${
+      isContactCenter
+        ? 'text-white bg-blue-600/90 border-blue-400/30 font-bold'
+        : 'text-slate-400 hover:text-slate-200 border-transparent font-medium'
+    }`}
   >
-    <i data-lucide="users" class="w-4 h-4 text-slate-400"></i>
-    <span class="text-[9px] font-medium tracking-tight leading-none">Revisores</span>
-  </button>
-
-  <button 
-    class="tab-btn flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent" 
-    data-target="tab-relaciones"
-    data-label="Ciclos & Tiempos de Atención"
-  >
-    <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
-    <span class="text-[9px] font-medium tracking-tight leading-none">Ciclos</span>
-  </button>
-
-  <button 
-    class="tab-btn flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent" 
-    data-target="tab-casos"
-    data-label="Auditoría Forense"
-  >
-    <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
-    <span class="text-[9px] font-medium tracking-tight leading-none">Casos</span>
-  </button>
-
-  <button 
-    class="tab-btn flex-1 py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition-all border border-transparent" 
-    data-target="tab-conclusiones"
-    data-label="Conclusiones & Estrategia"
-  >
-    <i data-lucide="award" class="w-4 h-4 text-slate-400"></i>
-    <span class="text-[9px] font-medium tracking-tight leading-none">Dictamen</span>
-  </button>
+    <i data-lucide="headphones" class={`w-4 h-4 ${isContactCenter ? 'text-white' : 'text-slate-400'}`}></i>
+    <span class="text-[9px] tracking-tight leading-none">Contact</span>
+  </a>
 </nav>
 
 <!-- Inline Script for Fluid Sidebar Physics & Keybindings -->
@@ -223,7 +229,6 @@
       lucide.createIcons();
     }
 
-    // Trigger smooth resize for charts during and at the end of the transition
     const resizeInterval = setInterval(() => {
       window.dispatchEvent(new Event('resize'));
     }, 50);
@@ -233,7 +238,6 @@
     }, 420);
   }
 
-  // Restore saved sidebar state on DOM load
   (function initSidebarState() {
     const saved = localStorage.getItem('sat_sidebar_collapsed');
     const sidebar = document.getElementById('mainSidebar');
@@ -241,7 +245,6 @@
       sidebar.classList.add('sidebar-collapsed');
     }
 
-    // Keyboard shortcut Ctrl+B or Cmd+B to toggle
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
         const activeTag = document.activeElement ? document.activeElement.tagName : '';

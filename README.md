@@ -1,6 +1,6 @@
-# Visor Estratégico BI — SAT Guatemala (Agencia Virtual & RTU)
+# Visor Estratégico BI — SAT Guatemala (Agencia Virtual, RTU & Contact Center)
 
-Plataforma de Inteligencia de Negocios, Auditoría Operativa y Análisis de SLAs para la **Superintendencia de Administración Tributaria (SAT Guatemala)**. Construida con **Astro**, **Tailwind CSS**, **Chart.js**, **React/Recharts** y un pipeline de datos unificado en **Python (Pandas / PyArrow)**.
+Plataforma unificada de Inteligencia de Negocios, Auditoría Operativa y Análisis de SLAs para la **Superintendencia de Administración Tributaria (SAT Guatemala)**. Construida con **Astro**, **Tailwind CSS**, **Chart.js**, **React/Recharts** y un pipeline de datos unificado en **Python (Pandas / PyArrow)**.
 
 ---
 
@@ -49,6 +49,7 @@ Plataforma de Inteligencia de Negocios, Auditoría Operativa y Análisis de SLAs
 3. **Revisores & Atenciones:** Matriz nominal de 219 evaluadores con percentiles ($P_{50}, P_{90}$), capacidad teórica instalada y tendencias de demanda semanal.
 4. **Causalidad & Flujos:** Árbol de decisión de desenlaces, causalidad de rechazos (DPI, Video, Reglas Duras) y curvas de dispersión.
 5. **Auditoría Forense:** Paginación de expedientes deduplicados, búsqueda instantánea, detalles de eventos y trazabilidad PII anonimizada.
+6. **Contact Center — Casos Especiales & Chat (`/contact-center`):** Análisis de tiempos de solución de 5,050 casos especiales en base de 8 horas hábiles (con PII anonimizada: `ANON-NIT-*`, `TKT-*`, correos y CUIs redactados), carga local de archivos Excel en navegador, exportación CSV/JSON y resumen mensual del servicio de chat 2025.
 
 ---
 
